@@ -1,0 +1,275 @@
+@use 'styles/base.css';
+@font-face {
+  font-family: 'Readex Pro';
+  src:
+    url('@/assets/styles/fonts/readex_pro/static/ReadexPro-Bold.ttf') format('Bold'),
+    url('@/assets/styles/fonts/readex_pro/static/ReadexPro-Medium.ttf') format('Medium'),
+    url('@/assets/styles/fonts/readex_pro/static/ReadexPro-Regular.ttf') format('Regular'),
+    url('@/assets/styles/fonts/readex_pro/static/ReadexPro-SemiBold.ttf') format('SemiBold');
+}
+
+@font-face {
+  font-family: 'roboto';
+  src:
+    url('@/assets/styles/fonts/roboto/Roboto-Bold.ttf') format('Bold'),
+    url('@/assets/styles/fonts/roboto/Roboto-Medium.ttf') format('Medium'),
+    url('@/assets/styles/fonts/roboto/Roboto-Regular.ttf') format('Regular'),
+}
+
+$x-small: 0.5rem;
+$small: 0.75rem;
+$medium: 1rem;
+$middle: 1.12rem;
+$large: 1.25rem;
+$xl: 1.5rem; 
+$size-2xl: 1.75rem;
+$size-3xl: 2rem; 
+$size-4xl: 2.5rem;
+$size-5xl: 3rem;
+
+$font-weight-light: 300 !important;
+$font-weight-regular: 500 !important;
+$font-weight-bold: 700 !important;
+
+$primaryRadius: 15px;
+$normalSize: 14px;
+
+$shadow:
+  0 -3px 5px rgba(0, 0, 0, 0.1),
+  0 3px 5px rgba(0, 0, 0, 0.1);
+$darkShadow: 0 4px 6px 6px rgba(0, 0, 0, 0.1);
+
+$sidebarWidth: 304px;
+
+body {
+  font-family: 'Readex Pro', 'roboto', sans-serif !important;
+  line-height: 1.6;
+  background-color: rgb(var(--v-theme-white));
+}
+
+.v-table__wrapper {
+  border-radius: $primaryRadius;
+  z-index: 1;
+}
+
+.v-data-table__thead {
+  background-color: rgb(var(--v-theme-smokeBlack)) !important;
+  color: rgb(var(--v-theme-smokeWhite));
+  position: sticky;
+  top: 0px;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.v-slide-group__content {
+  gap: 20px;
+}
+
+.v-select .v-field .v-text-field__prefix,
+.v-select .v-field .v-text-field__suffix,
+.v-select .v-field .v-field__input,
+.v-select .v-field.v-field {
+  background-color: white !important;
+  border-bottom: 0.1px solid rgb(240, 232, 232);
+  border-top: 0.1px solid rgb(240, 232, 232);
+}
+
+.v-field {
+  font-size: 15px !important;
+}
+
+.v-select {
+  background-color: white !important;
+  height: 69px !important;
+}
+
+.v-field--center-affix .v-field__append-inner,
+.v-field--center-affix .v-field__clearable,
+.v-field--center-affix .v-field__prepend-inner {
+  background-color: white !important;
+}
+
+.v-data-table-footer__items-per-page {
+  display: none;
+}
+
+.v-data-table__tbody tr {
+  font-size: $normalSize;
+  // font-weight: $font-weight-light;
+}
+
+.v-data-table-header__content {
+  font-size: 15;
+  font-weight: $font-weight-bold !important;
+}
+
+.v-table__wrapper { 
+    overflow: hidden !important;
+}
+
+.v-table > .v-table__wrapper > table > thead > tr > th {
+  font-weight: $font-weight-bold;
+}
+
+.v-table .v-table__wrapper > table > tbody > tr:not(:last-child) > td,
+.v-table .v-table__wrapper > table > tbody > tr:not(:last-child) > th {
+  border-bottom: thin solid rgb(0 0 0);
+}
+
+.v-selection-control--density-default,
+.v-checkbox .v-selection-control {
+  min-height: $large;
+  --v-selection-control-size: $xl;
+}
+
+.v-btn--size-default {
+    padding: 0 16px;
+}
+
+.v-slide-group__container .v-btn--size-default {
+    padding: 0px;
+}
+
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  max-height: 49px !important;
+}
+
+.flex-container > .v-icon {
+    width: 40% !important;
+}
+
+.flex-container > .dropdown-container {
+    width: 60% !important;
+}
+
+.icon-style {
+    padding-right: 15%;
+}
+
+.v-table--density-default {
+    --v-table-row-height: 45px;
+    --v-table-header-height: 37px;
+}
+
+.v-container {
+  padding: 0px !important;
+}
+
+.v-input--density-default .v-field__input,
+.v-text-field input {
+  opacity: 1 !important;
+  background-color: rgb(var(--v-theme-white));
+  border: 1px solid rgb(var(--v-theme-panelSecondary));
+}
+
+.v-input__details {
+  display: none !important;
+}
+
+.filter-section {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  box-shadow: $shadow;
+  background-color: rgb(var(--v-theme-white));
+  z-index: 2;
+  padding: 5px 10px;
+
+  .mb-4 {
+    margin-bottom: $medium !important;
+    margin-top: $medium !important;
+  }
+
+  .flex-1 {
+    flex: 1;
+  }
+}
+.v-field__input {
+  width: 50% !important;
+  max-height: 53px;
+}
+
+.phone-dropdown-list {
+  border: none !important;
+  display: flex;
+  align-items: center; 
+}
+
+.non-server-table-container {
+  background: rgb(var(--v-theme-white));
+  border-radius: $primaryRadius;
+}
+
+.non-server-table-tab {
+    padding: 15px 0px !important;
+}
+
+//INFO: for callToAction and worklist details pages
+.dropdown-section {
+  display: flex;
+  flex-direction: column;
+  gap: $large !important; 
+  width: 100%;
+  font-size: $xl !important;
+
+  .dropdown-group {
+    display: flex;
+    gap: $x-small !important;
+    align-items: center;
+    white-space: nowrap;
+
+    h3 {
+      font-size: $medium !important; 
+      font-weight: $font-weight-bold;
+      width: 33.333%; 
+    }
+
+    p {
+      font-size: $medium !important; 
+      font-weight: $font-weight-regular;
+      width: 33.333%; 
+    }
+
+    .dropdown {
+      background-color: rgb(var(--v-theme-white));
+      width: 50%;
+      font-size: $small !important; 
+      border-color: rgb(var(--v-theme-slate));
+    }
+  }
+  .action-buttons {
+    display: flex;
+    gap: $x-small !important;
+    justify-content: space-between;
+    justify-items: center;
+  }
+}
+
+.account-details-group {
+  display: flex;
+}
+
+.center-no-data-available {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.users-table, .user-groups-table{
+  padding: 0px;
+}
+
+//INFO to override vuetify default
+@media (min-width: 960px) {
+  .v-container {
+    max-width: 100% !important;
+  }
+}

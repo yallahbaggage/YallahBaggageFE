@@ -1,0 +1,49 @@
+{
+  "include": [
+    "./src/**/*.d.ts",
+    "./src/**/*.ts",
+    "./src/**/**/*.ts",
+    "./src/**/*.tsx",
+    "./src/**/*.scss",
+    "./src/**/**/*.scss",
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "vite.config.*",
+    "vitest.config.*",
+    "cypress.config.*",
+    "nightwatch.conf.*",
+    "playwright.config.*"
+  ],
+  "exclude": ["src/**/__tests__/*"],
+  "compilerOptions": {
+    "types": ["vue", "node", "jsdom"], // Vue, Node, ve JSDOM türlerini projeye ekler
+    "baseUrl": ".", // Projenin kök dizinini temel olarak alır
+    "paths": {
+      "@/*": ["./src/*"],
+      "modules/*": ["./src/stores/modules/*"],
+      "layouts/*": ["./src/views/layouts/*"],
+      "pages/*": ["./src/views/pages/*"],
+      "images/*": ["./src/assets/images/*"],
+      "styles/*": ["./src/assets/styles/*"],
+      "services/*": ["./src/utils/services/*"],
+      "helpers/*": ["./src/utils/helpers/*"]
+    },
+    "composite": true, // Project references için gerekli
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": ["ESNext", "DOM"],
+    "target": "esnext",
+    "skipLibCheck": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
+    "forceConsistentCasingInFileNames": true,
+  }
+}
