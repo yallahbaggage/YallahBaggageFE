@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useAuthStore } from './stores/modules/authStore'
 import { useRouter } from 'vue-router'
 import LeftSlider from '@/components/layout/LeftSlider.vue'

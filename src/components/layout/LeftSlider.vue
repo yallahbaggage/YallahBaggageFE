@@ -126,7 +126,7 @@ import { useLocale } from 'vuetify'
 import { useAuthStore } from '@/stores/modules/authStore'
 
 const { setLocale, getLocale, t } = useI18n()
-const selectedLanguage = ref(localStorage.getItem('lang') || getLocale())
+const selectedLanguage = ref(localStorage.getItem('lang') ?? getLocale())
 const languages = [
   { label: 'English', value: 'en' },
   { label: 'Türkçe', value: 'tr' },
@@ -146,13 +146,16 @@ const route = useRoute()
 const authStore = useAuthStore()
 
 const links = computed(() => [
-
   {
     name: t('users'),
     path: '/users',
     icon: 'mdi-account-multiple',
   },
-
+  {
+    name: t('complaints'),
+    path: '/complaints',
+    icon: 'mdi-alert-circle-outline',
+  },
 ])
 
 const isManagementOpen = ref(false)

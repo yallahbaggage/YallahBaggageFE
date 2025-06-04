@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DefaultLayout from 'layouts/DefaultLayout.vue'
 import AuthLayout from 'layouts/AuthLayout.vue'
-import { Logging } from '@/utils/helpers'
 import UsersView from '@/views/pages/UsersView.vue'
 import RegisterView from '@/views/pages/RegisterView.vue'
 import LoginView from '@/views/pages/LoginView.vue'
+import ComplaintsView from '@/views/pages/ComplaintsView.vue'
 import { useAuthStore } from '@/stores/modules/authStore'
 
 const router = createRouter({
@@ -36,6 +36,12 @@ const router = createRouter({
           path: '/users',
           name: 'Users',
           component: UsersView,
+          meta: { requiresAuth: true },
+        },
+        {
+          path: '/complaints',
+          name: 'Complaints',
+          component: ComplaintsView,
           meta: { requiresAuth: true },
         },
       ],
