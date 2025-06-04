@@ -5,6 +5,13 @@
     </router-link>
     <hr />
 
+    <!-- Add User Profile Section -->
+    <div class="user-profile">
+      <v-icon class="user-icon">mdi-account-circle</v-icon>
+      <span class="username">{{ authStore.user?.name || 'User' }}</span>
+    </div>
+    <hr />
+
     <v-list dense nav bg-color="black" class="menu">
       <template v-if="links.length > 0">
         <router-link role="button" :to="links[0].path" class="menu-link" active-class="active">
@@ -72,7 +79,7 @@
           </v-list>
         </v-list-item>
       
-        <router-link role="button" to="/login" class="logout-link" @click="authStore.logout()">
+        <router-link role="button" to="/login" class="logout-link" @click="authStore.resetAuthState()">
           <v-list-item class="logout-item" v-if="links.length > 0">
             <v-icon class="icon"> mdi-logout</v-icon>
             {{ t('logout') }}
@@ -353,5 +360,22 @@ li {
   justify-content: center;
   gap: 5px;
   text-transform: capitalize;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  color: rgb(var(--v-theme-white));
+}
+
+.user-icon {
+  font-size: 24px;
+}
+
+.username {
+  font-size: $normalSize;
+  font-weight: 600;
 }
 </style>

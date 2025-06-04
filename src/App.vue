@@ -1,23 +1,21 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useAuthStore } from './stores/modules/authStore'
-import { useUserStore } from './stores/modules/userStore'
 import { useRouter } from 'vue-router'
+import LeftSlider from '@/components/layout/LeftSlider.vue'
+import WaitingView from '@/components/base/WaitingView.vue'
 
 const router = useRouter()
-const authStore = ref(useAuthStore())
-const userStore = ref(useUserStore())
-const user = computed(() => userStore.value.user)
-const isLogged = computed(() => authStore.value.isAuthenticated)
+const authStore = useAuthStore()
+const isLogged = computed(() => authStore.isAuthenticated)
 
 onMounted(async () => {
   try {
-    if (authStore.value.access_token) {
-      await authStore.value.restoreAuthState()
+    if (localStorage.getItem('accessToken')) {
+      await authStore.restoreAuthState()
     }
   } catch (error) {
     console.error('Failed to restore authentication state:', error)
-    // Only redirect to login if we're not already there
     if (router.currentRoute.value.path !== '/login') {
       router.push('/login')
     }
@@ -33,17 +31,15 @@ onMounted(async () => {
           <div
             class="sidebar"
             :class="{
-              hidden:
-                !user ||
-                !isLogged             
-              }"
+              hidden: !isLogged
+            }"
           >
             <LeftSlider />
           </div>
           <div
             class="content-area"
             :class="{
-              'logged-in': isLogged && user,
+              'logged-in': isLogged
             }"
           >
             <router-view />
@@ -72,6 +68,7 @@ onMounted(async () => {
     flex-direction: column;
     transition: width 0.3s ease;
     top: 0;
+    z-index: 100;
 
     &.hidden {
       display: none;
@@ -81,7 +78,7 @@ onMounted(async () => {
 
 @media (max-width: 1200px) {
   .sidebar {
-     display: none !important;
+    display: none !important;
   }
 
   .content-area {
