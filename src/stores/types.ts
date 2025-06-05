@@ -42,19 +42,54 @@ export interface User {
   updatedAt: string
 }
 
+export interface Complaint {
+  _id: string;
+  title: string;
+  description: string;
+  category: 'service' | 'worker' | 'payment' | 'technical' | 'other';
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+  status: 'pending' | 'in_progress' | 'resolved' | 'rejected' | 'closed';
+  orderId: string;
+  userId: string | User;
+  assignedToId?: string | User;
+  relatedWorkerId?: string | Worker;
+  closedByAdminId?: string | User;
+  attachments?: string[];
+  resolution?: string;
+  responses?: Array<{
+    message: string;
+    responderId: string | User;
+    responderRole: 'customer' | 'admin';
+    attachments?: string[];
+    createdAt: string;
+    updatedAt: string;
+  }>;
+  closedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface OrderItem {
+  name: string;
+  weight: number;
+  images: string[];
+  isBreakable: boolean;
+}
+
 export interface Order {
-  _id: string
-  userId: string | User
-  serviceId: string | Service
-  workerId: string | Worker
-  status: 'pending' | 'in_progress' | 'completed' | 'cancelled'
-  totalAmount: number
-  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded'
-  scheduledDate: string
-  completedAt?: string
-  cancelledAt?: string
-  createdAt: string
-  updatedAt: string
+  _id: string;
+  userId: string | User;
+  workerId?: string | Worker;
+  complaintId?: string | Complaint;
+  items: OrderItem[];
+  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+  totalAmount: number;
+  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
+  scheduledDate: string;
+  completedAt?: string;
+  cancelledAt?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Service {
