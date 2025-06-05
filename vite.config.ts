@@ -25,7 +25,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      '@': path.resolve(__dirname, './src'),
       modules: path.resolve(__dirname, 'src/stores/modules'),
       layouts: path.resolve(__dirname, 'src/views/layouts'),
       pages: path.resolve(__dirname, 'src/views/pages'),
@@ -34,6 +34,15 @@ export default defineConfig({
       services: path.resolve(__dirname, 'src/utils/services'),
       helpers: path.resolve(__dirname, 'src/utils/helpers'),
     },
+  },
+  optimizeDeps: {
+    include: [
+      'vuetify',
+      'vuetify/components',
+      'vuetify/directives',
+      'vuetify/locale',
+    ],
+    exclude: ['object-inspect'],
   },
   build: {
     rollupOptions: {
@@ -50,7 +59,7 @@ export default defineConfig({
         assetFileNames: 'assets/[hash][name].[ext]',
       },
     },
-    chunkSizeWarningLimit: 1500,
+    chunkSizeWarningLimit: 1600,
     terserOptions: {
       compress: {
         drop_console: true, // Change to true before production

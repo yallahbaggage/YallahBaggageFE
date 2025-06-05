@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <router-link role="button" to="/" class="menu-link" active-class="active">
-      <v-img :src="ica_logo_100" class="logo" alt="Logo" contain />
+      <!-- <v-img :src="ica_logo_100" class="logo" alt="Logo" contain /> -->
     </router-link>
     <hr />
 
@@ -120,11 +120,9 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue3-i18n'
-import ica_logo_100 from '@/assets/images/ica_logo_100.png'
 import { useThemeStore } from '@/stores/modules/theme'
 import { useLocale } from 'vuetify'
 import { useAuthStore } from '@/stores/modules/authStore'
-
 const { setLocale, getLocale, t } = useI18n()
 const selectedLanguage = ref(localStorage.getItem('lang') ?? getLocale())
 const languages = [

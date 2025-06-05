@@ -49,8 +49,7 @@ pinia.use(piniaPluginPersistedstate)
 //NOTE: Tüm "base" bileşenlerini otomatik olarak kaydetme
 async function registerComponents() {
   const componentsGlob = import.meta.glob('@/components/base/**/*.vue')
-  const componentPromises
- = Object.entries(componentsGlob).map(async ([path, resolver]) => {
+  const componentPromises = Object.entries(componentsGlob).map(async ([path, resolver]) => {
     const mod = (await resolver()) as { default: any } 
     const componentName = path
       .split('/')

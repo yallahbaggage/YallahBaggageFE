@@ -152,7 +152,7 @@ function reversePicker() {
 
 //INFO: Initialize selectedDate with modelValue when the component is mounted
 onMounted(() => {
-  const selectedLanguage = ref(localStorage.getItem('lang') || current.value)
+  const selectedLanguage = ref(localStorage.getItem('lang') ?? current.value)
   current.value = selectedLanguage.value;
 
   if (props.modelValue) {
