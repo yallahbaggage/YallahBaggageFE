@@ -45,6 +45,8 @@ export default defineConfig({
     exclude: ['object-inspect'],
   },
   build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
     rollupOptions: {
       external: [],
       output: {
@@ -67,4 +69,5 @@ export default defineConfig({
       },
     },
   },
+  publicDir: 'public',
 });
