@@ -85,7 +85,7 @@ interface ComplaintFormData {
   description: string;
   priority: ComplaintPriority;
   status: ComplaintStatus; // Allow status to be in form for admin updates/creation
-  attachments?: File[];
+  attachments?: string[];
 }
 
 const props = defineProps<{

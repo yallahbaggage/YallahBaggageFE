@@ -62,7 +62,7 @@ export interface ICreateComplaint {
   priority: ComplaintPriority
   orderId: string
   relatedWorkerId?: string
-  attachments?: File[]
+  attachments?: string[]
 }
 
 export interface IUpdateComplaint {
@@ -73,12 +73,12 @@ export interface IUpdateComplaint {
   status?: ComplaintStatus
   assignedToId?: string
   resolution?: string
-  attachments?: File[]
+  attachments?: string[]
 }
 
 export interface IAddComplaintResponse {
   message: string
-  attachments?: File[]
+  attachments?: string[]
 }
 
 export interface IComplaintStats {
