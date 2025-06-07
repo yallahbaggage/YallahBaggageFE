@@ -2,7 +2,7 @@ export interface IUser {
   _id: string
   name: string
   email: string
-  role: 'user' | 'admin' | 'worker'
+  role: 'customer' | 'admin' | 'worker'
   phone?: string
   address?: string
   createdAt: string
