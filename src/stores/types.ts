@@ -76,6 +76,12 @@ export interface OrderItem {
   isBreakable: boolean;
 }
 
+export interface OrderRating {
+  rating: number;
+  comment?: string;
+  createdAt: string;
+}
+
 export interface Order {
   _id: string;
   userId: string | User;
@@ -88,6 +94,7 @@ export interface Order {
   scheduledDate: string;
   completedAt?: string;
   cancelledAt?: string;
+  rating?: OrderRating;
   createdAt: string;
   updatedAt: string;
 }
@@ -102,12 +109,26 @@ export interface Service {
   updatedAt: string
 }
 
+export interface ServiceRating {
+  orderId: string;
+  rating: number;
+  comment?: string;
+  createdAt: string;
+}
+
 export interface Worker {
-  _id: string
-  name: string
-  email: string
-  phone: string
-  status: 'available' | 'busy' | 'offline'
-  createdAt: string
-  updatedAt: string
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  status: 'available' | 'busy' | 'offline';
+  specialization: string;
+  rating: number;
+  completedJobs: number;
+  skills: string[];
+  certificates?: string[];
+  experience: number;
+  serviceRatings: ServiceRating[];
+  createdAt: string;
+  updatedAt: string;
 } 

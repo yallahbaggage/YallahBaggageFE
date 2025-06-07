@@ -151,14 +151,14 @@
         <v-card-title>{{ $t('orders.createOrder') }}</v-card-title>
         <v-card-text>
           <v-form ref="form" v-model="valid">
-            <v-select
+            <!-- <v-select
               v-model="newOrder.serviceId"
               :items="services"
               item-title="name"
               item-value="_id"
               :label="$t('orders.form.service')"
               required
-            />
+            /> -->
             <v-select
               v-model="newOrder.workerId"
               :items="workers"
@@ -313,7 +313,7 @@ const paymentStatusOptions = computed(() => [
 ])
 
 const newOrder = ref<Partial<Order>>({
-  serviceId: undefined,
+  // serviceId: undefined,
   workerId: undefined,
   totalAmount: undefined,
   scheduledDate: undefined
@@ -385,7 +385,7 @@ const loadWorkers = async () => {
 const createOrder = async () => {
   try {
     const orderData: Partial<Order> = {
-      serviceId: newOrder.value.serviceId as string,
+      // serviceId: newOrder.value.serviceId as string,
       workerId: newOrder.value.workerId as string,
       totalAmount: newOrder.value.totalAmount as number,
       scheduledDate: newOrder.value.scheduledDate as string
