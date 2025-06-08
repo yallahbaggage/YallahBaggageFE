@@ -34,15 +34,17 @@ export interface WorkerState {
 }
 
 export interface User {
-  _id: string
-  name: string
-  email: string
-  role: 'user' | 'admin'
-  preferredLang?: string
-  region?: string
-  timeFormat: '12' | '24'
-  createdAt: string
-  updatedAt: string
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  role: 'customer' | 'admin' | 'worker' | 'manager' | 'supervisor';
+  preferredLang?: string;
+  region?: string;
+  timeFormat: '12' | '24';
+  image?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Complaint {
@@ -119,10 +121,9 @@ export interface Service {
 }
 
 export interface ServiceRating {
-  orderId: string;
+  serviceId: string;
   rating: number;
   comment?: string;
-  createdAt: string;
 }
 
 export interface Worker {

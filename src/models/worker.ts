@@ -1,6 +1,16 @@
-import type { IUser } from './user'
+import { IUser } from './user'
 
 export interface IWorker extends IUser {
+  // _id: string
+  // name: string
+  // email: string
+  // phone: string
+  serviceRatings: IServiceRating[]
+  // preferredLang?: string
+  // region?: string
+  // timeFormat: '12' | '24'
+  // image?: string
+  role: 'worker' | 'manager' | 'supervisor'
   specialization: string
   rating: number
   isAvailable: boolean
@@ -28,4 +38,10 @@ export interface IWorkerStats {
   averageRating: number
   totalEarnings: number
   monthlyJobs: number[]
+}
+
+export interface IServiceRating {
+  serviceId: string
+  rating: number
+  comment?: string
 } 

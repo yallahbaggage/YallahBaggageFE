@@ -2,12 +2,15 @@ export interface IUser {
   _id: string
   name: string
   email: string
-  role: 'customer' | 'admin' | 'worker'
-  phone?: string
-  address?: string
+  phone: string
+  password?: string
+  identityNumber?: string
+  isAvailable?: boolean
   preferredLang?: string
   region?: string
   timeFormat: '12' | '24'
+  image?: string
+  role: 'customer' | 'admin' | 'worker' | 'manager' | 'supervisor'
   createdAt: string
   updatedAt: string
 }
