@@ -92,6 +92,12 @@ export interface Order {
   totalAmount: number;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
   scheduledDate: string;
+  from: string;
+  to: string;
+  flightGate?: string;
+  flightNumber?: string;
+  pickUpDate: string;
+  pickUpTime: string;
   completedAt?: string;
   cancelledAt?: string;
   rating?: OrderRating;
