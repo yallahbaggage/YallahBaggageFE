@@ -5,6 +5,9 @@ export interface IUser {
   role: 'customer' | 'admin' | 'worker'
   phone?: string
   address?: string
+  preferredLang?: string
+  region?: string
+  timeFormat: '12' | '24'
   createdAt: string
   updatedAt: string
 }
@@ -20,6 +23,9 @@ export interface IRegisterData {
   password: string
   phone?: string
   address?: string
+  preferredLang?: string
+  region?: string
+  timeFormat?: '12' | '24'
 }
 
 export interface IAuthResponse {
@@ -33,4 +39,7 @@ export interface IUserUpdateData {
   phone?: string
   address?: string
   password?: string
+  preferredLang?: string
+  region?: string
+  timeFormat?: '12' | '24'
 } 

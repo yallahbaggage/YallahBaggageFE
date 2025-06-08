@@ -38,6 +38,9 @@ export interface User {
   name: string
   email: string
   role: 'user' | 'admin'
+  preferredLang?: string
+  region?: string
+  timeFormat: '12' | '24'
   createdAt: string
   updatedAt: string
 }
