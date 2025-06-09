@@ -25,5 +25,5 @@ export function roleGuard(
   }
 
   // If user doesn't have required role, redirect to home
-  return next({ name: 'home' })
+  return next({ name: 'employees' })
 } 

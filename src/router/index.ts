@@ -32,8 +32,8 @@ const routes: Array<RouteRecordRaw> = [
     component: DefaultLayout,
     children: [
       {
-        path: '/users',
-        name: 'Users',
+        path: '/employees',
+        name: 'Employees',
         component: UsersView,
         meta: { requiresAuth: true },
       },
@@ -97,7 +97,7 @@ router.beforeEach(async (to, from, next) => {
   } else if (to.path === '/login' && authStore.isAuthenticated) {
     next('/users')
   } else if (to.meta.requiresGuest && isAuthenticated) {
-    next({ name: 'Home' })
+    next({ name: 'Employees' })
   } else {
     next()
   }

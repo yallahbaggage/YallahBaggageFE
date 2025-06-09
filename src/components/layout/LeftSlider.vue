@@ -1,88 +1,40 @@
 <template>
   <div class="sidebar">
     <router-link role="button" to="/" class="menu-link" active-class="active">
-      <!-- <v-img :src="ica_logo_100" class="logo" alt="Logo" contain /> -->
+      <div class="header-logo">
+        <!-- <img class="logo-img" src="/src/assets/logo.svg" alt="" /> -->
+        <div>
+          <h1 class="logo-title">Yalla Baggage</h1>
+          <h2 class="logo-subtitle">Superadmin Panel</h2>
+        </div>
+      </div>
     </router-link>
     <hr />
 
-    <!-- Add User Profile Section -->
-    <div class="user-profile">
-      <v-icon class="user-icon">mdi-account-circle</v-icon>
-      <span class="username">{{ authStore.user?.name || 'User' }}</span>
-    </div>
-    <hr />
+    <div class="main-section-title">MAIN</div>
 
     <v-list dense nav bg-color="black" class="menu">
       <template v-if="links.length > 0">
-        <router-link role="button" :to="links[0].path" class="menu-link" active-class="active">
-          <v-list-item class="menu-item" :class="{ active: isActiveLink(links[0].path) }">
+        <router-link
+          role="button"
+          :to="link.path"
+          class="menu-link"
+          active-class="active"
+          v-for="link in links"
+          :key="link.name"
+        >
+          <v-list-item class="menu-item" :class="{ active: isActiveLink(link.path) }">
             <v-icon class="icon">
-              {{ links[0].icon }}
+              {{ link.icon }}
             </v-icon>
-            {{ links[0].name }}
-          </v-list-item>
-        </router-link>
-
-        <!-- Management Section -->
-        <v-list-item>
-          <button role="button" class="accordion-header" @click="toggleManagement">
-            <div class="settings-container">
-              <v-icon class="icon"> mdi-cog </v-icon>
-              {{ t('management') }}
-            </div>
-            <v-icon class="accordion-icon">
-              {{ isManagementOpen ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
-            </v-icon>
-          </button>
-          <v-list
-            dense
-            nav
-            bg-color="black"
-            v-if="isManagementOpen"
-            class="submenu"
-            v-for="(link, index) in links.slice(1)"
-            :key="link.name"
-          >
-            <router-link role="button" :aria-lable="link.path" :to="link.path" class="submenu-link" active-class="active">
-              <v-list-item class="submenu-item" :class="{ active: isActiveLink(link.path) }">
-                <v-icon class="icon"> {{ link.icon }} </v-icon>
-                {{ link.name }}
-              </v-list-item>
-            </router-link>
-          </v-list>
-        </v-list-item>
-
-        <!-- Reports Section -->
-        <v-list-item>
-          <button role="button" class="accordion-header" @click="toggleReportsMenu">
-            <div class="settings-container">
-              <v-icon class="icon"> mdi-chart-bar </v-icon>
-              {{ t('reports') }}
-            </div>
-            <v-icon class="accordion-icon">
-              {{ isReportsMenuOpen ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
-            </v-icon>
-          </button>
-          <v-list
-            dense
-            nav
-            bg-color="black"
-            v-if="isReportsMenuOpen"
-            class="submenu"
-          >
-            <router-link role="button" aria-lable="/report1'" to="/report1'" class="submenu-link" active-class="active"> 
-              <v-list-item class="submenu-item" :class="{ active: isActiveLink('/report1') }">
-                <v-icon class="icon"> mdi-chart-bar </v-icon>
-                {{ t('reports') }}
-              </v-list-item>
-            </router-link>
-          </v-list>
-        </v-list-item>
-      
-        <router-link role="button" to="/login" class="logout-link" @click="authStore.resetAuthState()">
-          <v-list-item class="logout-item" v-if="links.length > 0">
-            <v-icon class="icon"> mdi-logout</v-icon>
-            {{ t('logout') }}
+            {{ link.name }}
+            <v-chip
+              v-if="link.hasChip"
+              class="new-transfer-chip"
+              size="small"
+              color="#FF5B5B"
+              >{{ link.chipCount }}</v-chip
+            >
           </v-list-item>
         </router-link>
       </template>
@@ -112,12 +64,20 @@
         </v-list>
       </v-menu>
     </div>
+
+    <!-- User Profile Section -->
+    <div class="user-profile">
+      <v-icon class="user-icon">mdi-account-circle</v-icon>
+      <span class="username">Arthur Taylor</span>
+      <v-icon class="username-verified-icon">mdi-check-circle</v-icon>
+      <span class="user-email">arthur@yalla.com</span>
+      <v-icon class="user-profile-arrow">mdi-chevron-right</v-icon>
+    </div>
   </div>
 </template>
 
-
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue3-i18n'
 import { useThemeStore } from '@/stores/modules/theme'
@@ -145,41 +105,36 @@ const authStore = useAuthStore()
 
 const links = computed(() => [
   {
-    name: t('users'),
-    path: '/users',
-    icon: 'mdi-account-multiple',
+    name: t('transfers'),
+    path: '/transfers',
+    icon: 'mdi-swap-horizontal',
+    hasChip: true,
+    chipCount: '9+',
   },
   {
-    name: t('complaints'),
-    path: '/complaints',
-    icon: 'mdi-alert-circle-outline',
+    name: t('employees'),
+    path: '/employees',
+    icon: 'mdi-account-group',
   },
-])
-
-const isManagementOpen = ref(false)
-
-const toggleManagement = () => {
-  isManagementOpen.value = !isManagementOpen.value
-}
-
-const isReportsMenuOpen = ref(false)
-
-const toggleReportsMenu = () => {
-  isReportsMenuOpen.value = !isReportsMenuOpen.value
-}
+  {
+    name: t('appManagement'),
+    path: '/app-management',
+    icon: 'mdi-file-cog-outline',
+  },
+  {
+    name: t('customerSupport'),
+    path: '/complaints',
+    icon: 'mdi-headphones',
+    hasChip: true,
+    chipCount: '2',
+  },
+]);
 
 const toggleTheme = () => {
   themeStore.toggleTheme()
 }
 
 const isActiveLink = (path: string) => route.path === path
-
-onMounted(() => {
-  const settingsLinks = links.value.slice(1)
-  if (settingsLinks.some((link) => isActiveLink(link.path))) {
-    isManagementOpen.value = true
-  }
-})
 </script>
 
 <style scoped lang="scss">
@@ -190,12 +145,43 @@ onMounted(() => {
   text-transform: capitalize;
 }
 
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 0;
+  margin-bottom: 20px;
+  .logo-img {
+    width: 40px;
+    height: 40px;
+  }
+  .logo-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(var(--v-theme-white));
+  }
+  .logo-subtitle {
+    font-size: 12px;
+    color: #9e9e9e;
+  }
+}
+
+.main-section-title {
+  font-size: 12px;
+  color: #9e9e9e;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  padding-left: 16px;
+}
+
 .sidebar {
   height: 100%;
   background-color: rgb(var(--v-theme-black));
   padding: 20px;
   border-radius: 0 10px 10px 0;
   color: rgb(var(--v-theme-white));
+  display: flex;
+  flex-direction: column;
 }
 
 li {
@@ -210,8 +196,9 @@ li {
 .menu {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100%; /* Adjust to take available space */
   margin: 16px 0;
+  flex-grow: 1; /* Allow menu to grow and push user-profile to bottom */
 }
 
 .menu-item,
@@ -223,6 +210,7 @@ li {
   font-size: $normalSize !important;
   gap: $x-small !important;
   cursor: pointer;
+  position: relative; /* For chip positioning */
 
   &:hover {
     background-color: rgb(var(--v-theme-primary)) !important;
@@ -244,92 +232,15 @@ li {
   border-radius: 10px;
 }
 
-.accordion-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: $normalSize !important;
-  font-weight: 600;
-  text-transform: uppercase;
-  width: 100%;
-  cursor: pointer;
-  background: none;
-  border: none;
-  color: inherit;
-  padding: 16px;
-}
-
 .icon {
   font-size: $middle !important;
   color: inherit;
 }
 
-.accordion-icon {
-  font-size: $middle !important;
-}
-
-.submenu {
-  display: flex;
-  flex-direction: column;
-  margin-top: 4px;
-}
-
-.submenu-item {
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  border-radius: 8px;
-  gap: $x-small !important;
-  cursor: pointer;
-  font-size: $normalSize !important;
-
-  &:hover {
-    background-color: rgb(var(--v-theme-primary)) !important;
-    font-weight: $font-weight-bold;
-  }
-}
-
-.submenu-link {
-  margin-left: 12px;
-  font-size: $normalSize !important;
-  color: inherit;
-  text-decoration: none;
-}
-
-@media (max-width: 768px) {
-  .sidebar {
-    padding: 10px;
-    font-size: $medium !important;
-  }
-
-  .logo {
-    width: 80%;
-    margin: 10px auto;
-  }
-
-  .menu-item,
-  .logout-item {
-    padding: 8px;
-    font-size: $medium !important;
-  }
-
-  .icon {
-    font-size: $middle !important;
-  }
-
-  .accordion-header {
-    padding: 8px;
-    font-size: $medium !important;
-  }
-
-  .submenu-item {
-    padding: 6px 12px;
-    font-size: $small !important;
-  }
-
-  .accordion-icon {
-    font-size: $medium !important;
-  }
+.new-transfer-chip {
+  margin-left: auto;
+  font-weight: bold;
+  font-size: 10px;
 }
 
 .selected-lang {
@@ -369,14 +280,41 @@ li {
   gap: 10px;
   padding: 16px;
   color: rgb(var(--v-theme-white));
-}
+  flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+  position: relative;
+  margin-top: auto; /* Push to the bottom */
 
-.user-icon {
-  font-size: 24px;
-}
+  .user-icon {
+    font-size: 48px;
+    color: #bbdefb; /* Light blue color for the icon */
+    background-color: #e3f2fd; /* Lighter blue background for the icon */
+    border-radius: 50%;
+    padding: 5px;
+  }
 
-.username {
-  font-size: $normalSize;
-  font-weight: 600;
+  .username {
+    font-size: 16px;
+    font-weight: 600;
+    color: rgb(var(--v-theme-white));
+    margin-left: 10px;
+  }
+
+  .username-verified-icon {
+    font-size: 16px;
+    color: #4caf50; /* Green color for verified icon */
+  }
+
+  .user-email {
+    font-size: 12px;
+    color: #9e9e9e;
+    width: 100%; /* Take full width on a new line */
+    margin-left: 58px; /* Align with username */
+  }
+
+  .user-profile-arrow {
+    position: absolute;
+    right: 16px;
+    color: #9e9e9e;
+  }
 }
 </style>

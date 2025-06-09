@@ -1,7 +1,7 @@
 <template>
   <div class="error-container">
     <h3>{{ message }}</h3>
-    <ActionButton v-if="message != t('worklistNotFound')" button-icon="mdi-home" :onButtonPressed="goToHomePage" :button-text="t('backToHomePage')"/>
+    <ActionButton v-if="message != t('employeeNotFound')" button-icon="mdi-home" :onButtonPressed="goToHomePage" :button-text="t('backToHomePage')"/>
   </div>
 </template>
 
@@ -28,9 +28,7 @@ const router = useRouter()
 const previousRoute = router.options.history.state.back != null ? router.options.history.state.back.toString() : ''
 const message = computed(() => {
   if (previousRoute.includes('call-close') || previousRoute.includes('customer-dashboard')) {
-    return t('customerNotFound')
-  } else if (previousRoute.includes('worklist-detail')) {
-    return t('worklistNotFound')
+    return t('employeeNotFound')
   } else {
     return t('pageNotFound')
   }
