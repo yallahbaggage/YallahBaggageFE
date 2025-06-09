@@ -1,5 +1,14 @@
 {
     "@@locale": "en",
+    "transfers": "Transfers",
+    "employees":"Employees",
+    "appManagement":"App Management",
+    "customerSupport":"Customer Support",
+    "customerNotFound": "Customer Not Found",
+    "employeeNotFound":"Employee Not Found",
+    "pageNotFound":"Page Not Found",
+    "logout":"Logout",
+    "backToHomePage":"Back To Home Page",
     "orders": {
         "title": "Orders",
         "myOrders": "My Orders",

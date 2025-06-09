@@ -1,5 +1,14 @@
 {
     "@@locale": "tr",
+    "transfers": "Transferler",
+    "employees": "Çalışanlar",
+    "appManagement": "Uygulama Yönetimi",
+    "customerSupport": "Müşteri Desteği",
+    "customerNotFound": "Müşteri bulunamadı",
+    "employeeNotFound": "Çalışan bulunamadı",
+    "pageNotFound": "Sayfa bulunamadı",
+    "logout":"Çıkış Yap",
+    "backToHomePage":"Ana Sayfaya Dön",
     "orders": {
       "title": "Siparişler",
       "myOrders": "Siparişlerim",

@@ -1,105 +1,83 @@
-import { AxiosError } from 'axios';
-import api from './api';
-import { IApiError, IApiResponse } from '@/models/api';
-import { IUser } from '@/models/user';
+import axios from 'axios'
+import type { IUser, LoginData, RegisterData } from '@/models/user'
 
-interface LoginData {
-  email: string;
-  password: string;
-}
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:9091/api/v1'
 
-interface RegisterData {
-  name: string;
-  email: string;
-  password: string;
-  phone: string;
-  identityNumber?: string;
-}
-
-interface TokenResponse {
-  access_token: string;
-  refresh_token: string;
-  expires_in: number;
-  refresh_expires_in: number;
-}
-
-class AuthService {
-  async login(data: LoginData): Promise<IUser> {
-    try {
-      const response = await api.post<IApiResponse<TokenResponse>>('/auth/login', data);
-      const { access_token, refresh_token, expires_in, refresh_expires_in } = response.data.data;
-      
-      localStorage.setItem('accessToken', access_token);
-      localStorage.setItem('refreshToken', refresh_token);
-      localStorage.setItem('accessTokenExpiresIn', expires_in.toString());
-      localStorage.setItem('refreshExpiresIn', refresh_expires_in.toString());
-      
-      return this.getMe();
-    } catch (error) {
-      throw this.handleError(error as AxiosError<IApiError>);
-    }
+// Create axios instance with default config
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json'
   }
+})
 
-  async register(data: RegisterData): Promise<IUser> {
-    try {
-      const response = await api.post<IApiResponse<TokenResponse>>('/auth/register', data);
-      const { access_token, refresh_token, expires_in, refresh_expires_in } = response.data.data;
-      
-      localStorage.setItem('accessToken', access_token);
-      localStorage.setItem('refreshToken', refresh_token);
-      localStorage.setItem('accessTokenExpiresIn', expires_in.toString());
-      localStorage.setItem('refreshExpiresIn', refresh_expires_in.toString());
-      
-      return this.getMe();
-    } catch (error) {
-      throw this.handleError(error as AxiosError<IApiError>);
+// Add request interceptor to add auth token
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('accessToken')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
     }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
   }
+)
 
-  async refreshAuthToken(): Promise<TokenResponse> {
-    try {
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (!refreshToken) {
-        throw new Error('No refresh token available');
-      }
+export const authService = {
+  async login(data: LoginData) {
+    const response = await api.post('/auth/login', data)
+    const { access_token, refresh_token, expires_in, refresh_expires_in } = response.data.data
 
-      const response = await api.post<IApiResponse<TokenResponse>>('/auth/refresh', {
-        refresh_token: refreshToken
-      });
+    // Store tokens
+    localStorage.setItem('accessToken', access_token)
+    localStorage.setItem('refreshToken', refresh_token)
+    localStorage.setItem('accessTokenExpiresIn', expires_in.toString())
+    localStorage.setItem('refreshExpiresIn', refresh_expires_in.toString())
 
-      const { access_token, refresh_token, expires_in, refresh_expires_in } = response.data.data;
-      
-      localStorage.setItem('accessToken', access_token);
-      localStorage.setItem('refreshToken', refresh_token);
-      localStorage.setItem('accessTokenExpiresIn', expires_in.toString());
-      localStorage.setItem('refreshExpiresIn', refresh_expires_in.toString());
+    return response.data.data
+  },
 
-      return response.data.data;
-    } catch (error) {
-      throw this.handleError(error as AxiosError<IApiError>);
-    }
-  }
+  async register(data: RegisterData) {
+    const response = await api.post('/auth/register', data)
+    const { access_token, refresh_token, expires_in, refresh_expires_in } = response.data.data
+
+    // Store tokens
+    localStorage.setItem('accessToken', access_token)
+    localStorage.setItem('refreshToken', refresh_token)
+    localStorage.setItem('accessTokenExpiresIn', expires_in.toString())
+    localStorage.setItem('refreshExpiresIn', refresh_expires_in.toString())
+
+    return response.data.data
+  },
 
   async getMe(): Promise<IUser> {
-    try {
-      const response = await api.get<IApiResponse<IUser>>('/auth/me');
-      return response.data.data;
-    } catch (error) {
-      throw this.handleError(error as AxiosError<IApiError>);
+    const response = await api.get('/auth/me')
+    return response.data.data
+  },
+
+  async refreshAuthToken() {
+    const refresh_token = localStorage.getItem('refreshToken')
+    if (!refresh_token) {
+      throw new Error('No refresh token found')
     }
-  }
 
-  logout(): void {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('accessTokenExpiresIn');
-    localStorage.removeItem('refreshExpiresIn');
-  }
+    const response = await api.post('/auth/refresh', { refresh_token })
+    const { access_token, expires_in } = response.data.data
 
-  private handleError(error: AxiosError<IApiError>): Error {
-    const message = error.response?.data?.message ?? error.message ?? 'An error occurred';
-    return new Error(message);
-  }
-}
+    // Update stored tokens
+    localStorage.setItem('accessToken', access_token)
+    localStorage.setItem('accessTokenExpiresIn', expires_in.toString())
 
-export const authService = new AuthService(); 
+    return response.data.data
+  },
+
+  logout() {
+    // Remove tokens
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
+    localStorage.removeItem('accessTokenExpiresIn')
+    localStorage.removeItem('refreshExpiresIn')
+  }
+} 

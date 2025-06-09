@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { IAd } from '../models/ad';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1';
+const API_URL = process.env.VITE_API_URL ?? 'http://localhost:9091/api/v1';
 
 // Get all ads
 export const getAds = async (): Promise<IAd[]> => {

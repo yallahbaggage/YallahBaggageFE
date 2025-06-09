@@ -1,21 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { authService } from '@/utils/services/authService'
-import type { IUser } from '@/models/user'
+import type { IUser, LoginData, RegisterData } from '@/models/user'
 import router from '@/router'
-
-interface LoginData {
-  email: string
-  password: string
-}
-
-interface RegisterData {
-  name: string
-  email: string
-  password: string
-  phone: string
-  identityNumber?: string
-}
 
 export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = ref(false)
@@ -74,12 +61,19 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function login({ email, password }: LoginData) {
+  async function login(data: LoginData) {
     try {
-      const userData = await authService.login({ email, password })
+      const userData = await authService.login(data)
       isAuthenticated.value = true
       user.value = userData
-      router.push('/users')
+      access_token.value = userData.access_token
+      
+      // Store tokens in localStorage
+      localStorage.setItem('accessToken', userData.access_token)
+      localStorage.setItem('accessTokenExpiresIn', userData.expires_in.toString())
+      localStorage.setItem('refreshToken', userData.refresh_token)
+      localStorage.setItem('refreshExpiresIn', userData.refresh_expires_in.toString())
+      
       return true
     } catch (error) {
       console.error('Login failed:', error)
@@ -92,8 +86,7 @@ export const useAuthStore = defineStore('auth', () => {
       const userData = await authService.register(data)
       isAuthenticated.value = true
       user.value = userData
-      router.push('/users')
-      return true
+      
     } catch (error) {
       console.error('Registration failed:', error)
       throw error
@@ -104,8 +97,24 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated.value = false
     access_token.value = null
     user.value = null
+    
+    // Clear all tokens from localStorage
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('accessTokenExpiresIn')
+    localStorage.removeItem('refreshToken')
+    localStorage.removeItem('refreshExpiresIn')
+    
     authService.logout()
     router.push('/login')
+  }
+
+  // Helper function to check user role
+  function hasRole(role: string | string[]): boolean {
+    if (!user.value) return false
+    if (Array.isArray(role)) {
+      return role.includes(user.value.role)
+    }
+    return user.value.role === role
   }
 
   return {
@@ -116,7 +125,8 @@ export const useAuthStore = defineStore('auth', () => {
     register,
     resetAuthState,
     restoreAuthState,
-    refreshLogin
+    refreshLogin,
+    hasRole
   }
 }, {
   persist: {
