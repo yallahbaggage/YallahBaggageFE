@@ -109,11 +109,13 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { useAuthStore } from '@/stores/modules/authStore'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'LoginView',
   setup() {
     const authStore = useAuthStore()
+    const router = useRouter()
     const form = ref<any>(null)
     const email = ref('')
     const password = ref('')
@@ -139,7 +141,21 @@ export default defineComponent({
       loading.value = true
       try {
         await authStore.login({ email: email.value, password: password.value })
+        return router.push('/employees')
         // No need to manually redirect as the auth store handles it
+        // switch (authStore.user?.role) {
+        //   case 'admin':
+        //     router.push('/employees')
+        //     break
+        //   case 'worker':
+        //     router.push('/worker/dashboard')
+        //     break
+        //   case 'customer':
+        //     router.push('/customer/dashboard')
+        //     break
+        //   default:
+        //     router.push('/')
+        // }
       } catch (error: any) {
         snackbar.value = {
           show: true,

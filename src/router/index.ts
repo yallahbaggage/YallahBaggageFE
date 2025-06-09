@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import DefaultLayout from 'layouts/DefaultLayout.vue'
+import DefaultLayout from '@/views/layouts/DefaultLayout.vue'
 import AuthLayout from 'layouts/AuthLayout.vue'
 import UsersView from '@/views/pages/UsersView.vue'
 import RegisterView from '@/views/pages/RegisterView.vue'
@@ -18,6 +18,7 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Login',
         component: LoginView,
         meta: { requiresAuth: false },
+        alias: '/login'
       },
       {
         path: '/register',
@@ -94,8 +95,6 @@ router.beforeEach(async (to, from, next) => {
 
   if (requiresAuth && !authStore.isAuthenticated) {
     next('/login')
-  } else if (to.path === '/login' && authStore.isAuthenticated) {
-    next('/users')
   } else if (to.meta.requiresGuest && isAuthenticated) {
     next({ name: 'Employees' })
   } else {

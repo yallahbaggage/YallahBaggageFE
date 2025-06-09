@@ -66,21 +66,14 @@ export const useAuthStore = defineStore('auth', () => {
       const userData = await authService.login(data)
       isAuthenticated.value = true
       user.value = userData
+      access_token.value = userData.access_token
       
-      // Redirect based on role
-      switch (userData.role) {
-        case 'admin':
-          router.push('/admin/dashboard')
-          break
-        case 'worker':
-          router.push('/worker/dashboard')
-          break
-        case 'customer':
-          router.push('/customer/dashboard')
-          break
-        default:
-          router.push('/')
-      }
+      // Store tokens in localStorage
+      localStorage.setItem('accessToken', userData.access_token)
+      localStorage.setItem('accessTokenExpiresIn', userData.expires_in.toString())
+      localStorage.setItem('refreshToken', userData.refresh_token)
+      localStorage.setItem('refreshExpiresIn', userData.refresh_expires_in.toString())
+      
       return true
     } catch (error) {
       console.error('Login failed:', error)
@@ -94,21 +87,6 @@ export const useAuthStore = defineStore('auth', () => {
       isAuthenticated.value = true
       user.value = userData
       
-      // Redirect based on role
-      switch (userData.role) {
-        case 'admin':
-          router.push('/admin/dashboard')
-          break
-        case 'worker':
-          router.push('/worker/dashboard')
-          break
-        case 'customer':
-          router.push('/customer/dashboard')
-          break
-        default:
-          router.push('/')
-      }
-      return true
     } catch (error) {
       console.error('Registration failed:', error)
       throw error
@@ -119,6 +97,13 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated.value = false
     access_token.value = null
     user.value = null
+    
+    // Clear all tokens from localStorage
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('accessTokenExpiresIn')
+    localStorage.removeItem('refreshToken')
+    localStorage.removeItem('refreshExpiresIn')
+    
     authService.logout()
     router.push('/login')
   }
