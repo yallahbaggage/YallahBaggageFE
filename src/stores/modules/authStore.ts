@@ -1,21 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { authService } from '@/utils/services/authService'
-import type { IUser } from '@/models/user'
+import type { IUser, LoginData, RegisterData } from '@/models/user'
 import router from '@/router'
-
-interface LoginData {
-  email: string
-  password: string
-}
-
-interface RegisterData {
-  name: string
-  email: string
-  password: string
-  phone: string
-  identityNumber?: string
-}
 
 export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = ref(false)
@@ -74,12 +61,26 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function login({ email, password }: LoginData) {
+  async function login(data: LoginData) {
     try {
-      const userData = await authService.login({ email, password })
+      const userData = await authService.login(data)
       isAuthenticated.value = true
       user.value = userData
-      router.push('/users')
+      
+      // Redirect based on role
+      switch (userData.role) {
+        case 'admin':
+          router.push('/admin/dashboard')
+          break
+        case 'worker':
+          router.push('/worker/dashboard')
+          break
+        case 'customer':
+          router.push('/customer/dashboard')
+          break
+        default:
+          router.push('/')
+      }
       return true
     } catch (error) {
       console.error('Login failed:', error)
@@ -92,7 +93,21 @@ export const useAuthStore = defineStore('auth', () => {
       const userData = await authService.register(data)
       isAuthenticated.value = true
       user.value = userData
-      router.push('/users')
+      
+      // Redirect based on role
+      switch (userData.role) {
+        case 'admin':
+          router.push('/admin/dashboard')
+          break
+        case 'worker':
+          router.push('/worker/dashboard')
+          break
+        case 'customer':
+          router.push('/customer/dashboard')
+          break
+        default:
+          router.push('/')
+      }
       return true
     } catch (error) {
       console.error('Registration failed:', error)
@@ -108,6 +123,15 @@ export const useAuthStore = defineStore('auth', () => {
     router.push('/login')
   }
 
+  // Helper function to check user role
+  function hasRole(role: string | string[]): boolean {
+    if (!user.value) return false
+    if (Array.isArray(role)) {
+      return role.includes(user.value.role)
+    }
+    return user.value.role === role
+  }
+
   return {
     isAuthenticated,
     access_token,
@@ -116,7 +140,8 @@ export const useAuthStore = defineStore('auth', () => {
     register,
     resetAuthState,
     restoreAuthState,
-    refreshLogin
+    refreshLogin,
+    hasRole
   }
 }, {
   persist: {

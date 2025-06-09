@@ -1,23 +1,10 @@
-import { IUser } from './user'
+import { IBaseUser } from './base'
 
-export interface IWorker extends IUser {
-  // _id: string
-  // name: string
-  // email: string
-  // phone: string
-  serviceRatings: IServiceRating[]
-  // preferredLang?: string
-  // region?: string
-  // timeFormat: '12' | '24'
-  // image?: string
-  role: 'worker' | 'manager' | 'supervisor'
-  specialization: string
-  rating: number
-  isAvailable: boolean
-  completedJobs: number
-  skills: string[]
-  certificates?: string[]
-  experience: number // in years
+export interface IWorker extends IBaseUser {
+  role: 'admin' | 'worker';
+  specialization?: string;
+  rating?: number;
+  totalOrders?: number;
 }
 
 export interface IWorkerUpdateData {

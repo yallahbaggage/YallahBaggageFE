@@ -6,6 +6,7 @@ import RegisterView from '@/views/pages/RegisterView.vue'
 import LoginView from '@/views/pages/LoginView.vue'
 import ComplaintsView from '@/views/pages/ComplaintsView.vue'
 import { useAuthStore } from '@/stores/modules/authStore'
+import { roleGuard } from './guards/roleGuard'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -101,5 +102,8 @@ router.beforeEach(async (to, from, next) => {
     next()
   }
 })
+
+// Add role guard to all routes
+router.beforeEach(roleGuard)
 
 export default router

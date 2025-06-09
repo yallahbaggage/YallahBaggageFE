@@ -1,34 +1,27 @@
-export interface IUser {
-  _id: string
-  name: string
-  email: string
-  phone: string
-  password?: string
-  identityNumber?: string
-  isAvailable?: boolean
-  preferredLang?: string
-  region?: string
-  timeFormat: '12' | '24'
-  image?: string
-  role: 'customer' | 'admin' | 'worker' | 'manager' | 'supervisor'
+import { IBaseUser } from './base'
+
+export interface IUser extends IBaseUser {
+  role: 'admin' | 'customer' | 'worker'
+  // Customer specific fields
+  address?: string
   createdAt: string
   updatedAt: string
 }
 
-export interface ILoginCredentials {
+export interface LoginData {
   email: string
   password: string
 }
 
-export interface IRegisterData {
+export interface RegisterData {
   name: string
   email: string
   password: string
-  phone?: string
+  phone: string
+  identityNumber?: string
+  role?: 'admin' | 'customer' | 'worker'
+  specialization?: string
   address?: string
-  preferredLang?: string
-  region?: string
-  timeFormat?: '12' | '24'
 }
 
 export interface IAuthResponse {
