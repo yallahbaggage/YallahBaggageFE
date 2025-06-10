@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
-import { Worker } from '../types'
+import { IWorker } from '@/models/worker'
+import { workerService } from '@/utils/services/workerService'
 
 interface WorkersState {
-  workers: Worker[]
-  currentWorker: Worker | null
+  workers: IWorker[]
+  currentWorker: IWorker | null
   loading: boolean
   error: string | null
 }
@@ -28,11 +28,11 @@ export const useWorkersStore = defineStore('workers', {
     async getWorkers() {
       try {
         this.loading = true
-        const response = await axios.get('/api/v1/workers')
-        this.workers = response.data.data
-        return response.data
+        const response = await workerService.getWorkers()
+        this.workers = response
+        return response
       } catch (error: any) {
-        this.error = error.response?.data?.message || 'Error fetching workers'
+        this.error = error.message || 'Error fetching workers'
         throw error
       } finally {
         this.loading = false
@@ -42,11 +42,11 @@ export const useWorkersStore = defineStore('workers', {
     async getWorker(workerId: string) {
       try {
         this.loading = true
-        const response = await axios.get(`/api/v1/workers/${workerId}`)
-        this.currentWorker = response.data.data
-        return response.data
+        const response = await workerService.getWorker(workerId)
+        this.currentWorker = response
+        return response
       } catch (error: any) {
-        this.error = error.response?.data?.message || 'Error fetching worker'
+        this.error = error.message || 'Error fetching worker'
         throw error
       } finally {
         this.loading = false

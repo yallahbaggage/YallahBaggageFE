@@ -4,6 +4,7 @@ export interface IBaseUser {
   email: string;
   phone: string;
   identityNumber?: string;
+  address?: string;
   isAvailable: boolean;
   preferredLang?: string;
   region?: string;

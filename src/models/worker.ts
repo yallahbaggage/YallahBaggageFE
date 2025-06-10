@@ -5,6 +5,7 @@ export interface IWorker extends IBaseUser {
   specialization?: string;
   rating?: number;
   totalOrders?: number;
+  status?: 'Available' | 'Assigned' | 'On The Way';
 }
 
 export interface IWorkerUpdateData {

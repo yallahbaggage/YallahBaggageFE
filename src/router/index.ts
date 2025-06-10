@@ -5,6 +5,7 @@ import UsersView from '@/views/pages/UsersView.vue'
 import RegisterView from '@/views/pages/RegisterView.vue'
 import LoginView from '@/views/pages/LoginView.vue'
 import ComplaintsView from '@/views/pages/ComplaintsView.vue'
+import EmployeesView from '@/views/pages/EmployeesView.vue'
 import { useAuthStore } from '@/stores/modules/authStore'
 import { roleGuard } from './guards/roleGuard'
 
@@ -35,7 +36,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/employees',
         name: 'Employees',
-        component: UsersView,
+        component: EmployeesView,
         meta: { requiresAuth: true },
       },
       {
@@ -45,6 +46,18 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: true },
       },
     ],
+  },
+  {
+    path: '/',
+    component: DefaultLayout,
+    children: [
+      {
+        path: '/users',
+        name: 'Users',
+        component: UsersView,
+        meta: { requiresAuth: true },
+      },
+    ]
   },
   {
     path: '/orders',
