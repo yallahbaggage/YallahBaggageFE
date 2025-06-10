@@ -22,7 +22,7 @@
           v-for="link in links"
           :key="link.name"
         >
-          <v-list-item class="menu-item" :class="{ active: isActiveLink(link.path) }">
+          <div class="menu-item" :class="{ active: isActiveLink(link.path) }">
             <div class="menu-item-name">
               <v-icon class="icon">
                 {{ link.icon }}
@@ -32,7 +32,7 @@
             <v-chip v-if="link.hasChip" class="new-transfer-chip" size="small" color="#FF5B5B">{{
               link.chipCount
             }}</v-chip>
-          </v-list-item>
+          </div>
         </router-link>
       </template>
     </v-list>
@@ -74,7 +74,7 @@
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue3-i18n'
-import { useThemeStore } from '@/stores/modules/theme'
+// import { useThemeStore } from '@/stores/modules/theme'
 const { t } = useI18n()
 
 import { useAuthStore } from '@/stores/modules/authStore'
@@ -185,15 +185,15 @@ li {
 
 .menu-item,
 .logout-item {
-  display: flex;
-  align-items: center;
-  padding: 16px;
-  border-radius: 8px;
-  font-size: $normalSize !important;
-  gap: 24px;
-  cursor: pointer;
-  justify-content: space-between;
-  flex-direction: row;
+  // display: flex;
+  // align-items: center;
+  // padding: 16px;
+  // border-radius: 8px;
+  // font-size: $normalSize !important;
+  // gap: 24px;
+  // cursor: pointer;
+  // justify-content: space-between;
+  // flex-direction: row;
 
   &:hover {
     background-color: rgb(var(--v-theme-lightGray)) !important;
@@ -219,10 +219,10 @@ li {
   cursor: pointer;
   justify-content: space-between;
 
-  > div {
-    display: flex;
-    align-items: center;
-  }
+  // > div {
+  //   display: flex;
+  //   align-items: center;
+  // }
 
   &:hover {
     background-color: rgb(var(--v-theme-lightGray)) !important;
@@ -242,7 +242,7 @@ li {
 }
 
 .new-transfer-chip {
-  margin-left: auto;
+  // margin-left: auto;
   font-weight: bold;
   font-size: 10px;
 }
