@@ -9,11 +9,10 @@
         </div>
       </div>
     </router-link>
-    <hr />
 
     <div class="main-section-title">MAIN</div>
 
-    <v-list dense nav bg-color="black" class="menu">
+    <v-list dense nav bg-color="white" class="menu">
       <template v-if="links.length > 0">
         <router-link
           role="button"
@@ -24,23 +23,21 @@
           :key="link.name"
         >
           <v-list-item class="menu-item" :class="{ active: isActiveLink(link.path) }">
-            <v-icon class="icon">
-              {{ link.icon }}
-            </v-icon>
-            {{ link.name }}
-            <v-chip
-              v-if="link.hasChip"
-              class="new-transfer-chip"
-              size="small"
-              color="#FF5B5B"
-              >{{ link.chipCount }}</v-chip
-            >
+            <div class="menu-item-name">
+              <v-icon class="icon">
+                {{ link.icon }}
+              </v-icon>
+              {{ link.name }}
+            </div>
+            <v-chip v-if="link.hasChip" class="new-transfer-chip" size="small" color="#FF5B5B">{{
+              link.chipCount
+            }}</v-chip>
           </v-list-item>
         </router-link>
       </template>
     </v-list>
 
-    <hr/>
+    <hr />
     <!-- Bottom Section: Theme Toggle & Language Switch -->
     <div class="bottom-actions">
       <!-- <v-btn class="bottom-btn" color="primary" centered accent @click="toggleTheme()">
@@ -51,10 +48,24 @@
     <!-- User Profile Section -->
     <div class="user-profile">
       <v-icon class="user-icon">mdi-account-circle</v-icon>
-      <span class="username">Arthur Taylor</span>
-      <v-icon class="username-verified-icon">mdi-check-circle</v-icon>
-      <span class="user-email">arthur@yalla.com</span>
-      <v-icon class="user-profile-arrow">mdi-chevron-right</v-icon>
+      <div>
+        <span class="username">Arthur Taylor</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          class="username-verified-icon"
+        >
+          <path
+            d="M8.75456 3.81498C7.87858 3.53141 6.92631 3.92585 6.50741 4.74578L6.00379 5.73151C5.94396 5.84864 5.8487 5.9439 5.73158 6.00373L4.74584 6.50735C3.92591 6.92625 3.53147 7.87852 3.81504 8.7545L4.15595 9.80762C4.19646 9.93275 4.19646 10.0675 4.15595 10.1926L3.81504 11.2457C3.53147 12.1217 3.92591 13.074 4.74584 13.4929L5.73158 13.9965C5.8487 14.0564 5.94396 14.1516 6.00379 14.2687L6.50741 15.2545C6.92631 16.0744 7.87858 16.4689 8.75456 16.1853L9.80768 15.8444C9.93281 15.8039 10.0676 15.8039 10.1927 15.8444L11.2458 16.1853C12.1218 16.4689 13.0741 16.0744 13.493 15.2545L13.9966 14.2687C14.0564 14.1516 14.1517 14.0564 14.2688 13.9965L15.2546 13.4929C16.0745 13.074 16.4689 12.1217 16.1854 11.2457L15.8444 10.1926C15.8039 10.0675 15.8039 9.93275 15.8444 9.80762L16.1854 8.7545C16.4689 7.87852 16.0745 6.92625 15.2546 6.50735L14.2688 6.00373C14.1517 5.9439 14.0564 5.84864 13.9966 5.73151L13.493 4.74578C13.0741 3.92585 12.1218 3.53141 11.2458 3.81498L10.1927 4.15589C10.0676 4.19639 9.93281 4.1964 9.80768 4.15589L8.75456 3.81498ZM6.72504 9.84843L7.60893 8.9645L9.37668 10.7323L12.9122 7.19678L13.7961 8.08066L9.37668 12.5001L6.72504 9.84843Z"
+            fill="#47C2FF"
+          />
+        </svg>
+        <v-icon class="user-profile-arrow">mdi-chevron-right</v-icon>
+        <span class="user-email text-style">arthur@yalla.com</span>
+      </div>
     </div>
   </div>
 </template>
@@ -68,7 +79,7 @@ const { t } = useI18n()
 
 import { useAuthStore } from '@/stores/modules/authStore'
 
-const themeStore = useThemeStore()
+// const themeStore = useThemeStore()
 const route = useRoute()
 const authStore = useAuthStore()
 
@@ -97,11 +108,11 @@ const links = computed(() => [
     hasChip: true,
     chipCount: '2',
   },
-]);
+])
 
-const toggleTheme = () => {
-  themeStore.toggleTheme()
-}
+// const toggleTheme = () => {
+//   themeStore.toggleTheme()
+// }
 
 const isActiveLink = (path: string) => route.path === path
 </script>
@@ -127,7 +138,7 @@ const isActiveLink = (path: string) => route.path === path
   .logo-title {
     font-size: 18px;
     font-weight: bold;
-    color: rgb(var(--v-theme-white));
+    color: rgb(var(--v-theme-black));
   }
   .logo-subtitle {
     font-size: 12px;
@@ -145,12 +156,14 @@ const isActiveLink = (path: string) => route.path === path
 
 .sidebar {
   height: 100%;
-  background-color: rgb(var(--v-theme-black));
+  background-color: rgb(var(--v-theme-white));
   padding: 20px;
   border-radius: 0 10px 10px 0;
-  color: rgb(var(--v-theme-white));
+  color: rgb(var(--v-theme-black));
   display: flex;
   flex-direction: column;
+  border-right: 1px solid rgb(var(--v-theme-ashGray));
+  width: 272px;
 }
 
 li {
@@ -177,12 +190,13 @@ li {
   padding: 16px;
   border-radius: 8px;
   font-size: $normalSize !important;
-  gap: $x-small !important;
+  gap: 24px;
   cursor: pointer;
-  position: relative; /* For chip positioning */
+  justify-content: space-between;
+  flex-direction: row;
 
   &:hover {
-    background-color: rgb(var(--v-theme-primary)) !important;
+    background-color: rgb(var(--v-theme-lightGray)) !important;
     font-weight: $font-weight-bold;
   }
 }
@@ -195,9 +209,30 @@ li {
   text-decoration: none;
 }
 
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: $normalSize !important;
+  gap: 24px;
+  cursor: pointer;
+  justify-content: space-between;
+
+  > div {
+    display: flex;
+    align-items: center;
+  }
+
+  &:hover {
+    background-color: rgb(var(--v-theme-lightGray)) !important;
+    font-weight: $font-weight-bold;
+  }
+}
+
 .active {
   font-weight: $font-weight-bold;
-  background-color: rgb(var(--v-theme-primary)) !important;
+  background-color: rgb(var(--v-theme-lightGray)) !important;
   border-radius: 10px;
 }
 
@@ -246,12 +281,8 @@ li {
 .user-profile {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 16px;
+  flex-direction: row;
   color: rgb(var(--v-theme-white));
-  flex-wrap: wrap; /* Allow items to wrap on smaller screens */
-  position: relative;
-  margin-top: auto; /* Push to the bottom */
 
   .user-icon {
     font-size: 48px;
@@ -264,26 +295,29 @@ li {
   .username {
     font-size: 16px;
     font-weight: 600;
-    color: rgb(var(--v-theme-white));
+    color: rgb(var(--v-theme-black));
     margin-left: 10px;
   }
 
   .username-verified-icon {
     font-size: 16px;
-    color: #4caf50; /* Green color for verified icon */
+    margin-left: 5px;
+    vertical-align: middle; /* Align with text */
+    color: rgb(var(--v-theme-primary)); /* Green color for verified icon */
   }
 
   .user-email {
     font-size: 12px;
     color: #9e9e9e;
     width: 100%; /* Take full width on a new line */
-    margin-left: 58px; /* Align with username */
+    margin-left: 10px; /* Align with username */
   }
 
   .user-profile-arrow {
     position: absolute;
     right: 16px;
     color: #9e9e9e;
+    margin-top: 15px;
   }
 }
 </style>

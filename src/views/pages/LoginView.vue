@@ -345,7 +345,6 @@ const handleSubmit = async () => {
 }
 
 .forgot-password-link {
-  text-decoration: none;
   font-size: 0.75rem; // text-caption
   font-weight: 500; // font-weight-medium
   text-decoration: underline;
