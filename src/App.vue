@@ -31,7 +31,7 @@ onMounted(async () => {
           <div
             class="sidebar"
             :class="{
-              hidden: !isLogged
+              hidden: !isLogged || router.currentRoute.value.path == '/login'
             }"
           >
             <LeftSlider />

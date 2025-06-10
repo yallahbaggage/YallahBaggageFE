@@ -1,12 +1,12 @@
 <template>
-  <v-container fluid class="fill-height pa-0 login-page">
+  <v-container fluid class=" login-page">
     <v-row no-gutters class="fill-height">
       <!-- Left section: Login Form -->
-      <v-col cols="12" md="6" class="d-flex align-center justify-center white-bg px-4 py-8">
+      <v-col cols="12" md="6" class=" white-bg">
         <v-card flat class="login-card">
           <v-card-text class="d-flex flex-column align-center justify-center text-center">
             <v-img
-              src="@/assets/logo.svg"
+              src="@/src/assets/images/logo.svg"
               alt="Yalla Baggage Logo"
               max-width="80"
               class="mb-6"
@@ -14,27 +14,32 @@
             <div class="login-avatar mb-4">
               <v-icon size="48">mdi-account-circle-outline</v-icon>
             </div>
-            <h2 class="text-h5 font-weight-bold mb-2">Login to your account</h2>
-            <p class="text-subtitle-1 text-grey-darken-1 mb-8">Enter your details to login.</p>
+            <h2 class="text-h5 font-weight-bold mb-2">{{ t("loginToYourAccount") }}</h2>
+            <p class="text-subtitle-1 text-grey-darken-1 mb-8">{{ t("enterYourDetailsToLogin") }}</p>
 
             <v-form @submit.prevent="handleSubmit" ref="form" class="w-100">
+              <div class="d-flex flex-column text-start font-weight-bold">
+              <Label>{{ t('emailAddress') }}</Label>
               <v-text-field
                 v-model="email"
                 :rules="[rules.required, rules.email]"
-                label="Email Address"
                 placeholder="hello@yalla.com"
-                variant="outlined"
+                variant="solo"
                 density="comfortable"
                 class="mb-4"
                 prepend-inner-icon="mdi-email-outline"
                 required
               />
-              <v-text-field
+              </div>
+            <div class="d-flex flex-column text-start font-weight-bold">
+              <Label>{{ t('password') }}</Label>
+                <v-text-field
                 v-model="password"
                 :rules="[rules.required, rules.min]"
-                label="Password"
-                variant="outlined"
                 density="comfortable"
+                                variant="solo"
+                placeholder="**********"
+
                 class="mb-6"
                 prepend-inner-icon="mdi-lock-outline"
                 :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
@@ -42,16 +47,17 @@
                 @click:append-inner="showPassword = !showPassword"
                 required
               />
+            </div>
 
               <div class="d-flex justify-space-between align-center mb-6">
                 <v-checkbox
                   v-model="keepLoggedIn"
-                  label="Keep me logged in"
+                  :label="t('keepMeLoggedIn')"
                   density="compact"
                   color="primary"
                   hide-details
                 />
-                <router-link to="/forgot-password" class="text-primary text-decoration-none text-caption font-weight-medium">Forgot password?</router-link>
+                <router-link to="/forgot-password" class="text-primary text-decoration-none text-caption font-weight-medium">{{ t("forgotPassword") }}</router-link>
               </div>
 
               <v-btn
@@ -68,29 +74,22 @@
           </v-card-text>
           <v-card-actions class="d-flex flex-column align-center justify-center pa-6">
             <span class="text-caption text-grey-darken-1 mb-2">© 2025 Yalla Baggage</span>
-            <v-menu>
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  variant="text"
-                  color="grey-darken-1"
-                  append-icon="mdi-chevron-down"
-                  size="small"
-                  v-bind="props"
-                  class="text-capitalize"
-                >
-                  <v-icon start>mdi-web</v-icon>
-                  ENG
-                </v-btn>
-              </template>
-              <v-list>
-                <v-list-item value="eng">
-                  <v-list-item-title>English</v-list-item-title>
-                </v-list-item>
-                <v-list-item value="ar">
-                  <v-list-item-title>العربية</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
+              <v-menu>
+                <template v-slot:activator="{ props }">
+                  <v-btn color="primary" class="bottom-btn" v-bind="props">
+                    <v-icon>mdi-translate</v-icon>
+                    {{ selectedLanguage ?? t('languages') }}
+                    <v-icon>mdi-menu-down</v-icon>
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item v-for="(item, index) in languages" :key="index" @click="changeLanguage(item.value)" :disabled="selectedLanguage === item.value">
+                    <v-list-item-title  :class="{ 'selected-lang': selectedLanguage === item.value }">
+                      {{ item.label }}
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -106,81 +105,75 @@
   </v-container>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import { useAuthStore } from '@/stores/modules/authStore'
 import { useRouter } from 'vue-router'
+import { useLocale } from 'vuetify'
+import { useI18n } from 'vue3-i18n'
 
-export default defineComponent({
-  name: 'LoginView',
-  setup() {
-    const authStore = useAuthStore()
-    const router = useRouter()
-    const form = ref<any>(null)
-    const email = ref('')
-    const password = ref('')
-    const showPassword = ref(false)
-    const loading = ref(false)
-    const keepLoggedIn = ref(false)
-    const snackbar = ref({
-      show: false,
-      text: '',
-      color: 'success'
-    })
+const authStore = useAuthStore()
+const router = useRouter()
+const form = ref<any>(null)
+const email = ref('')
+const password = ref('')
+const showPassword = ref(false)
+const loading = ref(false)
+const keepLoggedIn = ref(false)
 
-    const rules = {
-      required: (v: string) => !!v || 'Field is required',
-      email: (v: string) => /.+@.+\..+/.test(v) || 'Email must be valid',
-      min: (v: string) => v.length >= 6 || 'Min 6 characters'
-    }
-
-    const handleSubmit = async () => {
-      const { valid } = await form.value.validate();
-      if (!valid) return;
-
-      loading.value = true
-      try {
-        await authStore.login({ email: email.value, password: password.value })
-        return router.push('/employees')
-        // No need to manually redirect as the auth store handles it
-        // switch (authStore.user?.role) {
-        //   case 'admin':
-        //     router.push('/employees')
-        //     break
-        //   case 'worker':
-        //     router.push('/worker/dashboard')
-        //     break
-        //   case 'customer':
-        //     router.push('/customer/dashboard')
-        //     break
-        //   default:
-        //     router.push('/')
-        // }
-      } catch (error: any) {
-        snackbar.value = {
-          show: true,
-          text: error.message || 'Login failed',
-          color: 'error'
-        }
-      } finally {
-        loading.value = false
-      }
-    }
-
-    return {
-      form,
-      email,
-      password,
-      showPassword,
-      loading,
-      keepLoggedIn,
-      snackbar,
-      rules,
-      handleSubmit
-    }
-  }
+const snackbar = ref({
+  show: false,
+  text: '',
+  color: 'success'
 })
+
+// i18n & Vuetify locale
+const { setLocale, getLocale, t } = useI18n()
+const { current } = useLocale()
+
+const languages = [
+  { label: 'English', value: 'en' },
+  { label: 'Türkçe', value: 'tr' },
+]
+
+const selectedLanguage = ref(localStorage.getItem('lang') ?? getLocale())
+
+const changeLanguage = (selectedValue: string) => {
+  setLocale(selectedValue)
+  selectedLanguage.value = selectedValue
+  localStorage.setItem('lang', selectedValue)
+  current.value = selectedValue
+  window.location.reload()
+}
+
+// Form validation rules
+const rules = {
+  required: (v: string) => !!v || 'Field is required',
+  email: (v: string) => /.+@.+\..+/.test(v) || 'Email must be valid',
+  min: (v: string) => v.length >= 6 || 'Min 6 characters'
+}
+
+// Submit logic
+const handleSubmit = async () => {
+  const { valid } = await form.value.validate()
+  if (!valid) return
+
+  loading.value = true
+  try {
+    await authStore.login({ email: email.value, password: password.value })
+    return router.push('/employees')
+  } catch (error: any) {
+    snackbar.value = {
+      show: true,
+      text: error.message || 'Login failed',
+      color: 'error'
+    }
+  } finally {
+    loading.value = false
+  }
+}
 </script>
+
 
 <style scoped>
 .login-page {

@@ -47,21 +47,21 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
+  // {
+  //   path: '/',
+  //   component: DefaultLayout,
+  //   children: [
+  //     {
+  //       path: '/users',
+  //       name: 'Users',
+  //       component: UsersView,
+  //       meta: { requiresAuth: true },
+  //     },
+  //   ]
+  // },
   {
-    path: '/',
-    component: DefaultLayout,
-    children: [
-      {
-        path: '/users',
-        name: 'Users',
-        component: UsersView,
-        meta: { requiresAuth: true },
-      },
-    ]
-  },
-  {
-    path: '/orders',
-    name: 'Orders',
+    path: '/transfers',
+    name: 'Transfers',
     component: () => import('../views/pages/OrdersPage.vue'),
     meta: { requiresAuth: true }
   },

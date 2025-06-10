@@ -1,6 +1,6 @@
 
-export const kAppVersion = "2.0.0.0";
-export const kAppTitle = `ICollAct - ${kAppVersion}`;
+export const kAppVersion = "1.0.0.0";
+export const kAppTitle = `Yalla - ${kAppVersion}`;
 export const kImageAssetBackground = "bg.jpg";
 
 // export const kRestApiUrl = 'http://pddapi.sadeyazilim.com:7020/api/v3';

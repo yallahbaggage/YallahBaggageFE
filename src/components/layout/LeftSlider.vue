@@ -2,7 +2,7 @@
   <div class="sidebar">
     <router-link role="button" to="/" class="menu-link" active-class="active">
       <div class="header-logo">
-        <!-- <img class="logo-img" src="/src/assets/logo.svg" alt="" /> -->
+        <img class="logo-img" src="@/assets/images/logo.svg" alt="" />
         <div>
           <h1 class="logo-title">Yalla Baggage</h1>
           <h2 class="logo-subtitle">Superadmin Panel</h2>
@@ -43,26 +43,9 @@
     <hr/>
     <!-- Bottom Section: Theme Toggle & Language Switch -->
     <div class="bottom-actions">
-      <v-btn class="bottom-btn" color="primary" centered accent @click="toggleTheme()">
+      <!-- <v-btn class="bottom-btn" color="primary" centered accent @click="toggleTheme()">
         <v-icon>mdi-theme-light-dark</v-icon>
-      </v-btn>
-
-      <v-menu>
-        <template v-slot:activator="{ props }">
-          <v-btn color="primary" class="bottom-btn" v-bind="props">
-            <v-icon>mdi-translate</v-icon>
-            {{ selectedLanguage ?? t('languages') }}
-            <v-icon>mdi-menu-down</v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item v-for="(item, index) in languages" :key="index" @click="changeLanguage(item.value)" :disabled="selectedLanguage === item.value">
-            <v-list-item-title  :class="{ 'selected-lang': selectedLanguage === item.value }">
-              {{ item.label }}
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+      </v-btn> -->
     </div>
 
     <!-- User Profile Section -->
@@ -81,24 +64,10 @@ import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue3-i18n'
 import { useThemeStore } from '@/stores/modules/theme'
-import { useLocale } from 'vuetify'
-import { useAuthStore } from '@/stores/modules/authStore'
-const { setLocale, getLocale, t } = useI18n()
-const selectedLanguage = ref(localStorage.getItem('lang') ?? getLocale())
-const languages = [
-  { label: 'English', value: 'en' },
-  { label: 'Türkçe', value: 'tr' },
-]
-const { current } = useLocale()
-const changeLanguage = (selectedValue: string) => {
-  setLocale(selectedValue)
-  const selectedLang = languages.find((lang) => lang.value === selectedValue)
+const { t } = useI18n()
 
-  selectedLanguage.value = selectedLang?.value ?? 'en'
-  localStorage.setItem('lang', selectedValue)
-  current.value = selectedValue
-  window.location.reload()
-}
+import { useAuthStore } from '@/stores/modules/authStore'
+
 const themeStore = useThemeStore()
 const route = useRoute()
 const authStore = useAuthStore()
