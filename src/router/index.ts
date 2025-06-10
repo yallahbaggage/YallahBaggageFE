@@ -18,14 +18,14 @@ const routes: Array<RouteRecordRaw> = [
         path: '',
         name: 'Login',
         component: LoginView,
-        meta: { requiresAuth: false },
+        meta: { requiresAuth: false, requiresGuest: true },
         alias: '/login'
       },
       {
         path: '/register',
         name: 'Register',
         component: RegisterView,
-        meta: { requiresAuth: false },
+        meta: { requiresAuth: false, requiresGuest: true },
       },
     ],
   },
