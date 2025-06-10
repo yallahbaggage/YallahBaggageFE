@@ -1,11 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import DefaultLayout from '@/views/layouts/DefaultLayout.vue'
 import AuthLayout from 'layouts/AuthLayout.vue'
-import UsersView from '@/views/pages/UsersView.vue'
 import RegisterView from '@/views/pages/RegisterView.vue'
 import LoginView from '@/views/pages/LoginView.vue'
-import ComplaintsView from '@/views/pages/ComplaintsView.vue'
-import EmployeesView from '@/views/pages/EmployeesView.vue'
 import { useAuthStore } from '@/stores/modules/authStore'
 import { roleGuard } from './guards/roleGuard'
 
@@ -36,13 +33,19 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/employees',
         name: 'Employees',
-        component: EmployeesView,
+        component: () => import('../views/pages/EmployeesView.vue'),
         meta: { requiresAuth: true },
       },
       {
-        path: '/complaints',
-        name: 'Complaints',
-        component: ComplaintsView,
+        path: '/customer-support',
+        name: 'Customer Support',
+        component: () => import('../views/pages/ComplaintsView.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: '/app-management',
+        name: 'App Management',
+        component: () => import('../views/pages/AppManagementPage.vue'),
         meta: { requiresAuth: true },
       },
     ],

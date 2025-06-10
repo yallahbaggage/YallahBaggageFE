@@ -103,7 +103,7 @@ const links = computed(() => [
   },
   {
     name: t('customerSupport'),
-    path: '/complaints',
+    path: '/customer-support',
     icon: 'mdi-headphones',
     hasChip: true,
     chipCount: '2',
