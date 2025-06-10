@@ -37,13 +37,13 @@
       </template>
     </v-list>
 
-    <hr />
+    <hr color="lightgray"/>
     <!-- Bottom Section: Theme Toggle & Language Switch -->
-    <div class="bottom-actions">
+    <!-- <div class="bottom-actions"> -->
       <!-- <v-btn class="bottom-btn" color="primary" centered accent @click="toggleTheme()">
         <v-icon>mdi-theme-light-dark</v-icon>
       </v-btn> -->
-    </div>
+    <!-- </div> -->
 
     <!-- User Profile Section -->
     <div class="user-profile">
@@ -283,6 +283,7 @@ li {
   align-items: center;
   flex-direction: row;
   color: rgb(var(--v-theme-white));
+  margin-top: 15px;
 
   .user-icon {
     font-size: 48px;
