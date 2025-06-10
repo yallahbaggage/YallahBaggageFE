@@ -215,7 +215,16 @@ const handleSubmit = async () => {
 }
 
 .blue-gradient-bg {
-  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+  background:
+    linear-gradient(
+      180deg,
+      #2a4ff6 0%,
+      rgba(42, 79, 246, 0.8) 25%,
+      rgba(42, 79, 246, 0.6) 50%,
+      rgba(42, 79, 246, 0.4) 75%,
+      rgba(42, 79, 246, 0.1) 100%
+    ),
+    var(--bg-white-0, #fff);
   position: relative;
   overflow: hidden;
   min-height: 100vh;

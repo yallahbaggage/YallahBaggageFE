@@ -3,7 +3,7 @@ import { ThemeDefinition } from 'vuetify'
 export const lightTheme: ThemeDefinition = {
   dark: false,
   colors: {
-    primary: '#086aac',
+    primary: '#335CFF',
     primaryHover: '#90cdf4',
     secondary: '#bec8cf',
     smokeWhite: '#F4F6F9',
@@ -14,7 +14,7 @@ export const lightTheme: ThemeDefinition = {
     sunsetOrange: '#f0ad4e',
     mintGreen: '#5cb85c',
     ashGray: '#ccc',
-    lightGray: '#ddd',
+    lightGray: '#F7F7F7',
     smokyBlack: '#333',
     black: '#000000',
     panelSecondary: '#E5D8D8',
