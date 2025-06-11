@@ -84,7 +84,7 @@ onMounted(async () => {
   .content-area {
     &.logged-in {
       margin-left: 0 !important;
-      width: 100% !important;
+      width: 80% !important;
     }
   }
 }
@@ -95,6 +95,8 @@ onMounted(async () => {
   &.logged-in {
     flex-grow: 1;
     overflow: auto;
+    margin-left: $sidebarWidth;
+    padding: 20px;
   }
 
   &:not(.logged-in) {

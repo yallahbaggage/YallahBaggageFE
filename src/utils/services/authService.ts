@@ -3,7 +3,7 @@ import type { IUser, LoginData, RegisterData } from '@/models/user'
 
 const API_URL = process.env.NODE_ENV === 'production'
 ? 'https://baggs5.onrender.com/'
-: 'http://localhost:9091/';
+: 'http://localhost:9091/api/v1';
 
 // Create axios instance with default config
 const api = axios.create({

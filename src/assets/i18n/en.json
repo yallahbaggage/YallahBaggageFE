@@ -23,6 +23,8 @@
     "keepMeLoggedIn": "Keep me logged in",
     "manageYourAppContentAndNotifications": "Manage your app content and notifications",
     "manageYourCustomerSupportRequests": "Manage your customer support requests",
+    "manageAndTrackYourEmployees": "Manage and track your employees",
+    "manageAndTrackYourTransfers": "Manage and track your transfers",
     "orders": {
         "title": "Orders",
         "myOrders": "My Orders",
@@ -80,5 +82,15 @@
         "loading": "Loading orders...",
         "error": "Error loading orders"
         }
-    }
+    },
+    "todaysTransfers": "Today’s Transfers",
+    "currentTransfers": "Current Transfers",
+    "cancelledTransfers": "Cancelled Transfers",
+    "vsYesterday": "vs yesterday",
+    "totalEmployees": "Total Employees",
+    "employeesOnTransfer": "Employees On Transfer",
+    "availableEmployees": "Available Employees",
+    "totalIssues": "Total Issues",
+    "openIssues": "Open Issues",
+    "solvedIssues": "Solved Issues"
 }

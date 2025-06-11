@@ -51,7 +51,7 @@ export const darkTheme: ThemeDefinition = {
     sunsetOrange: '#d97706',
     mintGreen: '#38a169',
     ashGray: '#4a5568',
-    lightGray: '##EBEBEB',
+    lightGray: '#EBEBEB',
     smokyBlack: '#1c1c1c',
     black: '#000000',
     panelSecondary: '#373737',

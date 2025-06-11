@@ -65,7 +65,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/transfers',
     name: 'Transfers',
-    component: () => import('../views/pages/OrdersPage.vue'),
+    component: () => import('../views/pages/TransfersPage.vue'),
     meta: { requiresAuth: true }
   },
   // {

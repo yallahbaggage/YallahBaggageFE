@@ -49,6 +49,7 @@ const isLogged = computed(() => authStore.isAuthenticated)
 
 .content {
   border-radius: $x-small !important;
+  // margin-left: $sidebarWidth;
   transition:
     margin-left 0.3s ease,
     width 0.3s ease;

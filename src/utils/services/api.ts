@@ -9,7 +9,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 const api: AxiosInstance = axios.create({
   baseURL: process.env.NODE_ENV === 'production'
   ? 'https://baggs5.onrender.com/'
-  : 'http://localhost:9091/',
+  : 'http://localhost:9091/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },

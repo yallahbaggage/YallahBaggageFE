@@ -23,6 +23,8 @@
     "keepMeLoggedIn": "Beni oturum açık tut",
     "manageYourAppContentAndNotifications": "Uygulama içeriğinizi ve bildirimlerinizi yönetin",
     "manageYourCustomerSupportRequests": "Müşteri destek taleplerinizi yönetin",
+    "manageAndTrackYourEmployees": "Çalışanlarınızı yönetin ve takip edin",
+    "manageAndTrackYourTransfers": "Transferlerinizi yönetin ve takip edin",
     "orders": {
       "title": "Siparişler",
       "myOrders": "Siparişlerim",
@@ -80,5 +82,15 @@
         "loading": "Siparişler yükleniyor...",
         "error": "Siparişler yüklenirken hata oluştu"
       }
-    }
+    },
+    "todaysTransfers": "Bugünün Transferleri",
+    "currentTransfers": "Güncel Transferler",
+    "cancelledTransfers": "İptal Edilen Transferler",
+    "vsYesterday": "Dün ile Karşılaştırma",
+    "totalEmployees": "Toplam Çalışanlar",
+    "employeesOnTransfer": "Transferdeki Çalışanlar",
+    "availableEmployees": "Müsait olan Çalışanlar",
+    "totalIssues": "Toplam Sorunlar",
+    "openIssues": "Açık Sorunlar",
+    "solvedIssues": "Çözülen Sorunlar"
 }
