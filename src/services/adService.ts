@@ -2,8 +2,8 @@ import axios from 'axios';
 import { IAd } from '../models/ad';
 
 const API_URL = process.env.NODE_ENV === 'production'
-? 'https://baggs5.onrender.com/api/v1'
-: 'http://localhost:9091/api/v1';
+? 'https://baggs5.onrender.com/'
+: 'http://localhost:9091/';
 
 // Get all ads
 export const getAds = async (): Promise<IAd[]> => {

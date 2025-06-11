@@ -1,68 +1,124 @@
 <template>
-  <div class="employees-header">
-    <div class="header-title">
-      <i class="icon-employees"></i>
-      <h1>{{ $t('employees') }}</h1>
-      <span>{{ $t('manageAndTrackEmployees') }}</span>
+  <div class="base-header">
+    <div class="header-left-content">
+      <div class="page-icon-wrapper">
+        <v-icon>{{ pageIcon }}</v-icon>
+      </div>
+      <div class="page-text-content">
+        <h1 class="page-title">{{ title }}</h1>
+        <p class="page-description">{{ desc }}</p>
+      </div>
     </div>
-    <div class="header-actions">
-      <button class="btn btn-primary">
-        <i class="icon-plus"></i>
-        <span>{{ $t('newEmployee') }}</span>
-      </button>
+    <div class="header-right-content">
+      <v-icon class="action-icon">mdi-magnify</v-icon>
+      <v-icon class="action-icon">mdi-bell-outline</v-icon>
+      <v-btn v-if="showButton" color="primary" class="new-employee-button">
+        <v-icon left>mdi-plus</v-icon>
+        {{ buttonText }}
+      </v-btn>
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-// Script setup for component logic
+<script setup lang="ts">
+const props = defineProps({
+  title: {
+    type: String,
+    default: '',
+  },
+  desc: {
+    type: String,
+    default: '',
+  },
+  pageIcon: {
+    type: String,
+    default: '',
+  },
+  showButton: {
+    type: Boolean,
+    default: false,
+  },
+  buttonText: {
+    type: String,
+    default: '',
+  },
+})
 </script>
+<style scoped lang="scss">
+@use 'styles/main' as *;
 
-<style scoped>
-.employees-header {
+.base-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: $x-small;
+  margin-bottom: 24px;
+  width: 100%;
+  border-bottom: 1px solid $primaryBorderColor;
 }
 
-.header-title {
+.header-left-content {
   display: flex;
   align-items: center;
+  gap: 16px;
 }
 
-.header-title h1 {
-  margin: 0 10px 0 0;
-  font-size: 24px;
-  color: #333;
+.page-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1px solid #f1f1f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .v-icon {
+    color: #4a4a4a; // Adjust icon color as needed
+    font-size: 24px; // Adjust icon size
+  }
 }
 
-.header-title span {
+.page-title {
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.27px;
+}
+
+.page-description {
+  font-family: Inter;
   font-size: 14px;
-  color: #666;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.084px;
+  color: #5C5C5C;
 }
 
-.header-actions .btn {
+.header-right-content {
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 16px;
+  gap: 16px;
+}
+
+.action-icon {
+  font-size: 24px;
+  color: #4a4a4a;
   cursor: pointer;
 }
 
-/* Basic styling for icons, replace with actual icon library classes */
-.icon-employees::before {
-  content: '👤'; /* Placeholder icon */
-  font-size: 28px;
-  margin-right: 10px;
-}
+.new-employee-button {
+  background-color: #2a4ff6 !important;
+  color: #ffffff !important;
+  border-radius: 8px; // Rounded corners for button
+  text-transform: capitalize; // Ensure text is capitalized as in image
+  padding: 0 16px; // Adjust padding to match image
+  height: 40px; // Standard height for Vuetify buttons
 
-.icon-plus::before {
-  content: '+'; /* Placeholder icon */
-  font-size: 18px;
+  .v-icon {
+    margin-right: 8px; // Space between icon and text
+  }
 }
-</style> 
+</style>

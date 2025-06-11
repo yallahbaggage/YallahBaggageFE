@@ -16,15 +16,12 @@ const isLogged = computed(() => authStore.isAuthenticated)
   <Suspense>
     <template #default>
       <div>
-        <div class="app-container">
-          <div
-            class="content"
-            :class="{
-              expanded: route.path !== '/login' && isLogged && user,
-            }"
-          >
-            <router-view />
-          </div>
+        <div class="content"
+          :class="{
+            expanded: route.path !== '/login' && isLogged && user,
+          }"
+        >
+          <router-view />
         </div>
       </div>
     </template>
@@ -36,12 +33,6 @@ const isLogged = computed(() => authStore.isAuthenticated)
 
 <style scoped lang="scss">
 @use 'styles/main' as *;
-
-.app-container {
-  display: flex;
-  flex-direction: row;
-  gap: $medium !important;
-}
 
 .sidebar {
   position: fixed;
@@ -57,8 +48,6 @@ const isLogged = computed(() => authStore.isAuthenticated)
 }
 
 .content {
-  // margin-left: 20%;
-  // width: 80%;
   border-radius: $x-small !important;
   transition:
     margin-left 0.3s ease,

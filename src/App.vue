@@ -93,10 +93,8 @@ onMounted(async () => {
   border-radius: 8px;
 
   &.logged-in {
-    margin-left: $sidebarWidth;
     flex-grow: 1;
     overflow: auto;
-    padding: 0px 20px;
   }
 
   &:not(.logged-in) {

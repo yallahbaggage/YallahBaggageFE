@@ -83,7 +83,12 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function register(data: RegisterData) {
     try {
-      const userData = await authService.register(data)
+      // Use the role from the data, defaulting to customer if not specified
+      const registerData: RegisterData = {
+        ...data,
+        role: data.role || 'customer'
+      }
+      const userData = await authService.register(registerData)
       isAuthenticated.value = true
       user.value = userData
       

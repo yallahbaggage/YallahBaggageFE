@@ -33,13 +33,21 @@ $font-weight-bold: 700 !important;
 
 $primaryRadius: 15px;
 $normalSize: 14px;
-
+$primaryBorderColor: var(--stroke-soft-200, rgb(var(--v-theme-lightGray)));
 $shadow:
   0 -3px 5px rgba(0, 0, 0, 0.1),
   0 3px 5px rgba(0, 0, 0, 0.1);
 $darkShadow: 0 4px 6px 6px rgba(0, 0, 0, 0.1);
 
 $sidebarWidth: 304px;
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   font-family: 'Readex Pro', 'roboto', sans-serif !important;
@@ -95,7 +103,6 @@ body {
 
 .v-data-table__tbody tr {
   font-size: $normalSize;
-  // font-weight: $font-weight-light;
 }
 
 .v-data-table-header__content {

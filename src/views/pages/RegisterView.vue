@@ -75,6 +75,7 @@
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/modules/userStore'
+import { RegisterData } from '@/models/user'
 
 export default defineComponent({
   name: 'RegisterView',
@@ -87,6 +88,7 @@ export default defineComponent({
     const password = ref('')
     const phone = ref('')
     const address = ref('')
+    const role = ref<'admin' | 'customer'>('customer')
     const showPassword = ref(false)
     const loading = ref(false)
     const snackbar = ref({
@@ -106,13 +108,15 @@ export default defineComponent({
 
       loading.value = true
       try {
-        await userStore.register({
+        const registerData: RegisterData = {
           name: name.value,
           email: email.value,
           password: password.value,
-          phone: phone.value || undefined,
-          address: address.value || undefined
-        })
+          phone: phone.value || '',
+          address: address.value || undefined,
+          role: role.value
+        }
+        await userStore.register(registerData)
         router.push('/users')
       } catch (error: any) {
         snackbar.value = {
@@ -132,6 +136,7 @@ export default defineComponent({
       password,
       phone,
       address,
+      role,
       showPassword,
       loading,
       snackbar,

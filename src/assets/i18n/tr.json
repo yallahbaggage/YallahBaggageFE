@@ -21,6 +21,8 @@
     "resetPasswordFailed": "Şifre sıfırlama başarısız oldu",
     "resetPasswordLinkSent": "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi",
     "keepMeLoggedIn": "Beni oturum açık tut",
+    "manageYourAppContentAndNotifications": "Uygulama içeriğinizi ve bildirimlerinizi yönetin",
+    "manageYourCustomerSupportRequests": "Müşteri destek taleplerinizi yönetin",
     "orders": {
       "title": "Siparişler",
       "myOrders": "Siparişlerim",

@@ -71,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue3-i18n'
 // import { useThemeStore } from '@/stores/modules/theme'
@@ -162,7 +162,7 @@ const isActiveLink = (path: string) => route.path === path
   color: rgb(var(--v-theme-black));
   display: flex;
   flex-direction: column;
-  border-right: 1px solid rgb(var(--v-theme-ashGray));
+  border-right: 1px solid $primaryBorderColor;
   width: 272px;
 }
 
@@ -185,26 +185,14 @@ li {
 
 .menu-item,
 .logout-item {
-  // display: flex;
-  // align-items: center;
-  // padding: 16px;
-  // border-radius: 8px;
-  // font-size: $normalSize !important;
-  // gap: 24px;
-  // cursor: pointer;
-  // justify-content: space-between;
-  // flex-direction: row;
-
   &:hover {
     background-color: rgb(var(--v-theme-lightGray)) !important;
-    font-weight: $font-weight-bold;
   }
 }
 
 .menu-link,
 .logout-link {
   font-size: $normalSize !important;
-  font-weight: 600;
   color: inherit;
   text-decoration: none;
 }
@@ -219,14 +207,8 @@ li {
   cursor: pointer;
   justify-content: space-between;
 
-  // > div {
-  //   display: flex;
-  //   align-items: center;
-  // }
-
   &:hover {
     background-color: rgb(var(--v-theme-lightGray)) !important;
-    font-weight: $font-weight-bold;
   }
 }
 
@@ -242,7 +224,6 @@ li {
 }
 
 .new-transfer-chip {
-  // margin-left: auto;
   font-weight: bold;
   font-size: 10px;
 }

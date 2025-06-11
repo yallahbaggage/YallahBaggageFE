@@ -21,6 +21,8 @@
     "resetPasswordFailed": "Password reset failed",
     "resetPasswordLinkSent": "Password reset link sent to your email",
     "keepMeLoggedIn": "Keep me logged in",
+    "manageYourAppContentAndNotifications": "Manage your app content and notifications",
+    "manageYourCustomerSupportRequests": "Manage your customer support requests",
     "orders": {
         "title": "Orders",
         "myOrders": "My Orders",
