@@ -128,8 +128,10 @@
                   :buttonText="t('cancel')"
                   buttonColor="white"
                   @button-pressed="() => (isUpdateEmployeeDrawerOpen = false)"
+                  class="action-Btn"
+
                 />
-                <ActionButton :buttonText="t('updateEmployee')" buttonType="submit" />
+                <ActionButton class="action-Btn" :buttonText="t('updateEmployee')" buttonType="submit" />
               </div>
             </div>
           </form>
@@ -215,11 +217,15 @@ const onUpdateButtonPressed = () => {
   border-top: 1px solid rgb(var(--v-theme-lightGray));
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   gap: 10px;
   position: absolute;
   bottom: 0;
   width: 95%;
   margin-bottom: 20px;
+
+  .action-Btn{
+    flex: 1;
+  }
 }
 </style>
