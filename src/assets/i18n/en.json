@@ -101,6 +101,10 @@
     "busy": "Busy",
     "onLeave": "On Leave",
     "onTheWay": "On The Way",
-    "assigned": "Assigned"
-
+    "assigned": "Assigned",
+    "addEmployee": "Add Employee",
+    "information": "Information",
+    "fullName": "Full Name",
+    "phoneNumber": "Phone Number",
+    "employeeID": "Employee ID"
 }

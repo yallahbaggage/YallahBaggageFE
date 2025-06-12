@@ -101,5 +101,10 @@
     "busy": "Meşgul",
     "onLeave": "İzinli",
     "onTheWay": "Yolda",
-    "assigned": "Atandı"
+    "assigned": "Atandı",
+    "addEmployee": "Çalışan Ekle",
+    "information": "Bilgi",
+    "fullName": "Ad Soyad",
+    "phoneNumber": "Telefon Numarası",
+    "employeeID": "Çalışan ID"
 }

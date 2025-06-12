@@ -36,6 +36,7 @@ export const lightTheme: ThemeDefinition = {
     gray: '#808080',
     lightGreen: '#E0FAEC',
     success: '#1FC16B',
+    error: '#FB3748',
   }
 }
 
@@ -75,5 +76,6 @@ export const darkTheme: ThemeDefinition = {
     gray: '#808080',
     lightGreen: '#E0FAEC',
     success: '#1FC16B',
+    error: '#FB3748',
   }
 }
