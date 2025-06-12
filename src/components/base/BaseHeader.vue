@@ -12,14 +12,22 @@
     <div class="header-right-content">
       <v-icon class="action-icon">mdi-magnify</v-icon>
       <v-icon class="action-icon">mdi-bell-outline</v-icon>
-      <v-btn v-if="showButton" color="primary" class="new-employee-button">
-        <v-icon left>mdi-plus</v-icon>
-        {{ buttonText }}
-      </v-btn>
+      <template v-if="props.showButton">
+        <ActionButton
+          :button-text="props.buttonText"
+          button-color="primary"
+          icon-color="white"
+          button-icon="mdi-plus"
+          button-bg-color="primary"
+          :onButtonPressed="onButtonPressed"
+        />
+      </template>
     </div>
   </div>
 </template>
 <script setup lang="ts">
+import ActionButton from './ActionButton.vue'
+
 const props = defineProps({
   title: {
     type: String,
@@ -42,6 +50,12 @@ const props = defineProps({
     default: '',
   },
 })
+
+const emit = defineEmits(['button-pressed', 'icon-pressed'])
+
+const onButtonPressed = () => {
+  emit('button-pressed')
+}
 </script>
 <style scoped lang="scss">
 @use 'styles/main' as *;
@@ -94,7 +108,7 @@ const props = defineProps({
   font-weight: 400;
   line-height: 20px; /* 142.857% */
   letter-spacing: -0.084px;
-  color: #5C5C5C;
+  color: #5c5c5c;
 }
 
 .header-right-content {

@@ -34,6 +34,8 @@ export const lightTheme: ThemeDefinition = {
     raisenBlack: '#F4F6F9',
     smokeBlue: '#F4F6F9',
     gray: '#808080',
+    lightGreen: '#E0FAEC',
+    success: '#1FC16B',
   }
 }
 
@@ -71,5 +73,7 @@ export const darkTheme: ThemeDefinition = {
     raisenBlack: '#212121',
     smokeBlue: '#212529',
     gray: '#808080',
+    lightGreen: '#E0FAEC',
+    success: '#1FC16B',
   }
 }

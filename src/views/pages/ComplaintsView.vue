@@ -5,8 +5,13 @@
       :title="t('customerSupport')"
       :desc="t('manageYourCustomerSupportRequests')"
     />
-    <div class="content">
-      <!-- Content for the App Management Page goes here -->
+   <div class="page-content">
+      <div class="cards">
+        <InfoCard class="infoCard" :cardTitle="t('totalIssues')"> 3.484 </InfoCard>
+        <InfoCard class="infoCard" :cardTitle="t('openIssues')"> 2625 </InfoCard>
+        <InfoCard class="infoCard" :cardTitle="t('solvedIssues')"> 488 </InfoCard>
+      </div>
+      <hr class="infoHr"/>
     </div>
   </div>
 </template>

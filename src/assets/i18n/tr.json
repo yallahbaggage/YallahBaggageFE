@@ -92,5 +92,14 @@
     "availableEmployees": "Müsait olan Çalışanlar",
     "totalIssues": "Toplam Sorunlar",
     "openIssues": "Açık Sorunlar",
-    "solvedIssues": "Çözülen Sorunlar"
+    "solvedIssues": "Çözülen Sorunlar",
+    "newEmployee": "Yeni Çalışan",
+    "seeDetails": "Detayları Gör",
+    "deleteEmployee": "Çalışanı Sil",
+    "cancel": "İptal Et",
+    "available": "Müsait",
+    "busy": "Meşgul",
+    "onLeave": "İzinli",
+    "onTheWay": "Yolda",
+    "assigned": "Atandı"
 }

@@ -92,5 +92,15 @@
     "availableEmployees": "Available Employees",
     "totalIssues": "Total Issues",
     "openIssues": "Open Issues",
-    "solvedIssues": "Solved Issues"
+    "solvedIssues": "Solved Issues",
+    "newEmployee": "New Employee",
+    "seeDetails": "See Details",
+    "deleteEmployee": "Delete Employee",
+    "cancel": "Cancel",
+    "available": "Available",
+    "busy": "Busy",
+    "onLeave": "On Leave",
+    "onTheWay": "On The Way",
+    "assigned": "Assigned"
+
 }

@@ -3,8 +3,22 @@
     <v-card v-show="isOpen" ref="drawer" class="drawer">
       <v-card-title>
         <div class="drawer-header">
-          <h2 class="drawer-title">{{ title }}</h2>
-          <v-icon id="close-btn" role="button" @click="closeDrawer">mdi-close</v-icon>
+          <v-row class="drawer-title">
+            <v-col>
+              <p class="drawer-title-text">{{ title }}</p>
+              <p class="drawer-desc-text" v-if="desc">{{ desc }}</p>
+            </v-col>
+            <div class="drawer-right-content">
+              <v-row justify="end">
+                <v-col class="drawer-close">
+                  <p class="drawer-status-text" v-if="status">
+                    <span class="status-circle"></span> {{ status }}
+                  </p>
+                  <v-icon id="close-btn" role="button" @click="closeDrawer">mdi-close</v-icon>
+                </v-col>
+              </v-row>
+            </div>
+          </v-row>
         </div>
       </v-card-title>
       <v-card-text class="drawer-body">
@@ -23,6 +37,14 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  desc: {
+    type: String,
+    default: '',
+  },
+  status: {
+    type: String,
+    default: '',
+  },
 })
 
 const emit = defineEmits(['close'])
@@ -31,7 +53,7 @@ const emit = defineEmits(['close'])
 // const drawer = ref<HTMLElement | { $el: HTMLElement } | null>(null);
 
 const overlay: Ref<HTMLElement | null> = ref(null)
-const drawer: Ref<HTMLElement | null> = ref(null);
+const drawer: Ref<HTMLElement | null> = ref(null)
 
 //NOTE: Handle the scroll lock on body when drawer is open
 const toggleBodyScroll = (isOpen: boolean) => {
@@ -39,8 +61,8 @@ const toggleBodyScroll = (isOpen: boolean) => {
 }
 
 const handleClickOutside = (event: Event) => {
-  const drawerEl = (drawer.value as any)?.$el || drawer.value;
-  const overlayEl = overlay.value;
+  const drawerEl = (drawer.value as any)?.$el || drawer.value
+  const overlayEl = overlay.value
 
   if (
     overlayEl &&
@@ -48,9 +70,9 @@ const handleClickOutside = (event: Event) => {
     !drawerEl.contains(event.target as Node) &&
     overlayEl.contains(event.target as Node)
   ) {
-    closeDrawer();
+    closeDrawer()
   }
-};
+}
 
 const closeDrawer = () => {
   emit('close')
@@ -110,9 +132,62 @@ watch(
   border-bottom: 1px solid rgb(var(--v-theme-lightGrey));
 }
 
-.drawer-title {
-  font-size: $middle !important;
-  font-weight: $font-weight-bold;
+.drawer-title-text {
+  color: var(--text-strong-950, #171717);
+  font-feature-settings:
+    'ss11' on,
+    'liga' off,
+    'calt' off;
+  /* Label/Large */
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px; 
+  letter-spacing: -0.27px;
+}
+
+.drawer-desc-text {
+  overflow: hidden;
+  color: var(--text-sub-600, #5c5c5c);
+  font-feature-settings:
+    'ss11' on,
+    'liga' off,
+    'calt' off;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; 
+  letter-spacing: -0.084px;
+}
+
+.drawer-status-text {
+  display: flex;
+  padding: 4px 8px 4px 4px;
+  background-color: rgb(var(--v-theme-lightGreen));
+  align-items: center;
+  gap: 8px;
+  color: #1fc16b;
+  font-family: Inter;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px; 
+  border-radius: 4px;
+}
+
+.status-circle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgb(var(--v-theme-success));
+}
+
+.drawer-close {
+  display: flex;
 }
 
 .drawer-close-btn {

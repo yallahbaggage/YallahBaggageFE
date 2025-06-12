@@ -289,3 +289,29 @@ body {
   line-height: 20px; /* 142.857% */
   letter-spacing: -0.084px;
 }
+
+.cards {
+  display: flex;
+  flex-wrap: nowrap; // no wrapping to keep separators aligned
+  justify-content: center;
+  gap: 50px;
+}
+
+.infoCard {
+  flex: 1;
+  height: 50px;
+  padding: 10px;
+
+  // Add a right border except for the last one
+  &:not(:last-child) {
+    border-right: 1px solid rgb(var(--v-theme-lightGray));
+    margin-right: 20px;
+    padding-right: 20px;
+  }
+}
+
+.infoHr {
+  border-top: 1px solid var(--v-theme-lightGray);
+  text-decoration: dotted;
+  margin: 20px 0;
+}
