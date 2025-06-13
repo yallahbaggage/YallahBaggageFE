@@ -103,7 +103,7 @@ export interface ComplaintFilterParams {
   }
   search?: string
   sortBy?: string
-  transfer?: 'asc' | 'desc'
+  order?: 'asc' | 'desc'
   page?: string
   limit?: string
 }

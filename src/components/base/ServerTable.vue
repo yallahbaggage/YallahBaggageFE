@@ -4,56 +4,126 @@
     :items="items"
     :items-length="totalItems"
     :loading="loading"
-    v-model:page="page"
-    v-model:items-per-page="itemsPerPage"
+    :page="props.page"
+    :items-per-page="props.itemsPerPage"
+    @update:page="emit('update:page', $event)"
+    @update:items-per-page="emit('update:items-per-page', $event)"
     class="server-table"
   >
     <template #item="{ item, index }">
       <tr>
         <td v-for="(header, i) in headers" :key="i">
-          <slot :name="`cell-${header.key}`" :item="item" :index="index">
-            {{ item[header.key as string] }}
-          </slot>
-        </td>
-        <td v-if="$slots.actions">
-          <slot name="actions" :item="item" :index="index" />
+          <template v-if="header.key === '' && $slots.actions">
+            <slot name="actions" :item="item" :index="index" />
+          </template>
+          <template v-else>
+            <slot :name="`cell-${header.key}`" :item="item" :index="index">
+              {{ item[header.key as string] }}
+            </slot>
+          </template>
         </td>
       </tr>
     </template>
 
     <template #bottom>
-      <v-pagination
-        v-model="page"
-        :length="totalPages"
-        rounded
-        class="mt-4"
-      />
+      <div class="pagination-row">
+        <span class="pagination-info">Page {{ currentPage }} of {{ totalPages }}</span>
+        <div class="pagination-controls">
+          <v-btn icon variant="text" :disabled="currentPage === 1" @click="goToPage(1)"
+            ><v-icon>mdi-page-first</v-icon></v-btn
+          >
+          <v-btn
+            icon
+            variant="text"
+            :disabled="currentPage === 1"
+            @click="goToPage(currentPage - 1)"
+            ><v-icon>mdi-chevron-left</v-icon></v-btn
+          >
+          <v-pagination
+            v-model="currentPage"
+            :length="totalPages"
+            rounded
+            class="pagination-pages"
+            @update:model-value="onPageChange"
+          />
+          <v-btn
+            icon
+            variant="text"
+            :disabled="currentPage === totalPages || totalPages === 0"
+            @click="goToPage(currentPage + 1)"
+            ><v-icon>mdi-chevron-right</v-icon></v-btn
+          >
+          <v-btn
+            icon
+            variant="text"
+            :disabled="currentPage === totalPages || totalPages === 0"
+            @click="goToPage(totalPages)"
+            ><v-icon>mdi-page-last</v-icon></v-btn
+          >
+        </div>
+        <v-select
+          class="pagination-size"
+          :items="pageSizes"
+          v-model="localItemsPerPage"
+          variant="outlined"
+          density="compact"
+          hide-details
+          style="width: 100px"
+          @update:model-value="onPageSizeChange"
+        />
+      </div>
     </template>
   </v-data-table-server>
 </template>
 
 <script setup lang="ts">
 import type { DataTableHeader } from 'vuetify'
-import { computed, ref,watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const props = defineProps<{
   headers: DataTableHeader[]
   items: Record<string, any>[]
   totalItems: number
   loading: boolean
+  page: number
+  itemsPerPage: number
 }>()
-
-const page = ref(1)
-const itemsPerPage = ref(8)
 
 const emit = defineEmits(['update:page', 'update:items-per-page'])
 
-watch(page, value => emit('update:page', value))
-watch(itemsPerPage, value => emit('update:items-per-page', value))
+const totalPages = computed(() => Math.ceil(props.totalItems / props.itemsPerPage))
 
-const totalPages = computed(() =>
-  Math.ceil(props.totalItems / itemsPerPage.value)
+const currentPage = ref(props.page)
+watch(
+  () => props.page,
+  (val) => {
+    currentPage.value = val
+  },
 )
+
+function onPageChange(val: number) {
+  currentPage.value = val
+  emit('update:page', val)
+}
+
+function goToPage(val: number) {
+  if (val >= 1 && val <= totalPages.value) {
+    currentPage.value = val
+    emit('update:page', val)
+  }
+}
+
+const pageSizes = [8, 16, 32, 64]
+const localItemsPerPage = ref(props.itemsPerPage)
+watch(
+  () => props.itemsPerPage,
+  (val) => {
+    localItemsPerPage.value = val
+  },
+)
+function onPageSizeChange(val: number) {
+  emit('update:items-per-page', val)
+}
 </script>
 
 <style lang="scss" scoped>
@@ -70,5 +140,29 @@ const totalPages = computed(() =>
       font-weight: 600;
     }
   }
+}
+
+.pagination-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 24px;
+  margin: 24px 0 8px 0;
+}
+.pagination-info {
+  color: #888;
+  font-size: 15px;
+  min-width: 110px;
+}
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.pagination-pages {
+  margin: 0 8px;
+}
+.pagination-size {
+  margin-left: auto;
 }
 </style>

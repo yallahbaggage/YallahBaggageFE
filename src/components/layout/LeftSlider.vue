@@ -86,9 +86,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue3-i18n'
+
 // import { useThemeStore } from '@/stores/modules/theme'
 const { t } = useI18n()
 
@@ -98,7 +99,13 @@ import { useAuthStore } from '@/stores/modules/authStore'
 const route = useRoute()
 const authStore = useAuthStore()
 
-const user = computed(() => authStore.user);
+const user = computed(() => authStore.user)
+
+watchEffect(async () => {
+  if (!user.value) {
+    await authStore.fetchUserData()
+  }
+})
 
 const links = computed(() => [
   {

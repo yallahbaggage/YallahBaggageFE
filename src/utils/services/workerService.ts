@@ -4,10 +4,10 @@ import { IApiError, IApiResponse } from '@/models/api';
 import { IWorker } from '@/models/worker'; // Corrected import from Worker to IWorker
 
 class WorkerService {
-  async getWorkers(): Promise<IWorker[]> {
+  async getWorkers(params?: { page?: number; limit?: number }): Promise<any> {
     try {
-      const response = await api.get<IApiResponse<IWorker[]>>('/workers');
-      return response.data.data;
+      const response = await api.get('/workers', { params });
+      return response.data;
     } catch (error) {
       throw this.handleError(error as AxiosError<IApiError>);
     }

@@ -7,6 +7,12 @@ interface WorkersState {
   currentWorker: IWorker | null
   loading: boolean
   error: string | null
+  pagination: {
+    total: number
+    page: number
+    limit: number
+    pageCount: number
+  } | null
 }
 
 export const useWorkersStore = defineStore('workers', {
@@ -14,22 +20,25 @@ export const useWorkersStore = defineStore('workers', {
     workers: [],
     currentWorker: null,
     loading: false,
-    error: null
+    error: null,
+    pagination: null
   }),
 
   getters: {
     allWorkers: (state) => state.workers,
     currentWorker: (state) => state.currentWorker,
     isLoading: (state) => state.loading,
-    error: (state) => state.error
+    error: (state) => state.error,
+    pagination: (state) => state.pagination
   },
 
   actions: {
-    async getWorkers() {
+    async getWorkers(params?: { page?: number; limit?: number }) {
       try {
         this.loading = true
-        const response = await workerService.getWorkers()
-        this.workers = response
+        const response = await workerService.getWorkers(params)
+        this.workers = response.data
+        this.pagination = response.pagination
         return response
       } catch (error: any) {
         this.error = error.message || 'Error fetching workers'

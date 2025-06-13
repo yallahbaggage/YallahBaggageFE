@@ -131,7 +131,8 @@ export const useAuthStore = defineStore('auth', () => {
     resetAuthState,
     restoreAuthState,
     refreshLogin,
-    hasRole
+    hasRole,
+    fetchUserData
   }
 }, {
   persist: {

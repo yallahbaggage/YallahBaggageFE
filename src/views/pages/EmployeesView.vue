@@ -18,35 +18,37 @@
       <ServerTable
         :headers="headers"
         :items="workers"
-        :total-items="workers.length"
+        :total-items="pagination.total"
         :loading="loading"
-        :page="page"
-        :items-per-page="itemsPerPage"
-        @update:page="page = $event"
-        @update:items-per-page="itemsPerPage = $event"
+        v-model:page="page"
+        v-model:items-per-page="itemsPerPage"
       >
         <template #cell-status="{ item }">
           <v-chip :color="statusColor(item.status)" text-color="white" small>
             {{ item.status || 'New' }}
           </v-chip>
         </template>
-        <template #cell-assignee="{ item }">
+        <!-- <template #cell-assignee="{ item }">
           <span v-if="item.assignee">{{ item.assignee }}</span>
-          <v-btn v-else small outlined @click="assignStaff(item)">
-            Assign Staff
-          </v-btn>
-        </template>
+          <v-btn v-else small outlined @click="assignStaff(item)"> Assign Staff </v-btn>
+        </template> -->
         <template #actions="{ item }">
-          <v-menu>
+          <v-menu location="bottom end" offset="4">
             <template #activator="{ props }">
-              <v-btn icon v-bind="props">
+              <v-btn icon v-bind="props" variant="text" density="comfortable">
                 <v-icon>mdi-dots-vertical</v-icon>
               </v-btn>
             </template>
-            <v-list>
-              <v-list-item @click="viewDetails(item)">See Details</v-list-item>
-              <v-list-item @click="assignStaff(item)">Assign/Change Staff</v-list-item>
-              <v-list-item @click="changeStatus(item)">Change Status</v-list-item>
+            <v-list class="menu-list pa-0 ma-0">
+              <v-list-item class="menu-item" @click="viewDetails(item)">
+                                <v-icon class="mr-2">mdi-eye-outline</v-icon>
+
+                {{ t('seeDetails') }}
+              </v-list-item>
+              <v-list-item class="menu-item" @click="changeStatus(item)">
+                <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
+                {{ t('deleteEmployee') }}
+              </v-list-item>
             </v-list>
           </v-menu>
         </template>
@@ -124,14 +126,18 @@
                   buttonColor="white"
                   @button-pressed="() => (isDeleteEmployeeDrawerOpen = false)"
                 />
-                <ActionButton button-color="error" :buttonText="t('deleteEmployee')" buttonType="submit" />
+                <ActionButton
+                  button-color="error"
+                  :buttonText="t('deleteEmployee')"
+                  buttonType="submit"
+                />
               </div>
             </div>
           </form>
         </div>
       </Drawer>
       <!-- delete Drawer -->
-       <!-- update Drawer -->
+      <!-- update Drawer -->
       <Drawer
         :isOpen="isUpdateEmployeeDrawerOpen"
         :desc="t('newEmployee')"
@@ -159,15 +165,17 @@
                 </div>
               </div>
               <div class="action-btns">
-
                 <ActionButton
                   :buttonText="t('cancel')"
                   buttonColor="white"
                   @button-pressed="() => (isUpdateEmployeeDrawerOpen = false)"
                   class="action-Btn"
-
                 />
-                <ActionButton class="action-Btn" :buttonText="t('updateEmployee')" buttonType="submit" />
+                <ActionButton
+                  class="action-Btn"
+                  :buttonText="t('updateEmployee')"
+                  buttonType="submit"
+                />
               </div>
             </div>
           </form>
@@ -181,9 +189,9 @@
 import ActionButton from '@/components/base/ActionButton.vue'
 import BaseHeader from '@/components/base/BaseHeader.vue'
 import Drawer from '@/components/base/Drawer.vue'
-import InfoCard from '@/components/base/infoCard.vue'
+import InfoCard from '@/components/base/InfoCard.vue'
 import ServerTable from '@/components/base/ServerTable.vue'
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue3-i18n'
 import { useWorkersStore } from '@/stores/modules/workers'
 
@@ -195,22 +203,32 @@ const isUpdateEmployeeDrawerOpen = ref(false)
 const workersStore = useWorkersStore()
 const loading = computed(() => workersStore.isLoading)
 const workers = computed(() => workersStore.allWorkers)
+const pagination = computed(
+  () => workersStore.pagination || { total: 0, page: 1, limit: 8, pageCount: 1 },
+)
 const page = ref(1)
 const itemsPerPage = ref(8)
 
 const headers = [
   { title: 'ID', key: '_id' },
-  { title: 'Full Name', key: 'name' },
-  { title: 'Phone', key: 'phone' },
-  { title: 'Email', key: 'email' },
-  { title: 'Status', key: 'status' },
-  { title: 'Assignee', key: 'assignee' },
-  { title: '', key: 'actions', sortable: false }
+  { title: t('employee'), key: 'name' },
+  { title: t('identityNumber'), key: 'identityNumber' },
+  { title: t('phoneNumber'), key: 'phone' },
+  { title: t('status'), key: 'status' },
+  { title: t('actions'), key: '', sortable: false },
 ]
 
-onMounted(() => {
-  workersStore.getWorkers()
-})
+const fetchWorkers = async () => {
+  const response = await workersStore.getWorkers({ page: page.value, limit: itemsPerPage.value })
+  // Sync local page with backend page (in case backend adjusts it)
+  if (response.pagination && response.pagination.page !== page.value) {
+    page.value = response.pagination.page
+  }
+}
+
+onMounted(fetchWorkers)
+
+watch([page, itemsPerPage], fetchWorkers)
 
 const onDeleteButtonPressed = () => {
   isDeleteEmployeeDrawerOpen.value = true
@@ -223,15 +241,17 @@ const onUpdateButtonPressed = () => {
 }
 
 function statusColor(status: string) {
-  return {
-    New: 'green',
-    Assigned: 'blue',
-    'On The Way': 'orange',
-    Delivered: 'grey',
-    Cancelled: 'red',
-    Available: 'green',
-    default: 'primary'
-  }[status] || 'primary'
+  return (
+    {
+      New: 'green',
+      Assigned: 'blue',
+      'On The Way': 'orange',
+      Delivered: 'grey',
+      Cancelled: 'red',
+      Available: 'green',
+      default: 'primary',
+    }[status] ?? 'primary'
+  )
 }
 
 function viewDetails(item: any) {
@@ -247,8 +267,6 @@ function changeStatus(item: any) {
 }
 </script>
 <style lang="scss">
-
-
 .employee-info {
   margin-top: 16px;
   display: flex;
@@ -280,4 +298,15 @@ function changeStatus(item: any) {
   letter-spacing: -0.084px;
 }
 
+.menu-list {
+  min-width: 140px;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.menu-item {
+  font-size: 14px;
+  padding: 6px 12px;
+  min-height: unset !important;
+}
 </style>

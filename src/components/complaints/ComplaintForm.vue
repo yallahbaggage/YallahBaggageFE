@@ -148,7 +148,7 @@ const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
   if (target.files) {
     selectedFiles.value = Array.from(target.files);
-    formData.value.attachments = selectedFiles.value; // Assign selected files to formData
+    // formData.value.attachments = selectedFiles.value; // Assign selected files to formData
   }
 };
 
