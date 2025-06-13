@@ -106,5 +106,10 @@
     "information": "Bilgi",
     "fullName": "Ad Soyad",
     "phoneNumber": "Telefon Numarası",
-    "employeeID": "Çalışan ID"
+    "employeeID": "Çalışan ID",
+    "assignEmployee": "Çalışanı Ata",
+    "assignEmployeeToSelectedTransfer": "Seçilen Transfer için Çalışanı Ata",
+    "assign": "Ata",
+    "save": "Kaydet",
+    "selectAnEmployee": "Bir Çalışan Seç"
 }

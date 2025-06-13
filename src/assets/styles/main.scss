@@ -13,7 +13,7 @@
   src:
     url('@/assets/styles/fonts/roboto/Roboto-Bold.ttf') format('Bold'),
     url('@/assets/styles/fonts/roboto/Roboto-Medium.ttf') format('Medium'),
-    url('@/assets/styles/fonts/roboto/Roboto-Regular.ttf') format('Regular'),
+    url('@/assets/styles/fonts/roboto/Roboto-Regular.ttf') format('Regular');
 }
 
 $x-small: 0.5rem;
@@ -21,9 +21,9 @@ $small: 0.75rem;
 $medium: 1rem;
 $middle: 1.12rem;
 $large: 1.25rem;
-$xl: 1.5rem; 
+$xl: 1.5rem;
 $size-2xl: 1.75rem;
-$size-3xl: 2rem; 
+$size-3xl: 2rem;
 $size-4xl: 2.5rem;
 $size-5xl: 3rem;
 
@@ -110,8 +110,8 @@ body {
   font-weight: $font-weight-bold !important;
 }
 
-.v-table__wrapper { 
-    overflow: hidden !important;
+.v-table__wrapper {
+  overflow: hidden !important;
 }
 
 .v-table > .v-table__wrapper > table > thead > tr > th {
@@ -130,11 +130,11 @@ body {
 }
 
 .v-btn--size-default {
-    padding: 0 16px;
+  padding: 0 16px;
 }
 
 .v-slide-group__container .v-btn--size-default {
-    padding: 0px;
+  padding: 0px;
 }
 
 .flex-container {
@@ -146,20 +146,20 @@ body {
 }
 
 .flex-container > .v-icon {
-    width: 40% !important;
+  width: 40% !important;
 }
 
 .flex-container > .dropdown-container {
-    width: 60% !important;
+  width: 60% !important;
 }
 
 .icon-style {
-    padding-right: 15%;
+  padding-right: 15%;
 }
 
 .v-table--density-default {
-    --v-table-row-height: 45px;
-    --v-table-header-height: 37px;
+  --v-table-row-height: 45px;
+  --v-table-header-height: 37px;
 }
 
 .v-container {
@@ -206,7 +206,7 @@ body {
 .phone-dropdown-list {
   border: none !important;
   display: flex;
-  align-items: center; 
+  align-items: center;
 }
 
 .non-server-table-container {
@@ -215,14 +215,14 @@ body {
 }
 
 .non-server-table-tab {
-    padding: 15px 0px !important;
+  padding: 15px 0px !important;
 }
 
 //INFO: for callToAction and worklist details pages
 .dropdown-section {
   display: flex;
   flex-direction: column;
-  gap: $large !important; 
+  gap: $large !important;
   width: 100%;
   font-size: $xl !important;
 
@@ -233,21 +233,21 @@ body {
     white-space: nowrap;
 
     h3 {
-      font-size: $medium !important; 
+      font-size: $medium !important;
       font-weight: $font-weight-bold;
-      width: 33.333%; 
+      width: 33.333%;
     }
 
     p {
-      font-size: $medium !important; 
+      font-size: $medium !important;
       font-weight: $font-weight-regular;
-      width: 33.333%; 
+      width: 33.333%;
     }
 
     .dropdown {
       background-color: rgb(var(--v-theme-white));
       width: 50%;
-      font-size: $small !important; 
+      font-size: $small !important;
       border-color: rgb(var(--v-theme-slate));
     }
   }
@@ -270,7 +270,8 @@ body {
   padding: 15px;
 }
 
-.users-table, .user-groups-table{
+.users-table,
+.user-groups-table {
   padding: 0px;
 }
 
@@ -280,7 +281,6 @@ body {
     max-width: 100% !important;
   }
 }
-
 
 .text-style {
   font-size: 14px;
@@ -314,4 +314,38 @@ body {
   border-top: 1px solid var(--v-theme-lightGray);
   text-decoration: dotted;
   margin: 20px 0;
+}
+
+.drawer-banner {
+  background-color: rgb(var(--v-theme-lightGray));
+
+  p {
+    font-weight: 600;
+    padding: 10px;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px; /* 133.333% */
+    letter-spacing: 0.48px;
+    text-transform: uppercase;
+    color: #a3a3a3;
+  }
+}
+
+.action-btns {
+  padding-top: 15px;
+  border-top: 1px solid rgb(var(--v-theme-lightGray));
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  position: absolute;
+  bottom: 0;
+  width: 95%;
+  margin-bottom: 20px;
+
+  .action-Btn {
+    flex: 1;
+  }
 }

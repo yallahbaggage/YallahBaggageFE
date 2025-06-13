@@ -15,6 +15,42 @@
         <InfoCard class="infoCard" :cardTitle="t('availableEmployees')"> 488 </InfoCard>
       </div>
       <hr class="infoHr" />
+      <ServerTable
+        :headers="headers"
+        :items="workers"
+        :total-items="workers.length"
+        :loading="loading"
+        :page="page"
+        :items-per-page="itemsPerPage"
+        @update:page="page = $event"
+        @update:items-per-page="itemsPerPage = $event"
+      >
+        <template #cell-status="{ item }">
+          <v-chip :color="statusColor(item.status)" text-color="white" small>
+            {{ item.status || 'New' }}
+          </v-chip>
+        </template>
+        <template #cell-assignee="{ item }">
+          <span v-if="item.assignee">{{ item.assignee }}</span>
+          <v-btn v-else small outlined @click="assignStaff(item)">
+            Assign Staff
+          </v-btn>
+        </template>
+        <template #actions="{ item }">
+          <v-menu>
+            <template #activator="{ props }">
+              <v-btn icon v-bind="props">
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="viewDetails(item)">See Details</v-list-item>
+              <v-list-item @click="assignStaff(item)">Assign/Change Staff</v-list-item>
+              <v-list-item @click="changeStatus(item)">Change Status</v-list-item>
+            </v-list>
+          </v-menu>
+        </template>
+      </ServerTable>
       <!-- add Drawer -->
       <Drawer
         :isOpen="isEmployeeDrawerOpen"
@@ -25,7 +61,7 @@
         <div style="max-height: 75vh">
           <form @submit.prevent="onAddButtonPressed()" class="form">
             <div>
-              <div class="employee-banner">
+              <div class="drawer-banner">
                 <p>{{ t('information') }}</p>
               </div>
               <div>
@@ -65,7 +101,7 @@
         <div style="max-height: 75vh">
           <form @submit.prevent="onDeleteButtonPressed()" class="form">
             <div>
-              <div class="employee-banner">
+              <div class="drawer-banner">
                 <p>{{ t('information') }}</p>
               </div>
               <div>
@@ -105,7 +141,7 @@
         <div style="max-height: 75vh">
           <form @submit.prevent="onUpdateButtonPressed()" class="form">
             <div>
-              <div class="employee-banner">
+              <div class="drawer-banner">
                 <p>{{ t('information') }}</p>
               </div>
               <div>
@@ -146,13 +182,35 @@ import ActionButton from '@/components/base/ActionButton.vue'
 import BaseHeader from '@/components/base/BaseHeader.vue'
 import Drawer from '@/components/base/Drawer.vue'
 import InfoCard from '@/components/base/infoCard.vue'
-import { ref } from 'vue'
+import ServerTable from '@/components/base/ServerTable.vue'
+import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue3-i18n'
+import { useWorkersStore } from '@/stores/modules/workers'
 
 const { t } = useI18n()
 const isEmployeeDrawerOpen = ref(false)
 const isDeleteEmployeeDrawerOpen = ref(false)
 const isUpdateEmployeeDrawerOpen = ref(false)
+
+const workersStore = useWorkersStore()
+const loading = computed(() => workersStore.isLoading)
+const workers = computed(() => workersStore.allWorkers)
+const page = ref(1)
+const itemsPerPage = ref(8)
+
+const headers = [
+  { title: 'ID', key: '_id' },
+  { title: 'Full Name', key: 'name' },
+  { title: 'Phone', key: 'phone' },
+  { title: 'Email', key: 'email' },
+  { title: 'Status', key: 'status' },
+  { title: 'Assignee', key: 'assignee' },
+  { title: '', key: 'actions', sortable: false }
+]
+
+onMounted(() => {
+  workersStore.getWorkers()
+})
 
 const onDeleteButtonPressed = () => {
   isDeleteEmployeeDrawerOpen.value = true
@@ -163,24 +221,33 @@ const onAddButtonPressed = () => {
 const onUpdateButtonPressed = () => {
   isUpdateEmployeeDrawerOpen.value = true
 }
+
+function statusColor(status: string) {
+  return {
+    New: 'green',
+    Assigned: 'blue',
+    'On The Way': 'orange',
+    Delivered: 'grey',
+    Cancelled: 'red',
+    Available: 'green',
+    default: 'primary'
+  }[status] || 'primary'
+}
+
+function viewDetails(item: any) {
+  // Implement view details logic
+}
+
+function assignStaff(item: any) {
+  // Implement assign staff logic
+}
+
+function changeStatus(item: any) {
+  // Implement change status logic
+}
 </script>
 <style lang="scss">
-.employee-banner {
-  background-color: rgb(var(--v-theme-lightGray));
 
-  p {
-    font-weight: 600;
-    padding: 10px;
-    font-family: Inter;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 16px; /* 133.333% */
-    letter-spacing: 0.48px;
-    text-transform: uppercase;
-    color: #a3a3a3;
-  }
-}
 
 .employee-info {
   margin-top: 16px;
@@ -212,20 +279,5 @@ const onUpdateButtonPressed = () => {
   line-height: 20px; /* 142.857% */
   letter-spacing: -0.084px;
 }
-.action-btns {
-  padding-top: 15px;
-  border-top: 1px solid rgb(var(--v-theme-lightGray));
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 10px;
-  position: absolute;
-  bottom: 0;
-  width: 95%;
-  margin-bottom: 20px;
 
-  .action-Btn{
-    flex: 1;
-  }
-}
 </style>

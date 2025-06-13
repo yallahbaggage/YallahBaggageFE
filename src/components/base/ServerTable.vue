@@ -1,79 +1,74 @@
 <template>
-  <div>
-    <WaitingView v-if="loading" />
-    <v-container v-if="!loading && items">
-      <v-data-table-server
-        :items="items"
-        :headers="headers"
-        :items-length="totalItems"
-        :page.sync="page"
-        :items-per-page.sync="itemsPerPage"
-        :loading="loading"
-        @update:page="$emit('update:page', $event)"
-        @update:items-per-page="$emit('update:items-per-page', $event)"
-        :loading-text="t('loadingText')"
-        hide-no-data
-        disable-sort
-        :page-text="t('paginationText', { start: '{0}', end: '{1}', total: '{2}' })"
-        >
-        <template #item="{ item }">
-          <slot name="item" :item="item" />
-        </template>
-        <template #no-data>
-          <v-alert type="info">{{ props?.noDataMessage ?? t('noDataAvailable') }}</v-alert>
-        </template>
-      </v-data-table-server>
-    </v-container>
-    <div v-if="!loading && items && items.length == 0" class="center-no-data-available">
-      {{ props?.noDataMessage ?? t('noDataAvailable') }}
-    </div>
-  </div>
+  <v-data-table-server
+    :headers="headers"
+    :items="items"
+    :items-length="totalItems"
+    :loading="loading"
+    v-model:page="page"
+    v-model:items-per-page="itemsPerPage"
+    class="server-table"
+  >
+    <template #item="{ item, index }">
+      <tr>
+        <td v-for="(header, i) in headers" :key="i">
+          <slot :name="`cell-${header.key}`" :item="item" :index="index">
+            {{ item[header.key as string] }}
+          </slot>
+        </td>
+        <td v-if="$slots.actions">
+          <slot name="actions" :item="item" :index="index" />
+        </td>
+      </tr>
+    </template>
+
+    <template #bottom>
+      <v-pagination
+        v-model="page"
+        :length="totalPages"
+        rounded
+        class="mt-4"
+      />
+    </template>
+  </v-data-table-server>
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
-import { useI18n } from 'vue3-i18n'
-import { ref } from 'vue'
+import type { DataTableHeader } from 'vuetify'
+import { computed, ref,watch } from 'vue'
 
-interface Header {
-  key: string
-  title: string
-  divider?: boolean
-}
-const { t } = useI18n()
+const props = defineProps<{
+  headers: DataTableHeader[]
+  items: Record<string, any>[]
+  totalItems: number
+  loading: boolean
+}>()
 
-const props = defineProps({
-  items: {
-    type: Array as () => any[],
-    default: () => [],
-    required: true,
-  },
-  headers: {
-    type: Array as PropType<Header[]>,
-    required: true,
-  },
-  totalItems: {
-    type: Number,
-    required: true,
-  },
-  page: {
-    type: Number,
-    required: true,
-  },
-  itemsPerPage: {
-    type: Number,
-    required: true,
-  },
-  loading: {
-    type: Boolean,
-    required: true,
-  },
-  noDataMessage: { type: String },
-})
+const page = ref(1)
+const itemsPerPage = ref(8)
 
 const emit = defineEmits(['update:page', 'update:items-per-page'])
-const page = ref(props.page)
+
+watch(page, value => emit('update:page', value))
+watch(itemsPerPage, value => emit('update:items-per-page', value))
+
+const totalPages = computed(() =>
+  Math.ceil(props.totalItems / itemsPerPage.value)
+)
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.server-table {
+  ::v-deep(.v-data-table) {
+    font-size: 14px;
+
+    td,
+    th {
+      padding: 12px;
+    }
+
+    th {
+      font-weight: 600;
+    }
+  }
+}
 </style>

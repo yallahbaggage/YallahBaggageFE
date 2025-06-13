@@ -106,5 +106,10 @@
     "information": "Information",
     "fullName": "Full Name",
     "phoneNumber": "Phone Number",
-    "employeeID": "Employee ID"
+    "employeeID": "Employee ID",
+    "assignEmployee": "Assign Employee",
+    "assignEmployeeToSelectedTransfer": "Assign Employee to Selected Transfer",
+    "assign": "Assign",
+    "save": "Save",
+    "selectAnEmployee": "Select an Employee"
 }
