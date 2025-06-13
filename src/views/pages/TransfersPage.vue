@@ -29,7 +29,7 @@ const headers = [
   { title: t('customer'), key: 'customer' },
   { title: t('pickUpDate'), key: 'pickUpDate' },
   { title: t('deliveryDate'), key: 'deliveryDate' },
-  { title: t('Status'), key: 'status' },
+  { title: t('status'), key: 'status' },
   { title: t('assignChangeStaff'), key: 'assignChangeStaff' },
   { title: t('changeStatus'), key: 'changeStatus' },
   { title: t('actions'), key: 'actions', sortable: false }
