@@ -32,7 +32,7 @@ export interface IComplaint {
   category: ComplaintCategory
   priority: ComplaintPriority
   status: ComplaintStatus
-  orderId: string
+  transferId: string
   userId: IUser
   assignedToId?: IUser
   relatedWorkerId?: IWorker
@@ -60,7 +60,7 @@ export interface ICreateComplaint {
   description: string
   category: ComplaintCategory
   priority: ComplaintPriority
-  orderId: string
+  transferId: string
   relatedWorkerId?: string
   attachments?: string[]
 }
@@ -103,7 +103,7 @@ export interface ComplaintFilterParams {
   }
   search?: string
   sortBy?: string
-  order?: 'asc' | 'desc'
+  transfer?: 'asc' | 'desc'
   page?: string
   limit?: string
 }

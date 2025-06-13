@@ -1,6 +1,6 @@
 export interface RootState {
   auth: AuthState
-  orders: OrderState
+  transfers: TransferState
   services: ServiceState
   workers: WorkerState
 }
@@ -12,9 +12,9 @@ export interface AuthState {
   error: string | null
 }
 
-export interface OrderState {
-  orders: Order[]
-  currentOrder: Order | null
+export interface TransferState {
+  transfers: Transfer[]
+  currentTransfer: Transfer | null
   loading: boolean
   error: string | null
 }
@@ -54,7 +54,7 @@ export interface Complaint {
   category: 'service' | 'worker' | 'payment' | 'technical' | 'other';
   priority: 'low' | 'medium' | 'high' | 'urgent';
   status: 'pending' | 'in_progress' | 'resolved' | 'rejected' | 'closed';
-  orderId: string;
+  transferId: string;
   userId: string | User;
   assignedToId?: string | User;
   relatedWorkerId?: string | Worker;
@@ -74,25 +74,25 @@ export interface Complaint {
   updatedAt: string;
 }
 
-export interface OrderItem {
+export interface TransferItem {
   name: string;
   weight: number;
   images: string[];
   isBreakable: boolean;
 }
 
-export interface OrderRating {
+export interface TransferRating {
   rating: number;
   comment?: string;
   createdAt: string;
 }
 
-export interface Order {
+export interface Transfer {
   _id: string;
   userId: string | User;
   workerId?: string | Worker;
   complaintId?: string | Complaint;
-  items: OrderItem[];
+  items: TransferItem[];
   status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
   totalAmount: number;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
@@ -105,7 +105,7 @@ export interface Order {
   pickUpTime: string;
   completedAt?: string;
   cancelledAt?: string;
-  rating?: OrderRating;
+  rating?: TransferRating;
   createdAt: string;
   updatedAt: string;
 }

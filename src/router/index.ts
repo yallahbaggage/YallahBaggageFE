@@ -69,9 +69,9 @@ const routes: Array<RouteRecordRaw> = [
     meta: { requiresAuth: true }
   },
   // {
-  //   path: '/orders/:id',
-  //   name: 'OrderDetails',
-  //   component: () => import('@/views/pages/OrderDetailsPage.vue'),
+  //   path: '/transfers/:id',
+  //   name: 'TransferDetails',
+  //   component: () => import('@/views/pages/TransferDetailsPage.vue'),
   //   meta: { requiresAuth: true }
   // },
   // {

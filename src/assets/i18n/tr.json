@@ -25,12 +25,12 @@
     "manageYourCustomerSupportRequests": "Müşteri destek taleplerinizi yönetin",
     "manageAndTrackYourEmployees": "Çalışanlarınızı yönetin ve takip edin",
     "manageAndTrackYourTransfers": "Transferlerinizi yönetin ve takip edin",
-    "orders": {
-      "title": "Siparişler",
-      "myOrders": "Siparişlerim",
-      "allOrders": "Tüm Siparişler",
-      "createOrder": "Sipariş Oluştur",
-      "orderDetails": "Sipariş Detayları",
+    "transfersList": {
+      "title": "Transferler",
+      "myTransfers": "Transferlerim",
+      "allTransfers": "Tüm Transferler",
+      "createTransfer": "Transfer Oluştur",
+      "transferDetails": "Transfer Detayları",
       "status": {
         "title": "Durum",
         "pending": "Beklemede",
@@ -56,7 +56,7 @@
         "clear": "Filtreleri Temizle"
       },
       "table": {
-        "orderId": "Sipariş No",
+        "transferId": "Transfer No",
         "service": "Hizmet",
         "worker": "Çalışan",
         "amount": "Tutar",
@@ -70,17 +70,17 @@
         "worker": "Çalışan Seç",
         "amount": "Toplam Tutar",
         "scheduledDate": "Planlanan Tarih",
-        "submit": "Siparişi Oluştur",
-        "update": "Siparişi Güncelle"
+        "submit": "Transferi Oluştur",
+        "update": "Transferi Güncelle"
       },
       "messages": {
-        "createSuccess": "Sipariş başarıyla oluşturuldu",
-        "updateSuccess": "Sipariş başarıyla güncellendi",
-        "deleteSuccess": "Sipariş başarıyla silindi",
+        "createSuccess": "Transfer başarıyla oluşturuldu",
+        "updateSuccess": "Transfer başarıyla güncellendi",
+        "deleteSuccess": "Transfer başarıyla silindi",
         "deleteConfirm": "Bu siparişi silmek istediğinize emin misiniz?",
-        "noOrders": "Herhangi bir sipariş bulunamadı",
-        "loading": "Siparişler yükleniyor...",
-        "error": "Siparişler yüklenirken hata oluştu"
+        "noTransfers": "Herhangi bir sipariş bulunamadı",
+        "loading": "Transferler yükleniyor...",
+        "error": "Transferler yüklenirken hata oluştu"
       }
     },
     "todaysTransfers": "Bugünün Transferleri",

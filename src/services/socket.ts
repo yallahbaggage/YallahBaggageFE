@@ -1,6 +1,6 @@
 import { io, Socket } from 'socket.io-client';
-import { useOrderStore } from '../stores/orderStore';
-import { Order } from '../stores/types';
+import { useTransferStore } from '../stores/transferStore';
+import { Transfer } from '../stores/types';
 
 class SocketService {
   private socket: Socket | null = null;
@@ -18,7 +18,7 @@ class SocketService {
   connect(token: string) {
     if (this.socket?.connected) return;
 
-    this.socket = io(import.meta.env.VITE_API_URL || 'http://localhost:5000', {
+    this.socket = io(import.meta.env.VITE_API_URL || 'http://localhost:9091', {
       auth: {
         token
       },
@@ -39,9 +39,9 @@ class SocketService {
       console.log('Socket disconnected');
     });
 
-    this.socket.on('orderStatusUpdated', (updatedOrder: Order) => {
-      const orderStore = useOrderStore();
-      orderStore.updateOrderStatus(updatedOrder);
+    this.socket.on('transferStatusUpdated', (updatedTransfer: Transfer) => {
+      const transferStore = useTransferStore();
+      transferStore.updateTransferStatus(updatedTransfer);
     });
 
     this.socket.on('error', (error: Error) => {
@@ -56,9 +56,9 @@ class SocketService {
     }
   }
 
-  emitOrderStatusUpdate(orderId: string, status: string) {
+  emitTransferStatusUpdate(transferId: string, status: string) {
     if (this.socket?.connected) {
-      this.socket.emit('updateOrderStatus', { orderId, status });
+      this.socket.emit('updateTransferStatus', { transferId, status });
     }
   }
 }

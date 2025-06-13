@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { KeyValueItem } from '@/models'
+import { KeyValueItem } from '@/models/KeyValueItem'
 
 const props = defineProps({
   isDisabled: { type: Boolean, default: false },

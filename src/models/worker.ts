@@ -4,7 +4,7 @@ export interface IWorker extends IBaseUser {
   role: 'admin' | 'worker';
   specialization?: string;
   rating?: number;
-  totalOrders?: number;
+  totalTransfers?: number;
   status?: 'Available' | 'Assigned' | 'On The Way';
 }
 

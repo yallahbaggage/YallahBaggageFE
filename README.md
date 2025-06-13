@@ -49,7 +49,7 @@ npm run dev
 - Role-based access control
 - Service management
 - Worker management
-- Order processing
+- Transfer processing
 - Advertisement management
 - Multi-language support
 - Responsive design
