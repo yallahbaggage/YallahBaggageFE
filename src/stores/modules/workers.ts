@@ -2,17 +2,19 @@ import { defineStore } from 'pinia'
 import { IWorker } from '@/models/worker'
 import { workerService } from '@/utils/services/workerService'
 
+interface Pagination {
+  total: number
+  page: number
+  limit: number
+  pageCount: number
+}
+
 interface WorkersState {
   workers: IWorker[]
   currentWorker: IWorker | null
   loading: boolean
   error: string | null
-  pagination: {
-    total: number
-    page: number
-    limit: number
-    pageCount: number
-  } | null
+  pagination: Pagination | null
 }
 
 export const useWorkersStore = defineStore('workers', {
@@ -25,41 +27,44 @@ export const useWorkersStore = defineStore('workers', {
   }),
 
   getters: {
-    allWorkers: (state) => state.workers,
-    currentWorker: (state) => state.currentWorker,
-    isLoading: (state) => state.loading,
-    error: (state) => state.error,
-    pagination: (state) => state.pagination
+    allWorkers: (state): IWorker[] => state.workers,
+    currentWorkerData: (state): IWorker | null => state.currentWorker,
+    isLoading: (state): boolean => state.loading,
+    errorMessage: (state): string | null => state.error,
+    paginationInfo: (state): Pagination | null => state.pagination
   },
 
   actions: {
-    async getWorkers(params?: { page?: number; limit?: number }) {
+    async getWorkers(params?: { page?: number; limit?: number }): Promise<{ data: IWorker[]; pagination: Pagination }> {
       try {
         this.loading = true
         const response = await workerService.getWorkers(params)
         this.workers = response.data
         this.pagination = response.pagination
-        return response
-      } catch (error: any) {
-        this.error = error.message || 'Error fetching workers'
-        throw error
+        return response as { data: IWorker[]; pagination: Pagination }
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : 'Error fetching workers'
+        console.error(errorMsg)
+        this.error = errorMsg
+        throw err
       } finally {
         this.loading = false
       }
     },
 
-    async getWorker(workerId: string) {
+    async getWorker(workerId: string): Promise<IWorker> {
       try {
         this.loading = true
         const response = await workerService.getWorker(workerId)
-        this.currentWorker = response
-        return response
-      } catch (error: any) {
-        this.error = error.message || 'Error fetching worker'
-        throw error
+        this.currentWorker = response as IWorker
+        return response;
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : 'Error fetching worker'
+        this.error = errorMsg
+        throw err
       } finally {
         this.loading = false
       }
     }
   }
-}) 
+})
