@@ -34,13 +34,28 @@
             }}</v-chip>
           </div>
         </router-link>
+        <v-list dense nav bg-color="white" class="menu">
+          <router-link
+            role="button"
+            to="/login"
+            class="logout-link"
+            @click="authStore.resetAuthState()"
+          >
+            <v-list-item class="logout-item" v-if="links.length > 0">
+              <div class="menu-item-name">
+                <v-icon class="icon"> mdi-logout</v-icon>
+                {{ t('logout') }}
+              </div>
+            </v-list-item>
+          </router-link>
+        </v-list>
       </template>
     </v-list>
 
-    <hr color="lightgray"/>
+    <hr color="lightgray" />
     <!-- Bottom Section: Theme Toggle & Language Switch -->
     <!-- <div class="bottom-actions"> -->
-      <!-- <v-btn class="bottom-btn" color="primary" centered accent @click="toggleTheme()">
+    <!-- <v-btn class="bottom-btn" color="primary" centered accent @click="toggleTheme()">
         <v-icon>mdi-theme-light-dark</v-icon>
       </v-btn> -->
     <!-- </div> -->
@@ -49,7 +64,7 @@
     <div class="user-profile">
       <v-icon class="user-icon">mdi-account-circle</v-icon>
       <div>
-        <span class="username">Arthur Taylor</span>
+        <span class="username">{{user?.name}}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
@@ -64,7 +79,7 @@
           />
         </svg>
         <v-icon class="user-profile-arrow">mdi-chevron-right</v-icon>
-        <span class="user-email text-style">arthur@yalla.com</span>
+        <span class="user-email text-style">{{ user?.email }}</span>
       </div>
     </div>
   </div>
@@ -82,6 +97,8 @@ import { useAuthStore } from '@/stores/modules/authStore'
 // const themeStore = useThemeStore()
 const route = useRoute()
 const authStore = useAuthStore()
+
+const user = computed(() => authStore.user);
 
 const links = computed(() => [
   {

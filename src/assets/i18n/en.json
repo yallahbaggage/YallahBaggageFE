@@ -119,5 +119,9 @@
     "status": "Status",
     "assignChangeStaff": "Assign / Change Staff",
     "changeStatus": "Change Status",
-    "actions": "Actions"
+    "actions": "Actions",
+    "identityNumber": "Identity Number",
+    "employee": "Employee",
+    "email": "Email"
+
 }
