@@ -111,5 +111,13 @@
     "assignEmployeeToSelectedTransfer": "Assign Employee to Selected Transfer",
     "assign": "Assign",
     "save": "Save",
-    "selectAnEmployee": "Select an Employee"
+    "selectAnEmployee": "Select an Employee",
+    "transferDate": "Transfer Date",
+    "customer": "Customer",
+    "pickUpDate": "Pick Up Date",
+    "deliveryDate": "Delivery Date",
+    "status": "Status",
+    "assignChangeStaff": "Assign / Change Staff",
+    "changeStatus": "Change Status",
+    "actions": "Actions"
 }

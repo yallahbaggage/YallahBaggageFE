@@ -111,5 +111,13 @@
     "assignEmployeeToSelectedTransfer": "Seçilen Transfer için Çalışanı Ata",
     "assign": "Ata",
     "save": "Kaydet",
-    "selectAnEmployee": "Bir Çalışan Seç"
+    "selectAnEmployee": "Bir Çalışan Seç",
+    "transferDate": "Transfer Tarihi",
+    "customer": "Müşteri",
+    "pickUpDate": "Alım Tarihi",
+    "deliveryDate": "Dağıt Tarihi",
+    "status": "Durum",
+    "assignChangeStaff": "Personel Ata / Değiştir",
+    "changeStatus": "Durumu Değiştir",
+    "actions": "Aksiyonlar"
 }
