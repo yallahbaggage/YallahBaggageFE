@@ -64,7 +64,7 @@
     <div class="user-profile">
       <v-icon class="user-icon">mdi-account-circle</v-icon>
       <div>
-        <span class="username">{{user?.name}}</span>
+        <span class="username">{{ user?.name || 'Loading...' }}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
@@ -79,7 +79,7 @@
           />
         </svg>
         <v-icon class="user-profile-arrow">mdi-chevron-right</v-icon>
-        <span class="user-email text-style">{{ user?.email }}</span>
+        <span class="user-email text-style">{{ user?.email || '' }}</span>
       </div>
     </div>
   </div>

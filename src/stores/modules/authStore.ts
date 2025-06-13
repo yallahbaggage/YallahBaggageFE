@@ -65,15 +65,14 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const userData = await authService.login(data)
       isAuthenticated.value = true
-      user.value = userData
       access_token.value = userData.access_token
-      
       // Store tokens in localStorage
       localStorage.setItem('accessToken', userData.access_token)
       localStorage.setItem('accessTokenExpiresIn', userData.expires_in.toString())
       localStorage.setItem('refreshToken', userData.refresh_token)
       localStorage.setItem('refreshExpiresIn', userData.refresh_expires_in.toString())
-      
+      // Fetch and set user info immediately after login
+      await fetchUserData()
       return true
     } catch (error) {
       console.error('Login failed:', error)
@@ -86,7 +85,7 @@ export const useAuthStore = defineStore('auth', () => {
       // Use the role from the data, defaulting to customer if not specified
       const registerData: RegisterData = {
         ...data,
-        role: data.role || 'customer'
+        role: data.role ?? 'customer'
       }
       const userData = await authService.register(registerData)
       isAuthenticated.value = true
