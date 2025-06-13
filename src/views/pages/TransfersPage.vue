@@ -17,10 +17,23 @@
 </template>
 <script setup lang="ts">
 import BaseHeader from '@/components/base/BaseHeader.vue'
-import InfoCard from '@/components/base/infoCard.vue'
-import { useI18n } from 'vue3-i18n'
+import InfoCard from '@/components/base/InfoCard.vue';
+import { useI18n } from 'vue3-i18n';
 
 const { t } = useI18n()
+
+
+const headers = [
+  { title: 'ID', key: '_id' },
+  { title: t('transferDate'), key: 'transferDate' },
+  { title: t('customer'), key: 'customer' },
+  { title: t('pickUpDate'), key: 'pickUpDate' },
+  { title: t('deliveryDate'), key: 'deliveryDate' },
+  { title: t('Status'), key: 'status' },
+  { title: t('assignChangeStaff'), key: 'assignChangeStaff' },
+  { title: t('changeStatus'), key: 'changeStatus' },
+  { title: t('actions'), key: 'actions', sortable: false }
+]
 </script>
 <style lang="scss">
 
