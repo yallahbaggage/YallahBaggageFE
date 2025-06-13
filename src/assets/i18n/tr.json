@@ -122,5 +122,7 @@
     "actions": "Aksiyonlar",
     "identityNumber": "Kimlik Numarası",
     "employee": "Çalışan",
-    "email": "E-posta"
+    "email": "E-posta",
+    "updateEmployee": "Çalışanı Güncelle",
+    "loading": "Yükleniyor..."
 }

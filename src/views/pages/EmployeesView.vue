@@ -10,9 +10,15 @@
     />
     <div class="page-content">
       <div class="cards">
-        <InfoCard class="infoCard" :cardTitle="t('totalEmployees')"> {{ stats.totalWorkers }} </InfoCard>
-        <InfoCard class="infoCard" :cardTitle="t('employeesOnTransfer')"> {{ stats.workersWithTransfers }} </InfoCard>
-        <InfoCard class="infoCard" :cardTitle="t('availableEmployees')"> {{ stats.availableWorkers }} </InfoCard>
+        <InfoCard class="infoCard" :cardTitle="t('totalEmployees')">
+          {{ stats.totalWorkers }}
+        </InfoCard>
+        <InfoCard class="infoCard" :cardTitle="t('employeesOnTransfer')">
+          {{ stats.workersWithTransfers }}
+        </InfoCard>
+        <InfoCard class="infoCard" :cardTitle="t('availableEmployees')">
+          {{ stats.availableWorkers }}
+        </InfoCard>
       </div>
       <hr class="infoHr" />
       <ServerTable
@@ -25,8 +31,11 @@
       >
         <template #cell-status="{ item }">
           <v-chip :color="statusColor(item.status)" text-color="white" small>
-            {{ item.status || 'New' }}
+            {{ item.status || t('available') }}
           </v-chip>
+        </template>
+        <template #cell-_id="{ item }">
+          {{ item._id.substring(0, 12) }}
         </template>
         <!-- <template #cell-assignee="{ item }">
           <span v-if="item.assignee">{{ item.assignee }}</span>
@@ -41,11 +50,10 @@
             </template>
             <v-list class="menu-list pa-0 ma-0">
               <v-list-item class="menu-item" @click="viewDetails(item)">
-                                <v-icon class="mr-2">mdi-eye-outline</v-icon>
-
+                <v-icon class="mr-2">mdi-eye-outline</v-icon>
                 {{ t('seeDetails') }}
               </v-list-item>
-              <v-list-item class="menu-item" @click="changeStatus(item)">
+              <v-list-item class="menu-item" @click="deleteEmpeloyee(item)">
                 <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
                 {{ t('deleteEmployee') }}
               </v-list-item>
@@ -97,11 +105,11 @@
       <Drawer
         :isOpen="isDeleteEmployeeDrawerOpen"
         :desc="t('newEmployee')"
-        :status="t('busy')"
+        :status="t(selectedWorker?.status ? selectedWorker?.status : t('available'))"
         @close="isDeleteEmployeeDrawerOpen = false"
       >
         <div style="max-height: 75vh">
-          <form @submit.prevent="onDeleteButtonPressed()" class="form">
+          <form @submit.prevent="onDeleteButtonPressed(selectedWorker!._id)" class="form">
             <div>
               <div class="drawer-banner">
                 <p>{{ t('information') }}</p>
@@ -109,15 +117,15 @@
               <div>
                 <div class="employee-info">
                   <p class="employee-key">{{ t('fullName') }}</p>
-                  <p class="employee-value">Zaid Al-Farsi</p>
+                  <p class="employee-value">{{ selectedWorker?.name }}</p>
                 </div>
                 <div class="employee-info">
                   <p class="employee-key">{{ t('employeeID') }}</p>
-                  <p class="employee-value">784-678-9012-3</p>
+                  <p class="employee-value">{{ selectedWorker?._id.substring(0, 12) }}</p>
                 </div>
                 <div class="employee-info">
                   <p class="employee-key">{{ t('phoneNumber') }}</p>
-                  <p class="employee-value">+971 (51) 123-4567</p>
+                  <p class="employee-value">{{ selectedWorker?.phone }}</p>
                 </div>
               </div>
               <div class="action-btns">
@@ -194,6 +202,7 @@ import ServerTable from '@/components/base/ServerTable.vue'
 import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue3-i18n'
 import { useWorkersStore } from '@/stores/modules/workers'
+import { IWorker } from '@/models/worker'
 
 const { t } = useI18n()
 const isEmployeeDrawerOpen = ref(false)
@@ -206,8 +215,12 @@ const workers = computed(() => workersStore.allWorkers)
 const pagination = computed(
   () => workersStore.paginationInfo || { total: 0, page: 1, limit: 8, pageCount: 1 },
 )
-const stats = computed(() => workersStore.workersStats || { totalWorkers: 0, workersWithTransfers: 0, availableWorkers: 0 })
+const stats = computed(
+  () =>
+    workersStore.workersStats || { totalWorkers: 0, workersWithTransfers: 0, availableWorkers: 0 },
+)
 const page = ref(1)
+const selectedWorker = ref<IWorker | null>(null)
 const itemsPerPage = ref(8)
 
 const headers = [
@@ -238,8 +251,13 @@ onMounted(() => {
 
 watch([page, itemsPerPage], fetchWorkers)
 
-const onDeleteButtonPressed = () => {
-  isDeleteEmployeeDrawerOpen.value = true
+const onDeleteButtonPressed = async (selectedWorkerId: string) => {
+  if (!selectedWorkerId) {
+    console.error('No worker selected for deletion')
+    return
+  }
+  await workersStore.deleteSelectedWorker(selectedWorkerId)
+  isDeleteEmployeeDrawerOpen.value = false
 }
 const onAddButtonPressed = () => {
   isEmployeeDrawerOpen.value = true
@@ -263,15 +281,13 @@ function statusColor(status: string) {
 }
 
 function viewDetails(item: any) {
-  // Implement view details logic
+  selectedWorker.value = item as IWorker
+  isUpdateEmployeeDrawerOpen.value = true
 }
 
-function assignStaff(item: any) {
-  // Implement assign staff logic
-}
-
-function changeStatus(item: any) {
-  // Implement change status logic
+function deleteEmpeloyee(item: any) {
+  selectedWorker.value = item as IWorker
+  isDeleteEmployeeDrawerOpen.value = true
 }
 </script>
 <style lang="scss">

@@ -31,6 +31,14 @@ class WorkerService {
     }
   }
 
+  async deleteWorker(workerId: string): Promise<void> {
+    try {
+      await api.delete(`/workers/${workerId}`);
+    } catch (error) {
+      throw this.handleError(error as AxiosError<IApiError>);
+    } 
+  }
+
   private handleError(error: AxiosError<IApiError>): Error {
     const message = error.response?.data?.message ?? error.message ?? 'An error occurred';
     return new Error(message);

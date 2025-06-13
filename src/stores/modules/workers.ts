@@ -16,6 +16,7 @@ interface WorkersState {
   error: string | null
   pagination: Pagination | null
   stats: IWorkersStats | null
+  deleteWorker: IWorker | null
 }
 
 export const useWorkersStore = defineStore('workers', {
@@ -25,7 +26,8 @@ export const useWorkersStore = defineStore('workers', {
     loading: false,
     error: null,
     pagination: null,
-    stats: null
+    stats: null,
+    deleteWorker: null
   }),
 
   getters: {
@@ -34,7 +36,8 @@ export const useWorkersStore = defineStore('workers', {
     isLoading: (state): boolean => state.loading,
     errorMessage: (state): string | null => state.error,
     paginationInfo: (state): Pagination | null => state.pagination,
-    workersStats: (state): IWorkersStats | null => state.stats
+    workersStats: (state): IWorkersStats | null => state.stats,
+    deleteWorker: (state): IWorker | null => state.currentWorker
   },
 
   actions: {
@@ -78,6 +81,21 @@ export const useWorkersStore = defineStore('workers', {
         return response.data as IWorkersStats
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : 'Error fetching workers stats'
+        this.error = errorMsg
+        throw err
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async deleteSelectedWorker(workerId: string): Promise<void> {
+      try {
+        this.loading = true
+        await workerService.deleteWorker(workerId)
+        this.workers = this.workers.filter(worker => worker._id !== workerId)
+        this.currentWorker = null
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : 'Error deleting worker'
         this.error = errorMsg
         throw err
       } finally {

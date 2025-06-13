@@ -136,7 +136,11 @@ const onButtonPressed = () => {
   box-shadow: $shadow;
 
   .v-icon {
-    margin-right: 15px;
+    margin-right: 5px;
   }
+}
+
+.v-btn {
+  padding: 10px 15px !important;
 }
 </style>

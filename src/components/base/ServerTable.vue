@@ -57,7 +57,6 @@
           variant="outlined"
           density="compact"
           hide-details
-          style="width: 100px"
           @update:model-value="onPageSizeChange"
         />
       </div>
@@ -116,6 +115,8 @@ function onPageSizeChange(val: number) {
 </script>
 
 <style lang="scss" scoped>
+@use 'styles/main' as *;
+
 .server-table {
   ::v-deep(.v-data-table) {
     font-size: 14px;
@@ -132,11 +133,14 @@ function onPageSizeChange(val: number) {
 }
 
 .pagination-row {
+  margin-left: $sidebarWidth;
+  position: absolute;
+  bottom: 15px;
+  left: 0;
+  right: 0;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: flex-start;
-  gap: 24px;
-  margin: 24px 0 8px 0;
 }
 .pagination-info {
   color: #888;
@@ -152,6 +156,7 @@ function onPageSizeChange(val: number) {
   margin: 0 8px;
 }
 .pagination-size {
-  margin-left: auto;
+  width: 100px;
+  max-width: 100px;
 }
 </style>

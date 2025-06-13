@@ -122,6 +122,8 @@
     "actions": "Actions",
     "identityNumber": "Identity Number",
     "employee": "Employee",
-    "email": "Email"
+    "email": "Email",
+    "updateEmployee": "Update Employee",
+    "loading": "Loading..."
 
 }
