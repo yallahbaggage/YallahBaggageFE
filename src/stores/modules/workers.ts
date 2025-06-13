@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { IWorker } from '@/models/worker'
+import { IWorker, IWorkersStats } from '@/models/worker'
 import { workerService } from '@/utils/services/workerService'
 
 interface Pagination {
@@ -15,6 +15,7 @@ interface WorkersState {
   loading: boolean
   error: string | null
   pagination: Pagination | null
+  stats: IWorkersStats | null
 }
 
 export const useWorkersStore = defineStore('workers', {
@@ -23,7 +24,8 @@ export const useWorkersStore = defineStore('workers', {
     currentWorker: null,
     loading: false,
     error: null,
-    pagination: null
+    pagination: null,
+    stats: null
   }),
 
   getters: {
@@ -31,7 +33,8 @@ export const useWorkersStore = defineStore('workers', {
     currentWorkerData: (state): IWorker | null => state.currentWorker,
     isLoading: (state): boolean => state.loading,
     errorMessage: (state): string | null => state.error,
-    paginationInfo: (state): Pagination | null => state.pagination
+    paginationInfo: (state): Pagination | null => state.pagination,
+    workersStats: (state): IWorkersStats | null => state.stats
   },
 
   actions: {
@@ -60,6 +63,21 @@ export const useWorkersStore = defineStore('workers', {
         return response;
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : 'Error fetching worker'
+        this.error = errorMsg
+        throw err
+      } finally {
+        this.loading = false
+      }
+    },
+
+    async getWorkersStats(): Promise<IWorkersStats> {
+      try {
+        this.loading = true
+        const response = await workerService.getWorkersStats()
+        this.stats = response.data as IWorkersStats
+        return response.data as IWorkersStats
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : 'Error fetching workers stats'
         this.error = errorMsg
         throw err
       } finally {

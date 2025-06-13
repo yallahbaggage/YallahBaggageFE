@@ -10,9 +10,9 @@
     />
     <div class="page-content">
       <div class="cards">
-        <InfoCard class="infoCard" :cardTitle="t('totalEmployees')"> 484 </InfoCard>
-        <InfoCard class="infoCard" :cardTitle="t('employeesOnTransfer')"> 2625 </InfoCard>
-        <InfoCard class="infoCard" :cardTitle="t('availableEmployees')"> 488 </InfoCard>
+        <InfoCard class="infoCard" :cardTitle="t('totalEmployees')"> {{ stats.totalWorkers }} </InfoCard>
+        <InfoCard class="infoCard" :cardTitle="t('employeesOnTransfer')"> {{ stats.workersWithTransfers }} </InfoCard>
+        <InfoCard class="infoCard" :cardTitle="t('availableEmployees')"> {{ stats.availableWorkers }} </InfoCard>
       </div>
       <hr class="infoHr" />
       <ServerTable
@@ -204,8 +204,9 @@ const workersStore = useWorkersStore()
 const loading = computed(() => workersStore.isLoading)
 const workers = computed(() => workersStore.allWorkers)
 const pagination = computed(
-  () => workersStore.pagination || { total: 0, page: 1, limit: 8, pageCount: 1 },
+  () => workersStore.paginationInfo || { total: 0, page: 1, limit: 8, pageCount: 1 },
 )
+const stats = computed(() => workersStore.workersStats || { totalWorkers: 0, workersWithTransfers: 0, availableWorkers: 0 })
 const page = ref(1)
 const itemsPerPage = ref(8)
 
@@ -226,7 +227,14 @@ const fetchWorkers = async () => {
   }
 }
 
-onMounted(fetchWorkers)
+const fetchStats = async () => {
+  await workersStore.getWorkersStats()
+}
+
+onMounted(() => {
+  fetchWorkers()
+  fetchStats()
+})
 
 watch([page, itemsPerPage], fetchWorkers)
 

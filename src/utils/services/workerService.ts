@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import api from './api';
 import { IApiError, IApiResponse } from '@/models/api';
-import { IWorker } from '@/models/worker'; // Corrected import from Worker to IWorker
+import { IWorker, IWorkersStats } from '@/models/worker'; // Corrected import from Worker to IWorker
 
 class WorkerService {
   async getWorkers(params?: { page?: number; limit?: number }): Promise<any> {
@@ -17,6 +17,15 @@ class WorkerService {
     try {
       const response = await api.get<IApiResponse<IWorker>>(`/workers/${workerId}`);
       return response.data.data;
+    } catch (error) {
+      throw this.handleError(error as AxiosError<IApiError>);
+    }
+  }
+
+  async getWorkersStats(): Promise<IWorkersStats> {
+    try {
+      const response = await api.get('/workers/stats');
+      return response.data as IWorkersStats;
     } catch (error) {
       throw this.handleError(error as AxiosError<IApiError>);
     }

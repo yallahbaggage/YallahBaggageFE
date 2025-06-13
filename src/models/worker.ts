@@ -33,3 +33,10 @@ export interface IServiceRating {
   rating: number
   comment?: string
 } 
+
+export interface IWorkersStats {
+  data: { totalWorkers: number; workersWithTransfers: number; availableWorkers: number; } | null;
+  totalWorkers: number
+  workersWithTransfers: number
+  availableWorkers: number
+}
