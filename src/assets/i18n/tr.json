@@ -125,5 +125,6 @@
     "email": "E-posta",
     "updateEmployee": "Çalışanı Güncelle",
     "loading": "Yükleniyor...",
-    "deleteIssue": "Şikayeti Sil"
+    "deleteIssue": "Şikayeti Sil",
+    "ticket": "Bilet"
 }
