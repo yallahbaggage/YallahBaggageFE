@@ -2,7 +2,7 @@ import axios from 'axios';
 import { IAd } from '../models/ad';
 
 const API_URL = process.env.NODE_ENV === 'production'
-? 'https://baggs5.onrender.com/'
+? 'https://baggs10.onrender.com/'
 : 'http://localhost:9091/';
 
 // Get all ads
