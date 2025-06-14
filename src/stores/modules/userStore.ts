@@ -1,4 +1,4 @@
-import { IUser } from '@/models/user';
+import { IUser, RegisterData } from '@/models/user';
 import { authService } from '@/utils/services/authService';
 import { userService } from '@/utils/services/userService';
 import { defineStore } from 'pinia'
@@ -57,7 +57,13 @@ export const useUserStore = defineStore('user', () => {
   }) {
     error.value = null
     try {
-      const registeredUser = await authService.register(data)
+      // Ensure phone and address are always strings for RegisterData compatibility
+      const registerData = {
+        ...data,
+        phone: data.phone ?? '',
+        address: data.address ?? '',
+      } as RegisterData;
+      const registeredUser = await authService.register(registerData)
       user.value = registeredUser
       token.value = localStorage.getItem('token')
       return registeredUser

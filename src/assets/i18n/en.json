@@ -124,6 +124,7 @@
     "employee": "Employee",
     "email": "Email",
     "updateEmployee": "Update Employee",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "deleteIssue": "Delete Issue"
 
 }

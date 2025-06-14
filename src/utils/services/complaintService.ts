@@ -1,19 +1,22 @@
+import { AxiosError } from 'axios'
 import api from './api'
-import type { ComplaintFilterParams, ICreateComplaint, IUpdateComplaint } from '@/models/complaint'
+import type {
+  ComplaintFilterParams,
+  IComplaintStats,
+  ICreateComplaint,
+  IUpdateComplaint,
+} from '@/models/complaint'
+import { IApiError } from '@/models/api'
 
 export class ComplaintService {
-  async fetchComplaints(
-    page: number,
-    pageSize: number,
-    filters?: ComplaintFilterParams
-  ) {
+  async fetchComplaints(page: number, pageSize: number, filters?: ComplaintFilterParams) {
     try {
       const response = await api.get('/complaints', {
         params: {
           page,
           pageSize,
-          ...filters
-        }
+          ...filters,
+        },
       })
       return response.data
     } catch (error) {
@@ -41,8 +44,8 @@ export class ComplaintService {
 
       const response = await api.post('/complaints', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       })
       return response.data
     } catch (error) {
@@ -70,8 +73,8 @@ export class ComplaintService {
 
       const response = await api.put(`/complaints/${id}`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       })
       return response.data
     } catch (error) {
@@ -90,6 +93,15 @@ export class ComplaintService {
     }
   }
 
+  async getComplaintsStats(): Promise<IComplaintStats> {
+    try {
+      const response = await api.get('/complaints/stats')
+      return response.data as IComplaintStats
+    } catch (error) {
+      throw this.handleError(error as AxiosError<IApiError>)
+    }
+  }
+
   async updateComplaintStatus(id: string, status: string) {
     try {
       const response = await api.patch(`/complaints/${id}/status`, { status })
@@ -99,4 +111,9 @@ export class ComplaintService {
       throw error
     }
   }
-} 
+
+  private handleError(error: AxiosError<IApiError>): Error {
+    const message = error.response?.data?.message ?? error.message ?? 'An error occurred'
+    return new Error(message)
+  }
+}

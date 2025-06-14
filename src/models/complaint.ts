@@ -5,25 +5,24 @@ import type { IWorker } from './worker'
 // export type ComplaintPriority = 'low' | 'medium' | 'high' | 'urgent'
 export type ComplaintCategory = 'service' | 'worker' | 'payment' | 'technical' | 'other'
 
-
 export const ComplaintStatus = {
   PENDING: 'pending',
   IN_PROGRESS: 'in_progress',
   RESOLVED: 'resolved',
   REJECTED: 'rejected',
   CLOSED: 'closed',
-} as const;
+} as const
 
-export type ComplaintStatus = (typeof ComplaintStatus)[keyof typeof ComplaintStatus];
+export type ComplaintStatus = (typeof ComplaintStatus)[keyof typeof ComplaintStatus]
 
 export const ComplaintPriority = {
   LOW: 'low',
   MEDIUM: 'medium',
   HIGH: 'high',
   URGENT: 'urgent',
-} as const;
+} as const
 
-export type ComplaintPriority = (typeof ComplaintPriority)[keyof typeof ComplaintPriority];
+export type ComplaintPriority = (typeof ComplaintPriority)[keyof typeof ComplaintPriority]
 
 export interface IComplaint {
   _id: string
@@ -82,13 +81,14 @@ export interface IAddComplaintResponse {
 }
 
 export interface IComplaintStats {
+  data: { totalComplaints: number; openComplaints: number; solvedComplaints: number } | null
   totalComplaints: number
-  resolvedComplaints: number
-  pendingComplaints: number
-  averageResolutionTime: number // in hours
-  complaintsByCategory: Record<ComplaintCategory, number>
-  complaintsByPriority: Record<ComplaintPriority, number>
-  complaintsByStatus: Record<ComplaintStatus, number>
+  openComplaints: number
+  solvedComplaints: number
+  // averageResolutionTime: number // in hours
+  // complaintsByCategory: Record<ComplaintCategory, number>
+  // complaintsByPriority: Record<ComplaintPriority, number>
+  // complaintsByStatus: Record<ComplaintStatus, number>
 }
 
 export interface ComplaintFilterParams {

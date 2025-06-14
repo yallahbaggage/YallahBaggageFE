@@ -124,5 +124,6 @@
     "employee": "Çalışan",
     "email": "E-posta",
     "updateEmployee": "Çalışanı Güncelle",
-    "loading": "Yükleniyor..."
+    "loading": "Yükleniyor...",
+    "deleteIssue": "Şikayeti Sil"
 }

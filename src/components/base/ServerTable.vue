@@ -136,8 +136,8 @@ function onPageSizeChange(val: number) {
   margin-left: $sidebarWidth;
   position: absolute;
   bottom: 15px;
-  left: 0;
-  right: 0;
+  left: 10px;
+  right: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
