@@ -38,11 +38,7 @@
               </v-btn>
             </template>
             <v-list class="menu-list pa-0 ma-0">
-              <v-list-item 
-                v-if="!item.isRead" 
-                class="menu-item" 
-                @click="markAsRead(item._id)"
-              >
+              <v-list-item v-if="!item.isRead" class="menu-item" @click="markAsRead(item._id)">
                 <v-icon class="mr-2">mdi-check</v-icon>
                 {{ t('markAsRead') }}
               </v-list-item>
@@ -60,10 +56,9 @@
       </ServerTable>
 
       <!-- Create/Edit Dialog -->
-      <!-- <Drawer
+      <Drawer
         :isOpen="isDialogOpen"
-        :desc="isEditing ? t('editNotification') : t('newNotification')"
-        :status="t('active')"
+        :desc="isEditing ? t('seeDetails') : t('deleteNotification')"
         @close="closeDialog"
       >
         <div style="max-height: 75vh">
@@ -76,17 +71,17 @@
                 <div class="notification-info">
                   <p class="notification-key">{{ t('title') }}</p>
                   <v-text-field
-                    v-model="form.title"
-                    :rules="[v => !!v || t('titleRequired')]"
+                    v-model="title"
+                    :rules="[rules.required]"
                     variant="outlined"
                     density="comfortable"
                   />
                 </div>
                 <div class="notification-info">
                   <p class="notification-key">{{ t('message') }}</p>
-                  <v-textarea
-                    v-model="form.message"
-                    :rules="[v => !!v || t('messageRequired')]"
+                  <v-text-field
+                    v-model="message"
+                    :rules="[rules.required]"
                     variant="outlined"
                     density="comfortable"
                     rows="3"
@@ -95,9 +90,9 @@
                 <div class="notification-info">
                   <p class="notification-key">{{ t('type') }}</p>
                   <v-select
-                    v-model="form.type"
+                    v-model="type"
                     :items="notificationTypes"
-                    :rules="[v => !!v || t('typeRequired')]"
+                    :rules="[rules.required]"
                     variant="outlined"
                     density="comfortable"
                   />
@@ -117,47 +112,54 @@
             </div>
           </form>
         </div>
-      </Drawer> -->
+      </Drawer>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
-import { useI18n } from 'vue3-i18n';
-import ActionButton from '@/components/base/ActionButton.vue';
-import BaseHeader from '@/components/base/BaseHeader.vue';
-import Drawer from '@/components/base/Drawer.vue';
-import ServerTable from '@/components/base/ServerTable.vue';
-import { useNotificationsStore } from '@/stores/modules/notificationsStore';
-import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification';
-import type { CreateNotificationDto, INotification } from '@/utils/services/notificationsService';
+import { ref, onMounted, computed, watch } from 'vue'
+import { useI18n } from 'vue3-i18n'
+import ActionButton from '@/components/base/ActionButton.vue'
+import BaseHeader from '@/components/base/BaseHeader.vue'
+import Drawer from '@/components/base/Drawer.vue'
+import ServerTable from '@/components/base/ServerTable.vue'
+import { useNotificationsStore } from '@/stores/modules/notificationsStore'
+import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
+import type { CreateNotificationDto, INotification } from '@/utils/services/notificationsService'
 
-const { t } = useI18n();
-const store = useNotificationsStore();
+const { t } = useI18n()
+const store = useNotificationsStore()
 
-const page = ref(1);
-const itemsPerPage = ref(8);
-const isDialogOpen = ref(false);
-const isEditing = ref(false);
-const currentId = ref<string | null>(null);
+const page = ref(1)
+const itemsPerPage = ref(8)
+const isDialogOpen = ref(false)
+const isEditing = ref(false)
+const currentId = ref<string | null>(null)
 
-const items = computed(() => store.allNotifications);
-const totalItems = computed(() => store.paginationInfo?.total || 0);
-const loading = computed(() => store.isLoading);
-
-const form = ref<CreateNotificationDto>({
-  title: '',
-  message: '',
-  type: 'info'
-});
+const items = computed(() => store.allNotifications)
+const totalItems = computed(() => store.paginationInfo?.total || 0)
+const loading = computed(() => store.isLoading)
+const rules = {
+  required: (v: string) => !!v || 'Field is required',
+  min: (v: string) => v.length >= 6 || 'Min 6 characters',
+}
+// const form = ref<CreateNotificationDto>({
+//   title: '',
+//   message: '',
+//   type: 'info'
+// });
+const form = ref<any>(null)
+const title = ref('')
+const message = ref('')
+const type = ref('')
 
 const notificationTypes = [
   { title: t('info'), value: 'info' },
   { title: t('success'), value: 'success' },
   { title: t('warning'), value: 'warning' },
-  { title: t('error'), value: 'error' }
-];
+  { title: t('error'), value: 'error' },
+]
 
 const headers = [
   { title: 'ID', key: '_id' },
@@ -166,96 +168,98 @@ const headers = [
   { title: t('sentOn'), key: 'createdAt' },
   { title: t('status'), key: 'type' },
   { title: t('actions'), key: '', sortable: false },
-];
+]
 
 const fetchNotifications = async () => {
   await store.fetchNotifications({
     page: page.value.toString(),
-    limit: itemsPerPage.value.toString()
-  });
+    limit: itemsPerPage.value.toString(),
+  })
   if (store.paginationInfo && store.paginationInfo.page !== page.value) {
-    page.value = store.paginationInfo.page;
+    page.value = store.paginationInfo.page
   }
-  const totalPages = Math.ceil((store.paginationInfo?.total || 0) / itemsPerPage.value);
+  const totalPages = Math.ceil((store.paginationInfo?.total || 0) / itemsPerPage.value)
   if (page.value > totalPages && totalPages > 0) {
-    page.value = totalPages;
+    page.value = totalPages
   }
-};
+}
 
 const getTypeColor = (type: string) => {
-  return {
-    info: 'blue',
-    success: 'green',
-    warning: 'orange',
-    error: 'red'
-  }[type] || 'grey';
-};
+  return (
+    {
+      info: 'blue',
+      success: 'green',
+      warning: 'orange',
+      error: 'red',
+    }[type] || 'grey'
+  )
+}
 
 const showCreateDialog = () => {
-  isEditing.value = false;
-  currentId.value = null;
+  isEditing.value = false
+  currentId.value = null
   form.value = {
     title: '',
     message: '',
-    type: 'info'
-  };
-  isDialogOpen.value = true;
-};
+    type: 'info',
+  }
+  isDialogOpen.value = true
+}
 
 const showEditDialog = (notification: INotification) => {
-  isEditing.value = true;
-  currentId.value = notification._id;
+  isEditing.value = true
+  currentId.value = notification._id
   form.value = {
     title: notification.title,
     message: notification.message,
-    type: notification.type
-  };
-  isDialogOpen.value = true;
-};
+    type: notification.type,
+  }
+  isDialogOpen.value = true
+}
 
 const closeDialog = () => {
-  isDialogOpen.value = false;
+  isDialogOpen.value = false
   form.value = {
     title: '',
     message: '',
-    type: 'info'
-  };
-};
+    type: 'info',
+  }
+}
 
 const handleSubmit = async () => {
   try {
     if (isEditing.value && currentId.value) {
-      await store.updateNotification(currentId.value, form.value);
-      toastSuccessMessage(t('notificationUpdated'), t('notificationUpdatedSuccess'));
+      await store.updateNotification(currentId.value, form.value)
+      toastSuccessMessage(t('notificationUpdated'), t('notificationUpdatedSuccess'))
     } else {
-      await store.createNotification(form.value);
-      toastSuccessMessage(t('notificationCreated'), t('notificationCreatedSuccess'));
+      await store.createNotification(form.value)
+      toastSuccessMessage(t('notificationCreated'), t('notificationCreatedSuccess'))
     }
-    closeDialog();
+    closeDialog()
   } catch (error) {
-    console.error('Operation failed:', error);
+    console.error('Operation failed:', error)
   }
-};
+}
 
 const confirmDelete = (notification: INotification) => {
-  toastDeleteMessage(t('deleteNotification'), t('deleteNotificationConfirm'));
-  store.deleteNotification(notification._id);
-};
+  toastDeleteMessage(t('deleteNotification'), t('deleteNotificationConfirm'))
+  store.deleteNotification(notification._id)
+}
 
 const markAsRead = async (id: string) => {
   try {
-    await store.markAsRead(id);
-    toastSuccessMessage(t('notificationMarkedAsRead'), t('notificationMarkedAsReadSuccess'));
+    await store.markAsRead(id)
+    toastSuccessMessage(t('notificationMarkedAsRead'), t('notificationMarkedAsReadSuccess'))
   } catch (error) {
-    console.error('Failed to mark notification as read:', error);
+    console.error('Failed to mark notification as read:', error)
   }
-};
+}
 
 onMounted(() => {
-  fetchNotifications();
-});
+  fetchNotifications()
+})
 
-watch([page, itemsPerPage], fetchNotifications);
+watch([page, itemsPerPage], fetchNotifications)
 </script>
 
 <style lang="scss" scoped>

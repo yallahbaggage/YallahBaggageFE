@@ -158,5 +158,14 @@
     "notificationSentSuccessfully": "Bildirim başarıyla gönderildi",
     "notificationSentSuccessfullyDescription": "Bildiriminiz başarıyla kaydedildi ve müşterinize gönderilecektir.",
     "anErrorOccured": "Bir hata oluştu",
-    "notificationErrorTryAgain": "Bildirim gönderilirken bir hata oluştu. Lütfen tekrar deneyin."
+    "notificationErrorTryAgain": "Bildirim gönderilirken bir hata oluştu. Lütfen tekrar deneyin.",
+    "notificationDetails": "Bildirim Detayları",
+    "seeYourNotificationDetail": "Bildirimin detaylarını gör",
+    "generalInformation": "GENEL BİLGİLER",
+    "advancedDetails": "GELİŞMİŞ BİLGİLER",
+    "notificationType": "Bildirim Tipi",
+    "CreatedBy":"Oluşturan",
+    "sendNotification":"Bildirim Gönder",
+    "fillOutAllTheInformationsToSend": "Bildirim gönderilmesi için tüm bilgileri doldurun",
+    "deleteNotification": "Bildirimi Sil"
 }

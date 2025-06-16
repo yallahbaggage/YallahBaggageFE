@@ -158,5 +158,14 @@
     "notificationSentSuccessfully": "Notification sent successfully",
     "notificationSentSuccessfullyDescription": "Your notification is saved to be send to your customer/s succesfully.",
     "anErrorOccured": "An error occured",
-    "notificationErrorTryAgain": "An error occurred while the system was attempting to send your notification. Please try again."
+    "notificationErrorTryAgain": "An error occurred while the system was attempting to send your notification. Please try again.",
+    "notificationDetails": "Notification Details",
+    "seeYourNotificationDetail": "See your notification’s detail",
+    "generalInformation": "GENERAL INFORMATION",
+    "advancedDetails": "ADVANCED DETAILS",
+    "notificationType": "Notification Type",
+    "CreatedBy":"Created by",
+    "sendNotification":"Send Notification",
+    "fillOutAllTheInformationsToSend": "Fill out all the informations to send",
+    "deleteNotification": "Delete Notification"
 }
