@@ -1,6 +1,6 @@
 import { io, Socket } from 'socket.io-client';
-import { useTransferStore } from '../stores/transferStore';
-import { Transfer } from '../stores/types';
+import { Transfer } from '@/models/transfer';
+import { useTransfersStore } from '@/stores/modules/transfer';
 
 class SocketService {
   private socket: Socket | null = null;
@@ -40,7 +40,7 @@ class SocketService {
     });
 
     this.socket.on('transferStatusUpdated', (updatedTransfer: Transfer) => {
-      const transferStore = useTransferStore();
+      const transferStore = useTransfersStore();
       transferStore.updateTransferStatus(updatedTransfer);
     });
 
