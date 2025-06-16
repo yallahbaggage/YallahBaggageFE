@@ -11,36 +11,36 @@
     <div class="page-content">
       <div class="cards">
         <InfoCard class="infoCard" :cardTitle="t('totalBanners')">
-          {{ stats.totalWorkers }}
+          {{ stats.totalAds }}
         </InfoCard>
         <InfoCard class="infoCard" :cardTitle="t('activeBanners')">
-          {{ stats.workersWithTransfers }}
+          {{ stats.activeAds }}
         </InfoCard>
         <InfoCard class="infoCard" :cardTitle="t('deactiveBanners')">
-          {{ stats.availableWorkers }}
+          {{ stats.deactiveAds }}
         </InfoCard>
       </div>
       <hr class="infoHr" />
       <ServerTable
         :headers="headers"
-        :items="workers"
+        :items="ads"
         :total-items="pagination.total"
         :loading="loading"
         v-model:page="page"
         v-model:items-per-page="itemsPerPage"
       >
-        <template #cell-status="{ item }">
-          <v-chip :color="statusColor(item.status)" text-color="white" small>
-            {{ item.status ?? t('available') }}
-          </v-chip>
-        </template>
         <template #cell-_id="{ item }">
           {{ item._id.substring(0, 12) }}
         </template>
-        <!-- <template #cell-assignee="{ item }">
-          <span v-if="item.assignee">{{ item.assignee }}</span>
-          <v-btn v-else small outlined @click="assignStaff(item)"> Assign Staff </v-btn>
-        </template> -->
+        <template #cell-image="{ item }">
+          <img :src="item.image" alt="Banner Image" style="max-width: 80px; max-height: 40px; object-fit: contain;" />
+        </template>
+        <template #cell-url="{ item }">
+          <span>{{ item.url }}</span>
+        </template>
+        <template #cell-expireDate="{ item }">
+          <span>{{ new Date(item.expireDate).toLocaleDateString() }}</span>
+        </template>
         <template #actions="{ item }">
           <v-menu location="bottom end" offset="4">
             <template #activator="{ props }">
@@ -53,9 +53,9 @@
                 <v-icon class="mr-2">mdi-eye-outline</v-icon>
                 {{ t('seeDetails') }}
               </v-list-item>
-              <v-list-item class="menu-item" @click="deleteEmpeloyee(item)">
+              <v-list-item class="menu-item" @click="deleteAd(item)">
                 <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
-                {{ t('deleteEmployee') }}
+                {{ t('deleteBanner') }}
               </v-list-item>
             </v-list>
           </v-menu>
@@ -64,7 +64,7 @@
       <!-- add Drawer -->
       <Drawer
         :isOpen="isEmployeeDrawerOpen"
-        :desc="t('newEmployee')"
+        :desc="t('newBanner')"
         :status="t('busy')"
         @close="isEmployeeDrawerOpen = false"
       >
@@ -76,16 +76,12 @@
               </div>
               <div>
                 <div class="employee-info">
-                  <p class="employee-key">{{ t('fullName') }}</p>
-                  <p class="employee-value">Zaid Al-Farsi</p>
+                  <p class="employee-key">URL</p>
+                  <p class="employee-value">https://example.com</p>
                 </div>
                 <div class="employee-info">
-                  <p class="employee-key">{{ t('employeeID') }}</p>
-                  <p class="employee-value">784-678-9012-3</p>
-                </div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('phoneNumber') }}</p>
-                  <p class="employee-value">+971 (51) 123-4567</p>
+                  <p class="employee-key">Expire Date</p>
+                  <p class="employee-value">2024-12-31</p>
                 </div>
               </div>
               <div class="action-btns">
@@ -94,7 +90,7 @@
                   buttonColor="white"
                   @button-pressed="() => (isEmployeeDrawerOpen = false)"
                 />
-                <ActionButton :buttonText="t('addEmployee')" buttonType="submit" />
+                <ActionButton :buttonText="t('addBanner')" buttonType="submit" />
               </div>
             </div>
           </form>
@@ -104,28 +100,28 @@
       <!-- delete Drawer -->
       <Drawer
         :isOpen="isDeleteEmployeeDrawerOpen"
-        :desc="t('newEmployee')"
-        :status="t(selectedWorker?.status ? selectedWorker?.status : t('available'))"
+        :desc="t('deleteBanner')"
+        :status="t('busy')"
         @close="isDeleteEmployeeDrawerOpen = false"
       >
         <div style="max-height: 75vh">
-          <form @submit.prevent="onDeleteButtonPressed(selectedWorker!._id)" class="form">
+          <form @submit.prevent="onDeleteButtonPressed(selectedAd!._id)" class="form">
             <div>
               <div class="drawer-banner">
                 <p>{{ t('information') }}</p>
               </div>
               <div>
                 <div class="employee-info">
-                  <p class="employee-key">{{ t('fullName') }}</p>
-                  <p class="employee-value">{{ selectedWorker?.name }}</p>
+                  <p class="employee-key">URL</p>
+                  <p class="employee-value">{{ selectedAd?.url }}</p>
                 </div>
                 <div class="employee-info">
-                  <p class="employee-key">{{ t('employeeID') }}</p>
-                  <p class="employee-value">{{ selectedWorker?._id.substring(0, 12) }}</p>
+                  <p class="employee-key">Expire Date</p>
+                  <p class="employee-value">{{ selectedAd ? new Date(selectedAd.expireDate).toLocaleDateString() : '' }}</p>
                 </div>
                 <div class="employee-info">
-                  <p class="employee-key">{{ t('phoneNumber') }}</p>
-                  <p class="employee-value">{{ selectedWorker?.phone }}</p>
+                  <p class="employee-key">ID</p>
+                  <p class="employee-value">{{ selectedAd?._id.substring(0, 12) }}</p>
                 </div>
               </div>
               <div class="action-btns">
@@ -136,7 +132,7 @@
                 />
                 <ActionButton
                   button-color="error"
-                  :buttonText="t('deleteEmployee')"
+                  :buttonText="t('deleteBanner')"
                   buttonType="submit"
                 />
               </div>
@@ -201,8 +197,8 @@ import InfoCard from '@/components/base/InfoCard.vue'
 import ServerTable from '@/components/base/ServerTable.vue'
 import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue3-i18n'
-import { useWorkersStore } from '@/stores/modules/workers'
-import { IWorker } from '@/models/worker'
+import { useAdsStore } from '@/stores/modules/adsStore'
+import { IAd } from '@/models/ad'
 import { infoMessage } from '@/utils/helpers'
 import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
 
@@ -211,60 +207,58 @@ const isEmployeeDrawerOpen = ref(false)
 const isDeleteEmployeeDrawerOpen = ref(false)
 const isUpdateEmployeeDrawerOpen = ref(false)
 
-const workersStore = useWorkersStore()
-const loading = computed(() => workersStore.isLoading)
-const workers = computed(() => workersStore.allWorkers)
+const adsStore = useAdsStore()
+const loading = computed(() => adsStore.isLoading)
+const ads = computed(() => adsStore.allAds)
 const pagination = computed(
-  () => workersStore.paginationInfo || { total: 0, page: 1, limit: 8, pageCount: 1 },
+  () => adsStore.paginationInfo || { total: 0, page: 1, limit: 8, pageCount: 1 },
 )
 const stats = computed(
   () =>
-    workersStore.workersStats || { totalWorkers: 0, workersWithTransfers: 0, availableWorkers: 0 },
+    adsStore.adsStats || { totalAds: 0, activeAds: 0, deactiveAds: 0 },
 )
 const page = ref(1)
-const selectedWorker = ref<IWorker | null>(null)
+const selectedAd = ref<IAd | null>(null)
 const itemsPerPage = ref(8)
 
 const headers = [
   { title: 'ID', key: '_id' },
-  { title: t('bannerImage'), key: 'name' },
-  { title: t('bannerTitle'), key: 'identityNumber' },
-  { title: t('startEndDate'), key: 'phone' },
-  { title: t('status'), key: 'status' },
+  { title: t('bannerImage'), key: 'image' },
+  { title: t('bannerTitle'), key: 'url' },
+  { title: t('startEndDate'), key: 'expireDate' },
   { title: t('actions'), key: '', sortable: false },
 ]
 
-const fetchWorkers = async () => {
-  const response = await workersStore.getWorkers({ page: page.value, limit: itemsPerPage.value })
-  // Sync local page with backend page (in case backend adjusts it)
+const fetchAds = async () => {
+  const response = await adsStore.getAds({ page: page.value, limit: itemsPerPage.value })
   if (response.pagination && response.pagination.page !== page.value) {
     page.value = response.pagination.page
   }
 }
 
 const fetchStats = async () => {
-  await workersStore.getWorkersStats()
+  await adsStore.getAdsStats()
 }
 
 onMounted(() => {
-  fetchWorkers()
+  fetchAds()
   fetchStats()
 })
 
-watch([page, itemsPerPage], fetchWorkers)
+watch([page, itemsPerPage], fetchAds)
 
-const onDeleteButtonPressed = async (selectedWorkerId: string) => {
-  toastDeleteMessage(t('toastDeleteEmployeeTitle'), t('toastDeleteEmployeeDescription'))
-  if (!selectedWorkerId) {
-    console.error('No worker selected for deletion')
+const onDeleteButtonPressed = async (selectedAdId: string) => {
+  toastDeleteMessage(t('toastDeleteBannerTitle'), t('toastDeleteBannerDescription'))
+  if (!selectedAdId) {
+    console.error('No ad selected for deletion')
     return
   }
-  // await workersStore.deleteSelectedWorker(selectedWorkerId)
+  // await adsStore.deleteAd(selectedAdId)
   isDeleteEmployeeDrawerOpen.value = false
 }
 const onAddButtonPressed = () => {
   isEmployeeDrawerOpen.value = false
-  toastSuccessMessage(t('toastAddEmployeeTitle'), t('toastAddEmployeeDescription'))
+  toastSuccessMessage(t('toastAddBannerTitle'), t('toastAddBannerDescription'))
 }
 const onUpdateButtonPressed = () => {
   isUpdateEmployeeDrawerOpen.value = false
@@ -285,12 +279,12 @@ function statusColor(status: string) {
 }
 
 function viewDetails(item: any) {
-  selectedWorker.value = item as IWorker
+  selectedAd.value = item as IAd
   isUpdateEmployeeDrawerOpen.value = true
 }
 
-function deleteEmpeloyee(item: any) {
-  selectedWorker.value = item as IWorker
+function deleteAd(item: any) {
+  selectedAd.value = item as IAd
   isDeleteEmployeeDrawerOpen.value = true
 }
 </script>

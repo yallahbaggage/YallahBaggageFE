@@ -154,5 +154,9 @@
     "deactiveBanners": "Pasif Banner'lar",
     "notificationTitle": "Bildirim Başlığı",
     "notificationDesc": "Bildirim Açıklaması",
-    "sentOn": "Gönderildiği Tarih"
+    "sentOn": "Gönderildiği Tarih",
+    "notificationSentSuccessfully": "Bildirim başarıyla gönderildi",
+    "notificationSentSuccessfullyDescription": "Bildiriminiz başarıyla kaydedildi ve müşterinize gönderilecektir.",
+    "anErrorOccured": "Bir hata oluştu",
+    "notificationErrorTryAgain": "Bildirim gönderilirken bir hata oluştu. Lütfen tekrar deneyin."
 }

@@ -154,5 +154,9 @@
     "deactiveBanners": "Deactive Banners",
     "notificationTitle": "Notification Title",
     "notificationDesc": "Notification Description",
-    "sentOn": "Sent On"
+    "sentOn": "Sent On",
+    "notificationSentSuccessfully": "Notification sent successfully",
+    "notificationSentSuccessfullyDescription": "Your notification is saved to be send to your customer/s succesfully.",
+    "anErrorOccured": "An error occured",
+    "notificationErrorTryAgain": "An error occurred while the system was attempting to send your notification. Please try again."
 }
