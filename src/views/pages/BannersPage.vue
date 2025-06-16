@@ -33,7 +33,7 @@
           {{ item._id.substring(0, 12) }}
         </template>
         <template #cell-image="{ item }">
-          <img :src="item.image" style="max-width: 80px; max-height: 40px; object-fit: contain;" />
+          <img :src="item.image" style="max-width: 80px; width: 80px; max-height: 40px; object-fit: cover;" />
         </template>
         <template #cell-url="{ item }">
           <span>{{ item.url }}</span>
