@@ -13,43 +13,85 @@
     <div class="main-section-title">MAIN</div>
 
     <v-list dense nav bg-color="white" class="menu">
-      <template v-if="links.length > 0">
-        <router-link
-          role="button"
-          :to="link.path"
-          class="menu-link"
-          active-class="active"
-          v-for="link in links"
-          :key="link.name"
-        >
-          <div class="menu-item" :class="{ active: isActiveLink(link.path) }">
-            <div class="menu-item-name">
-              <v-icon class="icon">
-                {{ link.icon }}
-              </v-icon>
-              {{ link.name }}
-            </div>
-            <v-chip v-if="link.hasChip" class="new-transfer-chip" size="small" color="#FF5B5B">{{
-              link.chipCount
-            }}</v-chip>
+      <!-- Transfers -->
+      <router-link role="button" to="/transfers" class="menu-link" active-class="active">
+        <div class="menu-item" :class="{ active: isActiveLink('/transfers') }">
+          <div class="menu-item-name">
+            <v-icon class="icon">mdi-swap-horizontal</v-icon>
+            {{ t('transfers') }}
           </div>
-        </router-link>
-        <v-list dense nav bg-color="white" class="menu">
-          <router-link
-            role="button"
-            to="/login"
-            class="logout-link"
-            @click="authStore.resetAuthState()"
-          >
-            <v-list-item class="logout-item" v-if="links.length > 0">
+          <v-chip class="menu-chip" size="small" color="#FF5B5B" text-color="white">9+</v-chip>
+        </div>
+      </router-link>
+      <!-- Employees -->
+      <router-link role="button" to="/employees" class="menu-link" active-class="active">
+        <div class="menu-item" :class="{ active: isActiveLink('/employees') }">
+          <div class="menu-item-name">
+            <v-icon class="icon">mdi-account-group</v-icon>
+            {{ t('employees') }}
+          </div>
+        </div>
+      </router-link>
+      <!-- App Management (Accordion) -->
+      <v-list-item>
+        <button
+          role="button"
+          class="accordion-header"
+          @click="isManagementMenuOpen = !isManagementMenuOpen"
+        >
+          <div class="settings-container">
+            <v-icon class="icon">mdi-file-cog-outline</v-icon>
+            {{ t('appManagement') }}
+          </div>
+          <v-icon class="accordion-icon">
+            {{ isManagementMenuOpen ? 'mdi-chevron-up' : 'mdi-chevron-down' }}
+          </v-icon>
+        </button>
+        <v-list dense nav bg-color="white" v-if="isManagementMenuOpen" class="submenu">
+          <router-link role="button" to="/banners" class="menu-link" active-class="active">
+            <v-list-item class="menu-item" :class="{ active: isActiveLink('/banners') }">
               <div class="menu-item-name">
-                <v-icon class="icon"> mdi-logout</v-icon>
-                {{ t('logout') }}
+                <img src="@/assets/images/banner.svg" />
+                <span>{{ t('banners') }}</span>
+              </div>
+            </v-list-item>
+          </router-link>
+          <router-link role="button" to="/notifications" class="menu-link" active-class="active">
+            <v-list-item class="menu-item" :class="{ active: isActiveLink('/notifications') }">
+              <div class="menu-item-name">
+                <v-icon class="icon">mdi-bell-outline</v-icon>
+                {{ t('notifications') }}
               </div>
             </v-list-item>
           </router-link>
         </v-list>
-      </template>
+      </v-list-item>
+
+      <!-- Customer Support -->
+      <router-link role="button" to="/customer-support" class="menu-link" active-class="active">
+        <div class="menu-item" :class="{ active: isActiveLink('/customer-support') }">
+          <div class="menu-item-name">
+            <v-icon class="icon">mdi-headphones</v-icon>
+            {{ t('customerSupport') }}
+          </div>
+          <v-chip class="menu-chip" size="small" color="#FF5B5B" text-color="white">2</v-chip>
+        </div>
+      </router-link>
+    </v-list>
+    <v-list dense nav bg-color="white" class="menu">
+      <router-link
+        role="button"
+        to="/login"
+        class="logout-link"
+        @click="authStore.resetAuthState()"
+      >
+        <v-list-item class="logout-item" v-if="links.length > 0">
+          <div class="menu-item-name">
+            <v-icon class="icon"> mdi-logout</v-icon>
+            {{ t('logout') }}
+          </div>
+        </v-list-item>
+      </router-link>
     </v-list>
 
     <hr color="lightgray" />
@@ -86,7 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watchEffect } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue3-i18n'
 
@@ -100,6 +142,7 @@ const route = useRoute()
 const authStore = useAuthStore()
 
 const user = computed(() => authStore.user)
+const isManagementMenuOpen = ref(false)
 
 watchEffect(async () => {
   if (!user.value) {
@@ -170,23 +213,30 @@ const isActiveLink = (path: string) => route.path === path
   }
 }
 
+.menu-item-name {
+  display: flex;
+  align-items: center;
+}
+
 .main-section-title {
   font-size: 12px;
-  color: #9e9e9e;
+  color: #bdbdbd;
   margin-top: 20px;
   margin-bottom: 10px;
   padding-left: 16px;
+  letter-spacing: 1px;
+  font-weight: 600;
 }
 
 .sidebar {
   height: 100%;
-  background-color: rgb(var(--v-theme-white));
+  background-color: #fff;
   padding: 20px;
   border-radius: 0 10px 10px 0;
   color: rgb(var(--v-theme-black));
   display: flex;
   flex-direction: column;
-  border-right: 1px solid $primaryBorderColor;
+  border-right: 1px solid #e0e0e0;
   width: 272px;
 }
 
@@ -202,16 +252,18 @@ li {
 .menu {
   display: flex;
   flex-direction: column;
-  height: 100%; /* Adjust to take available space */
+  // height: 100%;
   margin: 16px 0;
-  flex-grow: 1; /* Allow menu to grow and push user-profile to bottom */
+  flex-grow: 1;
+  gap: 4px;
 }
 
 .menu-item,
 .logout-item {
   &:hover {
-    background-color: rgb(var(--v-theme-lightGray)) !important;
+    background-color: #f6fafd !important;
   }
+  margin-bottom: 2px;
 }
 
 .menu-link,
@@ -224,21 +276,24 @@ li {
 .menu-item {
   display: flex;
   align-items: center;
-  padding: 16px;
+  padding: 12px 16px;
   border-radius: 8px;
   font-size: $normalSize !important;
   gap: 24px;
   cursor: pointer;
   justify-content: space-between;
+  transition: background 0.15s;
+  margin-bottom: 2px;
 
-  &:hover {
-    background-color: rgb(var(--v-theme-lightGray)) !important;
+  img {
+    width: 24px;
+    height: 24px;
   }
 }
 
 .active {
   font-weight: $font-weight-bold;
-  background-color: rgb(var(--v-theme-lightGray)) !important;
+  background-color: #f6fafd !important;
   border-radius: 10px;
 }
 
@@ -247,40 +302,31 @@ li {
   color: inherit;
 }
 
-.new-transfer-chip {
+.menu-chip {
+  background-color: #ff5b5b !important;
+  color: white !important;
   font-weight: bold;
   font-size: 10px;
-}
-
-.selected-lang {
-  font-weight: 700;
-  color: #1844e4;
-}
-
-.v-list-item-title {
-  cursor: pointer;
-}
-
-.bottom-separator {
-  margin: 16px 0;
-  border: none;
-  height: 1px;
-}
-
-.bottom-actions {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  gap: 10px;
-  padding: 16px 0 0;
-}
-
-.bottom-btn {
+  border-radius: 50%;
+  min-width: 18px;
+  height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  text-transform: capitalize;
+  padding: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.submenu {
+  border-radius: 8px;
+  margin-left: 8px;
+  margin-top: 4px;
+  padding: 0 0 0 8px;
+  box-shadow: none;
+}
+
+.submenu-link {
+  text-decoration: none;
 }
 
 .user-profile {
@@ -325,5 +371,20 @@ li {
     color: #9e9e9e;
     margin-top: 15px;
   }
+}
+
+.accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: $normalSize !important;
+  // font-weight: 600;
+  text-transform: uppercase;
+  width: 100%;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: inherit;
+  padding: 16px;
 }
 </style>

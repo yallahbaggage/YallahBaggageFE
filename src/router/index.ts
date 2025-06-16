@@ -16,7 +16,7 @@ const routes: Array<RouteRecordRaw> = [
         name: 'Login',
         component: LoginView,
         meta: { requiresAuth: false, requiresGuest: true },
-        alias: '/login'
+        alias: '/login',
       },
       {
         path: '/register',
@@ -43,9 +43,21 @@ const routes: Array<RouteRecordRaw> = [
         meta: { requiresAuth: true },
       },
       {
-        path: '/app-management',
-        name: 'App Management',
-        component: () => import('../views/pages/AppManagementPage.vue'),
+        path: '/transfers',
+        name: 'Transfers',
+        component: () => import('../views/pages/TransfersPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: '/banners',
+        name: 'Banners',
+        component: () => import('../views/pages/BannersPage.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: '/notifications',
+        name: 'Notifications',
+        component: () => import('../views/pages/NotificationsPage.vue'),
         meta: { requiresAuth: true },
       },
     ],
@@ -62,12 +74,7 @@ const routes: Array<RouteRecordRaw> = [
   //     },
   //   ]
   // },
-  {
-    path: '/transfers',
-    name: 'Transfers',
-    component: () => import('../views/pages/TransfersPage.vue'),
-    meta: { requiresAuth: true }
-  },
+
   // {
   //   path: '/transfers/:id',
   //   name: 'TransferDetails',
@@ -90,13 +97,13 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes
+  routes,
 })
 
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
   const isAuthenticated = authStore.isAuthenticated
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
 
   // Check if we need to restore auth state
   if (!isAuthenticated && localStorage.getItem('accessToken')) {
