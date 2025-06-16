@@ -349,3 +349,72 @@ body {
     flex: 1;
   }
 }
+
+
+/* Hide default Element Plus icon */
+.custom-toast .el-notification__icon {
+  display: none !important;
+}
+
+/* Notification content layout */
+.custom-toast-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px;
+}
+
+.custom-icon {
+  font-size: 24px;
+  line-height: 1;
+  margin-top: 4px;
+}
+
+.text-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.description {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Color bars for different types */
+.success-toast {
+  border-left: 4px solid #67c23a;
+}
+.warning-toast {
+  border-left: 4px solid #e6a23c;
+}
+
+// show toast in the center of the screen and open it smoothly
+.custom-toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 400px;
+  max-width: 100%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0
+, 0.1);
+animation: fadeIn 0.3s ease-in-out;
+}
+.centered-toast {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  top: 20px !important;
+  right: auto !important;
+  margin: 0 auto;
+}

@@ -31,7 +31,7 @@
       >
         <template #cell-status="{ item }">
           <v-chip :color="statusColor(item.status)" text-color="white" small>
-            {{ item.status || t('available') }}
+            {{ item.status ?? t('available') }}
           </v-chip>
         </template>
         <template #cell-_id="{ item }">
@@ -203,6 +203,8 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue3-i18n'
 import { useWorkersStore } from '@/stores/modules/workers'
 import { IWorker } from '@/models/worker'
+import { infoMessage } from '@/utils/helpers'
+import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
 
 const { t } = useI18n()
 const isEmployeeDrawerOpen = ref(false)
@@ -252,18 +254,20 @@ onMounted(() => {
 watch([page, itemsPerPage], fetchWorkers)
 
 const onDeleteButtonPressed = async (selectedWorkerId: string) => {
+  toastDeleteMessage(t('toastDeleteEmployeeTitle'), t('toastDeleteEmployeeDescription'))
   if (!selectedWorkerId) {
     console.error('No worker selected for deletion')
     return
   }
-  await workersStore.deleteSelectedWorker(selectedWorkerId)
+  // await workersStore.deleteSelectedWorker(selectedWorkerId)
   isDeleteEmployeeDrawerOpen.value = false
 }
 const onAddButtonPressed = () => {
-  isEmployeeDrawerOpen.value = true
+  isEmployeeDrawerOpen.value = false
+  toastSuccessMessage(t('toastAddEmployeeTitle'), t('toastAddEmployeeDescription'))
 }
 const onUpdateButtonPressed = () => {
-  isUpdateEmployeeDrawerOpen.value = true
+  isUpdateEmployeeDrawerOpen.value = false
 }
 
 function statusColor(status: string) {

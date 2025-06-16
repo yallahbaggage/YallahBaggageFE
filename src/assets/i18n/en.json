@@ -126,5 +126,11 @@
     "updateEmployee": "Update Employee",
     "loading": "Loading...",
     "deleteIssue": "Delete Issue",
-    "ticket": "Ticket"
+    "ticket": "Ticket",
+    "toastAddEmployeeTitle": "Employee Added succesfully",
+    "toastAddEmployeeDescription": "You've succesffully added the employee. You can now assign him new transfers.",
+    "toastDeleteEmployeeTitle": "Employee Deleted succesfully",
+    "toastDeleteEmployeeDescription": "You have successfully deleted the employee. If he has active transfers, you must assign a new employee to these transfers.",
+    "toastUpdateEmployeeTitle": "Employee Updated succesfully",
+    "toastUpdateEmployeeDescription": "You have successfully updated the employee's information."
 }

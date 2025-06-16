@@ -126,5 +126,11 @@
     "updateEmployee": "Çalışanı Güncelle",
     "loading": "Yükleniyor...",
     "deleteIssue": "Şikayeti Sil",
-    "ticket": "Bilet"
+    "ticket": "Bilet",
+    "toastAddEmployeeTitle": "Çalışan Başarıyla Eklendi",
+    "toastAddEmployeeDescription": "Çalışanı başarıyla eklediniz. Artık yeni transferler atayabilirsiniz.",
+    "toastDeleteEmployeeTitle": "Çalışan Başarıyla Silindi",
+    "toastDeleteEmployeeDescription": "Çalışan başarıyla silindi. Eğer aktif transferleri varsa, bu transferlere yeni bir çalışan atamanız gerekmektedir.",
+    "toastUpdateEmployeeTitle": "Çalışan Başarıyla Güncellendi",
+    "toastUpdateEmployeeDescription": "Çalışanın bilgileri başarıyla güncellendi."
 }
