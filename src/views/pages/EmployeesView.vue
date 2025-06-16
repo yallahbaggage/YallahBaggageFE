@@ -236,9 +236,12 @@ const headers = [
 
 const fetchWorkers = async () => {
   const response = await workersStore.getWorkers({ page: page.value, limit: itemsPerPage.value })
-  // Sync local page with backend page (in case backend adjusts it)
   if (response.pagination && response.pagination.page !== page.value) {
     page.value = response.pagination.page
+  }
+  const totalPages = Math.ceil((response.pagination?.total || 0) / itemsPerPage.value)
+  if (page.value > totalPages && totalPages > 0) {
+    page.value = totalPages
   }
 }
 

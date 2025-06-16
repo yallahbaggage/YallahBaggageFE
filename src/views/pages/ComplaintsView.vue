@@ -178,9 +178,12 @@ const fetchComplaints = async () => {
     page: String(page.value),
     limit: String(itemsPerPage.value),
   })
-  // Sync local page with backend page (in case backend adjusts it)
   if (complaintsStore.paginationInfo && complaintsStore.paginationInfo.page !== page.value) {
     page.value = Number(complaintsStore.paginationInfo.page)
+  }
+  const totalPages = Math.ceil((complaintsStore.paginationInfo?.total || 0) / itemsPerPage.value)
+  if (page.value > totalPages && totalPages > 0) {
+    page.value = totalPages
   }
 }
 

@@ -173,9 +173,12 @@ const fetchNotifications = async () => {
     page: page.value.toString(),
     limit: itemsPerPage.value.toString()
   });
-  // Sync local page with backend page (in case backend adjusts it)
   if (store.paginationInfo && store.paginationInfo.page !== page.value) {
     page.value = store.paginationInfo.page;
+  }
+  const totalPages = Math.ceil((store.paginationInfo?.total || 0) / itemsPerPage.value);
+  if (page.value > totalPages && totalPages > 0) {
+    page.value = totalPages;
   }
 };
 
