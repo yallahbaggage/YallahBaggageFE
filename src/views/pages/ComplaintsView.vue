@@ -166,7 +166,7 @@ const headers = ref([
 ])
 
 const items = computed(() => complaintsStore.allComplaints)
-const totalItems = computed(() => complaintsStore.paginationInfo?.total || 0)
+const totalItems = computed(() => complaintsStore.paginationInfo?.total ?? 0)
 const loading = computed(() => complaintsStore.isLoading)
 
 const stats = computed(
@@ -181,7 +181,7 @@ const fetchComplaints = async () => {
   if (complaintsStore.paginationInfo && complaintsStore.paginationInfo.page !== page.value) {
     page.value = Number(complaintsStore.paginationInfo.page)
   }
-  const totalPages = Math.ceil((complaintsStore.paginationInfo?.total || 0) / itemsPerPage.value)
+  const totalPages = Math.ceil((complaintsStore.paginationInfo?.total ?? 0) / itemsPerPage.value)
   if (page.value > totalPages && totalPages > 0) {
     page.value = totalPages
   }

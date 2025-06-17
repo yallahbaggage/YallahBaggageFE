@@ -138,7 +138,7 @@ const isEditing = ref(false)
 const currentId = ref<string | null>(null)
 
 const items = computed(() => store.allNotifications)
-const totalItems = computed(() => store.paginationInfo?.total || 0)
+const totalItems = computed(() => store.paginationInfo?.total ?? 0)
 const loading = computed(() => store.isLoading)
 const rules = {
   required: (v: string) => !!v || 'Field is required',
@@ -178,7 +178,7 @@ const fetchNotifications = async () => {
   if (store.paginationInfo && store.paginationInfo.page !== page.value) {
     page.value = store.paginationInfo.page
   }
-  const totalPages = Math.ceil((store.paginationInfo?.total || 0) / itemsPerPage.value)
+  const totalPages = Math.ceil((store.paginationInfo?.total ?? 0) / itemsPerPage.value)
   if (page.value > totalPages && totalPages > 0) {
     page.value = totalPages
   }

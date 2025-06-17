@@ -239,7 +239,7 @@ const fetchWorkers = async () => {
   if (response.pagination && response.pagination.page !== page.value) {
     page.value = response.pagination.page
   }
-  const totalPages = Math.ceil((response.pagination?.total || 0) / itemsPerPage.value)
+  const totalPages = Math.ceil((response.pagination?.total ?? 0) / itemsPerPage.value)
   if (page.value > totalPages && totalPages > 0) {
     page.value = totalPages
   }
