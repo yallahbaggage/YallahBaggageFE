@@ -167,5 +167,6 @@
     "CreatedBy":"Oluşturan",
     "sendNotification":"Bildirim Gönder",
     "fillOutAllTheInformationsToSend": "Bildirim gönderilmesi için tüm bilgileri doldurun",
-    "deleteNotification": "Bildirimi Sil"
+    "deleteNotification": "Bildirimi Sil",
+    "asignee": "Atanan"
 }

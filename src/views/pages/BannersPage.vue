@@ -199,7 +199,6 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue3-i18n'
 import { useAdsStore } from '@/stores/modules/adsStore'
 import { IAd } from '@/models/ad'
-import { infoMessage } from '@/utils/helpers'
 import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
 
 const { t } = useI18n()

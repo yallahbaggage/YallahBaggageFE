@@ -16,7 +16,6 @@ interface WorkersState {
   error: string | null
   pagination: Pagination | null
   stats: IWorkersStats | null
-  deleteWorker: IWorker | null
 }
 
 export const useWorkersStore = defineStore('workers', {
@@ -27,7 +26,6 @@ export const useWorkersStore = defineStore('workers', {
     error: null,
     pagination: null,
     stats: null,
-    deleteWorker: null
   }),
 
   getters: {

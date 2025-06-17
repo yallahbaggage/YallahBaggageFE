@@ -167,5 +167,6 @@
     "CreatedBy":"Created by",
     "sendNotification":"Send Notification",
     "fillOutAllTheInformationsToSend": "Fill out all the informations to send",
-    "deleteNotification": "Delete Notification"
+    "deleteNotification": "Delete Notification",
+    "asignee": "Assigne"
 }
