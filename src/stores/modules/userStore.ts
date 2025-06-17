@@ -87,10 +87,10 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  async function deleteUserByNameAndPass(name: string, password: string) {
+  async function deleteUserByNameEmailAndPass(name: string, password: string, email: string) {
     error.value = null
     try {
-      await userService.deleteUserByNameAndPassword(name, password)
+      await userService.deleteUserByNameEmailAndPassword(name, password, email)
     } catch (err) {
       const userError = err as UserStoreError
       error.value = userError.message || 'Failed to delete user'  
@@ -142,6 +142,6 @@ export const useUserStore = defineStore('user', () => {
     clearError,
     init,
     getUserInfo,
-    deleteUserByNameAndPass
+    deleteUserByNameEmailAndPass
   }
 }) 

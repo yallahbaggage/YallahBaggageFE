@@ -27,7 +27,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/delete-user',
         name: 'Delete User',
-        component: () => import('../views/pages/deleteUserMobile.vue'),
+        component: () => import('../views/pages/DeleteUserMobile.vue'),
         meta: { requiresAuth: false, requiresGuest: true },
       },
     ],

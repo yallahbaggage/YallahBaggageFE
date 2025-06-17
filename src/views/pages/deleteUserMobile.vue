@@ -7,16 +7,17 @@ import { errorMessage } from '@/utils/helpers';
 const name = ref('');
 const password = ref('');
 const passwordAgain = ref('');
+const email = ref(''); 
 const userStore = useUserStore();
 
 const deleteUser = async () => {
-  console.log(name.value, password.value, passwordAgain.value);
+  console.log(name.value, password.value, passwordAgain.value,email.value);
   if (password.value !== passwordAgain.value) {
     errorMessage("Passwords do not match");
     return;
   }
   try {
-    await userStore.deleteUserByNameAndPass(name.value, password.value);
+    await userStore.deleteUserByNameEmailAndPass(name.value, password.value, email.value);
   } catch (error) {
     errorMessage("Failed to delete user");
     console.log(error);
@@ -32,6 +33,8 @@ const navigateTo = useRouter();
     <v-form @submit.prevent="deleteUser">
       <h1>Mobile User Account Delete</h1>
       <v-text-field v-model="name" label="Name" required />
+      <v-text-field v-model="email" label="Email" required />
+
       <v-text-field v-model="password" label="Password" required />
       <v-text-field v-model="passwordAgain" label="Password Again" required />
       <v-btn type="submit" color="error">Delete</v-btn>

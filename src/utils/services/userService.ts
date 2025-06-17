@@ -31,9 +31,11 @@ class UserService {
     }
   }
 
-  async deleteUserByNameAndPassword(name: string, password: string): Promise<void> {
+  async deleteUserByNameEmailAndPassword(name: string, password: string, email: string): Promise<void> {
     try {
-      await api.delete(`/users/delete/name/${name}/password/${password}`);
+      await api.delete(`/users/delete`, {
+        data: { name, password, email }
+      });
     } catch (error) {
       throw this.handleError(error as AxiosError<IApiError>);
     }
