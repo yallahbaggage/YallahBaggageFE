@@ -31,7 +31,7 @@
           <span>{{ new Date(item.pickUpDate).toLocaleDateString() }}</span>
         </template>
          <template #cell-deliveryDate="{ item }">
-          <span>{{ new Date(item.scheduledDate).toLocaleDateString() }}</span>
+          <span>{{ new Date(item.deliveryDate).toLocaleDateString() }}</span>
         </template>
         <template #actions="{ item }">
           <v-menu location="bottom end" offset="4">
@@ -94,7 +94,7 @@ const headers = [
   { title: t('transferDate'), key: 'createdAt' },
   { title: t('customer'), key: 'customer' },
   { title: t('pickUpDate'), key: 'pickUpDate' },
-  { title: t('deliveryDate'), key: 'scheduledDate' },
+  { title: t('deliveryDate'), key: 'deliveryDate' },
   { title: t('status'), key: 'status' },
   { title: t('assignChangeStaff'), key: 'assignChangeStaff' },
   { title: t('assigne'), key: 're' },

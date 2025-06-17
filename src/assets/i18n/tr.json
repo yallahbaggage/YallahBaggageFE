@@ -60,7 +60,7 @@
         "service": "Hizmet",
         "worker": "Çalışan",
         "amount": "Tutar",
-        "scheduledDate": "Planlanan Tarih",
+        "deliveryDate": "Planlanan Tarih",
         "status": "Durum",
         "paymentStatus": "Ödeme Durumu",
         "actions": "İşlemler"
@@ -69,7 +69,7 @@
         "service": "Hizmet Seç",
         "worker": "Çalışan Seç",
         "amount": "Toplam Tutar",
-        "scheduledDate": "Planlanan Tarih",
+        "deliveryDate": "Planlanan Tarih",
         "submit": "Transferi Oluştur",
         "update": "Transferi Güncelle"
       },

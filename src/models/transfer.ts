@@ -22,13 +22,14 @@ export interface Transfer {
   status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
   totalAmount: number;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
-  scheduledDate: string;
+  deliveryDate: string;
   from: string;
   to: string;
   flightGate?: string;
   flightNumber?: string;
   pickUpDate: string;
   pickUpTime: string;
+  deliveryTime: string;
   completedAt?: string;
   cancelledAt?: string;
   rating?: TransferRating;

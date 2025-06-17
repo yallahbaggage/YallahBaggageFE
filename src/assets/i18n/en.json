@@ -60,7 +60,7 @@
         "service": "Service",
         "worker": "Worker",
         "amount": "Amount",
-        "scheduledDate": "Scheduled Date",
+        "deliveryDate": "Scheduled Date",
         "status": "Status",
         "paymentStatus": "Payment Status",
         "actions": "Actions"
@@ -69,7 +69,7 @@
         "service": "Select Service",
         "worker": "Select Worker",
         "amount": "Total Amount",
-        "scheduledDate": "Scheduled Date",
+        "deliveryDate": "Scheduled Date",
         "submit": "Create Transfer",
         "update": "Update Transfer"
         },
