@@ -164,5 +164,7 @@
   "ticketCreatedAt": "Ticket created at",
   "statusHasChanged": "Status has changed",
   "statusHasChangedTo": "Status has changed to {status}",
-  "deleteBanner": "Delete Banner"
+  "deleteBanner": "Delete Banner",
+  "details": "Details",
+  "chat": "Chat"
 }

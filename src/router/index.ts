@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import DefaultLayout from '@/views/layouts/DefaultLayout.vue'
+import DefaultLayout from 'layouts/DefaultLayout.vue'
 import AuthLayout from 'layouts/AuthLayout.vue'
-import RegisterView from '@/views/pages/RegisterView.vue'
-import LoginView from '@/views/pages/LoginView.vue'
-import { useAuthStore } from '@/stores/modules/authStore'
+import RegisterView from 'pages/RegisterView.vue'
+import LoginView from 'pages/LoginView.vue'
+import { useAuthStore } from 'modules/authStore'
 import { roleGuard } from './guards/roleGuard'
 
 const routes: Array<RouteRecordRaw> = [
@@ -27,7 +27,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/delete-user',
         name: 'Delete User',
-        component: () => import('@/views/pages/DeleteUserMobile.vue'),
+        component: () => import('pages/DeleteUserMobile.vue'),
         meta: { requiresAuth: false, requiresGuest: true },
       },
     ],
@@ -39,31 +39,31 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/employees',
         name: 'Employees',
-        component: () => import('@/views/pages/EmployeesView.vue'),
+        component: () => import('pages/EmployeesView.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/customer-support',
         name: 'Customer Support',
-        component: () => import('@/views/pages/ComplaintsView.vue'),
+        component: () => import('pages/ComplaintsView.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/transfers',
         name: 'Transfers',
-        component: () => import('@/views/pages/TransfersPage.vue'),
+        component: () => import('pages/TransfersPage.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/banners',
         name: 'Banners',
-        component: () => import('@/views/pages/BannersPage.vue'),
+        component: () => import('pages/BannersPage.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/notifications',
         name: 'Notifications',
-        component: () => import('@/views/pages/NotificationsPage.vue'),
+        component: () => import('pages/NotificationsPage.vue'),
         meta: { requiresAuth: true },
       },
     ],

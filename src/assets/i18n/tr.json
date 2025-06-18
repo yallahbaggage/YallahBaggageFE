@@ -164,5 +164,7 @@
   "ticketCreatedAt": "Ticket akitivtesini Oluştur",
   "statusHasChanged": "Durum Değişti",
   "statusHasChangedTo": "Durum Değişti: {status}",
-    "deleteBanner": "Banner'i Sil"
+  "deleteBanner": "Banner'i Sil",
+  "details": "Detaylar",
+  "chat": "Sohbet"
 }

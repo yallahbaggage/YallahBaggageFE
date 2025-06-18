@@ -175,78 +175,65 @@
             <div class="drawer-banner">
               <p>{{ t('information') }}</p>
             </div>
-            <template>
-              <v-card>
-                <v-tabs v-model="tab" align-tabs="end" color="deep-purple-accent-4">
-                  <v-tab :value="1">Landscape</v-tab>
-                  <v-tab :value="2">City</v-tab>
-                  <v-tab :value="3">Abstract</v-tab>
-                </v-tabs>
+            <v-card>
+              <v-tabs v-model="tab" align-tabs="start" color="deep-purple-accent-4">
+                <v-tab value="details">{{ t('details') }}</v-tab>
+                <v-tab value="chat">{{ t('chat') }}</v-tab>
+              </v-tabs>
 
-                <v-tabs-window v-model="tab">
-                  <v-tabs-window-item v-for="n in 3" :key="n" :value="n">
-                    <v-container fluid>
-                      <v-row>
-                        <v-col v-for="i in 6" :key="i" cols="12" md="4">
-                          <v-img
-                            :lazy-src="`https://picsum.photos/10/6?image=${i * n * 5 + 10}`"
-                            :src="`https://picsum.photos/500/300?image=${i * n * 5 + 10}`"
-                            height="205"
-                            cover
-                          ></v-img>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-tabs-window-item>
-                </v-tabs-window>
-              </v-card>
-            </template>
-            <div>
-              <div class="drawer-info">
-                <p class="drawer-key">{{ t('reportedBy') }}</p>
-                <p class="drawer-value">{{ selectedComplaint?.userId?.name ?? 'N/A' }}</p>
-              </div>
-              <div class="drawer-info">
-                <p class="drawer-key">{{ t('reporterId') }}</p>
-                <p class="drawer-value">
-                  {{ selectedComplaint?.userId?._id?.substring(0, 12) ?? 'N/A' }}
-                </p>
-              </div>
-              <div class="drawer-info">
-                <p class="drawer-key">{{ t('reporterPhoneNumber') }}</p>
-                <p class="drawer-value">{{ selectedComplaint?.userId?.phone ?? 'N/A' }}</p>
-              </div>
-              <div class="drawer-info">
-                <p class="drawer-key">{{ t('reportedOn') }}</p>
-                <p class="drawer-value">
-                  {{
-                    selectedComplaint?.createdAt
-                      ? new Date(selectedComplaint.createdAt).toLocaleString()
-                      : 'N/A'
-                  }}
-                </p>
-              </div>
-              <div class="drawer-info">
-                <p class="drawer-key">{{ t('status') }}</p>
-                <p class="drawer-value">{{ t(selectedComplaint?.status ?? 'pending') }}</p>
-              </div>
-            </div>
-            <div class="drawer-banner">
-              <p>{{ t('ticketActivity') }}</p>
-            </div>
-            <div class="action-btns">
-              <ActionButton
-                :buttonText="t('cancel')"
-                buttonColor="white"
-                @button-pressed="() => (isDetailsComplaintDrawerOpen = false)"
-                class="action-Btn"
-              />
-              <ActionButton
-                class="action-Btn"
-                :buttonText="t('DetailsEmployee')"
-                buttonType="submit"
-              />
-            </div>
+              <v-tabs-window v-model="tab">
+                <v-tabs-window-item value="details">
+                    <div>
+                      <div class="drawer-info">
+                        <p class="drawer-key">{{ t('reportedBy') }}</p>
+                        <p class="drawer-value">{{ selectedComplaint?.userId?.name ?? 'N/A' }}</p>
+                      </div>
+                      <div class="drawer-info">
+                        <p class="drawer-key">{{ t('reporterId') }}</p>
+                        <p class="drawer-value">
+                          {{ selectedComplaint?.userId?._id?.substring(0, 12) ?? 'N/A' }}
+                        </p>
+                      </div>
+                      <div class="drawer-info">
+                        <p class="drawer-key">{{ t('reporterPhoneNumber') }}</p>
+                        <p class="drawer-value">{{ selectedComplaint?.userId?.phone ?? 'N/A' }}</p>
+                      </div>
+                      <div class="drawer-info">
+                        <p class="drawer-key">{{ t('reportedOn') }}</p>
+                        <p class="drawer-value">
+                          {{
+                            selectedComplaint?.createdAt
+                              ? new Date(selectedComplaint.createdAt).toLocaleString()
+                              : 'N/A'
+                          }}
+                        </p>
+                      </div>
+                      <div class="drawer-info">
+                        <p class="drawer-key">{{ t('status') }}</p>
+                        <p class="drawer-value">{{ t(selectedComplaint?.status ?? 'pending') }}</p>
+                      </div>
+                    </div>
+                    <div class="drawer-banner">
+                      <p>{{ t('ticketActivity') }}</p>
+                    </div>
+                    <div class="action-btns">
+                      <ActionButton
+                        :buttonText="t('cancel')"
+                        buttonColor="white"
+                        @button-pressed="() => (isDetailsComplaintDrawerOpen = false)"
+                        class="action-Btn"
+                      />
+                      <ActionButton
+                        class="action-Btn"
+                        :buttonText="t('DetailsEmployee')"
+                        buttonType="submit"
+                      />
+                    </div>
+                </v-tabs-window-item>
+
+                <v-tabs-window-item value="chat"> </v-tabs-window-item>
+              </v-tabs-window>
+            </v-card>
           </div>
         </form>
       </div>
@@ -279,7 +266,7 @@ import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
 
 const { t } = useI18n()
 const complaintsStore = useComplaintsStore()
-  const tab = ref(null)
+const tab = ref(null)
 
 const page = ref(1)
 const itemsPerPage = ref(8)
@@ -389,5 +376,9 @@ function statusColor(status: string) {
   font-weight: 400;
   line-height: 20px; /* 142.857% */
   letter-spacing: -0.084px;
+}
+.v-window {
+  height: 80vh !important;
+  margin-bottom: 15px;
 }
 </style>
