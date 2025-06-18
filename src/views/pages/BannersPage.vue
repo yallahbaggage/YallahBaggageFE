@@ -309,37 +309,6 @@ function deleteAd(item: any) {
 }
 </script>
 <style lang="scss">
-.drawer-info {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.drawer-key {
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px; /* 142.857% */
-  letter-spacing: -0.084px;
-  color: #5c5c5c;
-}
-.drawer-value {
-  color: #171717;
-  font-feature-settings:
-    'ss11' on,
-    'liga' off,
-    'calt' off;
-  /* Label/Small */
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px; /* 142.857% */
-  letter-spacing: -0.084px;
-}
-
 .menu-list {
   min-width: 140px;
   background-color: white;

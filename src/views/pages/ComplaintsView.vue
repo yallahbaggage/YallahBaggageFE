@@ -205,6 +205,9 @@
                 <p class="drawer-value">{{ t(selectedComplaint?.status ?? 'pending') }}</p>
               </div>
             </div>
+            <div class="drawer-banner">
+              <p>{{ t('ticketActivity') }}</p>
+            </div>
             <div class="action-btns">
               <ActionButton
                 :buttonText="t('cancel')"

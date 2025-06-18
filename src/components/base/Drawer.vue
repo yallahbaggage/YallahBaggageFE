@@ -190,7 +190,6 @@ watch(
 }
 
 .drawer-body {
-  padding: $medium !important;
   overflow-y: auto;
   height: calc(100% - $size-5xl);
 }

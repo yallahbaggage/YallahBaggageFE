@@ -159,5 +159,9 @@
   "toastDeleteComplaintTitle": "Şikayet Başarıyla Silindi",
   "toastDeleteComplaintDescription": "Şikayeti başarıyla sildiniz.",
   "DetailsEmployee": "Çalışan Detayları",
-  "complaint": "Şikayet"
+  "complaint": "Şikayet",
+  "ticketActivity":" Ticket akitivtesi",
+  "ticketCreatedAt": "Ticket akitivtesini Oluştur",
+  "statusHasChanged": "Durum Değişti",
+  "statusHasChangedTo": "Durum Değişti: {status}"
 }

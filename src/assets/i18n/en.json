@@ -159,5 +159,9 @@
   "toastDeleteComplaintTitle": "Complaint Deleted Successfully",
   "toastDeleteComplaintDescription": "You have successfully deleted the complaint.",
   "DetailsEmployee": "Employee Details",
-  "complaint": "Complaint"
+  "complaint": "Complaint",
+  "ticketActivity":"Ticket Activity",
+  "ticketCreatedAt": "Ticket created at",
+  "statusHasChanged": "Status has changed",
+  "statusHasChangedTo": "Status has changed to {status}"
 }
