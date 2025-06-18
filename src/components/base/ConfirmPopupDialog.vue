@@ -1,20 +1,40 @@
 <template>
   <v-dialog v-model="props.isVisible" class="overlay" max-width="400" persistent>
     <v-card class="popup">
-      <v-card-title class="popup-title">{{ title }}</v-card-title>
-      <v-card-text>
-        <p v-if="message" class="popup-message">{{ message }}</p>
-      </v-card-text>
-      <v-card-actions>
-        <ActionButton buttonColor="white" buttonBgColor="secondary" :onButtonPressed="onCancel" :button-text="cancelText"/>
-        <ActionButton buttonColor="white" buttonBgColor="primary" :onButtonPressed="onApply" :button-text="applyText"/>
-      </v-card-actions>
+      <div class="popup-header">
+        <v-icon v-if="icon" :color="iconColor" class="popup-icon">{{ icon }}</v-icon>
+        <div class="title-wrapper">
+          <v-card-title class="popup-title">{{ title }}</v-card-title>
+          <v-card-text>
+            <p v-if="message" class="popup-message">{{ message }}</p>
+          </v-card-text>
+        </div>
+      </div>
+
+      <hr class="infoHr" />
+
+      <div class="action-btns">
+        <ActionButton
+          buttonColor="white"
+          buttonBgColor="white"
+          class="action-Btn"
+          :onButtonPressed="onCancel"
+          :button-text="cancelText"
+        />
+        <ActionButton
+          buttonColor="white"
+          class="action-Btn"
+          buttonBgColor="primary"
+          :onButtonPressed="onApply"
+          :button-text="applyText"
+        />
+      </div>
     </v-card>
   </v-dialog>
 </template>
 
 <script setup lang="ts">
-import ActionButton from './ActionButton.vue';
+import ActionButton from './ActionButton.vue'
 
 //NOTE: Props
 const props = defineProps({
@@ -39,6 +59,14 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  icon: {
+    type: String,
+    default: '',
+  },
+  iconColor: {
+    type: String,
+    default: 'primary',
+  },
 })
 
 //NOTE: Emits
@@ -54,26 +82,43 @@ const onApply = () => emit('apply')
 
 .v-dialog > .v-overlay__content > .v-card,
 .v-dialog > .v-overlay__content > form > .v-card {
-  background-color:  rgb(var(--v-theme-white)) !important;
+  background-color: rgb(var(--v-theme-white)) !important;
 }
 
 .popup {
-  padding: $xl !important;
-  border-radius: $x-small !important;
+  padding: 25px !important;
   width: 100%;
-  background-color:  rgb(var(--v-theme-white));
+  background-color: rgb(var(--v-theme-white));
+  padding: $large !important;
+  border-radius: $x-small !important;
+}
+.popup-header {
+  display: flex;
+  align-items: start;
+  gap: $medium;
+}
+.popup-title {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
 }
 
-.popup-title {
-  font-size: $xl !important;
-  font-weight: $font-weight-bold;
-  text-align: center;
-  margin-bottom: $medium !important;
+.popup-icon {
+  font-size: 24px;
+  color: var(--v-theme-primary);
+  padding: 20px;
+  border-radius: 50%;
+  background-color: rgba(var(--v-theme-error), 0.1);
 }
 
 .popup-message {
-  margin-bottom: $xl !important;
-  font-weight: normal;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  color: #5c5c5c;
+  margin-bottom: $large;
 }
 
 .message-item {
@@ -85,33 +130,10 @@ const onApply = () => emit('apply')
   display: inline;
 }
 
-.popup-buttons {
+.title-wrapper {
   display: flex;
-  justify-content: flex-end;
-  gap: $medium !important;
-}
-
-.cancel-button {
-  background-color: rgb(var(--v-theme-secondary));
-  padding: $x-small $medium !important;
-  border-radius: $x-small !important;
-  color: rgb(var(--v-theme-white));
-  cursor: pointer;
-  border: none;
-  font-weight: $font-weight-bold;
-}
-
-.apply-button {
-  padding: $x-small $medium !important;
-  border-radius: $x-small !important;
-  background-color: rgb(var(--v-theme-primary));
-  color:  rgb(var(--v-theme-white));
-  cursor: pointer;
-  border: none;
-  font-weight: $font-weight-bold;
-
-  &:hover {
-    background-color: rgb(var(--v-theme-primaryHover));
-  }
+  align-items: center;
+  gap: $x-small;
+  flex-direction: column;
 }
 </style>

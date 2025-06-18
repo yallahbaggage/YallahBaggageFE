@@ -66,13 +66,18 @@
         :isOpen="isEmployeeDrawerOpen"
         :title="t('newEmployee')"
         :desc="t('fillOutAllTheInformationsToAdd')"
-        @close="() => { isEmployeeDrawerOpen = false; resetForm(); }"
+        @close="
+          () => {
+            isEmployeeDrawerOpen = false
+            resetForm()
+          }
+        "
       >
         <div style="max-height: 75vh">
           <form @submit.prevent="onAddButtonPressed()" class="employee-form">
             <div class="drawer-banner">
-                <p>{{ t('information') }}</p>
-              </div>
+              <p>{{ t('information') }}</p>
+            </div>
             <div class="form-group">
               <label for="name" class="form-label">
                 {{ t('fullName') }}<span class="required">*</span>
@@ -120,7 +125,7 @@
                 <div class="country-select" @click="toggleCountryDropdown">
                   <img :src="selectedCountry.flag" :alt="selectedCountry.name" class="flag" />
                   <span class="country-code">{{ selectedCountry.dialCode }}</span>
-                  <span class="dropdown-arrow" :class="{ 'rotated': showCountryDropdown }">▼</span>
+                  <span class="dropdown-arrow" :class="{ rotated: showCountryDropdown }">▼</span>
                 </div>
                 <input
                   id="phone"
@@ -161,13 +166,14 @@
                 :buttonText="t('cancel')"
                 buttonColor="white"
                 class="action-Btn"
-                @button-pressed="() => { isEmployeeDrawerOpen = false; resetForm(); }"
+                @button-pressed="
+                  () => {
+                    isEmployeeDrawerOpen = false
+                    resetForm()
+                  }
+                "
               />
-              <ActionButton
-                class="action-Btn"
-                :buttonText="t('addEmployee')"
-                buttonType="submit"
-              />
+              <ActionButton class="action-Btn" :buttonText="t('addEmployee')" buttonType="submit" />
             </div>
           </form>
         </div>
@@ -176,12 +182,13 @@
       <!-- delete Drawer -->
       <Drawer
         :isOpen="isDeleteEmployeeDrawerOpen"
-        :desc="t('newEmployee')"
+        :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 12)"
+        :title="selectedWorker?.name"
         :status="t(selectedWorker?.status ? selectedWorker?.status : t('available'))"
         @close="isDeleteEmployeeDrawerOpen = false"
       >
         <div style="max-height: 75vh">
-          <form @submit.prevent="onDeleteButtonPressed(selectedWorker!._id)" class="form">
+          <form class="form">
             <div>
               <div class="drawer-banner">
                 <p>{{ t('information') }}</p>
@@ -207,13 +214,22 @@
                   :buttonText="t('cancel')"
                   buttonColor="white"
                   class="action-Btn"
-                  @button-pressed="() => (isDeleteEmployeeDrawerOpen = false)"
+                  @button-pressed="
+                    () => {
+                      ;(isConfirmDeletePopupVisible = true), (isDeleteEmployeeDrawerOpen = false)
+                    }
+                  "
                 />
                 <ActionButton
                   button-color="error"
                   :buttonText="t('deleteEmployee')"
-                  buttonType="submit"
                   class="action-Btn"
+                  @button-pressed="
+                    () => {
+                      isConfirmDeletePopupVisible = true
+                      isDeleteEmployeeDrawerOpen = false
+                    }
+                  "
                 />
               </div>
             </div>
@@ -224,8 +240,9 @@
       <!-- update Drawer -->
       <Drawer
         :isOpen="isUpdateEmployeeDrawerOpen"
-        :desc="t('newEmployee')"
-        :status="t('busy')"
+        :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 12)"
+        :title="selectedWorker?.name"
+        :status="t(selectedWorker?.status ? selectedWorker?.status : t('available'))"
         @close="isUpdateEmployeeDrawerOpen = false"
       >
         <div style="max-height: 75vh">
@@ -237,15 +254,15 @@
               <div>
                 <div class="employee-info">
                   <p class="employee-key">{{ t('fullName') }}</p>
-                  <p class="employee-value">Zaid Al-Farsi</p>
+                  <p class="employee-value">{{ selectedWorker?.name }}</p>
                 </div>
                 <div class="employee-info">
                   <p class="employee-key">{{ t('employeeID') }}</p>
-                  <p class="employee-value">784-678-9012-3</p>
+                  <p class="employee-value">{{ selectedWorker?._id.substring(0, 12) }}</p>
                 </div>
                 <div class="employee-info">
                   <p class="employee-key">{{ t('phoneNumber') }}</p>
-                  <p class="employee-value">+971 (51) 123-4567</p>
+                  <p class="employee-value">{{ selectedWorker?.phone }}</p>
                 </div>
               </div>
               <hr class="infoHr" />
@@ -254,20 +271,33 @@
                 <ActionButton
                   :buttonText="t('cancel')"
                   buttonColor="white"
+                  class="action-Btn"
                   @button-pressed="() => (isUpdateEmployeeDrawerOpen = false)"
-                  class="action-Btn"
                 />
-                <ActionButton
-                  class="action-Btn"
-                  :buttonText="t('updateEmployee')"
+                <!-- <ActionButton
+                  button-color="error"
+                  :buttonText="t('deleteEmployee')"
                   buttonType="submit"
-                />
+                  class="action-Btn"
+                /> -->
               </div>
             </div>
           </form>
         </div>
       </Drawer>
       <!-- update Drawer -->
+
+      <ConfirmPopupDialog
+        :isVisible="isConfirmDeletePopupVisible"
+        :title="t('deleteEmployeeConfirmTitle')"
+        :message="t('deleteEmployeeConfirmDescription')"
+        :icon="'mdi-trash-can-outline'"
+        :iconColor="'error'"
+        @cancel="closeDeletePopup"
+        @apply="onDeleteButtonPressed(selectedWorker!._id)"
+        :cancelText="t('cancel')"
+        :applyText="t('deleteConfirmButton')"
+      />
     </div>
   </div>
 </template>
@@ -275,6 +305,7 @@
 import ActionButton from '@/components/base/ActionButton.vue'
 import BaseHeader from '@/components/base/BaseHeader.vue'
 import Drawer from '@/components/base/Drawer.vue'
+import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
 import InfoCard from '@/components/base/InfoCard.vue'
 import ServerTable from '@/components/base/ServerTable.vue'
 import { ref, onMounted, computed, watch, onUnmounted } from 'vue'
@@ -282,11 +313,14 @@ import { useI18n } from 'vue3-i18n'
 import { useWorkersStore } from '@/stores/modules/workers'
 import { IWorker } from '@/models/worker'
 import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
-import { Country ,countries} from '@/utils/constants/countries'
+import { Country, countries } from '@/utils/constants/countries'
 const { t } = useI18n()
 const isEmployeeDrawerOpen = ref(false)
 const isDeleteEmployeeDrawerOpen = ref(false)
 const isUpdateEmployeeDrawerOpen = ref(false)
+const isConfirmDeletePopupVisible = ref(false)
+const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
+
 const selectedCountry = ref<Country>(countries[0])
 const phoneNumber = ref('')
 const showCountryDropdown = ref(false)
@@ -295,7 +329,7 @@ const newWorker = ref({
   name: '',
   identityNumber: '',
   phone: '',
-  email: ''
+  email: '',
 })
 const workersStore = useWorkersStore()
 const loading = computed(() => workersStore.isLoading)
@@ -338,7 +372,7 @@ const fetchStats = async () => {
 onMounted(() => {
   fetchWorkers()
   fetchStats()
-  
+
   // Add click outside handler
   document.addEventListener('click', handleClickOutside)
 })
@@ -367,13 +401,14 @@ watch([phoneNumber, selectedCountry], () => {
 })
 
 const onDeleteButtonPressed = async (selectedWorkerId: string) => {
-  toastDeleteMessage(t('toastDeleteEmployeeTitle'), t('toastDeleteEmployeeDescription'))
   if (!selectedWorkerId) {
     console.error('No worker selected for deletion')
     return
   }
-  // await workersStore.deleteSelectedWorker(selectedWorkerId)
+  await workersStore.deleteSelectedWorker(selectedWorkerId)
+  toastDeleteMessage(t('toastDeleteEmployeeTitle'), t('toastDeleteEmployeeDescription'))
   isDeleteEmployeeDrawerOpen.value = false
+  isConfirmDeletePopupVisible.value = false
 }
 
 const resetForm = () => {
@@ -381,7 +416,7 @@ const resetForm = () => {
     name: '',
     identityNumber: '',
     phone: '',
-    email: ''
+    email: '',
   }
   phoneNumber.value = ''
   selectedCountry.value = countries[0]
@@ -393,7 +428,7 @@ const onAddButtonPressed = async () => {
   try {
     // Combine country code with phone number
     const fullPhoneNumber = `${selectedCountry.value.dialCode} ${phoneNumber.value}`
-    
+
     const workerData = {
       name: newWorker.value.name,
       identityNumber: newWorker.value.identityNumber,
@@ -405,16 +440,16 @@ const onAddButtonPressed = async () => {
       password: '123456', // Default password, consider changing this
       experience: 0, // Default experience
     }
-    
-    await workersStore.createWorker(workerData as unknown as  IWorker)
-    
+
+    await workersStore.createWorker(workerData as unknown as IWorker)
+
     // Reset form
     resetForm()
-    
+
     // Close drawer and show success message
     isEmployeeDrawerOpen.value = false
     toastSuccessMessage(t('toastAddEmployeeTitle'), t('toastAddEmployeeDescription'))
-    
+
     // Refresh the workers list
     await fetchWorkers()
   } catch (error) {
@@ -461,7 +496,9 @@ const selectCountry = (country: Country) => {
 }
 
 const filteredCountries = computed(() => {
-  return countries.filter(country => country.name.toLowerCase().includes(countrySearch.value.toLowerCase()))
+  return countries.filter((country) =>
+    country.name.toLowerCase().includes(countrySearch.value.toLowerCase()),
+  )
 })
 </script>
 <style lang="scss">
@@ -516,7 +553,7 @@ const filteredCountries = computed(() => {
 }
 
 .form-group {
-  margin: 10px  0;
+  margin: 10px 0;
 }
 
 .form-label {

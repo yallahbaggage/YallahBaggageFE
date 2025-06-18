@@ -120,13 +120,22 @@ const onButtonPressed = () => {
 @use 'styles/main' as *;
 
 .action-text-button {
-  // border: 1px solid var(--alternate);
+  border: 1px solid var(--alternate);
   box-shadow: $shadow;
+  font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: 20px; 
+
 }
 
 .action-icon-button {
   padding: 15px; 
   box-shadow: $shadow;
+  font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: 20px; 
 }
 
 .action-icon-text-button {
@@ -134,6 +143,10 @@ const onButtonPressed = () => {
   align-items: center;
   // border: 1px solid var(--alternate);
   box-shadow: $shadow;
+  font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: 20px; 
 
   .v-icon {
     margin-right: 5px;
@@ -141,6 +154,6 @@ const onButtonPressed = () => {
 }
 
 .v-btn {
-  padding: 10px 15px !important;
+  padding: 10px 12px !important;
 }
 </style>
