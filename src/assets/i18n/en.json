@@ -168,5 +168,6 @@
     "sendNotification":"Send Notification",
     "fillOutAllTheInformationsToSend": "Fill out all the informations to send",
     "deleteNotification": "Delete Notification",
-    "asignee": "Assigne"
+    "asignee": "Assigne",
+    "fillOutAllTheInformationsToAdd": "Fill out all the informations to add"
 }

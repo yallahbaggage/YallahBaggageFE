@@ -64,8 +64,8 @@
       <!-- add Drawer -->
       <Drawer
         :isOpen="isEmployeeDrawerOpen"
-        :desc="t('newEmployee')"
-        :status="t('busy')"
+        :title="t('newEmployee')"
+        :desc="t('fillOutAllTheInformationsToAdd')"
         @close="isEmployeeDrawerOpen = false"
       >
         <div style="max-height: 75vh">
@@ -75,9 +75,9 @@
                 <p>{{ t('information') }}</p>
               </div>
               <div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('fullName') }}</p>
-                  <p class="employee-value">Zaid Al-Farsi</p>
+                <div class="add-employee">
+                  <label for="name" class="employee-key">{{ t('fullName') }}</label>
+                  <input id="name" type="text" class="employee-value" />
                 </div>
                 <div class="employee-info">
                   <p class="employee-key">{{ t('employeeID') }}</p>
@@ -88,13 +88,19 @@
                   <p class="employee-value">+971 (51) 123-4567</p>
                 </div>
               </div>
+              <hr class="infoHr" />
               <div class="action-btns">
                 <ActionButton
                   :buttonText="t('cancel')"
                   buttonColor="white"
+                  class="action-Btn"
                   @button-pressed="() => (isEmployeeDrawerOpen = false)"
                 />
-                <ActionButton :buttonText="t('addEmployee')" buttonType="submit" />
+                <ActionButton
+                  class="action-Btn"
+                  :buttonText="t('addEmployee')"
+                  buttonType="submit"
+                />
               </div>
             </div>
           </form>
@@ -128,16 +134,20 @@
                   <p class="employee-value">{{ selectedWorker?.phone }}</p>
                 </div>
               </div>
+              <hr class="infoHr" />
+
               <div class="action-btns">
                 <ActionButton
                   :buttonText="t('cancel')"
                   buttonColor="white"
+                  class="action-Btn"
                   @button-pressed="() => (isDeleteEmployeeDrawerOpen = false)"
                 />
                 <ActionButton
                   button-color="error"
                   :buttonText="t('deleteEmployee')"
                   buttonType="submit"
+                  class="action-Btn"
                 />
               </div>
             </div>
@@ -172,6 +182,8 @@
                   <p class="employee-value">+971 (51) 123-4567</p>
                 </div>
               </div>
+              <hr class="infoHr" />
+
               <div class="action-btns">
                 <ActionButton
                   :buttonText="t('cancel')"
@@ -203,7 +215,6 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue3-i18n'
 import { useWorkersStore } from '@/stores/modules/workers'
 import { IWorker } from '@/models/worker'
-import { infoMessage } from '@/utils/helpers'
 import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
 
 const { t } = useI18n()
