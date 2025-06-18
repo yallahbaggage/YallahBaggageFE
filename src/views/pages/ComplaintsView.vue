@@ -170,8 +170,10 @@
       @close="isDetailsComplaintDrawerOpen = false"
     >
       <div style="max-height: 75vh">
-        <form class="form">
+        <form class="drawer-form">
           <div>
+            <p class="complaint-title">{{ selectedComplaint?.title }}</p>
+            <p class="complaint-description">{{ selectedComplaint?.description }}</p>
             <div class="drawer-banner">
               <p>{{ t('information') }}</p>
             </div>
@@ -183,52 +185,105 @@
 
               <v-tabs-window v-model="tab">
                 <v-tabs-window-item value="details">
-                    <div>
-                      <div class="drawer-info">
-                        <p class="drawer-key">{{ t('reportedBy') }}</p>
-                        <p class="drawer-value">{{ selectedComplaint?.userId?.name ?? 'N/A' }}</p>
-                      </div>
-                      <div class="drawer-info">
-                        <p class="drawer-key">{{ t('reporterId') }}</p>
-                        <p class="drawer-value">
-                          {{ selectedComplaint?.userId?._id?.substring(0, 12) ?? 'N/A' }}
-                        </p>
-                      </div>
-                      <div class="drawer-info">
-                        <p class="drawer-key">{{ t('reporterPhoneNumber') }}</p>
-                        <p class="drawer-value">{{ selectedComplaint?.userId?.phone ?? 'N/A' }}</p>
-                      </div>
-                      <div class="drawer-info">
-                        <p class="drawer-key">{{ t('reportedOn') }}</p>
-                        <p class="drawer-value">
+                  <div>
+                    <div class="drawer-info">
+                      <p class="drawer-key">{{ t('reportedBy') }}</p>
+                      <p class="drawer-value">{{ selectedComplaint?.userId?.name ?? 'N/A' }}</p>
+                    </div>
+                    <div class="drawer-info">
+                      <p class="drawer-key">{{ t('reporterId') }}</p>
+                      <p class="drawer-value">
+                        {{ selectedComplaint?.userId?._id?.substring(0, 12) ?? 'N/A' }}
+                      </p>
+                    </div>
+                    <div class="drawer-info">
+                      <p class="drawer-key">{{ t('reporterPhoneNumber') }}</p>
+                      <p class="drawer-value">{{ selectedComplaint?.userId?.phone ?? 'N/A' }}</p>
+                    </div>
+                    <div class="drawer-info">
+                      <p class="drawer-key">{{ t('reportedOn') }}</p>
+                      <p class="drawer-value">
+                        {{
+                          selectedComplaint?.createdAt
+                            ? new Date(selectedComplaint.createdAt).toLocaleString()
+                            : 'N/A'
+                        }}
+                      </p>
+                    </div>
+                    <div class="drawer-info">
+                      <p class="drawer-key">{{ t('status') }}</p>
+                      <p class="drawer-value">{{ t(selectedComplaint?.status ?? 'pending') }}</p>
+                    </div>
+                  </div>
+                  <div class="drawer-banner">
+                    <p>{{ t('ticketActivity') }}</p>
+                  </div>
+                  <div class="status-stepper">
+                    <v-timeline>
+                      <v-timeline-item
+                        v-if="selectedComplaint?.createdAt"
+                        dot-color="white"
+                        icon="mdi-ticket-confirmation-outline"
+                      >
+                        <div class="timeline-item-content">
+                          <p>{{ t('ticketCreatedAt') }}</p>
+                          <span>{{ formatDate(selectedComplaint?.createdAt) }}</span>
+                        </div>
+                      </v-timeline-item>
+
+                      <v-timeline-item
+                        v-slot:opposite
+                        dot-color="white"
+                        icon="mdi-rotate-3d-variant"
+                        icon-color="orange"
+                        v-if="selectedComplaint?.updatedAt"
+                      >
+                        <div class="timeline-item-content">
+                          <p>{{ t('statusHasChanged') }}</p>
+                          <span>{{ formatDate(selectedComplaint?.updatedAt) }}</span>
+                        </div>
+                        <p class="status-desc">
                           {{
-                            selectedComplaint?.createdAt
-                              ? new Date(selectedComplaint.createdAt).toLocaleString()
-                              : 'N/A'
+                            t('statusHasChangedTo', {
+                              status: t(selectedComplaint?.status ?? 'pending'),
+                            })
                           }}
                         </p>
-                      </div>
-                      <div class="drawer-info">
-                        <p class="drawer-key">{{ t('status') }}</p>
-                        <p class="drawer-value">{{ t(selectedComplaint?.status ?? 'pending') }}</p>
-                      </div>
-                    </div>
-                    <div class="drawer-banner">
-                      <p>{{ t('ticketActivity') }}</p>
-                    </div>
-                    <div class="action-btns">
-                      <ActionButton
-                        :buttonText="t('cancel')"
-                        buttonColor="white"
-                        @button-pressed="() => (isDetailsComplaintDrawerOpen = false)"
-                        class="action-Btn"
-                      />
-                      <ActionButton
-                        class="action-Btn"
-                        :buttonText="t('DetailsEmployee')"
-                        buttonType="submit"
-                      />
-                    </div>
+                      </v-timeline-item>
+
+                      <v-timeline-item
+                        v-if="selectedComplaint?.closedAt"
+                        dot-color="white"
+                        icon="mdi-check"
+                        icon-color="success"
+                      >
+                        <div class="timeline-item-content">
+                          <p>{{ t('statusHasChanged') }}</p>
+                          <span>{{ formatDate(selectedComplaint?.updatedAt) }}</span>
+                        </div>
+                        <p class="status-desc">
+                          {{
+                            t('statusHasChangedTo', {
+                              status: t(selectedComplaint?.status ?? 'completed'),
+                            })
+                          }}
+                        </p>
+                      </v-timeline-item>
+                    </v-timeline>
+                  </div>
+                  <div class="action-btns">
+                    <ActionButton
+                      :buttonText="t('cancel')"
+                      buttonColor="white"
+                      @button-pressed="() => (isDetailsComplaintDrawerOpen = false)"
+                      class="action-Btn"
+                    />
+                    <ActionButton
+                      class="action-Btn"
+                      :buttonText="t('saveStatus')"
+                      buttonType="submit"
+                    />
+                  </div>
                 </v-tabs-window-item>
 
                 <v-tabs-window-item value="chat"> </v-tabs-window-item>
@@ -263,6 +318,7 @@ import Drawer from '@/components/base/Drawer.vue'
 import ActionButton from '@/components/base/ActionButton.vue'
 import { toastDeleteMessage } from '@/utils/helpers/notification'
 import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
+import { formatDate } from '@/utils/helpers/date-helper'
 
 const { t } = useI18n()
 const complaintsStore = useComplaintsStore()
@@ -366,6 +422,7 @@ function statusColor(status: string) {
   font-weight: 500;
   line-height: 24px; /* 133.333% */
   letter-spacing: -0.27px;
+  margin: 0 15px;
 }
 .complaint-description {
   margin: 16px 0;
@@ -376,9 +433,35 @@ function statusColor(status: string) {
   font-weight: 400;
   line-height: 20px; /* 142.857% */
   letter-spacing: -0.084px;
+    margin: 10px 15px;
+
 }
 .v-window {
-  height: 80vh !important;
+  height: 75dvh !important;
   margin-bottom: 15px;
+}
+.status-stepper{
+  margin: 10px 0;
+}
+.timeline-item-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+
+  span {
+    font-style: normal;
+    font-weight: 500;
+    line-height: 12px;
+    color: #a3a3a3;
+  }
+
+  .status-desc {
+    color: #5c5c5c;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+  }
 }
 </style>

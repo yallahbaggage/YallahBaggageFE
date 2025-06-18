@@ -115,7 +115,6 @@ watch(
   position: fixed;
   right: 0;
   top: 0;
-  width: fit-content;
   min-width: 25%;
   height: 100%;
   background-color: rgb(var(--v-theme-white));

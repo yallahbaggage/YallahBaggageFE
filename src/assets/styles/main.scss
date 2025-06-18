@@ -344,8 +344,8 @@ body {
   gap: 10px;
   position: absolute;
   bottom: 0;
-  width: 95%;
-  margin-bottom: 20px;
+  width: 100%;
+  margin-bottom: 30px;
 
   .action-Btn {
     flex: 1;
@@ -479,4 +479,15 @@ animation: fadeIn 0.3s ease-in-out;
   margin-bottom: 8px;
   color: #222;
   font-size: 15px;
+}
+
+.v-timeline--vertical.v-timeline .v-timeline-item:first-child .v-timeline-divider,
+.v-timeline--vertical.v-timeline .v-timeline-item:first-child .v-timeline-item__body,
+.v-timeline--vertical.v-timeline .v-timeline-item:first-child .v-timeline-item__opposite {
+  padding-block-start: 0px !important;
+}
+.v-timeline--vertical.v-timeline .v-timeline-item:last-child .v-timeline-divider,
+.v-timeline--vertical.v-timeline .v-timeline-item:last-child .v-timeline-item__body,
+.v-timeline--vertical.v-timeline .v-timeline-item:last-child .v-timeline-item__opposite {
+  padding-block-end: 0px !important;
 }

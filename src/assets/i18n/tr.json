@@ -166,5 +166,6 @@
   "statusHasChangedTo": "Durum Değişti: {status}",
   "deleteBanner": "Banner'i Sil",
   "details": "Detaylar",
-  "chat": "Sohbet"
+  "chat": "Sohbet",
+  "saveStatus": "Durum Kaydet"
 }

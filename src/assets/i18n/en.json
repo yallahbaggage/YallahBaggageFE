@@ -166,5 +166,6 @@
   "statusHasChangedTo": "Status has changed to {status}",
   "deleteBanner": "Delete Banner",
   "details": "Details",
-  "chat": "Chat"
+  "chat": "Chat",
+  "saveStatus": "Save Status"
 }
