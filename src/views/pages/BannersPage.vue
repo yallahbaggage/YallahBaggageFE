@@ -186,6 +186,18 @@
         </div>
       </Drawer>
       <!-- update Drawer -->
+
+      <ConfirmPopupDialog
+        :isVisible="isConfirmDeletePopupVisible"
+        :title="t('deleteConfirmBanner')"
+        :message="t('deleteConfirmBannerDescription')"
+        :icon="'mdi-trash-can-outline'"
+        :iconColor="'error'"
+        @cancel="closeDeletePopup"
+        @apply="onDeleteButtonPressed(selectedAd!._id)"
+        :cancelText="t('cancel')"
+        :applyText="t('deleteConfirmButton')"
+      />
     </div>
   </div>
 </template>
@@ -195,6 +207,7 @@ import BaseHeader from '@/components/base/BaseHeader.vue'
 import Drawer from '@/components/base/Drawer.vue'
 import InfoCard from '@/components/base/InfoCard.vue'
 import ServerTable from '@/components/base/ServerTable.vue'
+import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
 import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue3-i18n'
 import { useAdsStore } from '@/stores/modules/adsStore'
@@ -205,10 +218,12 @@ const { t } = useI18n()
 const isEmployeeDrawerOpen = ref(false)
 const isDeleteEmployeeDrawerOpen = ref(false)
 const isUpdateEmployeeDrawerOpen = ref(false)
+const isConfirmDeletePopupVisible = ref(false)
 
 const adsStore = useAdsStore()
 const loading = computed(() => adsStore.isLoading)
 const ads = computed(() => adsStore.allAds)
+
 const pagination = computed(
   () => adsStore.paginationInfo || { total: 0, page: 1, limit: 8, pageCount: 1 },
 )
@@ -227,6 +242,8 @@ const headers = [
   { title: t('startEndDate'), key: 'expireDate' },
   { title: t('actions'), key: '', sortable: false },
 ]
+
+const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
 
 const fetchAds = async () => {
   const response = await adsStore.getAds({ page: page.value, limit: itemsPerPage.value })
