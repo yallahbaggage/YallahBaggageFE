@@ -1,4 +1,3 @@
-import { kRestApiUrl } from '@/utils/constants/const';
 import { IUser } from '@/models/user';
 import api from './api';
 

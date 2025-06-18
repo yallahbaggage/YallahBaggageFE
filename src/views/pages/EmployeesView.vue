@@ -69,39 +69,69 @@
         @close="isEmployeeDrawerOpen = false"
       >
         <div style="max-height: 75vh">
-          <form @submit.prevent="onAddButtonPressed()" class="form">
-            <div>
-              <div class="drawer-banner">
+          <form @submit.prevent="onAddButtonPressed()" class="employee-form">
+            <div class="drawer-banner">
                 <p>{{ t('information') }}</p>
               </div>
-              <div>
-                <div class="add-employee">
-                  <label for="name" class="employee-key">{{ t('fullName') }}</label>
-                  <input id="name" type="text" class="employee-value" />
+            <div class="form-group">
+              <label for="name" class="form-label">
+                {{ t('fullName') }}<span class="required">*</span>
+              </label>
+              <input
+                id="name"
+                type="text"
+                class="form-input"
+                placeholder="Employee full name here"
+                required
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label for="idNumber" class="form-label">
+                {{ t('identityNumber') }}<span class="required">*</span>
+              </label>
+              <input
+                id="idNumber"
+                type="text"
+                class="form-input"
+                placeholder="1234567890"
+                required
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label for="phone" class="form-label">
+                {{ t('phoneNumber') }}<span class="required">*</span>
+              </label>
+              <div class="phone-input-wrapper">
+                <div class="country-select">
+                  <img src="https://flagcdn.com/ae.svg" alt="UAE" class="flag" />
+                  <span class="country-code">+374</span>
+                  <span class="dropdown-arrow">▼</span>
                 </div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('employeeID') }}</p>
-                  <p class="employee-value">784-678-9012-3</p>
-                </div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('phoneNumber') }}</p>
-                  <p class="employee-value">+971 (51) 123-4567</p>
-                </div>
-              </div>
-              <hr class="infoHr" />
-              <div class="action-btns">
-                <ActionButton
-                  :buttonText="t('cancel')"
-                  buttonColor="white"
-                  class="action-Btn"
-                  @button-pressed="() => (isEmployeeDrawerOpen = false)"
+                <input
+                  id="phone"
+                  type="text"
+                  class="form-input phone-input"
+                  placeholder="(51) 000-0000"
+                  required
+                  disabled
                 />
-                <ActionButton
-                  class="action-Btn"
-                  :buttonText="t('addEmployee')"
-                  buttonType="submit"
-                />
               </div>
+            </div>
+            <hr class="infoHr" />
+            <div class="action-btns">
+              <ActionButton
+                :buttonText="t('cancel')"
+                buttonColor="white"
+                class="action-Btn"
+                @button-pressed="() => (isEmployeeDrawerOpen = false)"
+              />
+              <ActionButton
+                class="action-Btn"
+                :buttonText="t('addEmployee')"
+                buttonType="submit"
+              />
             </div>
           </form>
         </div>
@@ -350,5 +380,85 @@ function deleteEmpeloyee(item: any) {
   font-size: 14px;
   padding: 6px 12px;
   min-height: unset !important;
+}
+
+.employee-form {
+  background: #fff;
+  border-radius: 12px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin: 10px  0;
+}
+
+.form-label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #222;
+  font-size: 15px;
+}
+
+.required {
+  color: #2563eb; /* blue-600 */
+  margin-left: 2px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f9fafb;
+  color: #888;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.form-input:disabled {
+  background: #f3f4f6;
+  color: #bbb;
+}
+
+.phone-input-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.country-select {
+  display: flex;
+  align-items: center;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px 0 0 8px;
+  padding: 0 10px;
+  height: 44px;
+  margin-right: -1px;
+}
+
+.flag {
+  width: 24px;
+  height: 16px;
+  margin-right: 6px;
+  border-radius: 2px;
+}
+
+.country-code {
+  font-size: 1rem;
+  color: #222;
+  margin-right: 4px;
+}
+
+.dropdown-arrow {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.phone-input {
+  border-radius: 0 8px 8px 0;
+  border-left: none;
 }
 </style>
