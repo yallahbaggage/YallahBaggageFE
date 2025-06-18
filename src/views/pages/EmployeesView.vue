@@ -499,8 +499,7 @@ const filteredCountries = computed(() => {
   )
 })
 </script>
-<style lang="scss">
-
+<style lang="scss" scoped>
 .menu-list {
   min-width: 140px;
   background-color: white;

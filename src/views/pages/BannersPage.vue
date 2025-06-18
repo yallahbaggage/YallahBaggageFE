@@ -75,13 +75,13 @@
                 <p>{{ t('information') }}</p>
               </div>
               <div>
-                <div class="employee-info">
-                  <p class="employee-key">URL</p>
-                  <p class="employee-value">https://example.com</p>
+                <div class="drawer-info">
+                  <p class="drawer-key">URL</p>
+                  <p class="drawer-value">https://example.com</p>
                 </div>
-                <div class="employee-info">
-                  <p class="employee-key">Expire Date</p>
-                  <p class="employee-value">2024-12-31</p>
+                <div class="drawer-info">
+                  <p class="drawer-key">Expire Date</p>
+                  <p class="drawer-value">2024-12-31</p>
                 </div>
               </div>
               <div class="action-btns">
@@ -111,17 +111,17 @@
                 <p>{{ t('information') }}</p>
               </div>
               <div>
-                <div class="employee-info">
-                  <p class="employee-key">URL</p>
-                  <p class="employee-value">{{ selectedAd?.url }}</p>
+                <div class="drawer-info">
+                  <p class="drawer-key">URL</p>
+                  <p class="drawer-value">{{ selectedAd?.url }}</p>
                 </div>
-                <div class="employee-info">
-                  <p class="employee-key">Expire Date</p>
-                  <p class="employee-value">{{ selectedAd ? new Date(selectedAd.expireDate).toLocaleDateString() : '' }}</p>
+                <div class="drawer-info">
+                  <p class="drawer-key">Expire Date</p>
+                  <p class="drawer-value">{{ selectedAd ? new Date(selectedAd.expireDate).toLocaleDateString() : '' }}</p>
                 </div>
-                <div class="employee-info">
-                  <p class="employee-key">ID</p>
-                  <p class="employee-value">{{ selectedAd?._id.substring(0, 12) }}</p>
+                <div class="drawer-info">
+                  <p class="drawer-key">ID</p>
+                  <p class="drawer-value">{{ selectedAd?._id.substring(0, 12) }}</p>
                 </div>
               </div>
               <div class="action-btns">
@@ -155,17 +155,17 @@
                 <p>{{ t('information') }}</p>
               </div>
               <div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('fullName') }}</p>
-                  <p class="employee-value">Zaid Al-Farsi</p>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('fullName') }}</p>
+                  <p class="drawer-value">Zaid Al-Farsi</p>
                 </div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('employeeID') }}</p>
-                  <p class="employee-value">784-678-9012-3</p>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('employeeID') }}</p>
+                  <p class="drawer-value">784-678-9012-3</p>
                 </div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('phoneNumber') }}</p>
-                  <p class="employee-value">+971 (51) 123-4567</p>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('phoneNumber') }}</p>
+                  <p class="drawer-value">+971 (51) 123-4567</p>
                 </div>
               </div>
               <div class="action-btns">
@@ -309,14 +309,14 @@ function deleteAd(item: any) {
 }
 </script>
 <style lang="scss">
-.employee-info {
+.drawer-info {
   margin-top: 16px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.employee-key {
+.drawer-key {
   font-family: Inter;
   font-size: 14px;
   font-style: normal;
@@ -325,7 +325,7 @@ function deleteAd(item: any) {
   letter-spacing: -0.084px;
   color: #5c5c5c;
 }
-.employee-value {
+.drawer-value {
   color: #171717;
   font-feature-settings:
     'ss11' on,

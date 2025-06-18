@@ -75,52 +75,115 @@
         </template>
       </ServerSideTable>
     </div>
-
-    <!-- update Drawer -->
-      <Drawer
-        :isOpen="isUpdateComplaintDrawerOpen"
-        :desc="t('newEmployee')"
-        :status="t('busy')"
-        @close="isUpdateComplaintDrawerOpen = false"
-      >
-        <div style="max-height: 75vh">
-          <form @submit.prevent="onUpdateButtonPressed()" class="form">
+    <!-- delete Drawer -->
+    <Drawer
+      :isOpen="isDeleteComplaintDrawerOpen"
+      :desc="t('employee') + ' ' + '#' + selectedComplaint?._id.substring(0, 12)"
+      :title="selectedComplaint?.title"
+      :status="selectedComplaint?.status ? t(selectedComplaint?.status) : t('Available')"
+      @close="isDeleteComplaintDrawerOpen = false"
+    >
+      <div style="max-height: 75vh">
+        <form class="form">
+          <div>
+            <div class="drawer-banner">
+              <p>{{ t('information') }}</p>
+            </div>
             <div>
-              <div class="drawer-banner">
-                <p>{{ t('information') }}</p>
+              <div class="drawer-info">
+                <p class="drawer-key">{{ t('fullName') }}</p>
+                <p class="drawer-value">{{ selectedComplaint?.title }}</p>
               </div>
-              <div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('fullName') }}</p>
-                  <p class="employee-value">Zaid Al-Farsi</p>
-                </div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('employeeID') }}</p>
-                  <p class="employee-value">784-678-9012-3</p>
-                </div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('phoneNumber') }}</p>
-                  <p class="employee-value">+971 (51) 123-4567</p>
-                </div>
+              <div class="drawer-info">
+                <p class="drawer-key">{{ t('drawerID') }}</p>
+                <p class="drawer-value">{{ selectedComplaint?._id.substring(0, 12) }}</p>
               </div>
-              <div class="action-btns">
-                <ActionButton
-                  :buttonText="t('cancel')"
-                  buttonColor="white"
-                  @button-pressed="() => (isUpdateComplaintDrawerOpen = false)"
-                  class="action-Btn"
-                />
-                <ActionButton
-                  class="action-Btn"
-                  :buttonText="t('updateEmployee')"
-                  buttonType="submit"
-                />
+              <div class="drawer-info">
+                <p class="drawer-key">{{ t('phoneNumber') }}</p>
+                <p class="drawer-value">{{ selectedComplaint?.description }}</p>
               </div>
             </div>
-          </form>
-        </div>
-      </Drawer>
-      <!-- update Drawer -->
+            <div class="action-btns">
+              <ActionButton
+                :buttonText="t('cancel')"
+                buttonColor="white"
+                class="action-Btn"
+                @button-pressed="() => (isDeleteComplaintDrawerOpen = false)"
+              />
+              <ActionButton
+                button-color="error"
+                :buttonText="t('deleteIssue')"
+                class="action-Btn"
+                @button-pressed="
+                  () => {
+                    isConfirmDeletePopupVisible = true
+                    isDeleteComplaintDrawerOpen = false
+                  }
+                "
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+    </Drawer>
+    <!-- delete Drawer -->
+
+    <!-- update Drawer -->
+    <Drawer
+      :isOpen="isUpdateComplaintDrawerOpen"
+      :desc="t('newEmployee')"
+      :status="t('busy')"
+      @close="isUpdateComplaintDrawerOpen = false"
+    >
+      <div style="max-height: 75vh">
+        <form @submit.prevent="onUpdateButtonPressed()" class="drawer-form">
+          <div>
+            <div class="drawer-banner">
+              <p>{{ t('information') }}</p>
+            </div>
+            <div>
+              <div class="drawer-info">
+                <p class="drawer-key">{{ t('fullName') }}</p>
+                <p class="drawer-value">Zaid Al-Farsi</p>
+              </div>
+              <div class="drawer-info">
+                <p class="drawer-key">{{ t('employeeID') }}</p>
+                <p class="drawer-value">784-678-9012-3</p>
+              </div>
+              <div class="drawer-info">
+                <p class="drawer-key">{{ t('phoneNumber') }}</p>
+                <p class="drawer-value">+971 (51) 123-4567</p>
+              </div>
+            </div>
+            <div class="action-btns">
+              <ActionButton
+                :buttonText="t('cancel')"
+                buttonColor="white"
+                @button-pressed="() => (isUpdateComplaintDrawerOpen = false)"
+                class="action-Btn"
+              />
+              <ActionButton
+                class="action-Btn"
+                :buttonText="t('updateEmployee')"
+                buttonType="submit"
+              />
+            </div>
+          </div>
+        </form>
+      </div>
+    </Drawer>
+    <!-- update Drawer -->
+    <ConfirmPopupDialog
+      :isVisible="isConfirmDeletePopupVisible"
+      :title="t('deleteConfirmBanner')"
+      :message="t('deleteConfirmBannerDescription')"
+      :icon="'mdi-trash-can-outline'"
+      :iconColor="'error'"
+      @cancel="closeDeletePopup"
+      @apply="onDeleteButtonPressed(selectedComplaint!._id)"
+      :cancelText="t('cancel')"
+      :applyText="t('deleteConfirmButton')"
+    />
   </div>
 </template>
 <!--            
@@ -138,6 +201,7 @@ import { useComplaintsStore } from '@/stores/modules/complaints'
 import { useI18n } from 'vue3-i18n'
 import { IComplaint } from '@/models/complaint'
 import Drawer from '@/components/base/Drawer.vue'
+import { toastDeleteMessage } from '@/utils/helpers/notification'
 
 const { t } = useI18n()
 const complaintsStore = useComplaintsStore()
@@ -147,7 +211,9 @@ const itemsPerPage = ref(8)
 const selectedComplaint = ref<IComplaint | null>(null)
 const isDeleteComplaintDrawerOpen = ref(false)
 const isUpdateComplaintDrawerOpen = ref(false)
+const isConfirmDeletePopupVisible = ref(false)
 
+const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
 
 const onUpdateButtonPressed = () => {
   if (selectedComplaint.value) {
@@ -197,6 +263,17 @@ function deleteComplaint(item: any) {
   isDeleteComplaintDrawerOpen.value = true
 }
 
+const onDeleteButtonPressed = async (selectedComplaintId: string) => {
+  if (!selectedComplaintId) {
+    console.error('No complaint selected for deletion')
+    return
+  }
+  await complaintsStore.deleteComplaint(selectedComplaintId)
+  toastDeleteMessage(t('toastDeleteComplaintTitle'), t('toastDeleteComplaintDescription'))
+  isDeleteComplaintDrawerOpen.value = false
+  isConfirmDeletePopupVisible.value = false
+}
+
 const fetchStats = async () => {
   await complaintsStore.getComplaintsStatsPage()
 }
@@ -220,3 +297,6 @@ function statusColor(status: string) {
   )
 }
 </script>
+<style scoped>
+
+</style>
