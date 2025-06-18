@@ -27,7 +27,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/delete-user',
         name: 'Delete User',
-        component: () => import('../views/pages/DeleteUserMobile.vue'),
+        component: () => import('@/views/pages/DeleteUserMobile.vue'),
         meta: { requiresAuth: false, requiresGuest: true },
       },
     ],
@@ -39,31 +39,31 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/employees',
         name: 'Employees',
-        component: () => import('../views/pages/EmployeesView.vue'),
+        component: () => import('@/views/pages/EmployeesView.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/customer-support',
         name: 'Customer Support',
-        component: () => import('../views/pages/ComplaintsView.vue'),
+        component: () => import('@/views/pages/ComplaintsView.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/transfers',
         name: 'Transfers',
-        component: () => import('../views/pages/TransfersPage.vue'),
+        component: () => import('@/views/pages/TransfersPage.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/banners',
         name: 'Banners',
-        component: () => import('../views/pages/BannersPage.vue'),
+        component: () => import('@/views/pages/BannersPage.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/notifications',
         name: 'Notifications',
-        component: () => import('../views/pages/NotificationsPage.vue'),
+        component: () => import('@/views/pages/NotificationsPage.vue'),
         meta: { requiresAuth: true },
       },
     ],
@@ -90,13 +90,13 @@ const routes: Array<RouteRecordRaw> = [
   // {
   //   path: '/profile',
   //   name: 'Profile',
-  //   component: () => import('../views/pages/ProfilePage.vue'),
+  //   component: () => import('@/views/pages/ProfilePage.vue'),
   //   meta: { requiresAuth: true }
   // },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import('../views/pages/NotFoundPage.vue'),
+    component: () => import('@/views/pages/NotFoundPage.vue'),
     alias: '/not-found',
   },
 ]

@@ -163,5 +163,6 @@
   "ticketActivity":" Ticket akitivtesi",
   "ticketCreatedAt": "Ticket akitivtesini Oluştur",
   "statusHasChanged": "Durum Değişti",
-  "statusHasChangedTo": "Durum Değişti: {status}"
+  "statusHasChangedTo": "Durum Değişti: {status}",
+    "deleteBanner": "Banner'i Sil"
 }

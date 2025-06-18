@@ -163,5 +163,6 @@
   "ticketActivity":"Ticket Activity",
   "ticketCreatedAt": "Ticket created at",
   "statusHasChanged": "Status has changed",
-  "statusHasChangedTo": "Status has changed to {status}"
+  "statusHasChangedTo": "Status has changed to {status}",
+  "deleteBanner": "Delete Banner"
 }
