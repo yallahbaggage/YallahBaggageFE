@@ -28,7 +28,7 @@
       >
         <template #cell-status="{ item }">
           <v-chip :color="statusColor(item.status)" text-color="white" small>
-            {{ item.status }}
+            {{ t(item.status ?? 'pending') }}
           </v-chip>
         </template>
         <template #cell-_id="{ item }">
@@ -110,7 +110,7 @@
               </div>
               <div class="drawer-info">
                 <p class="drawer-key">{{ t('status') }}</p>
-                <p class="drawer-value">{{ t(selectedComplaint?.status ?? t('pending'))  }}</p>
+                <p class="drawer-value">{{ t(selectedComplaint?.status ?? 'pending')  }}</p>
               </div>
             </div>
             <div class="action-btns">
