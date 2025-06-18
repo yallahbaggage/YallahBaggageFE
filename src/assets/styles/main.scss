@@ -430,3 +430,52 @@ animation: fadeIn 0.3s ease-in-out;
   background-color: rgb(var(--v-theme-success));
 }
 
+.drawer-info {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.drawer-key {
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.084px;
+  color: #5c5c5c;
+}
+.drawer-value {
+  color: #171717;
+  font-feature-settings:
+    'ss11' on,
+    'liga' off,
+    'calt' off;
+  /* Label/Small */
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.084px;
+}
+
+.drawer-form {
+  background: #fff;
+  border-radius: 12px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.drawer-form-group {
+  margin: 10px 0;
+}
+
+.drawer-label-group {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #222;
+  font-size: 15px;
+}

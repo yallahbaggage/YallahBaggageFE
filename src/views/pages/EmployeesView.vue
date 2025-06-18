@@ -30,7 +30,6 @@
         v-model:items-per-page="itemsPerPage"
       >
         <template #cell-status="{ item }">
-          
           <v-chip :color="statusColor(item.status)" text-color="white" small>
             <span class="status-circle"></span>
             {{ t(item.status) ?? t('Available') }}
@@ -63,7 +62,7 @@
           </v-menu>
         </template>
       </ServerTable>
-      <!-- add Drawer -->
+            <!-- add Drawer -->
       <Drawer
         :isOpen="isEmployeeDrawerOpen"
         :title="t('newEmployee')"
@@ -76,12 +75,12 @@
         "
       >
         <div style="max-height: 75vh">
-          <form @submit.prevent="onAddButtonPressed()" class="employee-form">
+          <form @submit.prevent="onAddButtonPressed()" class="drawer-form">
             <div class="drawer-banner">
               <p>{{ t('information') }}</p>
             </div>
-            <div class="form-group">
-              <label for="name" class="form-label">
+            <div class="drawer-form-group">
+              <label for="name" class="drawer-label-group">
                 {{ t('fullName') }}<span class="required">*</span>
               </label>
               <input
@@ -93,8 +92,8 @@
                 required
               />
             </div>
-            <div class="form-group">
-              <label for="email" class="form-label">
+            <div class="drawer-form-group">
+              <label for="email" class="drawer-label-group">
                 {{ t('email') }}<span class="required">*</span>
               </label>
               <input
@@ -106,8 +105,8 @@
                 required
               />
             </div>
-            <div class="form-group">
-              <label for="idNumber" class="form-label">
+            <div class="drawer-form-group">
+              <label for="idNumber" class="drawer-label-group">
                 {{ t('identityNumber') }}<span class="required">*</span>
               </label>
               <input
@@ -119,8 +118,8 @@
                 required
               />
             </div>
-            <div class="form-group">
-              <label for="phone" class="form-label">
+            <div class="drawer-form-group">
+              <label for="phone" class="drawer-label-group">
                 {{ t('phoneNumber') }}<span class="required">*</span>
               </label>
               <div class="phone-input-wrapper">
@@ -196,17 +195,17 @@
                 <p>{{ t('information') }}</p>
               </div>
               <div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('fullName') }}</p>
-                  <p class="employee-value">{{ selectedWorker?.name }}</p>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('fullName') }}</p>
+                  <p class="drawer-value">{{ selectedWorker?.name }}</p>
                 </div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('employeeID') }}</p>
-                  <p class="employee-value">{{ selectedWorker?._id.substring(0, 12) }}</p>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('employeeID') }}</p>
+                  <p class="drawer-value">{{ selectedWorker?._id.substring(0, 12) }}</p>
                 </div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('phoneNumber') }}</p>
-                  <p class="employee-value">{{ selectedWorker?.phone }}</p>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('phoneNumber') }}</p>
+                  <p class="drawer-value">{{ selectedWorker?.phone }}</p>
                 </div>
               </div>
               <hr class="infoHr" />
@@ -216,11 +215,7 @@
                   :buttonText="t('cancel')"
                   buttonColor="white"
                   class="action-Btn"
-                  @button-pressed="
-                    () => {
-                      ;(isConfirmDeletePopupVisible = true), (isDeleteEmployeeDrawerOpen = false)
-                    }
-                  "
+                  @button-pressed="() => (isDeleteEmployeeDrawerOpen = false)"
                 />
                 <ActionButton
                   button-color="error"
@@ -254,17 +249,17 @@
                 <p>{{ t('information') }}</p>
               </div>
               <div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('fullName') }}</p>
-                  <p class="employee-value">{{ selectedWorker?.name }}</p>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('fullName') }}</p>
+                  <p class="drawer-value">{{ selectedWorker?.name }}</p>
                 </div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('employeeID') }}</p>
-                  <p class="employee-value">{{ selectedWorker?._id.substring(0, 12) }}</p>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('employeeID') }}</p>
+                  <p class="drawer-value">{{ selectedWorker?._id.substring(0, 12) }}</p>
                 </div>
-                <div class="employee-info">
-                  <p class="employee-key">{{ t('phoneNumber') }}</p>
-                  <p class="employee-value">{{ selectedWorker?.phone }}</p>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('phoneNumber') }}</p>
+                  <p class="drawer-value">{{ selectedWorker?.phone }}</p>
                 </div>
               </div>
               <hr class="infoHr" />
@@ -505,36 +500,6 @@ const filteredCountries = computed(() => {
 })
 </script>
 <style lang="scss">
-.employee-info {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.employee-key {
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px; /* 142.857% */
-  letter-spacing: -0.084px;
-  color: #5c5c5c;
-}
-.employee-value {
-  color: #171717;
-  font-feature-settings:
-    'ss11' on,
-    'liga' off,
-    'calt' off;
-  /* Label/Small */
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px; /* 142.857% */
-  letter-spacing: -0.084px;
-}
 
 .menu-list {
   min-width: 140px;
@@ -548,24 +513,6 @@ const filteredCountries = computed(() => {
   min-height: unset !important;
 }
 
-.employee-form {
-  background: #fff;
-  border-radius: 12px;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.form-group {
-  margin: 10px 0;
-}
-
-.form-label {
-  display: block;
-  font-weight: 500;
-  margin-bottom: 8px;
-  color: #222;
-  font-size: 15px;
-}
 
 .required {
   color: #2563eb; /* blue-600 */
