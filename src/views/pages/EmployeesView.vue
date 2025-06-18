@@ -66,7 +66,7 @@
         :isOpen="isEmployeeDrawerOpen"
         :title="t('newEmployee')"
         :desc="t('fillOutAllTheInformationsToAdd')"
-        @close="isEmployeeDrawerOpen = false"
+        @close="() => { isEmployeeDrawerOpen = false; resetForm(); }"
       >
         <div style="max-height: 75vh">
           <form @submit.prevent="onAddButtonPressed()" class="employee-form">
@@ -82,8 +82,21 @@
                 type="text"
                 class="form-input"
                 placeholder="Employee full name here"
+                v-model="newWorker.name"
                 required
-                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label for="email" class="form-label">
+                {{ t('email') }}<span class="required">*</span>
+              </label>
+              <input
+                id="email"
+                type="email"
+                class="form-input"
+                placeholder="employee@example.com"
+                v-model="newWorker.email"
+                required
               />
             </div>
             <div class="form-group">
@@ -95,8 +108,8 @@
                 type="text"
                 class="form-input"
                 placeholder="1234567890"
+                v-model="newWorker.identityNumber"
                 required
-                disabled
               />
             </div>
             <div class="form-group">
@@ -104,19 +117,42 @@
                 {{ t('phoneNumber') }}<span class="required">*</span>
               </label>
               <div class="phone-input-wrapper">
-                <div class="country-select">
-                  <img src="https://flagcdn.com/ae.svg" alt="UAE" class="flag" />
-                  <span class="country-code">+374</span>
-                  <span class="dropdown-arrow">▼</span>
+                <div class="country-select" @click="toggleCountryDropdown">
+                  <img :src="selectedCountry.flag" :alt="selectedCountry.name" class="flag" />
+                  <span class="country-code">{{ selectedCountry.dialCode }}</span>
+                  <span class="dropdown-arrow" :class="{ 'rotated': showCountryDropdown }">▼</span>
                 </div>
                 <input
                   id="phone"
                   type="text"
                   class="form-input phone-input"
-                  placeholder="(51) 000-0000"
+                  :placeholder="`(${selectedCountry.dialCode})`"
+                  v-model="phoneNumber"
                   required
-                  disabled
                 />
+                <!-- Country Dropdown -->
+                <div v-if="showCountryDropdown" class="country-dropdown">
+                  <div class="dropdown-search">
+                    <input
+                      type="text"
+                      v-model="countrySearch"
+                      placeholder="Search countries..."
+                      class="search-input"
+                    />
+                  </div>
+                  <div class="dropdown-list">
+                    <div
+                      v-for="country in filteredCountries"
+                      :key="country.iso2"
+                      class="dropdown-item"
+                      @click="selectCountry(country)"
+                    >
+                      <img :src="country.flag" :alt="country.name" class="flag" />
+                      <span class="country-name">{{ country.name }}</span>
+                      <span class="country-dial">{{ country.dialCode }}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <hr class="infoHr" />
@@ -125,7 +161,7 @@
                 :buttonText="t('cancel')"
                 buttonColor="white"
                 class="action-Btn"
-                @button-pressed="() => (isEmployeeDrawerOpen = false)"
+                @button-pressed="() => { isEmployeeDrawerOpen = false; resetForm(); }"
               />
               <ActionButton
                 class="action-Btn"
@@ -241,17 +277,26 @@ import BaseHeader from '@/components/base/BaseHeader.vue'
 import Drawer from '@/components/base/Drawer.vue'
 import InfoCard from '@/components/base/InfoCard.vue'
 import ServerTable from '@/components/base/ServerTable.vue'
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed, watch, onUnmounted } from 'vue'
 import { useI18n } from 'vue3-i18n'
 import { useWorkersStore } from '@/stores/modules/workers'
 import { IWorker } from '@/models/worker'
 import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
-
+import { Country ,countries} from '@/utils/constants/countries'
 const { t } = useI18n()
 const isEmployeeDrawerOpen = ref(false)
 const isDeleteEmployeeDrawerOpen = ref(false)
 const isUpdateEmployeeDrawerOpen = ref(false)
-
+const selectedCountry = ref<Country>(countries[0])
+const phoneNumber = ref('')
+const showCountryDropdown = ref(false)
+const countrySearch = ref('')
+const newWorker = ref({
+  name: '',
+  identityNumber: '',
+  phone: '',
+  email: ''
+})
 const workersStore = useWorkersStore()
 const loading = computed(() => workersStore.isLoading)
 const workers = computed(() => workersStore.allWorkers)
@@ -293,9 +338,33 @@ const fetchStats = async () => {
 onMounted(() => {
   fetchWorkers()
   fetchStats()
+  
+  // Add click outside handler
+  document.addEventListener('click', handleClickOutside)
 })
 
+onUnmounted(() => {
+  // Remove click outside handler
+  document.removeEventListener('click', handleClickOutside)
+})
+
+const handleClickOutside = (event: Event) => {
+  const target = event.target as HTMLElement
+  if (!target.closest('.phone-input-wrapper')) {
+    showCountryDropdown.value = false
+  }
+}
+
 watch([page, itemsPerPage], fetchWorkers)
+
+// Watch for changes in phone number or selected country
+watch([phoneNumber, selectedCountry], () => {
+  if (phoneNumber.value) {
+    newWorker.value.phone = `${selectedCountry.value.dialCode} ${phoneNumber.value}`
+  } else {
+    newWorker.value.phone = ''
+  }
+})
 
 const onDeleteButtonPressed = async (selectedWorkerId: string) => {
   toastDeleteMessage(t('toastDeleteEmployeeTitle'), t('toastDeleteEmployeeDescription'))
@@ -306,10 +375,54 @@ const onDeleteButtonPressed = async (selectedWorkerId: string) => {
   // await workersStore.deleteSelectedWorker(selectedWorkerId)
   isDeleteEmployeeDrawerOpen.value = false
 }
-const onAddButtonPressed = () => {
-  isEmployeeDrawerOpen.value = false
-  toastSuccessMessage(t('toastAddEmployeeTitle'), t('toastAddEmployeeDescription'))
+
+const resetForm = () => {
+  newWorker.value = {
+    name: '',
+    identityNumber: '',
+    phone: '',
+    email: ''
+  }
+  phoneNumber.value = ''
+  selectedCountry.value = countries[0]
+  showCountryDropdown.value = false
+  countrySearch.value = ''
 }
+
+const onAddButtonPressed = async () => {
+  try {
+    // Combine country code with phone number
+    const fullPhoneNumber = `${selectedCountry.value.dialCode} ${phoneNumber.value}`
+    
+    const workerData = {
+      name: newWorker.value.name,
+      identityNumber: newWorker.value.identityNumber,
+      phone: fullPhoneNumber,
+      email: newWorker.value.email,
+      role: 'worker' as const,
+      isAvailable: true,
+      timeFormat: '24' as const,
+      password: '123456', // Default password, consider changing this
+      experience: 0, // Default experience
+    }
+    
+    await workersStore.createWorker(workerData as unknown as  IWorker)
+    
+    // Reset form
+    resetForm()
+    
+    // Close drawer and show success message
+    isEmployeeDrawerOpen.value = false
+    toastSuccessMessage(t('toastAddEmployeeTitle'), t('toastAddEmployeeDescription'))
+    
+    // Refresh the workers list
+    await fetchWorkers()
+  } catch (error) {
+    console.error('Error creating worker:', error)
+    // You might want to show an error toast here
+  }
+}
+
 const onUpdateButtonPressed = () => {
   isUpdateEmployeeDrawerOpen.value = false
 }
@@ -337,6 +450,19 @@ function deleteEmpeloyee(item: any) {
   selectedWorker.value = item as IWorker
   isDeleteEmployeeDrawerOpen.value = true
 }
+
+const toggleCountryDropdown = () => {
+  showCountryDropdown.value = !showCountryDropdown.value
+}
+
+const selectCountry = (country: Country) => {
+  selectedCountry.value = country
+  showCountryDropdown.value = false
+}
+
+const filteredCountries = computed(() => {
+  return countries.filter(country => country.name.toLowerCase().includes(countrySearch.value.toLowerCase()))
+})
 </script>
 <style lang="scss">
 .employee-info {
@@ -426,17 +552,23 @@ function deleteEmpeloyee(item: any) {
 .phone-input-wrapper {
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .country-select {
   display: flex;
   align-items: center;
-  background: #f9fafb;
+  padding: 12px 14px;
   border: 1px solid #e5e7eb;
+  border-right: none;
   border-radius: 8px 0 0 8px;
-  padding: 0 10px;
-  height: 44px;
-  margin-right: -1px;
+  background: #f9fafb;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.country-select:hover {
+  background: #f3f4f6;
 }
 
 .flag {
@@ -455,10 +587,88 @@ function deleteEmpeloyee(item: any) {
 .dropdown-arrow {
   font-size: 0.8rem;
   color: #888;
+  transition: transform 0.2s;
+}
+
+.dropdown-arrow.rotated {
+  transform: rotate(180deg);
 }
 
 .phone-input {
-  border-radius: 0 8px 8px 0;
   border-left: none;
+  border-radius: 0 8px 8px 0;
+}
+
+.country-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 300px;
+  z-index: 1000;
+  margin-top: 4px;
+}
+
+.dropdown-search {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: #2563eb;
+}
+
+.dropdown-list {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f9fafb;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item .flag {
+  width: 20px;
+  height: 14px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.country-name {
+  flex: 1;
+  font-size: 14px;
+  color: #222;
+  margin-right: 8px;
+}
+
+.country-dial {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
 }
 </style>

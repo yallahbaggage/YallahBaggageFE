@@ -56,6 +56,20 @@ export const useWorkersStore = defineStore('workers', {
       }
     },
 
+    async createWorker(worker: IWorker): Promise<IWorker> {
+      try {
+        this.loading = true
+        const response = await workerService.createWorker(worker)
+        return response as IWorker
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : 'Error creating worker'
+        this.error = errorMsg
+        throw err
+      } finally {
+        this.loading = false
+      }
+    },
+
     async getWorker(workerId: string): Promise<IWorker> {
       try {
         this.loading = true

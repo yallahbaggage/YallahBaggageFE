@@ -39,6 +39,15 @@ class WorkerService {
     } 
   }
 
+  async createWorker(worker: IWorker): Promise<IWorker> {
+    try {
+      const response = await api.post('/workers', worker);
+      return response.data as IWorker;
+    } catch (error) {
+      throw this.handleError(error as AxiosError<IApiError>);
+    }
+  }
+
   private handleError(error: AxiosError<IApiError>): Error {
     const message = error.response?.data?.message ?? error.message ?? 'An error occurred';
     return new Error(message);
