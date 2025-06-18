@@ -425,7 +425,6 @@ function statusColor(status: string) {
   margin: 0 15px;
 }
 .complaint-description {
-  margin: 16px 0;
   max-width: 400px;
   color: #5c5c5c;
   font-size: 14px;
@@ -433,8 +432,7 @@ function statusColor(status: string) {
   font-weight: 400;
   line-height: 20px; /* 142.857% */
   letter-spacing: -0.084px;
-    margin: 10px 15px;
-
+  margin: 10px 15px;
 }
 .v-window {
   height: 75dvh !important;
