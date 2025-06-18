@@ -30,8 +30,10 @@
         v-model:items-per-page="itemsPerPage"
       >
         <template #cell-status="{ item }">
+          
           <v-chip :color="statusColor(item.status)" text-color="white" small>
-            {{ item.status ?? t('available') }}
+            <span class="status-circle"></span>
+            {{ t(item.status) ?? t('Available') }}
           </v-chip>
         </template>
         <template #cell-_id="{ item }">
@@ -184,7 +186,7 @@
         :isOpen="isDeleteEmployeeDrawerOpen"
         :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 12)"
         :title="selectedWorker?.name"
-        :status="t(selectedWorker?.status ? selectedWorker?.status : t('available'))"
+        :status="selectedWorker?.status ? t(selectedWorker?.status) : t('Available')"
         @close="isDeleteEmployeeDrawerOpen = false"
       >
         <div style="max-height: 75vh">
@@ -242,7 +244,7 @@
         :isOpen="isUpdateEmployeeDrawerOpen"
         :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 12)"
         :title="selectedWorker?.name"
-        :status="t(selectedWorker?.status ? selectedWorker?.status : t('available'))"
+        :status="t(selectedWorker?.status ? selectedWorker?.status : t('Available'))"
         @close="isUpdateEmployeeDrawerOpen = false"
       >
         <div style="max-height: 75vh">
@@ -436,6 +438,7 @@ const onAddButtonPressed = async () => {
       email: newWorker.value.email,
       role: 'worker' as const,
       isAvailable: true,
+      status: 'Available' as const,
       timeFormat: '24' as const,
       password: '123456', // Default password, consider changing this
       experience: 0, // Default experience

@@ -25,11 +25,11 @@ const props = defineProps({
   },
   iconSize: {
     type: Number,
-    default: 20, 
+    default: 20,
   },
-  customClass:{
-    type:String,
-    default:'',
+  customClass: {
+    type: String,
+    default: '',
   },
   buttonType: {
     type: String,
@@ -38,7 +38,7 @@ const props = defineProps({
   buttonSize: {
     type: String as PropType<SizeEnum>,
     default: SizeEnum.medium,
-  }
+  },
 })
 
 const emit = defineEmits(['button-pressed'])
@@ -123,19 +123,18 @@ const onButtonPressed = () => {
   border: 1px solid var(--alternate);
   box-shadow: $shadow;
   font-size: 14px;
-font-style: normal;
-font-weight: 500;
-line-height: 20px; 
-
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
 }
 
 .action-icon-button {
-  padding: 15px; 
+  padding: 15px;
   box-shadow: $shadow;
   font-size: 14px;
-font-style: normal;
-font-weight: 500;
-line-height: 20px; 
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
 }
 
 .action-icon-text-button {
@@ -143,10 +142,10 @@ line-height: 20px;
   align-items: center;
   // border: 1px solid var(--alternate);
   box-shadow: $shadow;
-  font-size: 14px;
-font-style: normal;
-font-weight: 500;
-line-height: 20px; 
+  font-size: 14px !important;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
 
   .v-icon {
     margin-right: 5px;

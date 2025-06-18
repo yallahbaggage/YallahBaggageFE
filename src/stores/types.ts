@@ -89,7 +89,7 @@ export interface Worker {
   name: string;
   email: string;
   phone: string;
-  status: 'available' | 'busy' | 'offline';
+  status: 'Available' | 'Assigned' | 'OnTheWay' | 'OnLeave';
   specialization: string;
   rating: number;
   completedJobs: number;

@@ -131,6 +131,8 @@ const onButtonPressed = () => {
   padding: 0 16px; // Adjust padding to match image
   height: 40px; // Standard height for Vuetify buttons
 
+  font-size: 14px; // Font size for button text
+  font-weight: 500; // Font weight for button text
   .v-icon {
     margin-right: 8px; // Space between icon and text
   }
