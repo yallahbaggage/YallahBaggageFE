@@ -86,21 +86,31 @@
       <div style="max-height: 75vh">
         <form class="form">
           <div>
+            <p>{{ selectedComplaint?.title }}</p>
+            <p>{{ selectedComplaint?.description }}</p>
             <div class="drawer-banner">
               <p>{{ t('information') }}</p>
             </div>
             <div>
               <div class="drawer-info">
-                <p class="drawer-key">{{ t('fullName') }}</p>
-                <p class="drawer-value">{{ selectedComplaint?.title }}</p>
+                <p class="drawer-key">{{ t('reportedBy') }}</p>
+                <p class="drawer-value">{{ selectedComplaint?.userId?.name ?? 'N/A' }}</p>
               </div>
               <div class="drawer-info">
-                <p class="drawer-key">{{ t('drawerID') }}</p>
-                <p class="drawer-value">{{ selectedComplaint?._id.substring(0, 12) }}</p>
+                <p class="drawer-key">{{ t('reporterId') }}</p>
+                <p class="drawer-value">{{ selectedComplaint?.userId?._id?.substring(0, 12) ?? 'N/A' }}</p>
               </div>
               <div class="drawer-info">
-                <p class="drawer-key">{{ t('phoneNumber') }}</p>
-                <p class="drawer-value">{{ selectedComplaint?.description }}</p>
+                <p class="drawer-key">{{ t('reporterPhoneNumber') }}</p>
+                <p class="drawer-value">{{ selectedComplaint?.userId?.phone ?? 'N/A' }}</p>
+              </div>
+              <div class="drawer-info">
+                <p class="drawer-key">{{ t('reportedOn') }}</p>
+                <p class="drawer-value">{{ selectedComplaint?.createdAt ? new Date(selectedComplaint.createdAt).toLocaleString() : 'N/A' }}</p>
+              </div>
+              <div class="drawer-info">
+                <p class="drawer-key">{{ t('status') }}</p>
+                <p class="drawer-value">{{ t(selectedComplaint?.status ?? t('pending'))  }}</p>
               </div>
             </div>
             <div class="action-btns">
@@ -128,43 +138,51 @@
     </Drawer>
     <!-- delete Drawer -->
 
-    <!-- update Drawer -->
+    <!-- Details Drawer -->
     <Drawer
-      :isOpen="isUpdateComplaintDrawerOpen"
+      :isOpen="isDetailsComplaintDrawerOpen"
       :desc="t('newEmployee')"
       :status="t('busy')"
-      @close="isUpdateComplaintDrawerOpen = false"
+      @close="isDetailsComplaintDrawerOpen = false"
     >
       <div style="max-height: 75vh">
-        <form @submit.prevent="onUpdateButtonPressed()" class="drawer-form">
+        <form class="drawer-form">
           <div>
             <div class="drawer-banner">
               <p>{{ t('information') }}</p>
             </div>
             <div>
               <div class="drawer-info">
-                <p class="drawer-key">{{ t('fullName') }}</p>
-                <p class="drawer-value">Zaid Al-Farsi</p>
+                <p class="drawer-key">{{ t('reportedBy') }}</p>
+                <p class="drawer-value">{{ selectedComplaint?.userId?.name ?? 'N/A' }}</p>
               </div>
               <div class="drawer-info">
-                <p class="drawer-key">{{ t('employeeID') }}</p>
-                <p class="drawer-value">784-678-9012-3</p>
+                <p class="drawer-key">{{ t('reporterId') }}</p>
+                <p class="drawer-value">{{ selectedComplaint?.userId?._id?.substring(0, 12) ?? 'N/A' }}</p>
               </div>
               <div class="drawer-info">
-                <p class="drawer-key">{{ t('phoneNumber') }}</p>
-                <p class="drawer-value">+971 (51) 123-4567</p>
+                <p class="drawer-key">{{ t('reporterPhoneNumber') }}</p>
+                <p class="drawer-value">{{ selectedComplaint?.userId?.phone ?? 'N/A' }}</p>
+              </div>
+              <div class="drawer-info">
+                <p class="drawer-key">{{ t('reportedOn') }}</p>
+                <p class="drawer-value">{{ selectedComplaint?.createdAt ? new Date(selectedComplaint.createdAt).toLocaleString() : 'N/A' }}</p>
+              </div>
+              <div class="drawer-info">
+                <p class="drawer-key">{{ t('status') }}</p>
+                <p class="drawer-value">{{ t(selectedComplaint?.status ?? 'pending') }}</p>
               </div>
             </div>
             <div class="action-btns">
               <ActionButton
                 :buttonText="t('cancel')"
                 buttonColor="white"
-                @button-pressed="() => (isUpdateComplaintDrawerOpen = false)"
+                @button-pressed="() => (isDetailsComplaintDrawerOpen = false)"
                 class="action-Btn"
               />
               <ActionButton
                 class="action-Btn"
-                :buttonText="t('updateEmployee')"
+                :buttonText="t('DetailsEmployee')"
                 buttonType="submit"
               />
             </div>
@@ -172,7 +190,7 @@
         </form>
       </div>
     </Drawer>
-    <!-- update Drawer -->
+    <!-- Details Drawer -->
     <ConfirmPopupDialog
       :isVisible="isConfirmDeletePopupVisible"
       :title="t('deleteConfirmBanner')"
@@ -201,6 +219,7 @@ import { useComplaintsStore } from '@/stores/modules/complaints'
 import { useI18n } from 'vue3-i18n'
 import { IComplaint } from '@/models/complaint'
 import Drawer from '@/components/base/Drawer.vue'
+import ActionButton from '@/components/base/ActionButton.vue'
 import { toastDeleteMessage } from '@/utils/helpers/notification'
 
 const { t } = useI18n()
@@ -210,14 +229,14 @@ const page = ref(1)
 const itemsPerPage = ref(8)
 const selectedComplaint = ref<IComplaint | null>(null)
 const isDeleteComplaintDrawerOpen = ref(false)
-const isUpdateComplaintDrawerOpen = ref(false)
+const isDetailsComplaintDrawerOpen = ref(false)
 const isConfirmDeletePopupVisible = ref(false)
 
 const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
 
-const onUpdateButtonPressed = () => {
+const onDetailsButtonPressed = () => {
   if (selectedComplaint.value) {
-    isUpdateComplaintDrawerOpen.value = true
+    isDetailsComplaintDrawerOpen.value = true
   }
 }
 
@@ -236,7 +255,7 @@ const totalItems = computed(() => complaintsStore.paginationInfo?.total ?? 0)
 const loading = computed(() => complaintsStore.isLoading)
 
 const stats = computed(
-  () => complaintsStore.stats || { totalComplaints: 0, openComplaints: 0, solvedComplaints: 0 },
+  () => complaintsStore.stats ?? { totalComplaints: 0, openComplaints: 0, solvedComplaints: 0 },
 )
 
 const fetchComplaints = async () => {
@@ -255,7 +274,7 @@ const fetchComplaints = async () => {
 
 function viewDetails(item: any) {
   selectedComplaint.value = item as IComplaint
-  isUpdateComplaintDrawerOpen.value = true
+  isDetailsComplaintDrawerOpen.value = true
 }
 
 function deleteComplaint(item: any) {
@@ -298,5 +317,34 @@ function statusColor(status: string) {
 }
 </script>
 <style scoped>
+.drawer-info {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
+.drawer-key {
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.084px;
+  color: #5c5c5c;
+}
+
+.drawer-value {
+  color: #171717;
+  font-feature-settings:
+    'ss11' on,
+    'liga' off,
+    'calt' off;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.084px;
+}
 </style>
