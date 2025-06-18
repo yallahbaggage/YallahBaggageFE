@@ -425,9 +425,8 @@ animation: fadeIn 0.3s ease-in-out;
 .status-circle {
   width: 5px;
   height: 5px;
-  margin-right: 5px;
+  // margin-right: 5px;
   border-radius: 50%;
-  background-color: rgb(var(--v-theme-success));
 }
 
 .drawer-info {

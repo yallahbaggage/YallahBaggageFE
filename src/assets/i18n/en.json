@@ -158,5 +158,6 @@
   "assigned": "Assigned",
   "toastDeleteComplaintTitle": "Complaint Deleted Successfully",
   "toastDeleteComplaintDescription": "You have successfully deleted the complaint.",
-  "DetailsEmployee": "Employee Details"
+  "DetailsEmployee": "Employee Details",
+  "complaint": "Complaint"
 }

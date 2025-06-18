@@ -158,5 +158,6 @@
   "Assigned": "Atandı",
   "toastDeleteComplaintTitle": "Şikayet Başarıyla Silindi",
   "toastDeleteComplaintDescription": "Şikayeti başarıyla sildiniz.",
-  "DetailsEmployee": "Çalışan Detayları"
+  "DetailsEmployee": "Çalışan Detayları",
+  "complaint": "Şikayet"
 }

@@ -28,13 +28,14 @@
       >
         <template #cell-status="{ item }">
           <v-chip :color="statusColor(item.status)" text-color="white" small>
+            <span class="status-circle"> </span>
             {{ t(item.status ?? 'pending') }}
           </v-chip>
         </template>
         <template #cell-_id="{ item }">
           {{ item._id.substring(0, 12) }}
         </template>
-        <template #cell-priority="{ item }">
+        <!-- <template #cell-priority="{ item }">
           <v-chip
             :color="
               item.priority === 'urgent'
@@ -50,7 +51,7 @@
           >
             {{ item.priority }}
           </v-chip>
-        </template>
+        </template> -->
         <template #cell-createdAt="{ item }">
           {{ new Date(item.createdAt).toLocaleString() }}
         </template>
@@ -78,16 +79,23 @@
     <!-- delete Drawer -->
     <Drawer
       :isOpen="isDeleteComplaintDrawerOpen"
-      :desc="t('employee') + ' ' + '#' + selectedComplaint?._id.substring(0, 12)"
-      :title="selectedComplaint?.title"
+      :title="t('complaint') + ' ' + '#' + selectedComplaint?._id.substring(0, 12)"
+      :desc="
+        t('employee') +
+        ' ' +
+        '#' +
+        (selectedComplaint?.relatedWorkerId?._id
+          ? selectedComplaint.relatedWorkerId._id.substring(0, 12)
+          : 'N/A')
+      "
       :status="selectedComplaint?.status ? t(selectedComplaint?.status) : t('Available')"
       @close="isDeleteComplaintDrawerOpen = false"
     >
       <div style="max-height: 75vh">
         <form class="form">
           <div>
-            <p>{{ selectedComplaint?.title }}</p>
-            <p>{{ selectedComplaint?.description }}</p>
+            <p class="complaint-title">{{ selectedComplaint?.title }}</p>
+            <p class="complaint-description">{{ selectedComplaint?.description }}</p>
             <div class="drawer-banner">
               <p>{{ t('information') }}</p>
             </div>
@@ -98,7 +106,9 @@
               </div>
               <div class="drawer-info">
                 <p class="drawer-key">{{ t('reporterId') }}</p>
-                <p class="drawer-value">{{ selectedComplaint?.userId?._id?.substring(0, 12) ?? 'N/A' }}</p>
+                <p class="drawer-value">
+                  {{ selectedComplaint?.userId?._id?.substring(0, 12) ?? 'N/A' }}
+                </p>
               </div>
               <div class="drawer-info">
                 <p class="drawer-key">{{ t('reporterPhoneNumber') }}</p>
@@ -106,11 +116,17 @@
               </div>
               <div class="drawer-info">
                 <p class="drawer-key">{{ t('reportedOn') }}</p>
-                <p class="drawer-value">{{ selectedComplaint?.createdAt ? new Date(selectedComplaint.createdAt).toLocaleString() : 'N/A' }}</p>
+                <p class="drawer-value">
+                  {{
+                    selectedComplaint?.createdAt
+                      ? new Date(selectedComplaint.createdAt).toLocaleString()
+                      : 'N/A'
+                  }}
+                </p>
               </div>
               <div class="drawer-info">
                 <p class="drawer-key">{{ t('status') }}</p>
-                <p class="drawer-value">{{ t(selectedComplaint?.status ?? 'pending')  }}</p>
+                <p class="drawer-value">{{ t(selectedComplaint?.status ?? 'pending') }}</p>
               </div>
             </div>
             <div class="action-btns">
@@ -141,12 +157,20 @@
     <!-- Details Drawer -->
     <Drawer
       :isOpen="isDetailsComplaintDrawerOpen"
-      :desc="t('newEmployee')"
-      :status="t('busy')"
+      :title="t('complaint') + ' ' + '#' + selectedComplaint?._id.substring(0, 12)"
+      :desc="
+        t('employee') +
+        ' ' +
+        '#' +
+        (selectedComplaint?.relatedWorkerId?._id
+          ? selectedComplaint.relatedWorkerId._id.substring(0, 12)
+          : 'N/A')
+      "
+      :status="selectedComplaint?.status ? t(selectedComplaint?.status) : t('Available')"
       @close="isDetailsComplaintDrawerOpen = false"
     >
       <div style="max-height: 75vh">
-        <form class="drawer-form">
+        <form class="form">
           <div>
             <div class="drawer-banner">
               <p>{{ t('information') }}</p>
@@ -158,7 +182,9 @@
               </div>
               <div class="drawer-info">
                 <p class="drawer-key">{{ t('reporterId') }}</p>
-                <p class="drawer-value">{{ selectedComplaint?.userId?._id?.substring(0, 12) ?? 'N/A' }}</p>
+                <p class="drawer-value">
+                  {{ selectedComplaint?.userId?._id?.substring(0, 12) ?? 'N/A' }}
+                </p>
               </div>
               <div class="drawer-info">
                 <p class="drawer-key">{{ t('reporterPhoneNumber') }}</p>
@@ -166,7 +192,13 @@
               </div>
               <div class="drawer-info">
                 <p class="drawer-key">{{ t('reportedOn') }}</p>
-                <p class="drawer-value">{{ selectedComplaint?.createdAt ? new Date(selectedComplaint.createdAt).toLocaleString() : 'N/A' }}</p>
+                <p class="drawer-value">
+                  {{
+                    selectedComplaint?.createdAt
+                      ? new Date(selectedComplaint.createdAt).toLocaleString()
+                      : 'N/A'
+                  }}
+                </p>
               </div>
               <div class="drawer-info">
                 <p class="drawer-key">{{ t('status') }}</p>
@@ -204,14 +236,7 @@
     />
   </div>
 </template>
-<!--            
-<script setup lang="ts">
-import BaseHeader from '@/components/base/BaseHeader.vue'
-import { useI18n } from 'vue3-i18n'
 
-const { t } = useI18n()
-</script>
-<style lang='scss'></style> -->
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue'
 import ServerSideTable from '@/components/base/ServerTable.vue'
@@ -221,6 +246,7 @@ import { IComplaint } from '@/models/complaint'
 import Drawer from '@/components/base/Drawer.vue'
 import ActionButton from '@/components/base/ActionButton.vue'
 import { toastDeleteMessage } from '@/utils/helpers/notification'
+import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
 
 const { t } = useI18n()
 const complaintsStore = useComplaintsStore()
@@ -244,7 +270,7 @@ const headers = ref([
   { title: 'ID', key: '_id' },
   { title: 'Title', key: 'title' },
   { title: 'Category', key: 'category' },
-  { title: 'Priority', key: 'priority' },
+  // { title: 'Priority', key: 'priority' },
   { title: 'Status', key: 'status' },
   { title: 'Created At', key: 'createdAt' },
   { title: t('actions'), key: '', sortable: false },
@@ -316,35 +342,22 @@ function statusColor(status: string) {
   )
 }
 </script>
-<style scoped>
-.drawer-info {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+<style scoped lang="scss">
+.complaint-title {
+  font-size: 18px;
+  font-style: bold;
+  font-weight: 500;
+  line-height: 24px; /* 133.333% */
+  letter-spacing: -0.27px;
 }
-
-.drawer-key {
-  font-family: Inter;
+.complaint-description {
+  margin: 16px 0;
+  max-width: 400px;
+  color: #5c5c5c;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 20px;
-  letter-spacing: -0.084px;
-  color: #5c5c5c;
-}
-
-.drawer-value {
-  color: #171717;
-  font-feature-settings:
-    'ss11' on,
-    'liga' off,
-    'calt' off;
-  font-family: Inter;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px;
+  line-height: 20px; /* 142.857% */
   letter-spacing: -0.084px;
 }
 </style>

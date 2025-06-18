@@ -179,13 +179,6 @@ watch(
   border-radius: 4px;
 }
 
-.status-circle {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: rgb(var(--v-theme-success));
-}
-
 .drawer-close {
   display: flex;
 }
