@@ -13,7 +13,7 @@
 
       <hr class="infoHr" />
 
-      <div class="action-btns">
+      <div class="confirm-action-btns">
         <ActionButton
           buttonColor="white"
           buttonBgColor="white"
@@ -135,5 +135,17 @@ const onApply = () => emit('apply')
   align-items: center;
   gap: $x-small;
   flex-direction: column;
+}
+
+.confirm-action-btns{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: $medium;
+  flex-wrap: wrap;
+
+  .action-Btn{
+    flex: 1;
+  }
 }
 </style>
