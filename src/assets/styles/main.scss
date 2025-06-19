@@ -33,7 +33,7 @@ $font-weight-bold: 700 !important;
 
 $primaryRadius: 15px;
 $normalSize: 14px;
-$primaryBorderColor: var(--stroke-soft-200, rgb(var(--v-theme-lightGray)));
+$primaryBorderColor: var(--stroke-soft-200, rgba(23, 23, 23, 0.10));
 $shadow:
   0 -3px 5px rgba(0, 0, 0, 0.1),
   0 3px 5px rgba(0, 0, 0, 0.1);
@@ -63,7 +63,7 @@ body {
 // }
 
 .v-data-table__thead {
-  background-color: rgb(var(--v-theme-lightGray)) !important;
+  background-color: rgba(23, 23, 23, 0.10) !important;
   color: rgb(var(--v-theme-black)) !important;
   // position: sticky;
   // top: 0px;
@@ -306,20 +306,20 @@ body {
 
   // Add a right border except for the last one
   &:not(:last-child) {
-    border-right: 1px solid rgb(var(--v-theme-lightGray));
+    border-right: 1px solid rgba(23, 23, 23, 0.10);
     margin-right: 20px;
     padding-right: 20px;
   }
 }
 
 .infoHr {
-  border-top: 1px solid var(--v-theme-lightGray);
+  border-top: 1px solid rgba(23, 23, 23, 0.10);
   text-decoration: dotted;
   margin: 20px 0;
 }
 
 .drawer-banner {
-  background-color: rgb(var(--v-theme-lightGray));
+  background-color: rgba(23, 23, 23, 0.10);
   margin: 15px 0px;
 
   p {
@@ -338,7 +338,7 @@ body {
 
 .action-btns {
   padding-top: 15px;
-  border-top: 1px solid rgb(var(--v-theme-lightGray));
+  border-top: 1px solid rgba(23, 23, 23, 0.10);
   display: flex;
   flex-direction: row;
   justify-content: space-between;

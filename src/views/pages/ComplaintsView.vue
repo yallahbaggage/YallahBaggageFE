@@ -174,11 +174,9 @@
           <div>
             <p class="drawer-title">{{ selectedComplaint?.title }}</p>
             <p class="drawer-description">{{ selectedComplaint?.description }}</p>
-            <div class="drawer-banner">
-              <p>{{ t('information') }}</p>
-            </div>
+
             <v-card>
-              <v-tabs v-model="tab" align-tabs="start" color="deep-purple-accent-4">
+              <v-tabs  v-model="tab" align-tabs="start" slider-color="primary">
                 <v-tab value="details">{{ t('details') }}</v-tab>
                 <v-tab value="chat">{{ t('chat') }}</v-tab>
               </v-tabs>
@@ -311,7 +309,25 @@
                   </div>
                 </v-tabs-window-item>
 
-                <v-tabs-window-item value="chat"> </v-tabs-window-item>
+                <v-tabs-window-item value="chat">
+                  <div class="chat">
+                    <div class="chat-complaint">
+                      <p class="drawer-title">{{ selectedComplaint?.title }}</p>
+                      <p class="drawer-description">{{ selectedComplaint?.description }}</p>
+                      <p class="drawer-complaint-date">
+                        {{ formatDate(selectedComplaint!.createdAt) }}
+                      </p>
+                      <v-divider class="divider" />
+                      <p class="complaint-chat-message-sender">
+                        <!-- Displaying the sender's first charackter of name -->
+                        <span>{{ selectedComplaint?.userId.name.substring(0,1) }}</span>
+                        <p>{{ selectedComplaint?.userId.name }}</p>
+                      </p>
+                    </div>
+                    <div class="answer">
+<p>                      Lorem ipsum dolor sit amet consecteturt ducimus id quaerat accusamus temporibus praesentium?</p>                    </div>
+                  </div>
+                </v-tabs-window-item>
               </v-tabs-window>
             </v-card>
           </div>
@@ -524,10 +540,68 @@ watch(
   border: 1px solid #ccc;
   border-radius: 10px;
   width: 80%;
-  
 }
 
 #messageInput:focus {
   outline: none;
+}
+
+.chat {
+  padding: 10px;
+  background-color: #f7f7f7;
+  height: 70vh !important;
+}
+
+.chat-complaint {
+  background-color: #ebf1ff;
+  border-radius: 8px;
+  width: 70%;
+  display: flex;
+  justify-content: start;
+  flex-direction: column;
+}
+.drawer-complaint-date {
+  color: #5c5c5c;
+  margin: 0 15px;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+}
+.complaint-chat-message-sender {
+  margin: 0 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding-bottom: 10px;
+
+  span {
+    font-size: 12px;
+    font-weight: 600;
+    background-color: #FFECC0;
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+    padding: 10px;
+    width: 25px;
+    height: 25px;
+    align-items: center;
+  }
+}
+
+// show the answer in a different color and in the end of the message oppsite to the sender
+.answer {
+  margin: 10px 0;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding-bottom: 10px;
+  border-radius: 8px;
+  background-color: #ffff;
+  width: 70%;
+  padding: 10px;
+}
+
+.divider{
+  margin: 10px;
 }
 </style>

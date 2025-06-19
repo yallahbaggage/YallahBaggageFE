@@ -64,7 +64,7 @@ const onButtonPressed = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // padding: 24px;
+  padding: 24px 10px;
   background-color: #ffffff;
   border-radius: $x-small;
   margin-bottom: 24px;
