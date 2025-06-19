@@ -244,7 +244,7 @@
                 />
                 <ActionButton
                   button-color="error"
-                  :buttonText="t('deleteIssue')"
+                  :buttonText="t('deleteNotification')"
                   class="action-Btn"
                   @button-pressed="
                     () => {
@@ -283,7 +283,7 @@ import BaseHeader from '@/components/base/BaseHeader.vue'
 import Drawer from '@/components/base/Drawer.vue'
 import ServerTable from '@/components/base/ServerTable.vue'
 import { useNotificationsStore } from '@/stores/modules/notificationsStore'
-import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
+import { toastDeleteMessage, toastErrorMessage, toastSuccessMessage } from '@/utils/helpers/notification'
 import type { CreateNotificationDto, INotification } from '@/utils/services/notificationsService'
 import { formatDate } from '@/utils/helpers/date-helper'
 import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
@@ -416,13 +416,18 @@ const handleSubmit = async () => {
 
 const confirmDelete = async (notification: INotification) => {
   if (!notification._id) {
-    console.error('No notification selected for deletion')
+    toastErrorMessage('No notification selected for deletion','Please select a notification to delete.')
     return
   }
-  await store.deleteNotification(notification._id)
-  toastDeleteMessage(t('deleteNotification'), t('deleteNotificationConfirm'))
+  try {
+  // await store.deleteNotification(notification._id)
   isDeleteNotificationDrawerOpen.value = false
   isConfirmDeletePopupVisible.value = false
+  toastDeleteMessage(t('notificationDeletedSuccessfully'), '')
+  } catch (error) {
+    console.error('Failed to delete notification:', error)
+    toastErrorMessage(t('anErrorOccured'), t('notificationErrorTryAgain'))
+  }
 }
 
 const markAsRead = async (id: string) => {

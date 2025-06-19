@@ -132,6 +132,7 @@
   "notificationDesc": "Bildirim Açıklaması",
   "sentOn": "Gönderildiği Tarih",
   "notificationSentSuccessfully": "Bildirim başarıyla gönderildi",
+  "notificationDeletedSuccessfully": "Bildirim başarıyla silindi",
   "notificationSentSuccessfullyDescription": "Bildiriminiz başarıyla kaydedildi ve müşterinize gönderilecektir.",
   "anErrorOccured": "Bir hata oluştu",
   "notificationErrorTryAgain": "Bildirim gönderilirken bir hata oluştu. Lütfen tekrar deneyin.",
