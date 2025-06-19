@@ -39,15 +39,15 @@
             </template>
             <v-list class="menu-list pa-0 ma-0">
               <v-list class="menu-list pa-0 ma-0">
-              <v-list-item class="menu-item" @click="viewDetails(item)">
-                <v-icon class="mr-2">mdi-eye-outline</v-icon>
-                {{ t('seeDetails') }}
-              </v-list-item>
-              <v-list-item class="menu-item" @click="deleteNotification(item)">
-                <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
-                {{ t('deleteNotification') }}
-              </v-list-item>
-            </v-list>
+                <v-list-item class="menu-item" @click="viewDetails(item)">
+                  <v-icon class="mr-2">mdi-eye-outline</v-icon>
+                  {{ t('seeDetails') }}
+                </v-list-item>
+                <v-list-item class="menu-item" @click="deleteNotification(item)">
+                  <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
+                  {{ t('deleteNotification') }}
+                </v-list-item>
+              </v-list>
             </v-list>
           </v-menu>
         </template>
@@ -111,75 +111,144 @@
           </form>
         </div>
       </Drawer>
-          <!-- delete Drawer -->
-    <Drawer
-      :isOpen="isDeleteNotificationDrawerOpen"
-      :title="t('Notification')"
-      :desc="t('employee')"
-      @close="isDeleteNotificationDrawerOpen = false"
-    >
-      <div style="max-height: 75vh">
-        <form class="form">
-          <div>
-            <p class="Notification-title">{{ selectedNotification?.title }}</p>
-            <p class="Notification-description">{{ selectedNotification?.message }}</p>
-            <div class="drawer-banner">
-              <p>{{ t('information') }}</p>
-            </div>
+      <!-- details Drawer -->
+      <Drawer
+        :isOpen="isDetailsNotificationDrawerOpen"
+        :title="t('Notification')"
+        :desc="t('employee')"
+        @close="isDetailsNotificationDrawerOpen = false"
+      >
+        <div style="max-height: 75vh">
+          <form class="form">
             <div>
-              <div class="drawer-info">
-                <p class="drawer-key">{{ t('reportedBy') }}</p>
-                <p class="drawer-value">{{ selectedNotification?.createdBy?.name ?? 'N/A' }}</p>
+              <p class="drawer-title">{{ selectedNotification?.title }}</p>
+              <p class="drawer-description">{{ selectedNotification?.message }}</p>
+              <div class="drawer-banner">
+                <p>{{ t('information') }}</p>
               </div>
-              <div class="drawer-info">
-                <p class="drawer-key">{{ t('reporterId') }}</p>
-                <p class="drawer-value">
-                  {{ selectedNotification?.createdBy?._id?.substring(0, 12) ?? 'N/A' }}
-                </p>
+              <div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('reportedBy') }}</p>
+                  <p class="drawer-value">{{ selectedNotification?.createdBy?.name ?? 'N/A' }}</p>
+                </div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('reporterId') }}</p>
+                  <p class="drawer-value">
+                    {{ selectedNotification?.createdBy?._id?.substring(0, 12) ?? 'N/A' }}
+                  </p>
+                </div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('reporterPhoneNumber') }}</p>
+                  <p class="drawer-value">{{ selectedNotification?.createdBy?.phone ?? 'N/A' }}</p>
+                </div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('reportedOn') }}</p>
+                  <p class="drawer-value">
+                    {{
+                      selectedNotification?.createdAt
+                        ? new Date(selectedNotification.createdAt).toLocaleString()
+                        : 'N/A'
+                    }}
+                  </p>
+                </div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('status') }}</p>
+                  <p class="drawer-value">{{ t(selectedNotification?.type ?? 'pending') }}</p>
+                </div>
               </div>
-              <div class="drawer-info">
-                <p class="drawer-key">{{ t('reporterPhoneNumber') }}</p>
-                <p class="drawer-value">{{ selectedNotification?.createdBy?.phone ?? 'N/A' }}</p>
-              </div>
-              <div class="drawer-info">
-                <p class="drawer-key">{{ t('reportedOn') }}</p>
-                <p class="drawer-value">
-                  {{
-                    selectedNotification?.createdAt
-                      ? new Date(selectedNotification.createdAt).toLocaleString()
-                      : 'N/A'
-                  }}
-                </p>
-              </div>
-              <div class="drawer-info">
-                <p class="drawer-key">{{ t('status') }}</p>
-                <p class="drawer-value">{{ t(selectedNotification?.type ?? 'pending') }}</p>
+              <div class="action-btns">
+                <ActionButton
+                  :buttonText="t('cancel')"
+                  buttonColor="white"
+                  class="action-Btn"
+                  @button-pressed="() => (isDetailsNotificationDrawerOpen = false)"
+                />
+                <ActionButton
+                  button-color="error"
+                  :buttonText="t('detailsIssue')"
+                  class="action-Btn"
+                  @button-pressed="
+                    () => {
+                      isDetailsNotificationDrawerOpen = false
+                    }
+                  "
+                />
               </div>
             </div>
-            <div class="action-btns">
-              <ActionButton
-                :buttonText="t('cancel')"
-                buttonColor="white"
-                class="action-Btn"
-                @button-pressed="() => (isDeleteNotificationDrawerOpen = false)"
-              />
-              <ActionButton
-                button-color="error"
-                :buttonText="t('deleteIssue')"
-                class="action-Btn"
-                @button-pressed="
-                  () => {
-                    isConfirmDeletePopupVisible = true
-                    isDeleteNotificationDrawerOpen = false
-                  }
-                "
-              />
+          </form>
+        </div>
+      </Drawer>
+      <!-- delete Drawer -->
+
+      <!-- delete Drawer -->
+      <Drawer
+        :isOpen="isDeleteNotificationDrawerOpen"
+        :title="t('Notification')"
+        :desc="t('employee')"
+        @close="isDeleteNotificationDrawerOpen = false"
+      >
+        <div style="max-height: 75vh">
+          <form class="form">
+            <div>
+              <p class="Notification-title">{{ selectedNotification?.title }}</p>
+              <p class="Notification-description">{{ selectedNotification?.message }}</p>
+              <div class="drawer-banner">
+                <p>{{ t('information') }}</p>
+              </div>
+              <div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('reportedBy') }}</p>
+                  <p class="drawer-value">{{ selectedNotification?.createdBy?.name ?? 'N/A' }}</p>
+                </div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('reporterId') }}</p>
+                  <p class="drawer-value">
+                    {{ selectedNotification?.createdBy?._id?.substring(0, 12) ?? 'N/A' }}
+                  </p>
+                </div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('reporterPhoneNumber') }}</p>
+                  <p class="drawer-value">{{ selectedNotification?.createdBy?.phone ?? 'N/A' }}</p>
+                </div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('reportedOn') }}</p>
+                  <p class="drawer-value">
+                    {{
+                      selectedNotification?.createdAt
+                        ? new Date(selectedNotification.createdAt).toLocaleString()
+                        : 'N/A'
+                    }}
+                  </p>
+                </div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('status') }}</p>
+                  <p class="drawer-value">{{ t(selectedNotification?.type ?? 'pending') }}</p>
+                </div>
+              </div>
+              <div class="action-btns">
+                <ActionButton
+                  :buttonText="t('cancel')"
+                  buttonColor="white"
+                  class="action-Btn"
+                  @button-pressed="() => (isDeleteNotificationDrawerOpen = false)"
+                />
+                <ActionButton
+                  button-color="error"
+                  :buttonText="t('deleteIssue')"
+                  class="action-Btn"
+                  @button-pressed="
+                    () => {
+                      isConfirmDeletePopupVisible = true
+                      isDeleteNotificationDrawerOpen = false
+                    }
+                  "
+                />
+              </div>
             </div>
-          </div>
-        </form>
-      </div>
-    </Drawer>
-    <!-- delete Drawer -->
+          </form>
+        </div>
+      </Drawer>
+      <!-- delete Drawer -->
     </div>
 
     <ConfirmPopupDialog
@@ -214,11 +283,11 @@ const page = ref(1)
 const itemsPerPage = ref(8)
 const isDialogOpen = ref(false)
 const isEditing = ref(false)
-const isDetailsNotificationDrawerOpen = ref(false);
-const isDeleteNotificationDrawerOpen = ref(false);
-const isConfirmDeletePopupVisible = ref(false);
+const isDetailsNotificationDrawerOpen = ref(false)
+const isDeleteNotificationDrawerOpen = ref(false)
+const isConfirmDeletePopupVisible = ref(false)
 const currentId = ref<string | null>(null)
-const selectedNotification = ref<INotification | null>(null);
+const selectedNotification = ref<INotification | null>(null)
 const items = computed(() => store.allNotifications)
 const totalItems = computed(() => store.paginationInfo?.total ?? 0)
 const loading = computed(() => store.isLoading)
@@ -277,12 +346,6 @@ const fetchNotifications = async () => {
 }
 
 const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
-
-const onDetailsButtonPressed = () => {
-  if (selectedNotification.value) {
-    isDetailsNotificationDrawerOpen.value = true
-  }
-}
 
 const getTypeColor = (type: string) => {
   return (

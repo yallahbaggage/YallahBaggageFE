@@ -3,7 +3,7 @@
     <v-card v-show="isOpen" ref="drawer" class="drawer">
       <v-card-title>
         <div class="drawer-header">
-          <v-row class="drawer-title">
+          <v-row class="">
             <v-col>
               <p class="drawer-title-text">{{ title }}</p>
               <p class="drawer-desc-text" v-if="desc">{{ desc }}</p>

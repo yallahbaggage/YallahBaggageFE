@@ -470,7 +470,7 @@ animation: fadeIn 0.3s ease-in-out;
 }
 
 .drawer-form-group {
-  margin: 10px 0;
+  margin: 10px;
 }
 
 .drawer-label-group {
@@ -490,4 +490,51 @@ animation: fadeIn 0.3s ease-in-out;
 .v-timeline--vertical.v-timeline .v-timeline-item:last-child .v-timeline-item__body,
 .v-timeline--vertical.v-timeline .v-timeline-item:last-child .v-timeline-item__opposite {
   padding-block-end: 0px !important;
+}
+
+.drawer-title {
+  font-size: 18px;
+  font-style: bold;
+  font-weight: 500;
+  line-height: 24px; /* 133.333% */
+  letter-spacing: -0.27px;
+  margin: 0 15px;
+}
+.drawer-description {
+  max-width: 400px;
+  color: #5c5c5c;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.084px;
+  margin: 10px 15px;
+}
+.v-window {
+  height: 75dvh !important;
+  margin-bottom: 15px;
+}
+.status-stepper {
+  margin: 10px 0;
+}
+.timeline-item-content {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+
+  span {
+    font-style: normal;
+    font-weight: 500;
+    line-height: 12px;
+    color: #a3a3a3;
+  }
+
+  .status-desc {
+    color: #5c5c5c;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+  }
 }
