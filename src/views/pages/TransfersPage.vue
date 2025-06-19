@@ -131,7 +131,61 @@
                 <v-tabs-window v-model="tab">
                   <v-tabs-window-item value="details"> </v-tabs-window-item>
 
-                  <v-tabs-window-item value="timeLine"> </v-tabs-window-item>
+                  <v-tabs-window-item value="timeLine">
+                    <div class="status-stepper">
+                      <v-timeline>
+                        <v-timeline-item
+                          v-if="selectedTransfer?.createdAt"
+                          dot-color="white"
+                          icon="mdi-ticket-confirmation-outline"
+                        >
+                          <div class="timeline-item-content">
+                            <p>{{ t('ticketCreatedAt') }}</p>
+                            <span>{{ formatDate(selectedTransfer?.createdAt) }}</span>
+                          </div>
+                        </v-timeline-item>
+
+                        <v-timeline-item
+                          v-slot:opposite
+                          dot-color="white"
+                          icon="mdi-rotate-3d-variant"
+                          icon-color="orange"
+                          v-if="selectedTransfer?.updatedAt"
+                        >
+                          <div class="timeline-item-content">
+                            <p>{{ t('statusHasChanged') }}</p>
+                            <span>{{ formatDate(selectedTransfer?.updatedAt) }}</span>
+                          </div>
+                          <p class="status-desc">
+                            {{
+                              t('statusHasChangedTo', {
+                                status: t(selectedTransfer?.status ?? 'pending'),
+                              })
+                            }}
+                          </p>
+                        </v-timeline-item>
+
+                        <v-timeline-item
+                          v-if="selectedTransfer?.completedAt"
+                          dot-color="white"
+                          icon="mdi-check"
+                          icon-color="success"
+                        >
+                          <div class="timeline-item-content">
+                            <p>{{ t('statusHasChanged') }}</p>
+                            <span>{{ formatDate(selectedTransfer?.completedAt) }}</span>
+                          </div>
+                          <p class="status-desc">
+                            {{
+                              t('statusHasChangedTo', {
+                                status: t(selectedTransfer?.status ?? 'completed'),
+                              })
+                            }}
+                          </p>
+                        </v-timeline-item>
+                      </v-timeline>
+                    </div>
+                  </v-tabs-window-item>
                 </v-tabs-window>
               </v-card>
             </div>
