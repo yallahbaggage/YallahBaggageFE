@@ -346,7 +346,7 @@ body {
   position: absolute;
   bottom: 0;
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 
   .action-Btn {
     flex: 1;
@@ -538,4 +538,7 @@ animation: fadeIn 0.3s ease-in-out;
     font-style: normal;
     font-weight: 400;
   }
+}
+.v-tabs--density-default,.v-tab.v-tab.v-btn{
+  max-height: 25px !important;
 }

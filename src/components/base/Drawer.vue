@@ -113,14 +113,16 @@ watch(
 }
 .drawer {
   position: fixed;
-  right: 0;
-  top: 0;
+  right: 10px;
+  top: 10px;
+  bottom: 10px;
   min-width: 25%;
-  height: 100%;
+  // height: 100%;
   background-color: rgb(var(--v-theme-white));
   box-shadow: $shadow;
   z-index: 50;
   transition: transform 0.5s ease-in-out;
+  border-radius: 20px;
 }
 
 .drawer-header {
