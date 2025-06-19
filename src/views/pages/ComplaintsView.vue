@@ -94,8 +94,8 @@
       <div style="max-height: 75vh">
         <form class="form">
           <div>
-            <p class="complaint-title">{{ selectedComplaint?.title }}</p>
-            <p class="complaint-description">{{ selectedComplaint?.description }}</p>
+            <p class="drawer-title">{{ selectedComplaint?.title }}</p>
+            <p class="drawer-description">{{ selectedComplaint?.description }}</p>
             <div class="drawer-banner">
               <p>{{ t('information') }}</p>
             </div>
@@ -172,8 +172,8 @@
       <div style="max-height: 75vh">
         <form class="drawer-form">
           <div>
-            <p class="complaint-title">{{ selectedComplaint?.title }}</p>
-            <p class="complaint-description">{{ selectedComplaint?.description }}</p>
+            <p class="drawer-title">{{ selectedComplaint?.title }}</p>
+            <p class="drawer-description">{{ selectedComplaint?.description }}</p>
             <div class="drawer-banner">
               <p>{{ t('information') }}</p>
             </div>
@@ -212,7 +212,45 @@
                     </div>
                     <div class="drawer-info">
                       <p class="drawer-key">{{ t('status') }}</p>
-                      <p class="drawer-value">{{ t(selectedComplaint?.status ?? 'pending') }}</p>
+                      <v-select
+                        v-model="editableStatus"
+                        :items="statusOptions"
+                        item-title="label"
+                        class="drawer-value status-select"
+                        hide-details
+                        dense
+                        variant="outlined"
+                      >
+                        <template #item="{ item, props }">
+                          <v-list-item v-bind="props">
+                            <v-list-item-title
+                              :style="{
+                                backgroundColor: statusColor(item?.raw.label),
+                                color: 'white',
+                                borderRadius: '8px',
+                                padding: '4px 12px',
+                                margin: '2px 0',
+                              }"
+                            >
+                              {{ item?.raw.label ?? '' }}
+                            </v-list-item-title>
+                          </v-list-item>
+                        </template>
+
+                        <template #selection="{ item }">
+                          <div
+                            :style="{
+                              backgroundColor: statusColor(item.raw.label),
+                              color: 'white',
+                              borderRadius: '8px',
+                              padding: '4px 10px',
+                              textAlign: 'center',
+                            }"
+                          >
+                            {{ t(item.raw.label) }}
+                          </div>
+                        </template>
+                      </v-select>
                     </div>
                   </div>
                   <div class="drawer-banner">
@@ -259,7 +297,7 @@
                       >
                         <div class="timeline-item-content">
                           <p>{{ t('statusHasChanged') }}</p>
-                          <span>{{ formatDate(selectedComplaint?.updatedAt) }}</span>
+                          <span>{{ formatDate(selectedComplaint?.closedAt) }}</span>
                         </div>
                         <p class="status-desc">
                           {{
@@ -339,6 +377,8 @@ const onDetailsButtonPressed = () => {
   }
 }
 
+
+
 const headers = ref([
   { title: 'ID', key: '_id' },
   { title: 'Title', key: 'title' },
@@ -403,63 +443,58 @@ onMounted(() => {
 
 watch([page, itemsPerPage], fetchComplaints)
 
-function statusColor(status: string) {
-  return (
-    {
-      pending: 'orange',
-      in_progress: 'blue',
-      resolved: 'green',
-      rejected: 'red',
-      closed: 'grey',
-    }[status?.toLowerCase()] ?? 'primary'
-  )
+// function statusColor(status: string) {
+//   return (
+//     {
+//       pending: 'orange',
+//       in_progress: 'blue',
+//       resolved: 'green',
+//       rejected: 'red',
+//       closed: 'grey',
+//     }[status?.toLowerCase()] ?? 'primary'
+//   )
+// }
+
+function statusColor(status: string): string {
+  switch (status) {
+    case 'pending':
+      return '#f59e0b' // amber
+    case 'in_progress':
+      return '#3b82f6' // blue
+    case 'resolved':
+      return '#10b981' // green
+    case 'rejected':
+      return '#ef4444' // red
+    case 'closed':
+      return '#6b7280' // gray
+    default:
+      return '#9ca3af' // fallback gray
+  }
 }
+
+const statusOptions = [
+  { label: 'pending' },
+  { label: 'in_progress' },
+  { label: 'resolved' },
+  { label: 'rejected' },
+  { label: 'closed' },
+]
+const editableStatus = ref(selectedComplaint.value?.status ?? 'pending')
+watch(
+  () => selectedComplaint.value?.status,
+  (newStatus) => {
+    editableStatus.value = newStatus ?? 'pending'
+  },
+)
 </script>
 <style scoped lang="scss">
-.complaint-title {
-  font-size: 18px;
-  font-style: bold;
-  font-weight: 500;
-  line-height: 24px; /* 133.333% */
-  letter-spacing: -0.27px;
-  margin: 0 15px;
+.status-select {
+  min-width: 120px;
+  max-width: 180px;
+  margin-left: 8px;
 }
-.complaint-description {
-  max-width: 400px;
-  color: #5c5c5c;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px; /* 142.857% */
-  letter-spacing: -0.084px;
-  margin: 10px 15px;
-}
-.v-window {
-  height: 75dvh !important;
-  margin-bottom: 15px;
-}
-.status-stepper{
-  margin: 10px 0;
-}
-.timeline-item-content {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-
-  span {
-    font-style: normal;
-    font-weight: 500;
-    line-height: 12px;
-    color: #a3a3a3;
-  }
-
-  .status-desc {
-    color: #5c5c5c;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 400;
-  }
+.status-select-menu {
+  border-radius: 8px;
+  overflow: hidden;
 }
 </style>
