@@ -172,5 +172,6 @@
   "sent": "Gönderildi",
   "received": "Alındı",
   "redirectTo": "Yönlendiriliyor",
-  "deleteConfirmNotification": "Bu bildirimi silmek istediğinize emin misiniz?"
+  "deleteConfirmNotification": "Bu bildirimi silmek istediğinize emin misiniz?",
+  "timeLine": "Zaman Çizelgesi"
 }
