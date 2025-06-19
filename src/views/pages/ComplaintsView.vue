@@ -170,7 +170,7 @@
       @close="isDetailsComplaintDrawerOpen = false"
     >
       <div style="max-height: 75vh">
-        <form class="drawer-form">
+        <div class="drawer-form">
           <div>
             <p class="drawer-title">{{ selectedComplaint?.title }}</p>
             <p class="drawer-description">{{ selectedComplaint?.description }}</p>
@@ -309,26 +309,32 @@
                       </v-timeline-item>
                     </v-timeline>
                   </div>
-                  <div class="action-btns">
-                    <ActionButton
-                      :buttonText="t('cancel')"
-                      buttonColor="white"
-                      @button-pressed="() => (isDetailsComplaintDrawerOpen = false)"
-                      class="action-Btn"
-                    />
-                    <ActionButton
-                      class="action-Btn"
-                      :buttonText="t('saveStatus')"
-                      buttonType="submit"
-                    />
-                  </div>
                 </v-tabs-window-item>
 
                 <v-tabs-window-item value="chat"> </v-tabs-window-item>
               </v-tabs-window>
             </v-card>
           </div>
-        </form>
+          <div v-if="tab === 'details'" class="action-btns">
+            <ActionButton
+              :buttonText="t('cancel')"
+              buttonColor="white"
+              @button-pressed="() => (isDetailsComplaintDrawerOpen = false)"
+              class="action-Btn"
+            />
+            <ActionButton class="action-Btn" :buttonText="t('saveStatus')" buttonType="submit" />
+          </div>
+          <div v-if="tab === 'chat'" class="chat-action-btns">
+            <input
+              id="messageInput"
+              type="text"
+              placeholder="Type your message here..."
+              v-model="message"
+              required
+            />
+            <ActionButton class="send-button" :buttonText="t('send')" type="button" />
+          </div>
+        </div>
       </div>
     </Drawer>
     <!-- Details Drawer -->
@@ -361,6 +367,7 @@ import { formatDate } from '@/utils/helpers/date-helper'
 const { t } = useI18n()
 const complaintsStore = useComplaintsStore()
 const tab = ref(null)
+const message = ref('')
 
 const page = ref(1)
 const itemsPerPage = ref(8)
@@ -376,8 +383,6 @@ const onDetailsButtonPressed = () => {
     isDetailsComplaintDrawerOpen.value = true
   }
 }
-
-
 
 const headers = ref([
   { title: 'ID', key: '_id' },
@@ -496,5 +501,33 @@ watch(
 .status-select-menu {
   border-radius: 8px;
   overflow: hidden;
+}
+.chat-action-btns {
+  padding-top: 15px;
+  border-top: 1px solid rgb(var(--v-theme-lightGray));
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+  margin: 15px 15px;
+  gap: 10px;
+  width: 370px;
+
+  .send-button {
+    width: fit-content;
+  }
+}
+
+#messageInput {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 80%;
+  
+}
+
+#messageInput:focus {
+  outline: none;
 }
 </style>

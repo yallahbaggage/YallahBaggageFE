@@ -173,5 +173,6 @@
   "received": "Received",
   "redirectTo": "Redirect to",
   "deleteConfirmNotification": "Are you sure to delete notification?",
-  "timeLine": "Timeline"
+  "timeLine": "Timeline",
+  "send": "Send"
 }

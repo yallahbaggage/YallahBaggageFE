@@ -346,7 +346,7 @@ body {
   position: absolute;
   bottom: 0;
   width: 100%;
-  margin-bottom: 15px;
+  margin: 15px 15px;
 
   .action-Btn {
     flex: 1;
@@ -512,8 +512,9 @@ animation: fadeIn 0.3s ease-in-out;
   margin: 10px 15px;
 }
 .v-window {
-  height: 75dvh !important;
+  height: 50% !important;
   margin-bottom: 15px;
+  overflow: scroll;
 }
 .status-stepper {
   margin: 10px 0;
