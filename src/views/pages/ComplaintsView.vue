@@ -310,23 +310,34 @@
                 </v-tabs-window-item>
 
                 <v-tabs-window-item value="chat">
-                  <div class="chat">
-                    <div class="chat-complaint">
-                      <p class="drawer-title">{{ selectedComplaint?.title }}</p>
-                      <p class="drawer-description">{{ selectedComplaint?.description }}</p>
-                      <p class="drawer-complaint-date">
-                        {{ formatDate(selectedComplaint!.createdAt) }}
-                      </p>
-                      <v-divider class="divider" />
+                <div class="chat">
+                  <div class="chat-complaint">
+                    <p class="drawer-title">{{ selectedComplaint?.title }}</p>
+                    <p class="drawer-description">{{ selectedComplaint?.description }}</p>
+                    <p class="drawer-complaint-date">
+                      {{ formatDate(selectedComplaint!.createdAt) }}
+                    </p>
+                    <v-divider class="divider" />
                       <p class="complaint-chat-message-sender">
-                        <!-- Displaying the sender's first charackter of name -->
-                        <span>{{ selectedComplaint?.userId.name.substring(0,1) }}</span>
+                        <span>{{ selectedComplaint?.userId.name.substring(0, 1) }}</span>
                         <p>{{ selectedComplaint?.userId.name }}</p>
                       </p>
                     </div>
-                    <div class="answer">
-<p>                      Lorem ipsum dolor sit amet consecteturt ducimus id quaerat accusamus temporibus praesentium?</p>                    </div>
+
+                  <!-- Loop throuFgh messages -->
+                  <div v-for="message in selectedComplaint?.responses" :key="message._id">
+                    <div
+                      class="message-bubble"
+                      :class="{
+                        'message-question': message.responderRole === 'customer',
+                        'message-answer': message.responderRole === 'admin'
+                      }"
+                    >
+                      {{ message.message }}
+                    </div>
                   </div>
+                </div>
+
                 </v-tabs-window-item>
               </v-tabs-window>
             </v-card>
@@ -604,4 +615,34 @@ watch(
 .divider{
   margin: 10px;
 }
+
+.message-bubble {
+  max-width: 70%;
+  margin: 10px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+  word-wrap: break-word;
+  display: inline-block;
+}
+
+// Question (user)
+.message-question {
+  background-color: #ebf1ff;
+  color: #000;
+  text-align: left;
+  border-top-left-radius: 0;
+  align-self: flex-start;
+}
+
+// Answer (support)
+.message-answer {
+  background-color: #ffffff;
+  color: #000;
+  text-align: left;
+  border-top-right-radius: 0;
+  align-self: flex-end;
+  margin-left: auto;
+}
+
 </style>
