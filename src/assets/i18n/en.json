@@ -170,5 +170,6 @@
   "saveStatus": "Save Status",
   "sent": "Sent",
   "received": "Received",
-  "redirectTo": "Redirect to"
+  "redirectTo": "Redirect to",
+  "deleteConfirmNotification": "Are you sure to delete notification?"
 }

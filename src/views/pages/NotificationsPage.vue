@@ -18,8 +18,12 @@
         v-model:items-per-page="itemsPerPage"
       >
         <template #cell-type="{ item }">
-          <v-chip :color="getTypeColor(item.type)" text-color="white" small>
-            {{ item.type }}
+          <v-chip
+            :color="getTypeColor(item?.createdAt ? 'sent' : 'failed')"
+            text-color="white"
+            small
+          >
+            {{ item?.createdAt ? t('sent') : t('failed') }}
           </v-chip>
         </template>
         <template #cell-isRead="{ item }">
@@ -137,7 +141,15 @@
 
                 <div class="drawer-info">
                   <p class="drawer-key">{{ t('status') }}</p>
-                  <p class="drawer-value">{{ selectedNotification?.createdAt ? t('sent') : t('failed') }}</p>
+                  <p class="drawer-value">
+                    <v-chip
+                      :color="getTypeColor(selectedNotification?.createdAt ? 'sent' : 'failed')"
+                      text-color="white"
+                      small
+                    >
+                      {{ selectedNotification?.createdAt ? t('sent') : t('failed') }}
+                    </v-chip>
+                  </p>
                 </div>
                 <div class="drawer-info">
                   <p class="drawer-key">{{ t('redirectTo') }}</p>
@@ -145,22 +157,20 @@
                     {{ selectedNotification?.redirectTo ?? 'N/A' }}
                   </p>
                 </div>
-              
+
                 <div class="drawer-info">
                   <p class="drawer-key">{{ t('sentOn') }}</p>
                   <p class="drawer-value">
                     {{
                       selectedNotification?.sendNotificationOnDate
-                        ? new Date(selectedNotification.sendNotificationOnDate).toLocaleString()
+                        ? formatDate(selectedNotification.sendNotificationOnDate)
                         : selectedNotification?.createdAt
-                          ? new Date(selectedNotification.createdAt).toLocaleString()
+                          ? formatDate(selectedNotification.createdAt)
                           : 'N/A'
                     }}
                   </p>
                 </div>
-                
               </div>
-              
             </div>
           </form>
         </div>
@@ -170,46 +180,59 @@
       <!-- delete Drawer -->
       <Drawer
         :isOpen="isDeleteNotificationDrawerOpen"
-        :title="t('Notification')"
-        :desc="t('employee')"
+        :title="t('notificationDetails')"
+        :desc="t('seeYourNotificationDetail')"
         @close="isDeleteNotificationDrawerOpen = false"
       >
         <div style="max-height: 75vh">
           <form class="form">
             <div>
-              <p class="Notification-title">{{ selectedNotification?.title }}</p>
-              <p class="Notification-description">{{ selectedNotification?.message }}</p>
-              <div class="drawer-banner">
-                <p>{{ t('information') }}</p>
-              </div>
               <div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('reportedBy') }}</p>
-                  <p class="drawer-value">{{ selectedNotification?.createdBy?.name ?? 'N/A' }}</p>
+                <div class="drawer-banner">
+                  <p>{{ t('generalInformation') }}</p>
                 </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('reporterId') }}</p>
-                  <p class="drawer-value">
-                    {{ selectedNotification?.createdBy?._id?.substring(0, 12) ?? 'N/A' }}
-                  </p>
+                <p class="drawer-title">{{ selectedNotification?.title }}</p>
+                <p class="drawer-description">{{ selectedNotification?.message }}</p>
+                <div class="drawer-banner">
+                  <p>{{ t('advancedDetails') }}</p>
                 </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('reporterPhoneNumber') }}</p>
-                  <p class="drawer-value">{{ selectedNotification?.createdBy?.phone ?? 'N/A' }}</p>
-                </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('reportedOn') }}</p>
-                  <p class="drawer-value">
-                    {{
-                      selectedNotification?.createdAt
-                        ? new Date(selectedNotification.createdAt).toLocaleString()
-                        : 'N/A'
-                    }}
-                  </p>
-                </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('status') }}</p>
-                  <p class="drawer-value">{{ t(selectedNotification?.type ?? 'pending') }}</p>
+                <div>
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('createdBy') }}</p>
+                    <p class="drawer-value">{{ selectedNotification?.createdBy?.name ?? 'N/A' }}</p>
+                  </div>
+
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('status') }}</p>
+                    <p class="drawer-value">
+                      <v-chip
+                        :color="getTypeColor(selectedNotification?.createdAt ? 'sent' : 'failed')"
+                        text-color="white"
+                        small
+                      >
+                        {{ selectedNotification?.createdAt ? t('sent') : t('failed') }}
+                      </v-chip>
+                    </p>
+                  </div>
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('redirectTo') }}</p>
+                    <p class="drawer-value">
+                      {{ selectedNotification?.redirectTo ?? 'N/A' }}
+                    </p>
+                  </div>
+
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('sentOn') }}</p>
+                    <p class="drawer-value">
+                      {{
+                        selectedNotification?.sendNotificationOnDate
+                          ? formatDate(selectedNotification.sendNotificationOnDate)
+                          : selectedNotification?.createdAt
+                            ? formatDate(selectedNotification.createdAt)
+                            : 'N/A'
+                      }}
+                    </p>
+                  </div>
                 </div>
               </div>
               <div class="action-btns">
@@ -240,7 +263,7 @@
 
     <ConfirmPopupDialog
       :isVisible="isConfirmDeletePopupVisible"
-      :title="t('deleteConfirmBanner')"
+      :title="t('deleteConfirmNotification')"
       :message="t('deleteConfirmBannerDescription')"
       :icon="'mdi-trash-can-outline'"
       :iconColor="'error'"
@@ -262,6 +285,8 @@ import ServerTable from '@/components/base/ServerTable.vue'
 import { useNotificationsStore } from '@/stores/modules/notificationsStore'
 import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
 import type { CreateNotificationDto, INotification } from '@/utils/services/notificationsService'
+import { formatDate } from '@/utils/helpers/date-helper'
+import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
 
 const { t } = useI18n()
 const store = useNotificationsStore()
@@ -337,10 +362,8 @@ const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
 const getTypeColor = (type: string) => {
   return (
     {
-      info: 'blue',
-      success: 'green',
-      warning: 'orange',
-      error: 'red',
+      sent: 'green',
+      failed: 'red',
     }[type] || 'grey'
   )
 }

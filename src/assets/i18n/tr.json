@@ -170,5 +170,6 @@
   "saveStatus": "Durum Kaydet",
   "sent": "Gönderildi",
   "received": "Alındı",
-  "redirectTo": "Yönlendiriliyor"
+  "redirectTo": "Yönlendiriliyor",
+  "deleteConfirmNotification": "Bu bildirimi silmek istediğinize emin misiniz?"
 }
