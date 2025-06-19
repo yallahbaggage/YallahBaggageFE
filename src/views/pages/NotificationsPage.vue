@@ -114,71 +114,58 @@
       <!-- details Drawer -->
       <Drawer
         :isOpen="isDetailsNotificationDrawerOpen"
-        :title="t('Notification')"
-        :desc="t('employee')"
+        :title="t('notificationDetails')"
+        :desc="t('seeYourNotificationDetail')"
         @close="isDetailsNotificationDrawerOpen = false"
       >
         <div style="max-height: 75vh">
           <form class="form">
             <div>
+              <div class="drawer-banner">
+                <p>{{ t('generalInformation') }}</p>
+              </div>
               <p class="drawer-title">{{ selectedNotification?.title }}</p>
               <p class="drawer-description">{{ selectedNotification?.message }}</p>
               <div class="drawer-banner">
-                <p>{{ t('information') }}</p>
+                <p>{{ t('advancedDetails') }}</p>
               </div>
               <div>
                 <div class="drawer-info">
-                  <p class="drawer-key">{{ t('reportedBy') }}</p>
+                  <p class="drawer-key">{{ t('createdBy') }}</p>
                   <p class="drawer-value">{{ selectedNotification?.createdBy?.name ?? 'N/A' }}</p>
                 </div>
+
                 <div class="drawer-info">
-                  <p class="drawer-key">{{ t('reporterId') }}</p>
+                  <p class="drawer-key">{{ t('status') }}</p>
+                  <p class="drawer-value">{{ selectedNotification?.createdAt ? t('sent') : t('failed') }}</p>
+                </div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('redirectTo') }}</p>
                   <p class="drawer-value">
-                    {{ selectedNotification?.createdBy?._id?.substring(0, 12) ?? 'N/A' }}
+                    {{ selectedNotification?.redirectTo ?? 'N/A' }}
                   </p>
                 </div>
+              
                 <div class="drawer-info">
-                  <p class="drawer-key">{{ t('reporterPhoneNumber') }}</p>
-                  <p class="drawer-value">{{ selectedNotification?.createdBy?.phone ?? 'N/A' }}</p>
-                </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('reportedOn') }}</p>
+                  <p class="drawer-key">{{ t('sentOn') }}</p>
                   <p class="drawer-value">
                     {{
-                      selectedNotification?.createdAt
-                        ? new Date(selectedNotification.createdAt).toLocaleString()
-                        : 'N/A'
+                      selectedNotification?.sendNotificationOnDate
+                        ? new Date(selectedNotification.sendNotificationOnDate).toLocaleString()
+                        : selectedNotification?.createdAt
+                          ? new Date(selectedNotification.createdAt).toLocaleString()
+                          : 'N/A'
                     }}
                   </p>
                 </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('status') }}</p>
-                  <p class="drawer-value">{{ t(selectedNotification?.type ?? 'pending') }}</p>
-                </div>
+                
               </div>
-              <div class="action-btns">
-                <ActionButton
-                  :buttonText="t('cancel')"
-                  buttonColor="white"
-                  class="action-Btn"
-                  @button-pressed="() => (isDetailsNotificationDrawerOpen = false)"
-                />
-                <ActionButton
-                  button-color="error"
-                  :buttonText="t('detailsIssue')"
-                  class="action-Btn"
-                  @button-pressed="
-                    () => {
-                      isDetailsNotificationDrawerOpen = false
-                    }
-                  "
-                />
-              </div>
+              
             </div>
           </form>
         </div>
       </Drawer>
-      <!-- delete Drawer -->
+      <!-- details Drawer -->
 
       <!-- delete Drawer -->
       <Drawer

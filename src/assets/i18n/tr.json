@@ -140,7 +140,7 @@
   "generalInformation": "GENEL BİLGİLER",
   "advancedDetails": "GELİŞMİŞ BİLGİLER",
   "notificationType": "Bildirim Tipi",
-  "CreatedBy": "Oluşturan",
+  "createdBy": "Oluşturan",
   "sendNotification": "Bildirim Gönder",
   "fillOutAllTheInformationsToSend": "Bildirim gönderilmesi için tüm bilgileri doldurun",
   "deleteNotification": "Bildirimi Sil",
@@ -160,12 +160,15 @@
   "toastDeleteComplaintDescription": "Şikayeti başarıyla sildiniz.",
   "DetailsEmployee": "Çalışan Detayları",
   "complaint": "Şikayet",
-  "ticketActivity":" Ticket akitivtesi",
+  "ticketActivity": " Ticket akitivtesi",
   "ticketCreatedAt": "Ticket akitivtesini Oluştur",
   "statusHasChanged": "Durum Değişti",
   "statusHasChangedTo": "Durum Değişti: {status}",
   "deleteBanner": "Banner'i Sil",
   "details": "Detaylar",
   "chat": "Sohbet",
-  "saveStatus": "Durum Kaydet"
+  "saveStatus": "Durum Kaydet",
+  "sent": "Gönderildi",
+  "received": "Alındı",
+  "redirectTo": "Yönlendiriliyor"
 }

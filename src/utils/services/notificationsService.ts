@@ -18,6 +18,9 @@ export interface INotification {
   expiresAt: Date;
   createdAt: Date;
   updatedAt: Date;
+  sendNotificationOnDate?: Date;
+  sendNow?: boolean;
+  redirectTo?: string;
 }
 
 export interface CreateNotificationDto {
@@ -27,6 +30,9 @@ export interface CreateNotificationDto {
   targetUsers?: string[];
   isGlobal?: boolean;
   expiresAt?: Date;
+  sendNotificationOnDate?: Date;
+  sendNow?: boolean;
+  redirectTo?: string;
 }
 
 export interface UpdateNotificationDto {
@@ -36,6 +42,9 @@ export interface UpdateNotificationDto {
   targetUsers?: string[];
   isGlobal?: boolean;
   expiresAt?: Date;
+  sendNotificationOnDate?: Date;
+  sendNow?: boolean;
+  redirectTo?: string;
 }
 
 interface PaginatedResponse<T> {

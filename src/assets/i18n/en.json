@@ -139,7 +139,7 @@
   "generalInformation": "GENERAL INFORMATION",
   "advancedDetails": "ADVANCED DETAILS",
   "notificationType": "Notification Type",
-  "CreatedBy": "Created by",
+  "createdBy": "Created by",
   "sendNotification": "Send Notification",
   "fillOutAllTheInformationsToSend": "Fill out all the informations to send",
   "deleteNotification": "Delete Notification",
@@ -167,5 +167,8 @@
   "deleteBanner": "Delete Banner",
   "details": "Details",
   "chat": "Chat",
-  "saveStatus": "Save Status"
+  "saveStatus": "Save Status",
+  "sent": "Sent",
+  "received": "Received",
+  "redirectTo": "Redirect to"
 }
