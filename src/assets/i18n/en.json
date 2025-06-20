@@ -183,5 +183,8 @@
   "url": "URL",
   "startAt": "Start Date",
   "expireAt": "Expire Date",
-  "id": "ID"
+  "id": "ID",
+  "addNewBanner": "Add New Banner",
+  "bannerStatus": "Banner Status",
+  "updateBanner": "Update Banner"
 }

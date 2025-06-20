@@ -38,7 +38,6 @@
           <v-pagination
             v-model="currentPage"
             :length="totalPages"
-            rounded
             class="pagination-pages"
             @update:model-value="onPageChange"
             :total-visible="7"
@@ -158,5 +157,10 @@ function onPageSizeChange(val: number) {
 .pagination-size {
   width: 100px;
   max-width: 100px;
+}
+
+.v-pagination .v-btn.v-btn--density-default{
+  min-width: 12px !important;
+  min-height: 12px !important;
 }
 </style>

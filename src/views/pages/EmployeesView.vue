@@ -515,29 +515,6 @@ const filteredCountries = computed(() => {
   min-height: unset !important;
 }
 
-
-.required {
-  color: #2563eb; /* blue-600 */
-  margin-left: 2px;
-}
-
-.form-input {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 1rem;
-  background: #f9fafb;
-  color: #888;
-  outline: none;
-  transition: border 0.2s;
-}
-
-.form-input:disabled {
-  background: #f3f4f6;
-  color: #bbb;
-}
-
 .phone-input-wrapper {
   display: flex;
   align-items: center;

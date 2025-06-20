@@ -183,5 +183,8 @@
   "url": "URL",
   "startAt": "Başlangıç Tarihi",
   "expireAt": "Bitiş Tarihi",
-  "id": "ID"
+  "id": "ID",
+  "addNewBanner": "Yeni Banner Ekle",
+  "bannerStatus": "Banner Durumu",
+  "updateBanner": "Banner'ı Güncelle"
 }
