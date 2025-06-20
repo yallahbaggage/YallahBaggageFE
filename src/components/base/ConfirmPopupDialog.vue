@@ -132,7 +132,6 @@ const onApply = () => emit('apply')
 
 .title-wrapper {
   display: flex;
-  align-items: center;
   gap: $x-small;
   flex-direction: column;
 }
