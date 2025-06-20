@@ -32,9 +32,9 @@
           <v-btn icon variant="text" :disabled="currentPage === 1" @click="goToPage(1)">
             <v-icon>mdi-page-first</v-icon>
           </v-btn>
-          <v-btn icon variant="text" :disabled="currentPage === 1" @click="goToPage(currentPage - 1)">
+          <!-- <v-btn icon variant="text" :disabled="currentPage === 1" @click="goToPage(currentPage - 1)">
             <v-icon>mdi-chevron-left</v-icon>
-          </v-btn>
+          </v-btn> -->
           <v-pagination
             v-model="currentPage"
             :length="totalPages"
@@ -43,9 +43,9 @@
             @update:model-value="onPageChange"
             :total-visible="7"
           />
-          <v-btn icon variant="text" :disabled="currentPage === totalPages || totalPages === 0" @click="goToPage(currentPage + 1)">
+          <!-- <v-btn icon variant="text" :disabled="currentPage === totalPages || totalPages === 0" @click="goToPage(currentPage + 1)">
             <v-icon>mdi-chevron-right</v-icon>
-          </v-btn>
+          </v-btn> -->
           <v-btn icon variant="text" :disabled="currentPage === totalPages || totalPages === 0" @click="goToPage(totalPages)">
             <v-icon>mdi-page-last</v-icon>
           </v-btn>
