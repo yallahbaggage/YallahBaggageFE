@@ -119,15 +119,27 @@
                 <p class="drawer-key">{{ t('reportedOn') }}</p>
                 <p class="drawer-value">
                   {{
-                    selectedComplaint?.createdAt
-                      ? formatDate(selectedComplaint.createdAt)
-                      : 'N/A'
+                    selectedComplaint?.createdAt ? formatDate(selectedComplaint.createdAt) : 'N/A'
                   }}
                 </p>
               </div>
               <div class="drawer-info">
                 <p class="drawer-key">{{ t('status') }}</p>
-                <p class="drawer-value">{{ t(selectedComplaint?.status ?? 'pending') }}</p>
+                <p class="drawer-value">
+                  <v-chip
+                    :color="statusColor(selectedComplaint?.status ?? 'pending')"
+                    text-color="white"
+                    small
+                  >
+                    <span
+                      :style="{
+                        backgroundColor: statusColor(selectedComplaint?.status ?? 'pending'),
+                      }"
+                      class="status-circle"
+                    ></span>
+                    {{ t(selectedComplaint?.status ?? 'pending') }}
+                  </v-chip>
+                </p>
               </div>
             </div>
             <div class="action-btns">
@@ -158,7 +170,11 @@
     <!-- Details Drawer -->
     <Drawer
       :isOpen="isDetailsComplaintDrawerOpen && !isLoading"
-      :title="tab == 'chat'? t('complaint') + ' ' + '#' + selectedComplaint?.userId?._id?.substring(0, 6)  : t('ticket') + ' ' + '#' + selectedComplaint?._id?.substring(0, 6) "
+      :title="
+        tab == 'chat'
+          ? t('complaint') + ' ' + '#' + selectedComplaint?.userId?._id?.substring(0, 6)
+          : t('ticket') + ' ' + '#' + selectedComplaint?._id?.substring(0, 6)
+      "
       :desc="
         t('employee') +
         ' ' +
@@ -214,45 +230,54 @@
                     </div>
                     <div class="drawer-info">
                       <p class="drawer-key">{{ t('status') }}</p>
-                      <v-select
-                        v-model="editableStatus"
-                        :items="statusOptions"
-                        item-title="label"
-                        class="drawer-value status-select"
-                        hide-details
-                        dense
-                        variant="outlined"
-                      >
-                        <template #item="{ item, props }">
-                          <v-list-item v-bind="props">
-                            <v-list-item-title
-                              :style="{
-                                backgroundColor: statusColor(item?.raw.label),
-                                color: 'white',
-                                borderRadius: '8px',
-                                padding: '4px 12px',
-                                margin: '2px 0',
-                              }"
-                            >
-                              {{ item?.raw.label ?? '' }}
-                            </v-list-item-title>
-                          </v-list-item>
+
+                      <v-menu v-model="menu" :close-on-content-click="false" offset-y>
+                        <template #activator="{ props }">
+                          <v-btn
+                            :style="{
+                              backgroundColor: statusBg(editableStatus),
+                              color: statusColor(editableStatus),
+                            }"
+                            v-bind="props"
+                            class="status-btn"
+                            variant="tonal"
+                            rounded
+                          >
+                            <span
+                              class="status-dot"
+                              :style="{ backgroundColor: statusColor(editableStatus) }"
+                            ></span>
+                            {{ t(statusLabel(editableStatus)) }}
+                            <v-icon size="18" class="ml-1">mdi-chevron-down</v-icon>
+                          </v-btn>
                         </template>
 
-                        <template #selection="{ item }">
-                          <div
+                        <v-list class="status-list">
+                          <v-list-item
+                            v-for="status in statusOptions"
+                            :key="status.label"
+                            @click="selectStatus(status.label)"
+                            class="status-item"
                             :style="{
-                              backgroundColor: statusColor(item.raw.label),
-                              color: 'white',
-                              borderRadius: '8px',
-                              padding: '4px 10px',
-                              textAlign: 'center',
+                              backgroundColor: statusBg(status.label),
+                              color: statusColor(status.label),
                             }"
                           >
-                            {{ t(item.raw.label) }}
-                          </div>
-                        </template>
-                      </v-select>
+                            <template #prepend>
+                              <span
+                                class="status-dot"
+                                :style="{ backgroundColor: statusColor(status.label) }"
+                              ></span>
+                            </template>
+                            <v-list-item-title>{{ status.label }}</v-list-item-title>
+                            <template #append>
+                              <v-icon v-if="status.label === editableStatus" color="green"
+                                >mdi-check-circle</v-icon
+                              >
+                            </template>
+                          </v-list-item>
+                        </v-list>
+                      </v-menu>
                     </div>
                   </div>
                   <div class="drawer-banner">
@@ -402,7 +427,7 @@ import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import ServerSideTable from '@/components/base/ServerTable.vue'
 import { useComplaintsStore } from '@/stores/modules/complaints'
 import { useI18n } from 'vue3-i18n'
-import { IComplaint } from '@/models/complaint'
+import { ComplaintStatus, IComplaint } from '@/models/complaint'
 import Drawer from '@/components/base/Drawer.vue'
 import ActionButton from '@/components/base/ActionButton.vue'
 import { toastDeleteMessage } from '@/utils/helpers/notification'
@@ -422,6 +447,7 @@ const isDetailsComplaintDrawerOpen = ref(false)
 const isConfirmDeletePopupVisible = ref(false)
 const isLoading = ref(false)
 const chatContainerRef = ref<HTMLElement | null>(null)
+const menu = ref(false)
 
 const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
 
@@ -454,6 +480,49 @@ const fetchComplaints = async () => {
   const totalPages = Math.ceil((complaintsStore.paginationInfo?.total ?? 0) / itemsPerPage.value)
   if (page.value > totalPages && totalPages > 0) {
     page.value = totalPages
+  }
+}
+
+const statusLabel = (status: string) => {
+  return statusOptions.find((s) => s.label === status)?.label ?? status
+}
+
+const selectStatus = (status: string) => {
+  editableStatus.value = status as ComplaintStatus
+  menu.value = false
+}
+
+function statusColor(status: string): string {
+  switch (status) {
+    case 'pending':
+      return '#f59e0b' // amber
+    case 'in_progress':
+      return '#3b82f6' // blue
+    case 'resolved':
+      return '#10b981' // green
+    case 'rejected':
+      return '#ef4444' // red
+    case 'closed':
+      return '#6b7280' // gray
+    default:
+      return '#9ca3af' // fallback gray
+  }
+}
+
+const statusBg = (status: string) => {
+  switch (status) {
+    case 'pending':
+      return '#eff6ff'
+    case 'in_progress':
+      return '#dbf4ff' // light blue
+    case 'resolved':
+      return '#ecfdf5'
+    case 'rejected':
+      return '#fee2e2' // red
+    case 'closed':
+      return '#f3f4f6' // gray
+    default:
+      return '#f3f4f6'
   }
 }
 
@@ -543,23 +612,6 @@ watch([isDetailsComplaintDrawerOpen, tab], ([drawerOpen, currentTab]) => {
 //     }[status?.toLowerCase()] ?? 'primary'
 //   )
 // }
-
-function statusColor(status: string): string {
-  switch (status) {
-    case 'pending':
-      return '#f59e0b' // amber
-    case 'in_progress':
-      return '#3b82f6' // blue
-    case 'resolved':
-      return '#10b981' // green
-    case 'rejected':
-      return '#ef4444' // red
-    case 'closed':
-      return '#6b7280' // gray
-    default:
-      return '#9ca3af' // fallback gray
-  }
-}
 
 const statusOptions = [
   { label: 'pending' },
@@ -731,6 +783,31 @@ watch(
 .message-date {
   font-size: 10px;
   color: #a1a1a1;
-  margin-top: 10px
+  margin-top: 10px;
+}
+
+.status-btn {
+  text-transform: none;
+  padding: 6px 12px;
+  font-weight: 500;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+.status-dot {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+.status-list {
+  min-width: 200px;
+  padding: 8px;
+}
+.status-item {
+  border-radius: 12px;
+  margin-bottom: 4px;
+  padding: 8px 12px;
 }
 </style>
