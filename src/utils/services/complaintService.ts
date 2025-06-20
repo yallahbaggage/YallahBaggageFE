@@ -2,6 +2,7 @@ import { AxiosError } from 'axios'
 import api from './api'
 import type {
   ComplaintFilterParams,
+  IComplaint,
   IComplaintStats,
   ICreateComplaint,
   IUpdateComplaint,
@@ -105,11 +106,21 @@ export class ComplaintService {
   async updateComplaintStatus(id: string, status: string) {
     try {
       const response = await api.patch(`/complaints/${id}/status`, { status })
-      return response.data
+      return response.data.data
     } catch (error) {
       console.error('Error updating complaint status:', error)
       throw error
     }
+  }
+
+  async getComplaintById(id: string): Promise<IComplaint> {
+    try {
+      const response = await api.get(`/complaints/${id}`)
+      return response.data.data as IComplaint
+    } catch (error) {
+      console.error('Error fetching complaint by ID:', error)
+      throw error
+    } 
   }
 
   private handleError(error: AxiosError<IApiError>): Error {

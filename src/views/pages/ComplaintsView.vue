@@ -159,20 +159,23 @@
 
     <!-- Details Drawer -->
     <Drawer
-      :isOpen="isDetailsComplaintDrawerOpen"
-      :title="t('complaint') + ' ' + '#' + selectedComplaint?._id.substring(0, 12)"
+      :isOpen="isDetailsComplaintDrawerOpen && !isLoading"
+      :title="t('complaint') + ' ' + '#' + selectedComplaint?._id"
       :desc="
         t('employee') +
         ' ' +
         '#' +
         (selectedComplaint?.relatedWorkerId?._id
-          ? selectedComplaint.relatedWorkerId._id.substring(0, 12)
+          ? selectedComplaint.relatedWorkerId?._id?.substring(0, 12)
           : 'N/A')
       "
       :status="selectedComplaint?.status ? t(selectedComplaint?.status) : t('Available')"
       @close="isDetailsComplaintDrawerOpen = false"
     >
-      <div style="max-height: 75vh">
+      <div v-if="isLoading" class="d-flex justify-center my-5">
+        <v-progress-circular indeterminate color="primary" />
+      </div>
+      <div style="max-height: 75vh" v-if="!isLoading">
         <div class="drawer-form">
           <div>
             <p class="drawer-title">{{ selectedComplaint?.title }}</p>
@@ -405,6 +408,7 @@ const selectedComplaint = ref<IComplaint | null>(null)
 const isDeleteComplaintDrawerOpen = ref(false)
 const isDetailsComplaintDrawerOpen = ref(false)
 const isConfirmDeletePopupVisible = ref(false)
+const isLoading = ref(false)
 
 const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
 
@@ -446,10 +450,27 @@ const fetchComplaints = async () => {
   }
 }
 
-function viewDetails(item: any) {
-  selectedComplaint.value = item as IComplaint
+const viewDetails = async (item: any) => {
+  console.log('[viewDetails] Called for ID:', item._id)
+
+  selectedComplaint.value = null
+  isLoading.value = true
   isDetailsComplaintDrawerOpen.value = true
+
+  try {
+    const complaint = await complaintsStore.fetchComplaint(item._id)
+    console.log('[viewDetails] Complaint fetched:', complaint)
+
+    selectedComplaint.value = complaint as IComplaint
+  } catch (err) {
+    console.error('[viewDetails] Error fetching complaint:', err)
+  } finally {
+    isLoading.value = false
+    console.log('[viewDetails] isLoading = false')
+  }
 }
+
+
 
 function deleteComplaint(item: any) {
   selectedComplaint.value = item as IComplaint
@@ -543,6 +564,7 @@ watch(
   margin: 15px 15px;
   gap: 10px;
   width: 370px;
+  z-index: 3;
 
   .send-button {
     width: fit-content;
@@ -563,7 +585,10 @@ watch(
 .chat {
   padding: 10px;
   background-color: #f7f7f7;
-  height: 70vh !important;
+  height: 65dvh !important;
+  z-index: 1;
+  overflow: scroll;
+
 }
 
 .chat-complaint {
@@ -636,6 +661,7 @@ watch(
   text-align: left;
   border-top-left-radius: 0;
   align-self: flex-start;
+  z-index: 1;
 }
 
 // Answer (support)
@@ -646,6 +672,7 @@ watch(
   border-top-right-radius: 0;
   align-self: flex-end;
   margin-left: auto;
+  z-index: 1;
 }
 
 </style>

@@ -79,7 +79,7 @@ export const useComplaintsStore = defineStore('complaints', {
         if (!this.complaints.length) {
           await this.fetchComplaints({})
         }
-        const found = this.complaints.find((c) => c._id === id) || null
+        const found = await complaintService.getComplaintById(id);
         this.currentComplaint = found
         return found
       } catch (err) {
