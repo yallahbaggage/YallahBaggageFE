@@ -39,7 +39,7 @@
           <span>{{ item.url }}</span>
         </template>
         <template #cell-expireDate="{ item }">
-          <span>{{ new Date(item.expireDate).toLocaleDateString() }}</span>
+          <span>{{ formatDate(item.expireDate) }}</span>
         </template>
         <template #actions="{ item }">
           <v-menu location="bottom end" offset="4">
@@ -117,11 +117,11 @@
                 </div>
                 <div class="drawer-info">
                   <p class="drawer-key">Expire Date</p>
-                  <p class="drawer-value">{{ selectedAd ? new Date(selectedAd.expireDate).toLocaleDateString() : '' }}</p>
+                  <p class="drawer-value">{{ selectedAd ? formatDate(selectedAd.expireDate) : 'N/A' }}</p>
                 </div>
                 <div class="drawer-info">
                   <p class="drawer-key">ID</p>
-                  <p class="drawer-value">{{ selectedAd?._id.substring(0, 6) }}</p>
+                  <p class="drawer-value">{{ selectedAd?._id?.substring(0, 6) }}</p>
                 </div>
               </div>
               <div class="action-btns">
@@ -213,6 +213,7 @@ import { useI18n } from 'vue3-i18n'
 import { useAdsStore } from '@/stores/modules/adsStore'
 import { IAd } from '@/models/ad'
 import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
+import { formatDate } from '@/utils/helpers/date-helper'
 
 const { t } = useI18n()
 const isEmployeeDrawerOpen = ref(false)

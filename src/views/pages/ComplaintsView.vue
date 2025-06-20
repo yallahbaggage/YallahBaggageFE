@@ -54,7 +54,7 @@
           </v-chip>
         </template> -->
         <template #cell-createdAt="{ item }">
-          {{ new Date(item.createdAt).toLocaleString() }}
+          {{ formatDate(item.createdAt) }}
         </template>
         <template #actions="{ item }">
           <v-menu location="bottom end" offset="4">
@@ -120,7 +120,7 @@
                 <p class="drawer-value">
                   {{
                     selectedComplaint?.createdAt
-                      ? new Date(selectedComplaint.createdAt).toLocaleString()
+                      ? formatDate(selectedComplaint.createdAt)
                       : 'N/A'
                   }}
                 </p>
@@ -207,7 +207,7 @@
                       <p class="drawer-value">
                         {{
                           selectedComplaint?.createdAt
-                            ? new Date(selectedComplaint.createdAt).toLocaleString()
+                            ? formatDate(selectedComplaint.createdAt)
                             : 'N/A'
                         }}
                       </p>
@@ -347,6 +347,7 @@
                         }"
                       >
                         {{ message.message }}
+                        <span class="message-date">{{ formatDate(message.createdAt) }}</span>
                       </div>
                     </div>
                   </div>
@@ -507,8 +508,11 @@ const sendMessage = async () => {
   if (!selectedComplaint.value || !message.value.trim()) return
 
   try {
-    const res = await complaintsStore.sendResponseToComplaint(selectedComplaint.value._id, message.value.trim())
-    selectedComplaint.value.responses = res.data.responses;
+    const res = await complaintsStore.sendResponseToComplaint(
+      selectedComplaint.value._id,
+      message.value.trim(),
+    )
+    selectedComplaint.value.responses = res.data.responses
     message.value = '' // Clear the input after sending
     nextTick(() => scrollToBottom()) // Scroll to bottom after sending
   } catch (error) {
@@ -702,13 +706,31 @@ watch(
   color: #000;
   text-align: left;
   border-top-left-radius: 0;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  display: flex;
+  flex-direction: column;
 }
 
 // Answer (admin)
 .message-answer {
   background-color: #ffffff;
-  color: #000;
+  color: #5c5c5c;
   text-align: left;
   border-top-right-radius: 0;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message-date {
+  font-size: 10px;
+  color: #a1a1a1;
+  margin-top: 10px
 }
 </style>

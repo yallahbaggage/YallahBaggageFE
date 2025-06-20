@@ -72,10 +72,10 @@
           </v-chip>
         </template>
         <template #cell-pickUpDate="{ item }">
-          <span>{{ new Date(item.pickUpDate).toLocaleDateString() }}</span>
+          <span>{{ formatDate(item.pickUpDate) }}</span>
         </template>
         <template #cell-deliveryDate="{ item }">
-          <span>{{ new Date(item.deliveryDate).toLocaleDateString() }}</span>
+          <span>{{ formatDate(item.deliveryDate) }}</span>
         </template>
         <template #cell-actions="{ item }">
           <v-menu location="bottom end" offset="4">

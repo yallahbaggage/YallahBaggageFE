@@ -36,7 +36,7 @@
           </v-chip>
         </template>
         <template #cell-createdAt="{ item }">
-          {{ new Date(item.createdAt).toLocaleString() }}
+          {{ formatDate(item.createdAt) }}
         </template>
         <template #actions="{ item }">
           <v-menu location="bottom end" offset="4">
