@@ -40,11 +40,7 @@
           <span>{{ item.url }}</span>
         </template> -->
         <template #cell-status="{ item }">
-          <v-chip
-            :color="getColorAccordingToExpireDate(item?.expireDate)"
-            text-color="white"
-            small
-          >
+          <v-chip :color="getColorAccordingToExpireDate(item?.expireDate)" text-color="white" small>
             <span
               :style="{ backgroundColor: statusColorAccordingToExpireDate(item.expireDate) }"
               class="status-circle"
@@ -83,35 +79,101 @@
         </template>
       </ServerTable>
       <!-- add Drawer -->
-      <Drawer
-        :isOpen="isAddDrawerOpen"
-        :desc="t('newBanner')"
-        @close="isAddDrawerOpen = false"
-      >
+      <Drawer :isOpen="isAddDrawerOpen" :desc="t('newBanner')" @close="isAddDrawerOpen = false">
         <div style="max-height: 75vh">
-          <form @submit.prevent="onAddButtonPressed()" class="form">
-            <div>
-              <div class="drawer-banner">
-                <p>{{ t('information') }}</p>
-              </div>
-              <div>
-                <div class="drawer-info">
-                  <p class="drawer-key">URL</p>
-                  <p class="drawer-value">https://example.com</p>
-                </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">Expire Date</p>
-                  <p class="drawer-value">2024-12-31</p>
-                </div>
-              </div>
-              <div class="action-btns">
-                <ActionButton
-                  :buttonText="t('cancel')"
-                  buttonColor="white"
-                  @button-pressed="() => (isAddDrawerOpen = false)"
+          <form @submit.prevent="onAddButtonPressed()" class="add-banner-form">
+            <p class="section-title">GENERAL INFORMATION</p>
+
+            <v-text-field
+              v-model="newBanner.title"
+              label="Banner Name"
+              variant="outlined"
+              density="compact"
+              required
+            />
+
+            <div class="date-row">
+              <v-text-field
+                v-model="newBanner.startAt"
+                label="Start Date"
+                type="date"
+                variant="outlined"
+                density="compact"
+              />
+              <v-text-field
+                v-model="newBanner.expireDate"
+                label="End Date"
+                type="date"
+                variant="outlined"
+                density="compact"
+                required
+              />
+            </div>
+
+            <v-text-field
+              v-model="newBanner.url"
+              label="Banner will redirect to"
+              placeholder="https://www.example.com"
+              variant="outlined"
+              density="compact"
+              required
+            />
+
+            <div class="image-upload">
+              <div class="upload-box">
+                <v-icon size="36" color="grey">mdi-cloud-upload-outline</v-icon>
+                <p>Choose a file or drag & drop it here.</p>
+                <p class="subtext">JPEG, PNG, WebP formats. Up to 3 MB.</p>
+                <v-file-input
+                  show-size
+                  accept="image/*"
+                  label="Browse File"
+                  prepend-icon=""
+                  @change="uploadImage"
+                  hide-details
+                  variant="outlined"
+                  density="compact"
                 />
-                <ActionButton :buttonText="t('addBanner')" buttonType="submit" />
               </div>
+
+              <div
+                v-if="imageUploadProgress > 0 && imageUploadProgress < 100"
+                class="upload-progress"
+              >
+                <v-progress-linear
+                  :model-value="imageUploadProgress"
+                  height="6"
+                  color="primary"
+                  rounded
+                />
+                <span>{{ imageUploadProgress }}%</span>
+              </div>
+
+              <div v-if="imageUrl" class="uploaded-preview">
+                <img :src="imageUrl" class="preview-img" />
+                <span>{{ uploadedFileName }}</span>
+                <v-btn icon @click="removeImage" variant="text">
+                  <v-icon color="red">mdi-close</v-icon>
+                </v-btn>
+              </div>
+            </div>
+
+            <v-select
+              v-model="newBanner.status"
+              :items="['Active', 'Deactive']"
+              label="Banner Status"
+              variant="outlined"
+              density="compact"
+              required
+            />
+
+            <div class="form-actions">
+              <ActionButton
+                :buttonText="t('cancel')"
+                buttonColor="white"
+                @button-pressed="() => (isAddDrawerOpen = false)"
+              />
+              <ActionButton :buttonText="t('save')" buttonType="submit" />
             </div>
           </form>
         </div>
@@ -151,23 +213,24 @@
                   @button-pressed="() => (isUpdateDrawerOpen = false)"
                   class="action-Btn"
                 />
-                <ActionButton
-                  class="action-Btn"
-                  :buttonText="t('update')"
-                  buttonType="submit"
-                />
+                <ActionButton class="action-Btn" :buttonText="t('update')" buttonType="submit" />
               </div>
             </div>
           </form>
         </div>
       </Drawer>
       <!-- update Drawer -->
-       <!-- see details Drawer and delete-->
+      <!-- see details Drawer and delete-->
       <Drawer
         :isOpen="isDetailsDrawerOpen || isDeleteDrawerOpen"
         :desc="t('id') + ' #' + selectedAd?._id.substring(0, 6)"
         :title="selectedAd?.title"
-        @close="isDetailsDrawerOpen = false ; isDeleteDrawerOpen = false"
+        @close="
+          () => {
+            isDetailsDrawerOpen = false
+            isDeleteDrawerOpen = false
+          }
+        "
       >
         <div style="max-height: 75vh">
           <form class="form">
@@ -186,15 +249,22 @@
                 </div>
                 <div class="drawer-info">
                   <p class="drawer-key">{{ t('url') }}</p>
-                  <p class="drawer-value">{{ selectedAd?.url ?? 'N/A'}}</p>
+                  <p class="drawer-value">{{ selectedAd?.url ?? 'N/A' }}</p>
                 </div>
                 <div class="drawer-info">
                   <p class="drawer-key">{{ t('startAt') }}</p>
-                  <p class="drawer-value">{{ formatDateWithoutTime(selectedAd?.startAt ?? selectedAd?.createdAt ?? '') ?? 'N/A'}}</p>
+                  <p class="drawer-value">
+                    {{
+                      formatDateWithoutTime(selectedAd?.startAt ?? selectedAd?.createdAt ?? '') ??
+                      'N/A'
+                    }}
+                  </p>
                 </div>
                 <div class="drawer-info">
                   <p class="drawer-key">{{ t('expireAt') }}</p>
-                  <p class="drawer-value">{{ formatDateWithoutTime(selectedAd?.expireDate ?? '') ?? 'N/A'}}</p>
+                  <p class="drawer-value">
+                    {{ formatDateWithoutTime(selectedAd?.expireDate ?? '') ?? 'N/A' }}
+                  </p>
                 </div>
               </div>
               <hr v-if="isDeleteDrawerOpen" class="infoHr" />
@@ -260,8 +330,6 @@ const isUpdateDrawerOpen = ref(false)
 const isAddDrawerOpen = ref(false)
 const isConfirmDeletePopupVisible = ref(false)
 
-const imageUrl = ref('')
-
 const adsStore = useAdsStore()
 const loading = computed(() => adsStore.isLoading)
 const ads = computed(() => adsStore.allAds)
@@ -294,27 +362,83 @@ const getColorAccordingToExpireDate = (expireDate: string | Date) => {
   }
 }
 
-const uploadImage = async (event: any) => {
-  const file = event.target.files[0]
+const newBanner = ref({
+  title: '',
+  startAt: '',
+  expireDate: '',
+  url: '',
+  image: '',
+  status: 'Active',
+})
+
+const imageUploadProgress = ref(0)
+const imageUrl = ref('')
+const uploadedFileName = ref('')
+
+const uploadImage = async (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
   if (!file) return
+
+  uploadedFileName.value = file.name
 
   const formData = new FormData()
   formData.append('file', file)
-  formData.append('upload_preset', 'flutter_unsigned_upload') // your unsigned preset name
+  formData.append('upload_preset', 'flutter_unsigned_upload')
 
-  try {
-    const res = await fetch('https://api.cloudinary.com/v1_1/dmc7iowmo/image/upload', {
-      method: 'POST',
-      body: formData
-    })
-
-    const data = await res.json()
-    imageUrl.value = data.secure_url
-
-  } catch (err) {
-    console.error('Upload failed:', err)
+  const xhr = new XMLHttpRequest()
+  xhr.upload.onprogress = (e) => {
+    if (e.lengthComputable) {
+      imageUploadProgress.value = Math.round((e.loaded / e.total) * 100)
+    }
   }
+
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      const res = JSON.parse(xhr.responseText)
+      imageUrl.value = res.secure_url
+      newBanner.value.image = res.secure_url
+    }
+  }
+
+  xhr.open('POST', 'https://api.cloudinary.com/v1_1/dmc7iowmo/image/upload', true)
+  xhr.send(formData)
 }
+
+const removeImage = () => {
+  imageUrl.value = ''
+  newBanner.value.image = ''
+  imageUploadProgress.value = 0
+  uploadedFileName.value = ''
+}
+
+const onAddButtonPressed = () => {
+  // Save logic here, e.g., call store or emit to parent
+  console.log(newBanner.value)
+  toastSuccessMessage(t('toastAddBannerTitle'), t('toastAddBannerDescription'))
+  isAddDrawerOpen.value = false
+}
+
+// const uploadImage = async (event: any) => {
+//   const file = event.target.files[0]
+//   if (!file) return
+
+//   const formData = new FormData()
+//   formData.append('file', file)
+//   formData.append('upload_preset', 'flutter_unsigned_upload') // your unsigned preset name
+
+//   try {
+//     const res = await fetch('https://api.cloudinary.com/v1_1/dmc7iowmo/image/upload', {
+//       method: 'POST',
+//       body: formData,
+//     })
+
+//     const data = await res.json()
+//     imageUrl.value = data.secure_url
+//   } catch (err) {
+//     console.error('Upload failed:', err)
+//   }
+// }
 
 const editBanner = (item: any) => {
   selectedAd.value = item as IAd
@@ -354,10 +478,10 @@ const onDeleteButtonPressed = async (selectedAdId: string) => {
   // await adsStore.deleteAd(selectedAdId)
   isDeleteDrawerOpen.value = false
 }
-const onAddButtonPressed = () => {
-  isDetailsDrawerOpen.value = false
-  toastSuccessMessage(t('toastAddBannerTitle'), t('toastAddBannerDescription'))
-}
+// const onAddButtonPressed = () => {
+//   isDetailsDrawerOpen.value = false
+//   toastSuccessMessage(t('toastAddBannerTitle'), t('toastAddBannerDescription'))
+// }
 const onUpdateButtonPressed = () => {
   isUpdateDrawerOpen.value = false
 }
@@ -370,8 +494,6 @@ const statusColorAccordingToExpireDate = (date: string | Date): 'green' | 'red' 
   if (expire.toDateString() === now.toDateString()) return 'grey'
   return 'red'
 }
-
-
 
 function getStatusAccordingToExpireDate(expireDate: string | Date) {
   const currentDate = new Date()
@@ -392,7 +514,7 @@ function deleteAd(item: any) {
   isDeleteDrawerOpen.value = true
 }
 </script>
-<style lang="scss">
+<style scoped lang="scss">
 .menu-list {
   min-width: 140px;
   background-color: white;
@@ -404,4 +526,92 @@ function deleteAd(item: any) {
   padding: 6px 12px;
   min-height: unset !important;
 }
+
+.add-banner-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #999;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .date-row {
+    display: flex;
+    gap: 12px;
+  }
+
+  .image-upload {
+    border: 1px dashed #ccc;
+    border-radius: 6px;
+    padding: 16px;
+    background-color: #fafafa;
+    text-align: center;
+
+    .upload-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+
+      p {
+        margin: 0;
+        font-size: 14px;
+        color: #444;
+      }
+
+      .subtext {
+        font-size: 12px;
+        color: #999;
+      }
+    }
+
+    .upload-progress {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .uploaded-preview {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+
+      .preview-img {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-right: 10px;
+      }
+
+      span {
+        flex: 1;
+        font-size: 13px;
+        color: #333;
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 16px;
+  }
+}
+
 </style>
