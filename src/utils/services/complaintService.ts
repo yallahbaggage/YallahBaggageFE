@@ -72,11 +72,7 @@ export class ComplaintService {
         }
       }
 
-      const response = await api.put(`/complaints/${id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
+      const response = await api.put(`/complaints/${id}`,formData)
       return response.data
     } catch (error) {
       console.error('Error updating complaint:', error)
