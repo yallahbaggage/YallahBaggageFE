@@ -120,7 +120,17 @@ export class ComplaintService {
     } catch (error) {
       console.error('Error fetching complaint by ID:', error)
       throw error
-    } 
+    }
+  }
+
+  async sendResponseToComplaint(id: string, message: string) {
+    try {
+      const response = await api.post(`/complaints/${id}/responses`, {message: message} )
+      return response.data
+    } catch (error) {
+      console.error('Error sending response to complaint:', error)
+      throw error
+    }
   }
 
   private handleError(error: AxiosError<IApiError>): Error {

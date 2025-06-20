@@ -325,8 +325,8 @@
                     </p>
                     <v-divider class="divider" />
                       <p class="complaint-chat-message-sender">
-                        <span>{{ selectedComplaint?.userId.name.substring(0, 1) }}</span>
-                        <p>{{ selectedComplaint?.userId.name }}</p>
+                        <span>{{ selectedComplaint?.userId?.name?.substring(0, 1) }}</span>
+                        <p>{{ selectedComplaint?.userId?.name }}</p>
                       </p>
                     </div>
 
@@ -373,7 +373,7 @@
               v-model="message"
               required
             />
-            <ActionButton class="send-button" :buttonText="t('send')" type="button" />
+            <ActionButton v-on:button-pressed="() =>sendMessage()" class="send-button" :buttonText="t('send')" type="button" />
           </div>
         </div>
       </div>
@@ -507,6 +507,18 @@ const onDeleteButtonPressed = async (selectedComplaintId: string) => {
 
 const fetchStats = async () => {
   await complaintsStore.getComplaintsStatsPage()
+}
+
+const sendMessage = async () => {
+  if (!selectedComplaint.value || !message.value.trim()) return
+
+  try {
+    await complaintsStore.sendResponseToComplaint(selectedComplaint.value._id, message.value.trim())
+    message.value = '' // Clear the input after sending
+    nextTick(() => scrollToBottom()) // Scroll to bottom after sending
+  } catch (error) {
+    console.error('Error sending message:', error)
+  }
 }
 
 onMounted(() => {

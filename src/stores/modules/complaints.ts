@@ -165,5 +165,28 @@ export const useComplaintsStore = defineStore('complaints', {
         this.loading = false
       }
     },
+
+    async sendResponseToComplaint(id: string, message: string) {
+      try {
+        this.loading = true
+        const response = await complaintService.sendResponseToComplaint(id, message)
+        // Optionally, refetch or update current complaint
+        await this.fetchComplaint(id)
+        this.currentComplaint = {
+          ...this.currentComplaint,
+          responses: [
+            ...((this.currentComplaint?.responses) ?? []),
+            response.data,
+            ],
+        } as IComplaint
+        return response
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : 'Error sending response to complaint'
+        this.error = errorMsg
+        throw err
+      } finally {
+        this.loading = false
+      }
+    }
   },
 })
