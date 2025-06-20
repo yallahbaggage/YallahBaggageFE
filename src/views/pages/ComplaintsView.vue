@@ -331,7 +331,15 @@
                     </div>
 
                   <!-- Loop throuFgh messages -->
-                  <div v-for="message in selectedComplaint?.responses" :key="message._id">
+                  <div
+                    v-for="message in selectedComplaint?.responses"
+                    :key="message._id"
+                    :class="{
+                      'message-wrapper': true,
+                      'align-left': message.responderRole === 'customer',
+                      'align-right': message.responderRole === 'admin'
+                    }"
+                  >
                     <div
                       class="message-bubble"
                       :class="{
@@ -600,7 +608,7 @@ watch(
 .chat {
   padding: 10px;
   background-color: #f7f7f7;
-  height: 65dvh !important;
+  height: 70dvh !important;
   z-index: 1;
   overflow: scroll;
   overflow-x: hidden;
@@ -659,35 +667,42 @@ watch(
   margin: 10px;
 }
 
+.message-wrapper {
+  display: flex;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.align-left {
+  justify-content: flex-start;
+}
+
+.align-right {
+  justify-content: flex-end;
+}
+
 .message-bubble {
   max-width: 70%;
-  margin: 10px;
   padding: 12px 16px;
   border-radius: 16px;
   font-size: 14px;
   word-wrap: break-word;
-  display: inline-block;
 }
 
-// Question (user)
+// Question (customer)
 .message-question {
   background-color: #ebf1ff;
   color: #000;
   text-align: left;
   border-top-left-radius: 0;
-  align-self: flex-start;
-  z-index: 1;
 }
 
-// Answer (support)
+// Answer (admin)
 .message-answer {
   background-color: #ffffff;
   color: #000;
   text-align: left;
   border-top-right-radius: 0;
-  align-self: flex-end;
-  margin-left: auto;
-  z-index: 1;
 }
 
 </style>
