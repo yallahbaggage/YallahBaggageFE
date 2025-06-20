@@ -8,16 +8,30 @@
     <div class="page-content">
       <div class="cards">
         <InfoCard class="infoCard" :cardTitle="t('todaysTransfers')">
-          {{ stats.todaysTransfers }} <span>{{ stats.todaysTransfersChange }}</span>
-          {{ t('vsYesterday') }}</InfoCard
-        >
+          <div class="stats-container">
+            {{ stats.todaysTransfers }}
+            <p class="present-change">
+              <span class="present">+{{ stats.todaysTransfersChange }}</span> {{ t('vsYesterday') }}
+            </p>
+          </div>
+        </InfoCard>
         <InfoCard class="infoCard" :cardTitle="t('currentTransfers')">
-          {{ stats.currentTransfers }} <span>{{ stats.currentTransfersChange }}</span>
-          {{ t('vsYesterday') }}</InfoCard
+          <div class="stats-container">
+            {{ stats.currentTransfers }}
+            <p class="present-change">
+              <span class="present">+{{ stats.currentTransfersChange }}</span>
+              {{ t('vsYesterday') }}
+            </p>
+          </div></InfoCard
         >
         <InfoCard class="infoCard" :cardTitle="t('cancelledTransfers')">
-          {{ stats.cancelledTransfers }} <span>{{ stats.cancelledTransfersChange }}</span>
-          {{ t('vsYesterday') }}</InfoCard
+          <div class="stats-container">
+            {{ stats.cancelledTransfers }}
+            <p class="present-change">
+              <span class="present">+{{ stats.cancelledTransfersChange }}</span>
+              {{ t('vsYesterday') }}
+            </p>
+          </div></InfoCard
         >
       </div>
       <hr class="infoHr" />
@@ -308,4 +322,24 @@ onMounted(() => {
 
 watch([page, itemsPerPage], fetchAllTranfers)
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.stats-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.present-change {
+  color: #6b7280;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+}
+.present {
+  color: #1FC16B;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+}
+</style>
