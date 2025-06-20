@@ -6,7 +6,7 @@
       :desc="t('manageYourAppsBanners')"
       :show-button="true"
       :button-text="t('newBanner')"
-      v-on:button-pressed="() => (isEmployeeDrawerOpen = true)"
+      v-on:button-pressed="() => (isAddDrawerOpen = true)"
     />
     <div class="page-content">
       <div class="cards">
@@ -54,7 +54,7 @@
         </template>
         <template #cell-expireDate="{ item }">
           <span>
-            {{ formatDateWithoutTime(item.createdAt) }} -
+            {{ formatDateWithoutTime(item?.startAt ?? item.createdAt) }} -
             {{ formatDateWithoutTime(item.expireDate) }}</span
           >
         </template>
@@ -70,6 +70,10 @@
                 <v-icon class="mr-2">mdi-eye-outline</v-icon>
                 {{ t('seeDetails') }}
               </v-list-item>
+              <v-list-item class="menu-item" @click="editBanner(item)">
+                <v-icon class="mr-2">mdi-pencil-outline</v-icon>
+                {{ t('editBanner') }}
+              </v-list-item>
               <v-list-item class="menu-item" @click="deleteAd(item)">
                 <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
                 {{ t('deleteBanner') }}
@@ -80,10 +84,9 @@
       </ServerTable>
       <!-- add Drawer -->
       <Drawer
-        :isOpen="isEmployeeDrawerOpen"
+        :isOpen="isAddDrawerOpen"
         :desc="t('newBanner')"
-        :status="t('busy')"
-        @close="isEmployeeDrawerOpen = false"
+        @close="isAddDrawerOpen = false"
       >
         <div style="max-height: 75vh">
           <form @submit.prevent="onAddButtonPressed()" class="form">
@@ -105,7 +108,7 @@
                 <ActionButton
                   :buttonText="t('cancel')"
                   buttonColor="white"
-                  @button-pressed="() => (isEmployeeDrawerOpen = false)"
+                  @button-pressed="() => (isAddDrawerOpen = false)"
                 />
                 <ActionButton :buttonText="t('addBanner')" buttonType="submit" />
               </div>
@@ -114,65 +117,12 @@
         </div>
       </Drawer>
       <!-- add Drawer -->
-     <!-- delete Drawer -->
-      <Drawer
-        :isOpen="isDeleteEmployeeDrawerOpen"
-        :desc="t('employee') + ' ' + '#' + selectedAd?._id.substring(0, 6)"
-        :title="selectedAd?.title"
-        @close="isDeleteEmployeeDrawerOpen = false"
-      >
-        <div style="max-height: 75vh">
-          <form class="form">
-            <div>
-              <div class="drawer-banner">
-                <p>{{ t('information') }}</p>
-              </div>
-              <div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('fullName') }}</p>
-                  <p class="drawer-value">{{ selectedAd?.title }}</p>
-                </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('employeeID') }}</p>
-                  <p class="drawer-value">{{ selectedAd?._id.substring(0, 6) }}</p>
-                </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('phoneNumber') }}</p>
-                  <p class="drawer-value">{{ selectedAd?._id }}</p>
-                </div>
-              </div>
-              <hr class="infoHr" />
-
-              <div class="action-btns">
-                <ActionButton
-                  :buttonText="t('cancel')"
-                  buttonColor="white"
-                  class="action-Btn"
-                  @button-pressed="() => (isDeleteEmployeeDrawerOpen = false)"
-                />
-                <ActionButton
-                  button-color="error"
-                  :buttonText="t('deleteEmployee')"
-                  class="action-Btn"
-                  @button-pressed="
-                    () => {
-                      isConfirmDeletePopupVisible = true
-                      isDeleteEmployeeDrawerOpen = false
-                    }
-                  "
-                />
-              </div>
-            </div>
-          </form>
-        </div>
-      </Drawer>
-      <!-- delete Drawer -->
       <!-- update Drawer -->
       <Drawer
-        :isOpen="isUpdateEmployeeDrawerOpen"
-        :desc="t('newEmployee')"
+        :isOpen="isUpdateDrawerOpen"
+        :desc="t('new')"
         :status="t('busy')"
-        @close="isUpdateEmployeeDrawerOpen = false"
+        @close="isUpdateDrawerOpen = false"
       >
         <div style="max-height: 75vh">
           <form @submit.prevent="onUpdateButtonPressed()" class="form">
@@ -186,7 +136,7 @@
                   <p class="drawer-value">Zaid Al-Farsi</p>
                 </div>
                 <div class="drawer-info">
-                  <p class="drawer-key">{{ t('employeeID') }}</p>
+                  <p class="drawer-key">{{ t('ID') }}</p>
                   <p class="drawer-value">784-678-9012-3</p>
                 </div>
                 <div class="drawer-info">
@@ -198,12 +148,12 @@
                 <ActionButton
                   :buttonText="t('cancel')"
                   buttonColor="white"
-                  @button-pressed="() => (isUpdateEmployeeDrawerOpen = false)"
+                  @button-pressed="() => (isUpdateDrawerOpen = false)"
                   class="action-Btn"
                 />
                 <ActionButton
                   class="action-Btn"
-                  :buttonText="t('updateEmployee')"
+                  :buttonText="t('update')"
                   buttonType="submit"
                 />
               </div>
@@ -212,6 +162,68 @@
         </div>
       </Drawer>
       <!-- update Drawer -->
+       <!-- see details Drawer and delete-->
+      <Drawer
+        :isOpen="isDetailsDrawerOpen || isDeleteDrawerOpen"
+        :desc="t('id') + ' #' + selectedAd?._id.substring(0, 6)"
+        :title="selectedAd?.title"
+        @close="isDetailsDrawerOpen = false ; isDeleteDrawerOpen = false"
+      >
+        <div style="max-height: 75vh">
+          <form class="form">
+            <div>
+              <div class="drawer-banner">
+                <p>{{ t('information') }}</p>
+              </div>
+              <div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('bannerName') }}</p>
+                  <p class="drawer-value">{{ selectedAd?.title ?? 'N/A' }}</p>
+                </div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('id') }}</p>
+                  <p class="drawer-value">#{{ selectedAd?._id.substring(0, 6) }}</p>
+                </div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('url') }}</p>
+                  <p class="drawer-value">{{ selectedAd?.url ?? 'N/A'}}</p>
+                </div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('startAt') }}</p>
+                  <p class="drawer-value">{{ formatDateWithoutTime(selectedAd?.startAt ?? selectedAd?.createdAt ?? '') ?? 'N/A'}}</p>
+                </div>
+                <div class="drawer-info">
+                  <p class="drawer-key">{{ t('expireAt') }}</p>
+                  <p class="drawer-value">{{ formatDateWithoutTime(selectedAd?.expireDate ?? '') ?? 'N/A'}}</p>
+                </div>
+              </div>
+              <hr v-if="isDeleteDrawerOpen" class="infoHr" />
+
+              <div v-if="isDeleteDrawerOpen" class="action-btns">
+                <ActionButton
+                  :buttonText="t('cancel')"
+                  buttonColor="white"
+                  class="action-Btn"
+                  @button-pressed="() => (isDetailsDrawerOpen = false)"
+                />
+                <ActionButton
+                  button-color="error"
+                  :buttonText="t('deleteBanner')"
+                  class="action-Btn"
+                  @button-pressed="
+                    () => {
+                      isConfirmDeletePopupVisible = true
+                      isDetailsDrawerOpen = false
+                      isDeleteDrawerOpen = false
+                    }
+                  "
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+      </Drawer>
+      <!-- see details-->
 
       <ConfirmPopupDialog
         :isVisible="isConfirmDeletePopupVisible"
@@ -242,9 +254,10 @@ import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notific
 import { formatDateWithoutTime } from '@/utils/helpers/date-helper'
 
 const { t } = useI18n()
-const isEmployeeDrawerOpen = ref(false)
-const isDeleteEmployeeDrawerOpen = ref(false)
-const isUpdateEmployeeDrawerOpen = ref(false)
+const isDetailsDrawerOpen = ref(false)
+const isDeleteDrawerOpen = ref(false)
+const isUpdateDrawerOpen = ref(false)
+const isAddDrawerOpen = ref(false)
 const isConfirmDeletePopupVisible = ref(false)
 
 const adsStore = useAdsStore()
@@ -262,7 +275,7 @@ const itemsPerPage = ref(8)
 const headers = [
   { title: 'ID', key: '_id', sortable: false },
   { title: t('bannerImage'), key: 'image', sortable: false },
-  { title: t('bannerTitle'), key: 'url', sortable: false },
+  { title: t('bannerTitle'), key: 'title', sortable: false },
   { title: t('startEndDate'), key: 'expireDate', sortable: false },
   { title: t('status'), key: 'status', sortable: false },
   { title: t('actions'), key: '', sortable: false },
@@ -277,6 +290,11 @@ const getColorAccordingToExpireDate = (expireDate: string | Date) => {
     default:
       return 'grey'
   }
+}
+
+const editBanner = (item: any) => {
+  selectedAd.value = item as IAd
+  isUpdateDrawerOpen.value = true
 }
 
 const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
@@ -310,14 +328,14 @@ const onDeleteButtonPressed = async (selectedAdId: string) => {
     return
   }
   // await adsStore.deleteAd(selectedAdId)
-  isDeleteEmployeeDrawerOpen.value = false
+  isDeleteDrawerOpen.value = false
 }
 const onAddButtonPressed = () => {
-  isEmployeeDrawerOpen.value = false
+  isDetailsDrawerOpen.value = false
   toastSuccessMessage(t('toastAddBannerTitle'), t('toastAddBannerDescription'))
 }
 const onUpdateButtonPressed = () => {
-  isUpdateEmployeeDrawerOpen.value = false
+  isUpdateDrawerOpen.value = false
 }
 
 const statusColorAccordingToExpireDate = (date: string | Date): 'green' | 'red' | 'grey' => {
@@ -342,12 +360,12 @@ function getStatusAccordingToExpireDate(expireDate: string | Date) {
 
 function viewDetails(item: any) {
   selectedAd.value = item as IAd
-  isUpdateEmployeeDrawerOpen.value = true
+  isDetailsDrawerOpen.value = true
 }
 
 function deleteAd(item: any) {
   selectedAd.value = item as IAd
-  isDeleteEmployeeDrawerOpen.value = true
+  isDeleteDrawerOpen.value = true
 }
 </script>
 <style lang="scss">

@@ -25,7 +25,6 @@
   "manageYourCustomerSupportRequests": "Manage your customer support requests",
   "manageAndTrackYourEmployees": "Manage and track your employees",
   "manageAndTrackYourTransfers": "Manage and track your transfers",
-  "title": "Transfers",
   "myTransfers": "My Transfers",
   "allTransfers": "All Transfers",
   "createTransfer": "Create Transfer",
@@ -178,5 +177,11 @@
   "toastUpdateStatusTitle": "Status Updated Successfully",
   "toastUpdateStatusDescription": "You have successfully updated the status. A notification has been sent to your customer.",
   "active": "Active",
-  "deactive": "Deactive"
+  "deactive": "Deactive",
+  "editBanner": "Edit Banner",
+  "bannerName": "Banner Name",
+  "url": "URL",
+  "startAt": "Start Date",
+  "expireAt": "Expire Date",
+  "id": "ID"
 }

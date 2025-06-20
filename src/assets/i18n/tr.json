@@ -25,7 +25,6 @@
   "manageYourCustomerSupportRequests": "Müşteri destek taleplerinizi yönetin",
   "manageAndTrackYourEmployees": "Çalışanlarınızı yönetin ve takip edin",
   "manageAndTrackYourTransfers": "Transferlerinizi yönetin ve takip edin",
-  "title": "Transferler",
   "myTransfers": "Transferlerim",
   "allTransfers": "Tüm Transferler",
   "createTransfer": "Transfer Oluştur",
@@ -178,5 +177,11 @@
   "toastUpdateStatusTitle": "Durum Başarıyla Güncellendi",
   "toastUpdateStatusDescription": "Durum başarıyla güncellendi. Müşterinize bildirim gönderildi.",
   "active": "Aktif",
-  "deactive": "Pasif"
+  "deactive": "Pasif",
+  "editBanner": "Banner'ı Düzenle",
+  "bannerName": "Banner Adı",
+  "url": "URL",
+  "startAt": "Başlangıç Tarihi",
+  "expireAt": "Bitiş Tarihi",
+  "id": "ID"
 }
