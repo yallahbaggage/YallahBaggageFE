@@ -30,7 +30,7 @@
         v-model:items-per-page="itemsPerPage"
       >
         <template #cell-_id="{ item }">
-          {{ item._id.substring(0, 12) }}
+          #{{ item._id.substring(0, 6) }}
         </template>
         <template #cell-image="{ item }">
           <img :src="item.image" style="max-width: 80px; width: 80px; max-height: 40px; object-fit: cover;" />
@@ -121,7 +121,7 @@
                 </div>
                 <div class="drawer-info">
                   <p class="drawer-key">ID</p>
-                  <p class="drawer-value">{{ selectedAd?._id.substring(0, 12) }}</p>
+                  <p class="drawer-value">{{ selectedAd?._id.substring(0, 6) }}</p>
                 </div>
               </div>
               <div class="action-btns">

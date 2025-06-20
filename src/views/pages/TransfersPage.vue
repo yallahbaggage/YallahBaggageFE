@@ -44,7 +44,7 @@
         v-model:items-per-page="itemsPerPage"
       >
         <template #cell-_id="{ item }">
-          {{ item._id.substring(0, 12) }}
+          #{{ item._id.substring(0, 6) }}
         </template>
         <template #cell-workerId="{ item }">
           <template v-if="item.workerId">
@@ -105,7 +105,7 @@
       <!-- delete Drawer -->
       <Drawer
         :isOpen="isAssignEmployeeDrawerOpen"
-        :title="t('complaint') + ' ' + '#' + selectedTransfer?._id.substring(0, 12)"
+        :title="t('complaint') + ' ' + '#' + selectedTransfer?._id.substring(0, 6)"
         :desc="t('employee')"
         :status="selectedTransfer?.status ? t(selectedTransfer?.status) : t('Available')"
         @close="isAssignEmployeeDrawerOpen = false"
@@ -140,7 +140,7 @@
       <!-- Details Drawer -->
       <Drawer
         :isOpen="isDetailsTransfersDrawerOpen"
-        :title="t('complaint') + ' ' + '#' + selectedTransfer?._id.substring(0, 12)"
+        :title="t('complaint') + ' ' + '#' + selectedTransfer?._id.substring(0, 6)"
         :desc="t('employee')"
         :status="selectedTransfer?.status ? t(selectedTransfer?.status) : t('Available')"
         @close="isDetailsTransfersDrawerOpen = false"

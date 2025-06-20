@@ -39,7 +39,7 @@
           </v-chip>
         </template>
         <template #cell-_id="{ item }">
-          {{ item._id.substring(0, 12) }}
+          #{{ item._id.substring(0, 6) }}
         </template>
         <!-- <template #cell-assignee="{ item }">
           <span v-if="item.assignee">{{ item.assignee }}</span>
@@ -186,7 +186,7 @@
       <!-- delete Drawer -->
       <Drawer
         :isOpen="isDeleteEmployeeDrawerOpen"
-        :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 12)"
+        :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 6)"
         :title="selectedWorker?.name"
         :status="selectedWorker?.status ? t(selectedWorker?.status) : t('Available')"
         @close="isDeleteEmployeeDrawerOpen = false"
@@ -204,7 +204,7 @@
                 </div>
                 <div class="drawer-info">
                   <p class="drawer-key">{{ t('employeeID') }}</p>
-                  <p class="drawer-value">{{ selectedWorker?._id.substring(0, 12) }}</p>
+                  <p class="drawer-value">{{ selectedWorker?._id.substring(0, 6) }}</p>
                 </div>
                 <div class="drawer-info">
                   <p class="drawer-key">{{ t('phoneNumber') }}</p>
@@ -240,7 +240,7 @@
       <!-- update Drawer -->
       <Drawer
         :isOpen="isUpdateEmployeeDrawerOpen"
-        :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 12)"
+        :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 6)"
         :title="selectedWorker?.name"
         :status="t(selectedWorker?.status ? selectedWorker?.status : t('Available'))"
         @close="isUpdateEmployeeDrawerOpen = false"
@@ -258,7 +258,7 @@
                 </div>
                 <div class="drawer-info">
                   <p class="drawer-key">{{ t('employeeID') }}</p>
-                  <p class="drawer-value">{{ selectedWorker?._id.substring(0, 12) }}</p>
+                  <p class="drawer-value">{{ selectedWorker?._id.substring(0, 6) }}</p>
                 </div>
                 <div class="drawer-info">
                   <p class="drawer-key">{{ t('phoneNumber') }}</p>

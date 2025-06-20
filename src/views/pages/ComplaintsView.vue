@@ -36,7 +36,7 @@
           </v-chip>
         </template>
         <template #cell-_id="{ item }">
-          {{ item._id.substring(0, 12) }}
+          #{{ item._id.substring(0, 6) }}
         </template>
         <!-- <template #cell-priority="{ item }">
           <v-chip
@@ -82,13 +82,13 @@
     <!-- delete Drawer -->
     <Drawer
       :isOpen="isDeleteComplaintDrawerOpen"
-      :title="t('complaint') + ' ' + '#' + selectedComplaint?._id.substring(0, 12)"
+      :title="t('complaint') + ' ' + '#' + selectedComplaint?._id.substring(0, 6)"
       :desc="
         t('employee') +
         ' ' +
         '#' +
         (selectedComplaint?.relatedWorkerId?._id
-          ? selectedComplaint.relatedWorkerId._id.substring(0, 12)
+          ? selectedComplaint.relatedWorkerId._id?.substring(0, 6)
           : 'N/A')
       "
       :status="selectedComplaint?.status ? t(selectedComplaint?.status) : t('Available')"
@@ -110,7 +110,7 @@
               <div class="drawer-info">
                 <p class="drawer-key">{{ t('reporterId') }}</p>
                 <p class="drawer-value">
-                  {{ selectedComplaint?.userId?._id?.substring(0, 12) ?? 'N/A' }}
+                  {{ selectedComplaint?.userId?._id?.substring(0, 6) ?? 'N/A' }}
                 </p>
               </div>
               <div class="drawer-info">
@@ -160,13 +160,13 @@
     <!-- Details Drawer -->
     <Drawer
       :isOpen="isDetailsComplaintDrawerOpen && !isLoading"
-      :title="t('complaint') + ' ' + '#' + selectedComplaint?._id"
+      :title="t('complaint') + ' ' + '#' + selectedComplaint?._id?.substring(0, 6)"
       :desc="
         t('employee') +
         ' ' +
         '#' +
         (selectedComplaint?.relatedWorkerId?._id
-          ? selectedComplaint.relatedWorkerId?._id?.substring(0, 12)
+          ? selectedComplaint.relatedWorkerId?._id?.substring(0, 6)
           : 'N/A')
       "
       :status="selectedComplaint?.status ? t(selectedComplaint?.status) : t('Available')"
@@ -197,7 +197,7 @@
                     <div class="drawer-info">
                       <p class="drawer-key">{{ t('reporterId') }}</p>
                       <p class="drawer-value">
-                        {{ selectedComplaint?.userId?._id?.substring(0, 12) ?? 'N/A' }}
+                        {{ selectedComplaint?.userId?._id?.substring(0, 6) ?? 'N/A' }}
                       </p>
                     </div>
                     <div class="drawer-info">
