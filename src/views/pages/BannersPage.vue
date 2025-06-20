@@ -79,101 +79,159 @@
         </template>
       </ServerTable>
       <!-- add Drawer -->
-      <Drawer :isOpen="isAddDrawerOpen" :desc="t('newBanner')" @close="isAddDrawerOpen = false">
+      <Drawer
+        :isOpen="isAddDrawerOpen"
+        :title="t('addNewBanner')"
+        :desc="t('fillOutAllTheInformationsToAdd')"
+        @close="
+          () => {
+            isAddDrawerOpen = false
+            resetForm()
+          }
+        "
+      >
         <div style="max-height: 75vh">
-          <form @submit.prevent="onAddButtonPressed()" class="add-banner-form">
-            <p class="section-title">GENERAL INFORMATION</p>
+          <form @submit.prevent="onAddButtonPressed()" class="form">
+            <div>
+              <div class="drawer-banner">
+                <p>{{ t('generalInformation') }}</p>
+              </div>
+              <div>
+                <div class="drawer-form-group">
+                  <label for="name" class="drawer-label-group">
+                    {{ t('bannerName') }}<span class="required">*</span>
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    class="form-input"
+                    placeholder="Banner title here"
+                    v-model="newBanner.title"
+                    required
+                  />
+                </div>
+                <div class="drawer-info">
+                  <p class="banner-key">
+                    {{ t('startAt') }}
+                    <v-text-field
+                      v-model="newBanner.startAt"
+                      type="date"
+                      variant="outlined"
+                      density="compact"
+                      hide-details
+                    />
+                  </p>
+                  <p class="banner-value">
+                    {{ t('expireAt') }}
+                    <v-text-field
+                      v-model="newBanner.expireDate"
+                      type="date"
+                      variant="outlined"
+                      density="compact"
+                      required
+                      hide-details
+                    />
+                  </p>
+                </div>
+                <div class="drawer-form-group">
+                  <label for="url" class="drawer-label-group">
+                    {{ t('bannerwillRedirectTo') }}
+                  </label>
+                  <input
+                    v-model="newBanner.url"
+                    placeholder="https://www.example.com"
+                    id="url"
+                    type="text"
+                    class="form-input"
+                  />
+                </div>
 
-            <v-text-field
-              v-model="newBanner.title"
-              label="Banner Name"
-              variant="outlined"
-              density="compact"
-              required
-            />
+                <div class="drawer-form-group">
+                  <label for="name" class="drawer-label-group">
+                    {{ t('bannerImage') }}
+                  </label>
+                  <div class="image-upload-container">
+                    <div
+                      class="image-upload-area"
+                      :class="{ 'drag-over': isDragOver }"
+                      @drop="handleDrop"
+                      @dragover.prevent="isDragOver = true"
+                      @dragleave.prevent="isDragOver = false"
+                      @click="triggerFileInput"
+                    >
+                      <div v-if="!imageUrl" class="upload-placeholder">
+                        <v-icon size="36" color="grey">mdi-cloud-upload-outline</v-icon>
+                        <p>{{ t('chooseFileOrDragDrop') }}</p>
+                        <p class="subtext">
+                          {{ t('supportedFormats') }}: JPEG, PNG, WebP. {{ t('maxSize') }}: 3 MB.
+                        </p>
+                        <v-file-input
+                          ref="fileInput"
+                          show-size
+                          accept="image/*"
+                          label="Browse File"
+                          prepend-icon=""
+                          @change="uploadImage"
+                          hide-details
+                          variant="outlined"
+                          density="compact"
+                          style="display: none"
+                        />
+                      </div>
+                      <div v-else class="uploaded-preview">
+                        <img :src="imageUrl" class="preview-img" />
+                        <div class="file-info">
+                          <span class="file-name">{{ uploadedFileName }}</span>
+                          <span class="file-size">{{ uploadedFileSize }}</span>
+                        </div>
+                        <v-btn icon @click="removeImage" variant="text" size="small">
+                          <v-icon color="red">mdi-close</v-icon>
+                        </v-btn>
+                      </div>
+                    </div>
 
-            <div class="date-row">
-              <v-text-field
-                v-model="newBanner.startAt"
-                label="Start Date"
-                type="date"
-                variant="outlined"
-                density="compact"
-              />
-              <v-text-field
-                v-model="newBanner.expireDate"
-                label="End Date"
-                type="date"
-                variant="outlined"
-                density="compact"
-                required
-              />
-            </div>
-
-            <v-text-field
-              v-model="newBanner.url"
-              label="Banner will redirect to"
-              placeholder="https://www.example.com"
-              variant="outlined"
-              density="compact"
-              required
-            />
-
-            <div class="image-upload">
-              <div class="upload-box">
-                <v-icon size="36" color="grey">mdi-cloud-upload-outline</v-icon>
-                <p>Choose a file or drag & drop it here.</p>
-                <p class="subtext">JPEG, PNG, WebP formats. Up to 3 MB.</p>
-                <v-file-input
-                  show-size
-                  accept="image/*"
-                  label="Browse File"
-                  prepend-icon=""
-                  @change="uploadImage"
-                  hide-details
-                  variant="outlined"
-                  density="compact"
+                    <div
+                      v-if="imageUploadProgress > 0 && imageUploadProgress < 100"
+                      class="upload-progress"
+                    >
+                      <v-progress-linear
+                        :model-value="imageUploadProgress"
+                        height="6"
+                        color="primary"
+                        rounded
+                      />
+                      <span>{{ imageUploadProgress }}%</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="drawer-form-group">
+                  <label for="name" class="drawer-label-group">
+                    {{ t('bannerStatus') }}
+                  </label>
+                  <v-select
+                    v-model="newBanner.status"
+                    :items="['Active', 'Deactive']"
+                    variant="outlined"
+                    density="compact"
+                    required
+                    hide-details
+                  />
+                </div>
+              </div>
+              <div class="action-btns">
+                <ActionButton
+                  :buttonText="t('cancel')"
+                  buttonColor="white"
+                  @button-pressed="
+                    () => {
+                      isAddDrawerOpen = false
+                      resetForm()
+                    }
+                  "
+                  class="action-Btn"
                 />
+                <ActionButton :buttonText="t('save')" buttonType="submit" class="action-Btn" />
               </div>
-
-              <div
-                v-if="imageUploadProgress > 0 && imageUploadProgress < 100"
-                class="upload-progress"
-              >
-                <v-progress-linear
-                  :model-value="imageUploadProgress"
-                  height="6"
-                  color="primary"
-                  rounded
-                />
-                <span>{{ imageUploadProgress }}%</span>
-              </div>
-
-              <div v-if="imageUrl" class="uploaded-preview">
-                <img :src="imageUrl" class="preview-img" />
-                <span>{{ uploadedFileName }}</span>
-                <v-btn icon @click="removeImage" variant="text">
-                  <v-icon color="red">mdi-close</v-icon>
-                </v-btn>
-              </div>
-            </div>
-
-            <v-select
-              v-model="newBanner.status"
-              :items="['Active', 'Deactive']"
-              label="Banner Status"
-              variant="outlined"
-              density="compact"
-              required
-            />
-
-            <div class="form-actions">
-              <ActionButton
-                :buttonText="t('cancel')"
-                buttonColor="white"
-                @button-pressed="() => (isAddDrawerOpen = false)"
-              />
-              <ActionButton :buttonText="t('save')" buttonType="submit" />
             </div>
           </form>
         </div>
@@ -182,7 +240,7 @@
       <!-- update Drawer -->
       <Drawer
         :isOpen="isUpdateDrawerOpen"
-        :desc="t('new')"
+        :desc="t('fillOutAllTheInformationsToAdd')"
         :status="t('busy')"
         @close="isUpdateDrawerOpen = false"
       >
@@ -374,13 +432,30 @@ const newBanner = ref({
 const imageUploadProgress = ref(0)
 const imageUrl = ref('')
 const uploadedFileName = ref('')
+const uploadedFileSize = ref('')
+const isDragOver = ref(false)
+const fileInput = ref<HTMLInputElement>()
 
-const uploadImage = async (event: Event) => {
-  const target = event.target as HTMLInputElement
-  const file = target.files?.[0]
-  if (!file) return
+const triggerFileInput = () => {
+  fileInput.value?.click()
+}
 
+const handleDrop = (event: DragEvent) => {
+  event.preventDefault()
+  isDragOver.value = false
+
+  const files = event.dataTransfer?.files
+  if (files && files.length > 0) {
+    const file = files[0]
+    if (file.type.startsWith('image/')) {
+      processFile(file)
+    }
+  }
+}
+
+const processFile = (file: File) => {
   uploadedFileName.value = file.name
+  uploadedFileSize.value = formatFileSize(file.size)
 
   const formData = new FormData()
   formData.append('file', file)
@@ -398,6 +473,7 @@ const uploadImage = async (event: Event) => {
       const res = JSON.parse(xhr.responseText)
       imageUrl.value = res.secure_url
       newBanner.value.image = res.secure_url
+      imageUploadProgress.value = 0
     }
   }
 
@@ -405,11 +481,44 @@ const uploadImage = async (event: Event) => {
   xhr.send(formData)
 }
 
+const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return '0 Bytes'
+  const k = 1024
+  const sizes = ['Bytes', 'KB', 'MB', 'GB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+}
+
+const uploadImage = async (event: Event) => {
+  const target = event.target as HTMLInputElement
+  const file = target.files?.[0]
+  if (!file) return
+
+  processFile(file)
+}
+
 const removeImage = () => {
   imageUrl.value = ''
   newBanner.value.image = ''
   imageUploadProgress.value = 0
   uploadedFileName.value = ''
+  uploadedFileSize.value = ''
+}
+
+const resetForm = () => {
+  newBanner.value = {
+    title: '',
+    startAt: '',
+    expireDate: '',
+    url: '',
+    image: '',
+    status: 'Active',
+  }
+  imageUrl.value = ''
+  uploadedFileName.value = ''
+  uploadedFileSize.value = ''
+  imageUploadProgress.value = 0
+  isDragOver.value = false
 }
 
 const onAddButtonPressed = () => {
@@ -417,28 +526,8 @@ const onAddButtonPressed = () => {
   console.log(newBanner.value)
   toastSuccessMessage(t('toastAddBannerTitle'), t('toastAddBannerDescription'))
   isAddDrawerOpen.value = false
+  resetForm()
 }
-
-// const uploadImage = async (event: any) => {
-//   const file = event.target.files[0]
-//   if (!file) return
-
-//   const formData = new FormData()
-//   formData.append('file', file)
-//   formData.append('upload_preset', 'flutter_unsigned_upload') // your unsigned preset name
-
-//   try {
-//     const res = await fetch('https://api.cloudinary.com/v1_1/dmc7iowmo/image/upload', {
-//       method: 'POST',
-//       body: formData,
-//     })
-
-//     const data = await res.json()
-//     imageUrl.value = data.secure_url
-//   } catch (err) {
-//     console.error('Upload failed:', err)
-//   }
-// }
 
 const editBanner = (item: any) => {
   selectedAd.value = item as IAd
@@ -478,10 +567,7 @@ const onDeleteButtonPressed = async (selectedAdId: string) => {
   // await adsStore.deleteAd(selectedAdId)
   isDeleteDrawerOpen.value = false
 }
-// const onAddButtonPressed = () => {
-//   isDetailsDrawerOpen.value = false
-//   toastSuccessMessage(t('toastAddBannerTitle'), t('toastAddBannerDescription'))
-// }
+
 const onUpdateButtonPressed = () => {
   isUpdateDrawerOpen.value = false
 }
@@ -527,91 +613,107 @@ function deleteAd(item: any) {
   min-height: unset !important;
 }
 
-.add-banner-form {
+.action-btns {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+  margin-top: 24px;
+}
 
-  .section-title {
-    font-size: 12px;
-    font-weight: 600;
-    color: #999;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 8px;
-    text-transform: uppercase;
+.image-upload-container {
+  width: 100%;
+}
+
+.image-upload-area {
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fafafa;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    border-color: #1976d2;
+    background-color: #f5f5f5;
   }
 
-  .date-row {
+  &.drag-over {
+    border-color: #1976d2;
+    background-color: #e3f2fd;
+    transform: scale(1.02);
+  }
+
+  .upload-placeholder {
     display: flex;
-    gap: 12px;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      color: #444;
+    }
+
+    .subtext {
+      font-size: 12px;
+      color: #999;
+    }
   }
 
-  .image-upload {
-    border: 1px dashed #ccc;
+  .uploaded-preview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px 12px;
+    background-color: white;
+    border: 1px solid #ddd;
     border-radius: 6px;
-    padding: 16px;
-    background-color: #fafafa;
-    text-align: center;
+    gap: 12px;
 
-    .upload-box {
+    .preview-img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .file-info {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 6px;
+      gap: 2px;
 
-      p {
-        margin: 0;
+      .file-name {
         font-size: 14px;
-        color: #444;
-      }
-
-      .subtext {
-        font-size: 12px;
-        color: #999;
-      }
-    }
-
-    .upload-progress {
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      color: #555;
-    }
-
-    .uploaded-preview {
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 10px;
-      background-color: white;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-
-      .preview-img {
-        width: 40px;
-        height: 40px;
-        object-fit: cover;
-        border-radius: 4px;
-        margin-right: 10px;
-      }
-
-      span {
-        flex: 1;
-        font-size: 13px;
         color: #333;
+        font-weight: 500;
+      }
+
+      .file-size {
+        font-size: 12px;
+        color: #666;
       }
     }
-  }
-
-  .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 16px;
   }
 }
 
+.upload-progress {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #555;
+}
+
+.banner-key {
+  flex: 1;
+}
 </style>

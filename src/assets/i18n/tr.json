@@ -186,5 +186,6 @@
   "id": "ID",
   "addNewBanner": "Yeni Banner Ekle",
   "bannerStatus": "Banner Durumu",
-  "updateBanner": "Banner'ı Güncelle"
+  "updateBanner": "Banner'ı Güncelle",
+  "bannerwillRedirectTo": "Banner yönlendirecek"
 }

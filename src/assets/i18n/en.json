@@ -186,5 +186,6 @@
   "id": "ID",
   "addNewBanner": "Add New Banner",
   "bannerStatus": "Banner Status",
-  "updateBanner": "Update Banner"
+  "updateBanner": "Update Banner",
+  "bannerwillRedirectTo": "Banner will redirect to"
 }
