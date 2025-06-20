@@ -11,12 +11,12 @@
             <div class="drawer-right-content">
               <v-row justify="end">
                 <v-col class="drawer-close">
-                  <v-chip :color="statusColor(status)" text-color="white" v-if="status" small>
+                  <v-chip :style="{ backgroundColor: statusBg(status) , color: statusColor(status) }" v-if="status" small>
                     <span
-                      :style="{ backgroundColor: statusColor(status) }"
+                      :style="{ backgroundColor: statusBg(status) , color: statusColor(status) }"
                       class="status-circle"
                     ></span>
-                    {{ status }}
+                    {{ t(status) }}
                   </v-chip>
                   <v-icon id="close-btn" role="button" @click="closeDrawer">mdi-close</v-icon>
                 </v-col>
@@ -34,6 +34,10 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, Ref, ref, watch } from 'vue'
+import { useI18n } from 'vue3-i18n'
+
+
+const { t } = useI18n()
 
 const props = defineProps({
   isOpen: Boolean,
@@ -89,7 +93,6 @@ function statusColor(status: string): string {
     case 'in_progress':
       return '#3b82f6' // blue
     case 'resolved':
-    case 'completed':
       return '#10b981' // green
     case 'rejected':
       return '#ef4444' // red
@@ -99,6 +102,25 @@ function statusColor(status: string): string {
       return '#9ca3af' // fallback gray
   }
 }
+
+const statusBg = (status: string) => {
+  switch (status) {
+    case 'pending':
+      return '#eff6ff'
+    case 'in_progress':
+      return '#dbf4ff' // light blue
+    case 'resolved':
+      return '#ecfdf5'
+    case 'rejected':
+      return '#fee2e2' // red
+    case 'closed':
+      return '#f3f4f6' // gray
+    default:
+      return '#f3f4f6'
+  }
+}
+
+
 
 //NOTE: Add event listeners on mount, remove them on unmount
 onMounted(() => {

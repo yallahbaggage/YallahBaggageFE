@@ -188,7 +188,7 @@
         :isOpen="isDeleteEmployeeDrawerOpen"
         :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 6)"
         :title="selectedWorker?.name"
-        :status="selectedWorker?.status ? t(selectedWorker?.status) : t('Available')"
+        :status="selectedWorker?.status ? selectedWorker?.status : 'available'"
         @close="isDeleteEmployeeDrawerOpen = false"
       >
         <div style="max-height: 75vh">
@@ -242,7 +242,7 @@
         :isOpen="isUpdateEmployeeDrawerOpen"
         :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 6)"
         :title="selectedWorker?.name"
-        :status="t(selectedWorker?.status ? selectedWorker?.status : t('Available'))"
+        :status="t(selectedWorker?.status ? selectedWorker?.status : 'available')"
         @close="isUpdateEmployeeDrawerOpen = false"
       >
         <div style="max-height: 75vh">

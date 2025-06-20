@@ -89,7 +89,7 @@
           ? selectedComplaint.relatedWorkerId._id?.substring(0, 6)
           : 'N/A')
       "
-      :status="selectedComplaint?.status ? t(selectedComplaint?.status) : t('Available')"
+      :status="selectedComplaint?.status ? selectedComplaint?.status : 'pending'"
       @close="isDeleteComplaintDrawerOpen = false"
     >
       <div style="max-height: 75vh">
@@ -183,7 +183,7 @@
           ? selectedComplaint.relatedWorkerId?._id?.substring(0, 6)
           : 'N/A')
       "
-      :status="selectedComplaint?.status ? t(selectedComplaint?.status) : t('Available')"
+      :status="selectedComplaint?.status ? selectedComplaint?.status : 'pemding'"
       @close="isDetailsComplaintDrawerOpen = false"
     >
       <div v-if="isLoading" class="d-flex justify-center my-5">

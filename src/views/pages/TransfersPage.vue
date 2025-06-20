@@ -107,7 +107,7 @@
         :isOpen="isAssignEmployeeDrawerOpen"
         :title="t('complaint') + ' ' + '#' + selectedTransfer?._id.substring(0, 6)"
         :desc="t('employee')"
-        :status="selectedTransfer?.status ? t(selectedTransfer?.status) : t('Available')"
+        :status="selectedTransfer?.status ? selectedTransfer?.status : 'pending'"
         @close="isAssignEmployeeDrawerOpen = false"
       >
         <div style="max-height: 75vh">
