@@ -31,13 +31,11 @@
             <span
               :style="{ backgroundColor: statusColor(item.status) }"
               class="status-circle"
-            ></span>            
+            ></span>
             {{ t(item.status ?? 'pending') }}
           </v-chip>
         </template>
-        <template #cell-_id="{ item }">
-          #{{ item._id.substring(0, 6) }}
-        </template>
+        <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
         <!-- <template #cell-priority="{ item }">
           <v-chip
             :color="
@@ -182,7 +180,7 @@
             <p class="drawer-description">{{ selectedComplaint?.description }}</p>
 
             <v-card>
-              <v-tabs  v-model="tab" align-tabs="start" slider-color="primary">
+              <v-tabs v-model="tab" align-tabs="start" slider-color="primary">
                 <v-tab value="details">{{ t('details') }}</v-tab>
                 <v-tab value="chat">{{ t('chat') }}</v-tab>
               </v-tabs>
@@ -316,42 +314,42 @@
                 </v-tabs-window-item>
 
                 <v-tabs-window-item value="chat">
-                <div class="chat" ref="chatContainerRef">
-                  <div class="chat-complaint">
-                    <p class="drawer-title">{{ selectedComplaint?.title }}</p>
-                    <p class="drawer-description">{{ selectedComplaint?.description }}</p>
-                    <p class="drawer-complaint-date">
-                      {{ formatDate(selectedComplaint!.createdAt) }}
-                    </p>
-                    <v-divider class="divider" />
-                      <p class="complaint-chat-message-sender">
+                  <div class="chat" ref="chatContainerRef">
+                    <div class="chat-complaint">
+                      <p class="drawer-title">{{ selectedComplaint?.title }}</p>
+                      <p class="drawer-description">{{ selectedComplaint?.description }}</p>
+                      <p class="drawer-complaint-date">
+                        {{ formatDate(selectedComplaint!.createdAt) }}
+                      </p>
+                      <v-divider class="divider" />
+
+                      <div class="complaint-chat-message-sender">
                         <span>{{ selectedComplaint?.userId?.name?.substring(0, 1) }}</span>
                         <p>{{ selectedComplaint?.userId?.name }}</p>
-                      </p>
+                      </div>
                     </div>
 
-                  <!-- Loop throuFgh messages -->
-                  <div
-                    v-for="message in selectedComplaint?.responses"
-                    :key="message._id"
-                    :class="{
-                      'message-wrapper': true,
-                      'align-left': message.responderRole === 'customer',
-                      'align-right': message.responderRole === 'admin'
-                    }"
-                  >
+                    <!-- Loop throuFgh messages -->
                     <div
-                      class="message-bubble"
+                      v-for="message in selectedComplaint?.responses"
+                      :key="message._id"
                       :class="{
-                        'message-question': message.responderRole === 'customer',
-                        'message-answer': message.responderRole === 'admin'
+                        'message-wrapper': true,
+                        'align-left': message.responderRole === 'customer',
+                        'align-right': message.responderRole === 'admin',
                       }"
                     >
-                      {{ message.message }}
+                      <div
+                        class="message-bubble"
+                        :class="{
+                          'message-question': message.responderRole === 'customer',
+                          'message-answer': message.responderRole === 'admin',
+                        }"
+                      >
+                        {{ message.message }}
+                      </div>
                     </div>
                   </div>
-                </div>
-
                 </v-tabs-window-item>
               </v-tabs-window>
             </v-card>
@@ -373,7 +371,12 @@
               v-model="message"
               required
             />
-            <ActionButton v-on:button-pressed="() =>sendMessage()" class="send-button" :buttonText="t('send')" type="button" />
+            <ActionButton
+              v-on:button-pressed="() => sendMessage()"
+              class="send-button"
+              :buttonText="t('send')"
+              type="button"
+            />
           </div>
         </div>
       </div>
@@ -428,12 +431,12 @@ const onDetailsButtonPressed = () => {
 }
 
 const headers = ref([
-  { title: 'ID', key: '_id', sortable: false  },
-  { title: 'Title', key: 'title' , sortable: false },
-  { title: 'Category', key: 'category' , sortable: false },
+  { title: 'ID', key: '_id', sortable: false },
+  { title: 'Title', key: 'title', sortable: false },
+  { title: 'Category', key: 'category', sortable: false },
   // { title: 'Priority', key: 'priority' , sortable: false },
-  { title: 'Status', key: 'status', sortable: false  },
-  { title: 'Created At', key: 'createdAt', sortable: false  },
+  { title: 'Status', key: 'status', sortable: false },
+  { title: 'Created At', key: 'createdAt', sortable: false },
   { title: t('actions'), key: '', sortable: false },
 ])
 
@@ -482,12 +485,9 @@ const viewDetails = async (item: any) => {
   } finally {
     isLoading.value = false
     console.log('[viewDetails] isLoading = false')
-        nextTick(() => scrollToBottom()) // scroll after DOM updates
-
+    nextTick(() => scrollToBottom()) // scroll after DOM updates
   }
 }
-
-
 
 function deleteComplaint(item: any) {
   selectedComplaint.value = item as IComplaint
@@ -513,7 +513,8 @@ const sendMessage = async () => {
   if (!selectedComplaint.value || !message.value.trim()) return
 
   try {
-    await complaintsStore.sendResponseToComplaint(selectedComplaint.value._id, message.value.trim())
+    const res = await complaintsStore.sendResponseToComplaint(selectedComplaint.value._id, message.value.trim())
+    selectedComplaint.value.responses = res.data.responses;
     message.value = '' // Clear the input after sending
     nextTick(() => scrollToBottom()) // Scroll to bottom after sending
   } catch (error) {
@@ -651,7 +652,7 @@ watch(
   span {
     font-size: 12px;
     font-weight: 600;
-    background-color: #FFECC0;
+    background-color: #ffecc0;
     display: flex;
     justify-content: center;
     border-radius: 50%;
@@ -675,7 +676,7 @@ watch(
   padding: 10px;
 }
 
-.divider{
+.divider {
   margin: 10px;
 }
 
@@ -716,5 +717,4 @@ watch(
   text-align: left;
   border-top-right-radius: 0;
 }
-
 </style>
