@@ -603,7 +603,7 @@ watch(
   height: 65dvh !important;
   z-index: 1;
   overflow: scroll;
-
+  overflow-x: hidden;
 }
 
 .chat-complaint {
