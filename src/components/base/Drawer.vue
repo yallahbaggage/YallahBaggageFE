@@ -11,13 +11,13 @@
             <div class="drawer-right-content">
               <v-row justify="end">
                 <v-col class="drawer-close">
-                  <p class="drawer-status-text" v-if="status">
+                  <v-chip :color="statusColor(status)" text-color="white" v-if="status" small>
                     <span
                       :style="{ backgroundColor: statusColor(status) }"
                       class="status-circle"
                     ></span>
                     {{ status }}
-                  </p>
+                  </v-chip>
                   <v-icon id="close-btn" role="button" @click="closeDrawer">mdi-close</v-icon>
                 </v-col>
               </v-row>
