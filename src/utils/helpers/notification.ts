@@ -51,8 +51,8 @@ export const showCustomNotification = ({
     type,
     duration: 2000,
     dangerouslyUseHTMLString: true,
-    customClass: `custom-toast ${type}-toast centered-toast`,
-    position: 'top-right', // will be overridden by CSS
+    customClass: `custom-toast ${type}-toast`,
+    position: 'bottom-right', 
   });
 };
 
