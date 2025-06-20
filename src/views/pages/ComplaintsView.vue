@@ -316,7 +316,7 @@
                 </v-tabs-window-item>
 
                 <v-tabs-window-item value="chat">
-                <div class="chat">
+                <div class="chat" ref="chatContainerRef">
                   <div class="chat-complaint">
                     <p class="drawer-title">{{ selectedComplaint?.title }}</p>
                     <p class="drawer-description">{{ selectedComplaint?.description }}</p>
@@ -386,7 +386,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import ServerSideTable from '@/components/base/ServerTable.vue'
 import { useComplaintsStore } from '@/stores/modules/complaints'
 import { useI18n } from 'vue3-i18n'
@@ -409,6 +409,7 @@ const isDeleteComplaintDrawerOpen = ref(false)
 const isDetailsComplaintDrawerOpen = ref(false)
 const isConfirmDeletePopupVisible = ref(false)
 const isLoading = ref(false)
+const chatContainerRef = ref<HTMLElement | null>(null)
 
 const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
 
@@ -450,6 +451,12 @@ const fetchComplaints = async () => {
   }
 }
 
+function scrollToBottom() {
+  if (chatContainerRef.value) {
+    chatContainerRef.value.scrollTop = chatContainerRef.value.scrollHeight
+  }
+}
+
 const viewDetails = async (item: any) => {
   console.log('[viewDetails] Called for ID:', item._id)
 
@@ -467,6 +474,8 @@ const viewDetails = async (item: any) => {
   } finally {
     isLoading.value = false
     console.log('[viewDetails] isLoading = false')
+        nextTick(() => scrollToBottom()) // scroll after DOM updates
+
   }
 }
 
@@ -499,6 +508,11 @@ onMounted(() => {
 
 watch([page, itemsPerPage], fetchComplaints)
 
+watch([isDetailsComplaintDrawerOpen, tab], ([drawerOpen, currentTab]) => {
+  if (drawerOpen && currentTab === 'chat') {
+    nextTick(() => scrollToBottom())
+  }
+})
 // function statusColor(status: string) {
 //   return (
 //     {
@@ -535,6 +549,7 @@ const statusOptions = [
   { label: 'rejected' },
   { label: 'closed' },
 ]
+
 const editableStatus = ref(selectedComplaint.value?.status ?? 'pending')
 watch(
   () => selectedComplaint.value?.status,
