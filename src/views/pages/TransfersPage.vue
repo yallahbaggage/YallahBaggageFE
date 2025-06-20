@@ -28,7 +28,7 @@
           <div class="stats-container">
             {{ stats.cancelledTransfers }}
             <p class="present-change">
-              <span class="present">+{{ stats.cancelledTransfersChange }}</span>
+              <span class="cancel-present">+{{ stats.cancelledTransfersChange }}</span>
               {{ t('vsYesterday') }}
             </p>
           </div></InfoCard
@@ -43,9 +43,7 @@
         v-model:page="page"
         v-model:items-per-page="itemsPerPage"
       >
-        <template #cell-_id="{ item }">
-          #{{ item._id.substring(0, 6) }}
-        </template>
+        <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
         <template #cell-workerId="{ item }">
           <template v-if="item.workerId">
             <span>{{ item.workerId.name }}</span>
@@ -68,7 +66,7 @@
               :style="{ backgroundColor: statusColor(item.status) }"
               class="status-circle"
             ></span>
-            {{ t(item.status) ?? t('Available') }}
+            {{ t(item.status) ?? t('pending') }}
           </v-chip>
         </template>
         <template #cell-pickUpDate="{ item }">
@@ -142,7 +140,7 @@
         :isOpen="isDetailsTransfersDrawerOpen"
         :title="t('complaint') + ' ' + '#' + selectedTransfer?._id.substring(0, 6)"
         :desc="t('employee')"
-        :status="selectedTransfer?.status ? t(selectedTransfer?.status) : t('Available')"
+        :status="selectedTransfer?.status ? t(selectedTransfer?.status) : t('available')"
         @close="isDetailsTransfersDrawerOpen = false"
       >
         <div style="max-height: 75vh">
@@ -345,6 +343,13 @@ watch([page, itemsPerPage], fetchAllTranfers)
 }
 .present-change {
   color: #6b7280;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+}
+.cancel-present {
+  color: #da4122;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
