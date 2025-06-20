@@ -158,7 +158,7 @@
     <!-- Details Drawer -->
     <Drawer
       :isOpen="isDetailsComplaintDrawerOpen && !isLoading"
-      :title="t('complaint') + ' ' + '#' + selectedComplaint?._id?.substring(0, 6)"
+      :title="tab == 'chat'? t('complaint') + ' ' + '#' + selectedComplaint?.userId?._id?.substring(0, 6)  : t('ticket') + ' ' + '#' + selectedComplaint?._id?.substring(0, 6) "
       :desc="
         t('employee') +
         ' ' +
