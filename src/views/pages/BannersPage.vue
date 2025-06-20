@@ -260,6 +260,8 @@ const isUpdateDrawerOpen = ref(false)
 const isAddDrawerOpen = ref(false)
 const isConfirmDeletePopupVisible = ref(false)
 
+const imageUrl = ref('')
+
 const adsStore = useAdsStore()
 const loading = computed(() => adsStore.isLoading)
 const ads = computed(() => adsStore.allAds)
@@ -289,6 +291,28 @@ const getColorAccordingToExpireDate = (expireDate: string | Date) => {
       return 'red'
     default:
       return 'grey'
+  }
+}
+
+const uploadImage = async (event: any) => {
+  const file = event.target.files[0]
+  if (!file) return
+
+  const formData = new FormData()
+  formData.append('file', file)
+  formData.append('upload_preset', 'flutter_unsigned_upload') // your unsigned preset name
+
+  try {
+    const res = await fetch('https://api.cloudinary.com/v1_1/dmc7iowmo/image/upload', {
+      method: 'POST',
+      body: formData
+    })
+
+    const data = await res.json()
+    imageUrl.value = data.secure_url
+
+  } catch (err) {
+    console.error('Upload failed:', err)
   }
 }
 
