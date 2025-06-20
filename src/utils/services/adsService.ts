@@ -6,7 +6,7 @@ import { IAd } from '@/models/ad';
 class AdsService {
   async getAds(params?: { page?: number; limit?: number }): Promise<any> {
     try {
-      const response = await api.get('/ads', { params });
+      const response = await api.get('/ads/getAllAds', { params });
       return response.data;
     } catch (error) {
       throw this.handleError(error as AxiosError<IApiError>);

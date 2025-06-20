@@ -114,45 +114,52 @@
         </div>
       </Drawer>
       <!-- add Drawer -->
-      <!-- delete Drawer -->
+     <!-- delete Drawer -->
       <Drawer
         :isOpen="isDeleteEmployeeDrawerOpen"
-        :desc="t('deleteBanner')"
-        :status="t('busy')"
+        :desc="t('employee') + ' ' + '#' + selectedAd?._id.substring(0, 6)"
+        :title="selectedAd?.title"
         @close="isDeleteEmployeeDrawerOpen = false"
       >
         <div style="max-height: 75vh">
-          <form @submit.prevent="onDeleteButtonPressed(selectedAd!._id)" class="form">
+          <form class="form">
             <div>
               <div class="drawer-banner">
                 <p>{{ t('information') }}</p>
               </div>
               <div>
                 <div class="drawer-info">
-                  <p class="drawer-key">URL</p>
-                  <p class="drawer-value">{{ selectedAd?.url }}</p>
+                  <p class="drawer-key">{{ t('fullName') }}</p>
+                  <p class="drawer-value">{{ selectedAd?.title }}</p>
                 </div>
                 <div class="drawer-info">
-                  <p class="drawer-key">Expire Date</p>
-                  <p class="drawer-value">
-                    {{ selectedAd ? formatDateWithoutTime(selectedAd.expireDate) : 'N/A' }}
-                  </p>
+                  <p class="drawer-key">{{ t('employeeID') }}</p>
+                  <p class="drawer-value">{{ selectedAd?._id.substring(0, 6) }}</p>
                 </div>
                 <div class="drawer-info">
-                  <p class="drawer-key">ID</p>
-                  <p class="drawer-value">{{ selectedAd?._id?.substring(0, 6) }}</p>
+                  <p class="drawer-key">{{ t('phoneNumber') }}</p>
+                  <p class="drawer-value">{{ selectedAd?._id }}</p>
                 </div>
               </div>
+              <hr class="infoHr" />
+
               <div class="action-btns">
                 <ActionButton
                   :buttonText="t('cancel')"
                   buttonColor="white"
+                  class="action-Btn"
                   @button-pressed="() => (isDeleteEmployeeDrawerOpen = false)"
                 />
                 <ActionButton
                   button-color="error"
-                  :buttonText="t('deleteBanner')"
-                  buttonType="submit"
+                  :buttonText="t('deleteEmployee')"
+                  class="action-Btn"
+                  @button-pressed="
+                    () => {
+                      isConfirmDeletePopupVisible = true
+                      isDeleteEmployeeDrawerOpen = false
+                    }
+                  "
                 />
               </div>
             </div>

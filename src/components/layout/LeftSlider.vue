@@ -121,7 +121,7 @@
           />
         </svg>
         <v-icon class="user-profile-arrow">mdi-chevron-right</v-icon>
-        <span class="user-email text-style">{{ user?.email || '' }}</span>
+        <p class="user-email text-style">{{ user?.email || '' }}</p>
       </div>
     </div>
   </div>

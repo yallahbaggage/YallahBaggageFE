@@ -8,4 +8,6 @@ export interface IAd {
   createdByAdminId: IUser;
   createdAt: string;
   updatedAt: string;
+  startAt?: string;
+  title: string;
 } 
