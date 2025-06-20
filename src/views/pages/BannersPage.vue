@@ -426,7 +426,7 @@ const newBanner = ref({
   expireDate: '',
   url: '',
   image: '',
-  status: 'Active',
+  status: 'active',
 })
 
 const imageUploadProgress = ref(0)
@@ -521,12 +521,13 @@ const resetForm = () => {
   isDragOver.value = false
 }
 
-const onAddButtonPressed = () => {
+const onAddButtonPressed = async () => {
   // Save logic here, e.g., call store or emit to parent
-  console.log(newBanner.value)
+  await adsStore.createAd(newBanner.value)
   toastSuccessMessage(t('toastAddBannerTitle'), t('toastAddBannerDescription'))
   isAddDrawerOpen.value = false
   resetForm()
+  fetchStats()
 }
 
 const editBanner = (item: any) => {
