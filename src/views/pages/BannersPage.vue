@@ -29,17 +29,34 @@
         v-model:page="page"
         v-model:items-per-page="itemsPerPage"
       >
-        <template #cell-_id="{ item }">
-          #{{ item._id.substring(0, 6) }}
-        </template>
+        <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
         <template #cell-image="{ item }">
-          <img :src="item.image" style="max-width: 80px; width: 80px; max-height: 40px; object-fit: cover;" />
+          <img
+            :src="item.image"
+            style="max-width: 80px; width: 80px; max-height: 40px; object-fit: cover"
+          />
         </template>
-        <template #cell-url="{ item }">
+        <!-- <template #cell-url="{ item }">
           <span>{{ item.url }}</span>
+        </template> -->
+        <template #cell-status="{ item }">
+          <v-chip
+            :color="getColorAccordingToExpireDate(item?.expireDate)"
+            text-color="white"
+            small
+          >
+            <span
+              :style="{ backgroundColor: statusColorAccordingToExpireDate(item.expireDate) }"
+              class="status-circle"
+            ></span>
+            {{ getStatusAccordingToExpireDate(item.expireDate) }}
+          </v-chip>
         </template>
         <template #cell-expireDate="{ item }">
-          <span>{{ formatDate(item.expireDate) }}</span>
+          <span>
+            {{ formatDateWithoutTime(item.createdAt) }} -
+            {{ formatDateWithoutTime(item.expireDate) }}</span
+          >
         </template>
         <template #actions="{ item }">
           <v-menu location="bottom end" offset="4">
@@ -117,7 +134,9 @@
                 </div>
                 <div class="drawer-info">
                   <p class="drawer-key">Expire Date</p>
-                  <p class="drawer-value">{{ selectedAd ? formatDate(selectedAd.expireDate) : 'N/A' }}</p>
+                  <p class="drawer-value">
+                    {{ selectedAd ? formatDateWithoutTime(selectedAd.expireDate) : 'N/A' }}
+                  </p>
                 </div>
                 <div class="drawer-info">
                   <p class="drawer-key">ID</p>
@@ -213,7 +232,7 @@ import { useI18n } from 'vue3-i18n'
 import { useAdsStore } from '@/stores/modules/adsStore'
 import { IAd } from '@/models/ad'
 import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
-import { formatDate } from '@/utils/helpers/date-helper'
+import { formatDateWithoutTime } from '@/utils/helpers/date-helper'
 
 const { t } = useI18n()
 const isEmployeeDrawerOpen = ref(false)
@@ -228,21 +247,30 @@ const ads = computed(() => adsStore.allAds)
 const pagination = computed(
   () => adsStore.paginationInfo || { total: 0, page: 1, limit: 8, pageCount: 1 },
 )
-const stats = computed(
-  () =>
-    adsStore.adsStats || { totalAds: 0, activeAds: 0, deactiveAds: 0 },
-)
+const stats = computed(() => adsStore.adsStats || { totalAds: 0, activeAds: 0, deactiveAds: 0 })
 const page = ref(1)
 const selectedAd = ref<IAd | null>(null)
 const itemsPerPage = ref(8)
 
 const headers = [
-  { title: 'ID', key: '_id' , sortable: false },
-  { title: t('bannerImage'), key: 'image' , sortable: false },
-  { title: t('bannerTitle'), key: 'url' , sortable: false },
-  { title: t('startEndDate'), key: 'expireDate', sortable: false  },
+  { title: 'ID', key: '_id', sortable: false },
+  { title: t('bannerImage'), key: 'image', sortable: false },
+  { title: t('bannerTitle'), key: 'url', sortable: false },
+  { title: t('startEndDate'), key: 'expireDate', sortable: false },
+  { title: t('status'), key: 'status', sortable: false },
   { title: t('actions'), key: '', sortable: false },
 ]
+
+const getColorAccordingToExpireDate = (expireDate: string | Date) => {
+  switch (getStatusAccordingToExpireDate(expireDate)) {
+    case t('active'):
+      return 'green'
+    case t('deactive'):
+      return 'red'
+    default:
+      return 'grey'
+  }
+}
 
 const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
 
@@ -285,18 +313,24 @@ const onUpdateButtonPressed = () => {
   isUpdateEmployeeDrawerOpen.value = false
 }
 
-function statusColor(status: string) {
-  return (
-    {
-      New: 'green',
-      Assigned: 'blue',
-      'On The Way': 'orange',
-      Delivered: 'grey',
-      Cancelled: 'red',
-      Available: 'green',
-      default: 'primary',
-    }[status] ?? 'primary'
-  )
+const statusColorAccordingToExpireDate = (date: string | Date): 'green' | 'red' | 'grey' => {
+  const now = new Date()
+  const expire = new Date(date)
+
+  if (expire > now) return 'green'
+  if (expire.toDateString() === now.toDateString()) return 'grey'
+  return 'red'
+}
+
+
+
+function getStatusAccordingToExpireDate(expireDate: string | Date) {
+  const currentDate = new Date()
+  const expiredDate = new Date(expireDate)
+  if (expiredDate < currentDate) {
+    return t('deactive')
+  }
+  return t('active')
 }
 
 function viewDetails(item: any) {

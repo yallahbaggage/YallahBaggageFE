@@ -17,6 +17,9 @@
         v-model:page="page"
         v-model:items-per-page="itemsPerPage"
       >
+         <template #cell-_id="{ item }">
+          #{{ item._id.substring(0, 6) }}
+        </template>
         <template #cell-type="{ item }">
           <v-chip
             :color="getTypeColor(item?.createdAt ? 'sent' : 'failed')"
@@ -30,11 +33,11 @@
             {{ item?.createdAt ? t('sent') : t('failed') }}
           </v-chip>
         </template>
-        <template #cell-isRead="{ item }">
+        <!-- <template #cell-isRead="{ item }">
           <v-chip :color="item.isRead ? 'grey' : 'warning'" text-color="white" small>
             {{ item.isRead ? t('read') : t('unread') }}
           </v-chip>
-        </template>
+        </template> -->
         <template #cell-createdAt="{ item }">
           {{ formatDate(item.createdAt) }}
         </template>

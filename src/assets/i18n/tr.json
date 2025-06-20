@@ -176,5 +176,7 @@
   "timeLine": "Zaman Çizelgesi",
   "send": "Gönder",
   "toastUpdateStatusTitle": "Durum Başarıyla Güncellendi",
-  "toastUpdateStatusDescription": "Durum başarıyla güncellendi. Müşterinize bildirim gönderildi."
+  "toastUpdateStatusDescription": "Durum başarıyla güncellendi. Müşterinize bildirim gönderildi.",
+  "active": "Aktif",
+  "deactive": "Pasif"
 }

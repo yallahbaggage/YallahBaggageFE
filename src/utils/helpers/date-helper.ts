@@ -12,3 +12,15 @@ export const formatDate = (date: string | Date): string => {
     hour12: false // for 24-hour format; remove if you want AM/PM
   }).replace(',', '') // remove the comma after the date
 }
+
+
+export const formatDateWithoutTime = (date: string | Date): string => {
+  if (!date) return ''
+  const d = new Date(date)
+
+  return d.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'short', 
+    year: 'numeric'
+  })
+}

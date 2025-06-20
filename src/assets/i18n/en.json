@@ -176,5 +176,7 @@
   "timeLine": "Timeline",
   "send": "Send",
   "toastUpdateStatusTitle": "Status Updated Successfully",
-  "toastUpdateStatusDescription": "You have successfully updated the status. A notification has been sent to your customer."
+  "toastUpdateStatusDescription": "You have successfully updated the status. A notification has been sent to your customer.",
+  "active": "Active",
+  "deactive": "Deactive"
 }
