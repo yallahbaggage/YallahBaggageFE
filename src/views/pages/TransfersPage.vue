@@ -46,6 +46,18 @@
         <template #cell-_id="{ item }">
           {{ item._id.substring(0, 12) }}
         </template>
+        <template #cell-workerId="{ item }">
+          <template v-if="item.workerId">
+            <span>{{ item.workerId.name }}</span>
+          </template>
+          <template v-else>
+            <ActionButton
+              :buttonText="t('assign')"
+              buttonColor="white"
+              @button-pressed="() => assignEmployee(item as Transfer)"
+            />
+          </template>
+        </template>
 
         <template #cell-customer="{ item }">
           <span>{{ item.userId.name }}</span>
@@ -259,14 +271,14 @@ const page = ref(1)
 const itemsPerPage = ref(8)
 
 const headers = [
-  { title: 'ID', key: '_id' },
-  { title: t('transferDate'), key: 'createdAt' },
-  { title: t('customer'), key: 'customer' },
-  { title: t('pickUpDate'), key: 'pickUpDate' },
-  { title: t('deliveryDate'), key: 'deliveryDate' },
-  { title: t('status'), key: 'status' },
-  { title: t('assignChangeStaff'), key: 'assignChangeStaff' },
-  { title: t('assigne'), key: 're' },
+  { title: 'ID', key: '_id', sortable: false },
+  { title: t('transferDate'), key: 'createdAt', sortable: false },
+  { title: t('customer'), key: 'customer', sortable: false },
+  { title: t('pickUpDate'), key: 'pickUpDate', sortable: false },
+  { title: t('deliveryDate'), key: 'deliveryDate', sortable: false },
+  { title: t('status'), key: 'status', sortable: false },
+  { title: t('assignChangeStaff'), key: 'assignChangeStaff', sortable: false },
+  { title: t('assigne'), key: 'workerId', sortable: false },
   { title: t('actions'), key: 'actions', sortable: false },
 ]
 

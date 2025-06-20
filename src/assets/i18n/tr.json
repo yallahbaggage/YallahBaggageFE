@@ -145,7 +145,7 @@
   "sendNotification": "Bildirim Gönder",
   "fillOutAllTheInformationsToSend": "Bildirim gönderilmesi için tüm bilgileri doldurun",
   "deleteNotification": "Bildirimi Sil",
-  "asignee": "Atanan",
+  "assignee": "Atanan",
   "fillOutAllTheInformationsToAdd": "Ekleme için tüm bilgileri doldurun",
   "reportedBy": "Rapor Eden",
   "reporterId": "Rapor Eden ID",
