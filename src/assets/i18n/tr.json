@@ -174,5 +174,7 @@
   "redirectTo": "Yönlendiriliyor",
   "deleteConfirmNotification": "Bu bildirimi silmek istediğinize emin misiniz?",
   "timeLine": "Zaman Çizelgesi",
-  "send": "Gönder"
+  "send": "Gönder",
+  "toastUpdateStatusTitle": "Durum Başarıyla Güncellendi",
+  "toastUpdateStatusDescription": "Durum başarıyla güncellendi. Müşterinize bildirim gönderildi."
 }

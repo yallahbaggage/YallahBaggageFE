@@ -387,7 +387,7 @@
               @button-pressed="() => (isDetailsComplaintDrawerOpen = false)"
               class="action-Btn"
             />
-            <ActionButton class="action-Btn" :buttonText="t('saveStatus')" buttonType="submit" />
+            <ActionButton v-on:button-pressed="()=>saveStatus()" class="action-Btn" :buttonText="t('saveStatus')" buttonType="submit" />
           </div>
           <div v-if="tab === 'chat'" class="chat-action-btns">
             <input
@@ -490,6 +490,19 @@ const statusLabel = (status: string) => {
 const selectStatus = (status: string) => {
   editableStatus.value = status as ComplaintStatus
   menu.value = false
+}
+
+const saveStatus = async () => {
+  if (!selectedComplaint.value) return
+
+  try {
+    await complaintsStore.updateComplaint(selectedComplaint.value._id, {status: editableStatus.value})
+    selectedComplaint.value.status = editableStatus.value // Update local state
+    isDetailsComplaintDrawerOpen.value = false 
+    toastDeleteMessage(t('toastUpdateStatusTitle'), t('toastUpdateStatusDescription'))
+  } catch (error) {
+    console.error('Error updating status:', error)
+  }
 }
 
 function statusColor(status: string): string {

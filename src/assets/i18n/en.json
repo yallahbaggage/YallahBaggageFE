@@ -174,5 +174,7 @@
   "redirectTo": "Redirect to",
   "deleteConfirmNotification": "Are you sure to delete notification?",
   "timeLine": "Timeline",
-  "send": "Send"
+  "send": "Send",
+  "toastUpdateStatusTitle": "Status Updated Successfully",
+  "toastUpdateStatusDescription": "You have successfully updated the status. A notification has been sent to your customer."
 }

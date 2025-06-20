@@ -93,8 +93,12 @@ function statusColor(status: string): string {
     case 'in_progress':
       return '#3b82f6' // blue
     case 'resolved':
+    case 'success':
+    case 'completed':
+    case 'sent':
       return '#10b981' // green
     case 'rejected':
+    case 'failed':
       return '#ef4444' // red
     case 'closed':
       return '#6b7280' // gray
