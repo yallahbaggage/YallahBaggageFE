@@ -341,11 +341,11 @@ const notificationTypes = [
 ]
 
 const headers = [
-  { title: 'ID', key: '_id' },
-  { title: t('notificationTitle'), key: 'title' },
-  { title: t('notificationDesc'), key: 'message' },
-  { title: t('sentOn'), key: 'createdAt' },
-  { title: t('status'), key: 'type' },
+  { title: 'ID', key: '_id', sortable: false  },
+  { title: t('notificationTitle'), key: 'title', sortable: false  },
+  { title: t('notificationDesc'), key: 'message' , sortable: false },
+  { title: t('sentOn'), key: 'createdAt', sortable: false  },
+  { title: t('status'), key: 'type' , sortable: false },
   { title: t('actions'), key: '', sortable: false },
 ]
 

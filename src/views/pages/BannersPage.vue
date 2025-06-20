@@ -236,10 +236,10 @@ const selectedAd = ref<IAd | null>(null)
 const itemsPerPage = ref(8)
 
 const headers = [
-  { title: 'ID', key: '_id' },
-  { title: t('bannerImage'), key: 'image' },
-  { title: t('bannerTitle'), key: 'url' },
-  { title: t('startEndDate'), key: 'expireDate' },
+  { title: 'ID', key: '_id' , sortable: false },
+  { title: t('bannerImage'), key: 'image' , sortable: false },
+  { title: t('bannerTitle'), key: 'url' , sortable: false },
+  { title: t('startEndDate'), key: 'expireDate', sortable: false  },
   { title: t('actions'), key: '', sortable: false },
 ]
 

@@ -346,11 +346,11 @@ const selectedWorker = ref<IWorker | null>(null)
 const itemsPerPage = ref(8)
 
 const headers = [
-  { title: 'ID', key: '_id' },
-  { title: t('employee'), key: 'name' },
-  { title: t('identityNumber'), key: 'identityNumber' },
-  { title: t('phoneNumber'), key: 'phone' },
-  { title: t('status'), key: 'status' },
+  { title: 'ID', key: '_id', sortable: false  },
+  { title: t('employee'), key: 'name', sortable: false  },
+  { title: t('identityNumber'), key: 'identityNumber', sortable: false  },
+  { title: t('phoneNumber'), key: 'phone', sortable: false  },
+  { title: t('status'), key: 'status' , sortable: false },
   { title: t('actions'), key: '', sortable: false },
 ]
 

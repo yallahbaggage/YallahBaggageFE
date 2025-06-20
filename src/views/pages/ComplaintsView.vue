@@ -420,12 +420,12 @@ const onDetailsButtonPressed = () => {
 }
 
 const headers = ref([
-  { title: 'ID', key: '_id' },
-  { title: 'Title', key: 'title' },
-  { title: 'Category', key: 'category' },
-  // { title: 'Priority', key: 'priority' },
-  { title: 'Status', key: 'status' },
-  { title: 'Created At', key: 'createdAt' },
+  { title: 'ID', key: '_id', sortable: false  },
+  { title: 'Title', key: 'title' , sortable: false },
+  { title: 'Category', key: 'category' , sortable: false },
+  // { title: 'Priority', key: 'priority' , sortable: false },
+  { title: 'Status', key: 'status', sortable: false  },
+  { title: 'Created At', key: 'createdAt', sortable: false  },
   { title: t('actions'), key: '', sortable: false },
 ])
 
