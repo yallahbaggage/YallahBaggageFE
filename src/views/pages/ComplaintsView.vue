@@ -424,12 +424,6 @@ const chatContainerRef = ref<HTMLElement | null>(null)
 
 const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
 
-const onDetailsButtonPressed = () => {
-  if (selectedComplaint.value) {
-    isDetailsComplaintDrawerOpen.value = true
-  }
-}
-
 const headers = ref([
   { title: 'ID', key: '_id', sortable: false },
   { title: 'Title', key: 'title', sortable: false },
