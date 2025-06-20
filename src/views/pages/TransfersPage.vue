@@ -51,8 +51,11 @@
           <span>{{ item.userId.name }}</span>
         </template>
         <template #cell-status="{ item }">
-          <v-chip :color="statusColor(item.status)" text-color="white" small>
-            <span class="status-circle"></span>
+          <v-chip :color="statusColor(item.status)" text-color="white" medium>
+            <span
+              :style="{ backgroundColor: statusColor(item.status) }"
+              class="status-circle"
+            ></span>
             {{ t(item.status) ?? t('Available') }}
           </v-chip>
         </template>
@@ -336,7 +339,7 @@ watch([page, itemsPerPage], fetchAllTranfers)
   line-height: 16px;
 }
 .present {
-  color: #1FC16B;
+  color: #1fc16b;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;

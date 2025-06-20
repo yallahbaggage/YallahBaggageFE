@@ -12,7 +12,11 @@
               <v-row justify="end">
                 <v-col class="drawer-close">
                   <p class="drawer-status-text" v-if="status">
-                    <span class="status-circle"></span> {{ status }}
+                    <span
+                      :style="{ backgroundColor: statusColor(status) }"
+                      class="status-circle"
+                    ></span>
+                    {{ status }}
                   </p>
                   <v-icon id="close-btn" role="button" @click="closeDrawer">mdi-close</v-icon>
                 </v-col>
@@ -76,6 +80,24 @@ const handleClickOutside = (event: Event) => {
 
 const closeDrawer = () => {
   emit('close')
+}
+
+function statusColor(status: string): string {
+  switch (status) {
+    case 'pending':
+      return '#f59e0b' // amber
+    case 'in_progress':
+      return '#3b82f6' // blue
+    case 'resolved':
+    case 'completed':
+      return '#10b981' // green
+    case 'rejected':
+      return '#ef4444' // red
+    case 'closed':
+      return '#6b7280' // gray
+    default:
+      return '#9ca3af' // fallback gray
+  }
 }
 
 //NOTE: Add event listeners on mount, remove them on unmount
@@ -145,7 +167,7 @@ watch(
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
-  line-height: 24px; 
+  line-height: 24px;
   letter-spacing: -0.27px;
 }
 
@@ -162,7 +184,7 @@ watch(
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 20px; 
+  line-height: 20px;
   letter-spacing: -0.084px;
 }
 
@@ -177,7 +199,7 @@ watch(
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
-  line-height: 16px; 
+  line-height: 16px;
   border-radius: 4px;
 }
 

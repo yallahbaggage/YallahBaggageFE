@@ -31,7 +31,10 @@
       >
         <template #cell-status="{ item }">
           <v-chip :color="statusColor(item.status)" text-color="white" small>
-            <span class="status-circle"></span>
+            <span
+              :style="{ backgroundColor: statusColor(item.status) }"
+              class="status-circle"
+            ></span>
             {{ t(item.status) ?? t('Available') }}
           </v-chip>
         </template>

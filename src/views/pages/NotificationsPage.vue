@@ -23,6 +23,10 @@
             text-color="white"
             small
           >
+            <span
+              :style="{ backgroundColor: statusColor(item.status) }"
+              class="status-circle"
+            ></span>
             {{ item?.createdAt ? t('sent') : t('failed') }}
           </v-chip>
         </template>
@@ -147,6 +151,14 @@
                       text-color="white"
                       small
                     >
+                      <span
+                        :style="{
+                          backgroundColor: statusColor(
+                            selectedNotification?.createdAt ? t('sent') : t('failed'),
+                          ),
+                        }"
+                        class="status-circle"
+                      ></span>
                       {{ selectedNotification?.createdAt ? t('sent') : t('failed') }}
                     </v-chip>
                   </p>
@@ -283,7 +295,11 @@ import BaseHeader from '@/components/base/BaseHeader.vue'
 import Drawer from '@/components/base/Drawer.vue'
 import ServerTable from '@/components/base/ServerTable.vue'
 import { useNotificationsStore } from '@/stores/modules/notificationsStore'
-import { toastDeleteMessage, toastErrorMessage, toastSuccessMessage } from '@/utils/helpers/notification'
+import {
+  toastDeleteMessage,
+  toastErrorMessage,
+  toastSuccessMessage,
+} from '@/utils/helpers/notification'
 import type { CreateNotificationDto, INotification } from '@/utils/services/notificationsService'
 import { formatDate } from '@/utils/helpers/date-helper'
 import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
@@ -341,6 +357,17 @@ function viewDetails(item: any) {
 function deleteNotification(item: any) {
   selectedNotification.value = item as INotification
   isDeleteNotificationDrawerOpen.value = true
+}
+
+function statusColor(status: string): string {
+  switch (status) {
+    case 'sent':
+      return '#10b981' // green
+    case 'failed':
+      return '#ef4444' // red
+    default:
+      return '#9ca3af' // fallback gray
+  }
 }
 
 const fetchNotifications = async () => {
@@ -416,14 +443,17 @@ const handleSubmit = async () => {
 
 const confirmDelete = async (notification: INotification) => {
   if (!notification._id) {
-    toastErrorMessage('No notification selected for deletion','Please select a notification to delete.')
+    toastErrorMessage(
+      'No notification selected for deletion',
+      'Please select a notification to delete.',
+    )
     return
   }
   try {
-  // await store.deleteNotification(notification._id)
-  isDeleteNotificationDrawerOpen.value = false
-  isConfirmDeletePopupVisible.value = false
-  toastDeleteMessage(t('notificationDeletedSuccessfully'), '')
+    // await store.deleteNotification(notification._id)
+    isDeleteNotificationDrawerOpen.value = false
+    isConfirmDeletePopupVisible.value = false
+    toastDeleteMessage(t('notificationDeletedSuccessfully'), '')
   } catch (error) {
     console.error('Failed to delete notification:', error)
     toastErrorMessage(t('anErrorOccured'), t('notificationErrorTryAgain'))
