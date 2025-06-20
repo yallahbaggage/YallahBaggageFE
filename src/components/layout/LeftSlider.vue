@@ -78,21 +78,6 @@
         </div>
       </router-link>
     </v-list>
-    <v-list dense nav bg-color="white" class="menu">
-      <router-link
-        role="button"
-        to="/login"
-        class="logout-link"
-        @click="authStore.resetAuthState()"
-      >
-        <v-list-item class="logout-item" v-if="links.length > 0">
-          <div class="menu-item-name">
-            <v-icon class="icon"> mdi-logout</v-icon>
-            {{ t('logout') }}
-          </div>
-        </v-list-item>
-      </router-link>
-    </v-list>
 
     <hr color="lightgray" />
     <!-- Bottom Section: Theme Toggle & Language Switch -->
@@ -120,7 +105,26 @@
             fill="#47C2FF"
           />
         </svg>
-        <v-icon class="user-profile-arrow">mdi-chevron-right</v-icon>
+        <v-menu location="bottom right" offset="4">
+          <template #activator="{ props }">
+            <v-btn
+              icon
+              v-bind="props"
+              variant="text"
+              density="comfortable"
+            >
+              <v-icon class="user-profile-arrow">mdi-chevron-right</v-icon>
+            </v-btn>
+          </template>
+          <v-list class="menu-list pa-0 ma-0">
+            <v-list-item  class="logout-item" @click="authStore.resetAuthState()">
+              <div class="menu-item-name">
+                <v-icon class="icon"> mdi-logout</v-icon>
+                {{ t('logout') }}
+              </div>
+            </v-list-item>
+          </v-list>
+        </v-menu>
         <p class="user-email text-style">{{ user?.email || '' }}</p>
       </div>
     </div>
