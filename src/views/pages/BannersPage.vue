@@ -378,7 +378,7 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue3-i18n'
 import { useAdsStore } from '@/stores/modules/adsStore'
 import { IAd } from '@/models/ad'
-import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
+import { toastDeleteMessage, toastErrorMessage, toastSuccessMessage } from '@/utils/helpers/notification'
 import { formatDateWithoutTime } from '@/utils/helpers/date-helper'
 
 const { t } = useI18n()
@@ -522,7 +522,18 @@ const resetForm = () => {
 }
 
 const onAddButtonPressed = async () => {
-  // Save logic here, e.g., call store or emit to parent
+  if (!newBanner.value.title || !newBanner.value.expireDate) {
+    toastErrorMessage('Title and Expire Date are required', 'Please fill out the required fields.')
+    return
+  }
+  if (newBanner.value.startAt && new Date(newBanner.value.startAt) > new Date(newBanner.value.expireDate)) {
+    toastErrorMessage('Please Check Again', t('startDateCannotBeAfterExpireDate'))
+    return
+  }
+  if (newBanner.value.startAt && new Date(newBanner.value.startAt) < new Date()) {
+    toastErrorMessage('Please Check Again', t('startDateCannotBeBeforeToday'))
+    return
+  }
   await adsStore.createAd(newBanner.value)
   toastSuccessMessage(t('toastAddBannerTitle'), t('toastAddBannerDescription'))
   isAddDrawerOpen.value = false
@@ -560,13 +571,15 @@ onMounted(() => {
 watch([page, itemsPerPage], fetchAds)
 
 const onDeleteButtonPressed = async (selectedAdId: string) => {
-  toastDeleteMessage(t('toastDeleteBannerTitle'), t('toastDeleteBannerDescription'))
   if (!selectedAdId) {
     console.error('No ad selected for deletion')
     return
   }
-  // await adsStore.deleteAd(selectedAdId)
+  await adsStore.deleteAd(selectedAdId)
+  await fetchAds()
   isDeleteDrawerOpen.value = false
+  isConfirmDeletePopupVisible.value = false
+  toastDeleteMessage(t('toastDeleteBannerTitle'), t('toastDeleteBannerDescription'))
 }
 
 const onUpdateButtonPressed = () => {

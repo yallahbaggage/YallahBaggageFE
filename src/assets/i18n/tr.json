@@ -187,5 +187,11 @@
   "addNewBanner": "Yeni Banner Ekle",
   "bannerStatus": "Banner Durumu",
   "updateBanner": "Banner'ı Güncelle",
-  "bannerwillRedirectTo": "Banner yönlendirecek"
+  "bannerwillRedirectTo": "Banner yönlendirecek",
+  "toastDeleteBannerTitle": "Banner Başarıyla Silindi",
+  "toastDeleteBannerDescription": "Banner başarıyla silindi. Bu işlem geri alınamaz.",
+  "toastAddBannerTitle": "Banner Başarıyla Eklendi",
+  "toastAddBannerDescription": "Banner başarıyla eklendi. Artık yeni banner'lar ekleyebilirsiniz.",
+  "startDateCannotBeAfterExpireDate": "Başlangıç tarihi bitiş tarihinden sonra olamaz",
+  "startDateCannotBeBeforeToday": "Başlangıç tarihi bugünden önce olamaz"
 }

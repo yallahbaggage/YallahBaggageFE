@@ -187,5 +187,11 @@
   "addNewBanner": "Add New Banner",
   "bannerStatus": "Banner Status",
   "updateBanner": "Update Banner",
-  "bannerwillRedirectTo": "Banner will redirect to"
+  "bannerwillRedirectTo": "Banner will redirect to",
+  "toastDeleteBannerTitle": "Banner Deleted Successfully",
+  "toastDeleteBannerDescription": "You have successfully deleted the banner.",
+  "toastAddBannerTitle": "Banner Added Successfully",
+  "toastAddBannerDescription": "You have successfully added the banner. It will be visible to your customers.",
+  "startDateCannotBeAfterExpireDate": "Start date cannot be after expire date",
+  "startDateCannotBeBeforeToday": "Start date cannot be before today"
 }
