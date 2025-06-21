@@ -64,10 +64,10 @@ const onButtonPressed = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px 10px;
+  padding: 12px 10px;
   background-color: #ffffff;
   border-radius: $x-small;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   width: 100%;
   border-bottom: 1px solid $primaryBorderColor;
 }
