@@ -153,7 +153,7 @@
                 </div>
 
                 <div class="drawer-form-group">
-                  <label for="url" class="drawer-label-group"></label>
+                  <label control="url" for="url" class="drawer-label-group"></label>
                   <div
                     class="image-upload-area"
                     :class="{ 'drag-over': isDragOver }"
@@ -247,38 +247,162 @@
       <!-- update Drawer -->
       <Drawer
         :isOpen="isUpdateDrawerOpen"
-        :desc="t('fillOutAllTheInformationsToAdd')"
-        :status="t('busy')"
-        @close="isUpdateDrawerOpen = false"
+        :title="t('updateBanner')"
+        :desc="t('updateTheBannerInformation')"
+        @close="
+          () => {
+            isUpdateDrawerOpen = false
+            resetForm()
+          }
+        "
       >
         <div style="max-height: 75vh">
-          <form @submit.prevent="onUpdateButtonPressed()" class="form">
+          <form @submit.prevent="onUpdateButtonPressed()" class="form" v-if="editingBanner">
             <div>
               <div class="drawer-banner">
-                <p>{{ t('information') }}</p>
+                <p>{{ t('generalInformation') }}</p>
               </div>
               <div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('fullName') }}</p>
-                  <p class="drawer-value">Zaid Al-Farsi</p>
+                <div class="drawer-form-group">
+                  <label for="name" class="drawer-label-group">
+                    {{ t('bannerName') }}<span class="required">*</span>
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    class="form-input"
+                    placeholder="Banner title here"
+                    v-model="editingBanner.title"
+                    required
+                  />
                 </div>
                 <div class="drawer-info">
-                  <p class="drawer-key">{{ t('ID') }}</p>
-                  <p class="drawer-value">784-678-9012-3</p>
+                  <p class="banner-key">
+                    {{ t('startAt') }}
+                    <v-text-field
+                      v-model="editingBanner.startAt"
+                      type="date"
+                      variant="outlined"
+                      density="compact"
+                      hide-details
+                    />
+                  </p>
+                  <p class="banner-value">
+                    {{ t('expireAt') }}
+                    <v-text-field
+                      v-model="editingBanner.expireDate"
+                      type="date"
+                      variant="outlined"
+                      density="compact"
+                      hide-details
+                      required
+                    />
+                  </p>
                 </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('phoneNumber') }}</p>
-                  <p class="drawer-value">+971 (51) 123-4567</p>
+
+                <div class="drawer-form-group">
+                  <label for="url" class="drawer-label-group">
+                    {{ t('bannerwillRedirectTo') }}</label
+                  >
+                  <v-text-field
+                    id="banner-url"
+                    v-model="editingBanner.url"
+                    placeholder="www.example.com"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                  >
+                    <template v-slot:prepend-inner>
+                      <span class="url-prefix">://app</span>
+                    </template>
+                  </v-text-field>
+                </div>
+
+                <div class="drawer-form-group">
+                  <label for="url" class="drawer-label-group"></label>
+                  <div
+                    class="image-upload-area"
+                    :class="{ 'drag-over': isDragOver }"
+                    @drop.prevent="handleDrop"
+                    @dragover.prevent="isDragOver = true"
+                    @dragleave.prevent="isDragOver = false"
+                  >
+                    <div
+                      v-if="!imageUrl && !imageUploadProgress"
+                      class="upload-placeholder"
+                      @click="triggerFileInput"
+                    >
+                      <v-icon size="36" color="grey">mdi-cloud-upload-outline</v-icon>
+                      <p>{{ t('chooseFileOrDragDrop') }}</p>
+                      <p class="subtext">JPEG, PNG, and WebP formats, up to 3 MB.</p>
+                      <v-btn variant="outlined" color="primary" class="browse-btn"
+                        >Browse File</v-btn
+                      >
+                      <v-file-input
+                        ref="fileInput"
+                        @change="uploadImage"
+                        accept="image/*"
+                        style="display: none"
+                      />
+                    </div>
+                    <div v-if="imageUrl && !imageUploadProgress" class="uploaded-preview">
+                      <img :src="imageUrl" class="preview-img" />
+                      <div class="file-info">
+                        <span class="file-name">{{ uploadedFileName }}</span>
+                        <span class="file-size">{{ uploadedFileSize }}</span>
+                      </div>
+                      <v-btn icon @click.stop="removeImage" variant="text" size="small">
+                        <v-icon color="red">mdi-trash-can-outline</v-icon>
+                      </v-btn>
+                    </div>
+
+                    <div v-if="imageUploadProgress > 0" class="upload-progress-container">
+                      <img src="@/assets/images/logo.svg" alt="file" class="file-icon" />
+                      <div class="progress-details">
+                        <div class="file-name">{{ uploadedFileName }}</div>
+                        <div class="progress-text">
+                          {{ uploadedFileSize }} of {{ totalFileSize }} - Uploading...
+                        </div>
+                        <v-progress-linear
+                          :model-value="imageUploadProgress"
+                          height="6"
+                          color="primary"
+                          rounded
+                        />
+                      </div>
+                      <v-btn icon @click.stop="removeImage" variant="text" size="small">
+                        <v-icon>mdi-close</v-icon>
+                      </v-btn>
+                    </div>
+                  </div>
+                </div>
+                <div class="drawer-form-group">
+                  <label for="name" class="drawer-label-group">
+                    {{ t('bannerStatus') }}
+                  </label>
+                  <v-select
+                    v-model="editingBanner.status"
+                    :items="['Active', 'Deactive']"
+                    variant="outlined"
+                    density="compact"
+                    required
+                    hide-details
+                  />
                 </div>
               </div>
               <div class="action-btns">
                 <ActionButton
                   :buttonText="t('cancel')"
                   buttonColor="white"
-                  @button-pressed="() => (isUpdateDrawerOpen = false)"
+                  @button-pressed="
+                    () => {
+                      isUpdateDrawerOpen = false
+                      resetForm()
+                    }
+                  "
                   class="action-Btn"
                 />
-                <ActionButton class="action-Btn" :buttonText="t('update')" buttonType="submit" />
+                <ActionButton :buttonText="t('update')" buttonType="submit" class="action-Btn" />
               </div>
             </div>
           </form>
@@ -403,6 +527,8 @@ const adsStore = useAdsStore()
 const loading = computed(() => adsStore.isLoading)
 const ads = computed(() => adsStore.allAds)
 
+const editingBanner = ref<IAd | null>(null)
+
 const pagination = computed(
   () => adsStore.paginationInfo || { total: 0, page: 1, limit: 8, pageCount: 1 },
 )
@@ -484,7 +610,11 @@ const processFile = (file: File) => {
     if (xhr.readyState === 4 && xhr.status === 200) {
       const res = JSON.parse(xhr.responseText)
       imageUrl.value = res.secure_url
-      newBanner.value.image = res.secure_url
+      if (isUpdateDrawerOpen.value && editingBanner.value) {
+        editingBanner.value.image = res.secure_url
+      } else {
+        newBanner.value.image = res.secure_url
+      }
       imageUploadProgress.value = 0
       totalFileSize.value = formatFileSize(res.bytes)
     }
@@ -512,7 +642,11 @@ const uploadImage = async (event: Event) => {
 
 const removeImage = () => {
   imageUrl.value = ''
-  newBanner.value.image = ''
+  if (isUpdateDrawerOpen.value && editingBanner.value) {
+    editingBanner.value.image = ''
+  } else {
+    newBanner.value.image = ''
+  }
   imageUploadProgress.value = 0
   uploadedFileName.value = ''
   uploadedFileSize.value = ''
@@ -550,16 +684,21 @@ const onAddButtonPressed = async () => {
     toastErrorMessage('Please Check Again', t('startDateCannotBeBeforeToday'))
     return
   }
-  await adsStore.createAd(newBanner.value)
+  await adsStore.createAd(newBanner.value as IAd)
   toastSuccessMessage(t('toastAddBannerTitle'), t('toastAddBannerDescription'))
   isAddDrawerOpen.value = false
   resetForm()
+  fetchAds()
   fetchStats()
 }
 
 const editBanner = (item: any) => {
-  selectedAd.value = item as IAd
+  editingBanner.value = item
   isUpdateDrawerOpen.value = true
+  if (item.image) {
+    imageUrl.value = item.image
+    uploadedFileName.value = 'current-image.jpg'
+  }
 }
 
 const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
@@ -598,8 +737,28 @@ const onDeleteButtonPressed = async (selectedAdId: string) => {
   toastDeleteMessage(t('toastDeleteBannerTitle'), t('toastDeleteBannerDescription'))
 }
 
-const onUpdateButtonPressed = () => {
+const onUpdateButtonPressed = async () => {
+  if (!editingBanner.value?._id) {
+    return
+  }
+  if (!editingBanner.value.title || !editingBanner.value.expireDate) {
+    toastErrorMessage('Title and Expire Date are required', 'Please fill out the required fields.')
+    return
+  }
+  if (
+    editingBanner.value.startAt &&
+    new Date(editingBanner.value.startAt) > new Date(editingBanner.value.expireDate)
+  ) {
+    toastErrorMessage('Please Check Again', t('startDateCannotBeAfterExpireDate'))
+    return
+  }
+
+  await adsStore.updateAd(editingBanner.value._id, editingBanner.value)
+  toastSuccessMessage('Banner updated!', 'The banner details have been successfully updated.')
   isUpdateDrawerOpen.value = false
+  resetForm()
+  fetchAds()
+  fetchStats()
 }
 
 const statusColorAccordingToExpireDate = (date: string | Date): 'green' | 'red' | 'grey' => {

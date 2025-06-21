@@ -10,4 +10,5 @@ export interface IAd {
   updatedAt: string;
   startAt?: string;
   title: string;
+  status: 'active' | 'inactive';
 } 
