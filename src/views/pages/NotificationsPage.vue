@@ -6,7 +6,7 @@
       :desc="t('manageYourAppsNotifications')"
       :show-button="true"
       :button-text="t('newNotification')"
-      v-on:button-pressed="showCreateDialog"
+      v-on:button-pressed="() => (isDialogOpen = true)"
     />
     <div class="page-content">
       <ServerTable
@@ -62,46 +62,133 @@
         </template>
       </ServerTable>
 
-      <!-- Create/Edit Dialog -->
+      <!-- add Drawer -->
       <Drawer
         :isOpen="isDialogOpen"
-        :desc="isEditing ? t('seeDetails') : t('deleteNotification')"
-        @close="closeDialog"
+        :title="t('sendNotification')"
+        :desc="t('fillOutAllTheInformationsToAdd')"
+        @close="
+          () => {
+            isDialogOpen = false
+            resetForm()
+          }
+        "
       >
         <div style="max-height: 75vh">
-          <form @submit.prevent="handleSubmit" class="form">
+          <form @submit.prevent="onAddButtonPressed()" class="form">
             <div>
               <div class="drawer-banner">
-                <p>{{ t('notificationDetails') }}</p>
+                <p>{{ t('generalInformation') }}</p>
               </div>
               <div>
-                <div class="notification-info">
-                  <p class="notification-key">{{ t('title') }}</p>
-                  <v-text-field
-                    v-model="title"
-                    :rules="[rules.required]"
-                    variant="outlined"
-                    density="comfortable"
+                <div class="drawer-form-group">
+                  <label for="name" class="drawer-label-group">
+                    {{ t('notificationTitle') }}<span class="required">*</span>
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    class="form-input no-focus-border"
+                    :placeholder="t('notificationTitle')"
+                    v-model="newNotification.title"
+                    required
                   />
                 </div>
-                <div class="notification-info">
-                  <p class="notification-key">{{ t('message') }}</p>
+                <div class="drawer-form-group">
+                  <label for="message" class="drawer-label-group">
+                    {{ t('notificationDesc') }}<span class="required">*</span>
+                  </label>
+                  <textarea
+                    id="message"
+                    type="text"
+                    class="form-input no-focus-border"
+                    :placeholder="t('notificationDesc')"
+                    v-model="newNotification.message"
+                    required
+                    maxlength="200"
+                  ></textarea>
+                </div>
+                <div class="drawer-banner">
+                  <p>{{ t('advancedDetails') }}</p>
+                </div>
+
+                <div class="drawer-form-group">
+                  <label for="redirectTo" class="drawer-label-group">
+                    {{ t('notificationWillRedirectTo') }}</label
+                  >
                   <v-text-field
-                    v-model="message"
-                    :rules="[rules.required]"
+                    id="banner-redirectTo"
+                    v-model="newNotification.redirectTo"
+                    placeholder="www.example.com"
                     variant="outlined"
-                    density="comfortable"
-                    rows="3"
+                    density="compact"
+                    hide-details
+                    class="no-focus-border"
+                  >
+                    <template v-slot:prepend-inner>
+                      <span class="url-prefix">://app</span>
+                    </template>
+                  </v-text-field>
+                </div>
+                <div class="drawer-form-group" v-if="!newNotification.sendNow">
+                  <label for="redirectTo" class="drawer-label-group">
+                    {{ t('sendNotificationOn') }}</label
+                  >
+                  <DateTimePicker
+                    v-model="newNotification.sendNotificationOnDate"
+                    :show-time="true"
+                    :placeholder="t('sendNotificationOn')"
+                    variant="outlined"
+                    density="compact"
+                    :min-date="new Date().toISOString().slice(0, 16)"
+                    hide-details
+                    class="no-focus-border"
                   />
                 </div>
-                <div class="notification-info">
-                  <p class="notification-key">{{ t('type') }}</p>
+                <div class="drawer-form-group flex">
+                  <v-switch
+                    class="no-focus-border"
+                    color="primary"
+                    v-model="newNotification.sendNow"
+                    hide-details
+                    indeterminate
+                    :label="t('sendNotificationNow')"
+                  ></v-switch>
+                  <v-switch
+                    class="no-focus-border"
+                    color="primary"
+                    v-model="newNotification.isGlobal"
+                    hide-details
+                    indeterminate
+                    :label="t('isGlobalNotification')"
+                  ></v-switch>
+                </div>
+
+                <div
+                  class="drawer-form-group"
+                  v-if="!newNotification.isGlobal && users?.length > 0"
+                >
+                  <label for="redirectTo" class="drawer-label-group">
+                    {{ t('selectTargetCustomers') }}</label
+                  >
+
                   <v-select
-                    v-model="type"
-                    :items="notificationTypes"
-                    :rules="[rules.required]"
+                    v-model="newNotification.targetUsers"
+                    :items="
+                      users?.map((user: IUser) => ({
+                        title: user.name,
+                        value: user._id,
+                      }))
+                    "
+                    item-title="title"
+                    item-value="value"
+                    multiple
+                    chips
+                    class="no-focus-border"
                     variant="outlined"
-                    density="comfortable"
+                    density="compact"
+                    hide-details
+                    :placeholder="t('selectTargetCustomers')"
                   />
                 </div>
               </div>
@@ -109,17 +196,21 @@
                 <ActionButton
                   :buttonText="t('cancel')"
                   buttonColor="white"
-                  @button-pressed="closeDialog"
+                  @button-pressed="
+                    () => {
+                      isDialogOpen = false
+                      resetForm()
+                    }
+                  "
+                  class="action-Btn"
                 />
-                <ActionButton
-                  :buttonText="isEditing ? t('update') : t('create')"
-                  buttonType="submit"
-                />
+                <ActionButton :buttonText="t('save')" buttonType="submit" class="action-Btn" />
               </div>
             </div>
           </form>
         </div>
       </Drawer>
+      <!-- add Drawer -->
       <!-- details Drawer -->
       <Drawer
         :isOpen="isDetailsNotificationDrawerOpen"
@@ -312,6 +403,9 @@ import {
 import type { CreateNotificationDto, INotification } from '@/utils/services/notificationsService'
 import { formatDate } from '@/utils/helpers/date-helper'
 import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
+import DateTimePicker from '@/components/base/DateTimePicker.vue'
+import { useUserStore } from '@/stores/modules/userStore'
+import { IUser } from '@/models/user'
 
 const { t } = useI18n()
 const store = useNotificationsStore()
@@ -319,35 +413,109 @@ const store = useNotificationsStore()
 const page = ref(1)
 const itemsPerPage = ref(8)
 const isDialogOpen = ref(false)
-const isEditing = ref(false)
 const isDetailsNotificationDrawerOpen = ref(false)
 const isDeleteNotificationDrawerOpen = ref(false)
 const isConfirmDeletePopupVisible = ref(false)
-const currentId = ref<string | null>(null)
 const selectedNotification = ref<INotification | null>(null)
 const items = computed(() => store.allNotifications)
 const totalItems = computed(() => store.paginationInfo?.total ?? 0)
 const loading = computed(() => store.isLoading)
-const rules = {
-  required: (v: string) => !!v || 'Field is required',
-  min: (v: string) => v.length >= 6 || 'Min 6 characters',
+const users = ref<IUser[]>([])
+
+onMounted(async () => {
+  users.value = await useUserStore().fetchUsers() // calls the function and stores the result
+})
+const newNotification = ref({
+  title: '',
+  message: '',
+  type: 'info',
+  startAt: '',
+  expireDate: '',
+  redirectTo: '',
+  sendNotificationOnDate: '',
+  status: 'active',
+  sendNow: true, // Default to true for sending immediately
+  isGlobal: true, // Default to true for not global
+  targetUsers: [], // Default to empty array for target users
+})
+
+const resetForm = () => {
+  newNotification.value = {
+    title: '',
+    message: '',
+    type: 'info',
+    startAt: '',
+    expireDate: '',
+    redirectTo: '',
+    sendNotificationOnDate: '',
+    status: 'active',
+    sendNow: true, // Default to true for sending immediately
+    isGlobal: true, // Default to true for not global
+    targetUsers: [], // Default to empty array for target users
+  }
+}
+
+const onAddButtonPressed = async () => {
+  try {
+    if (!newNotification.value.isGlobal && newNotification.value.targetUsers.length === 0) {
+      toastErrorMessage('Please provide target users or set as global notification', 'You must select at least one user for the notification or select it as a global.')
+      return
+    }
+    if (newNotification.value.isGlobal && newNotification.value.targetUsers.length !== 0) {
+      newNotification.value.targetUsers = [];
+      return
+    }
+    if (!newNotification.value.sendNow && !newNotification.value.sendNotificationOnDate) {
+      toastErrorMessage('Please select a date', 'You must select a date to send the notification if you are not sending it now.');
+      return
+    }
+    if (newNotification.value.sendNow) {
+      newNotification.value.sendNotificationOnDate = new Date().toISOString() // Set to current date if sending now
+      return
+    }
+    if (newNotification.value.sendNotificationOnDate) {
+      newNotification.value.sendNow = false // Ensure sendNow is false if a date is selected
+      const selectedDate = new Date(newNotification.value.sendNotificationOnDate)
+      if (selectedDate < new Date()) {
+        toastErrorMessage('Invalid date selected', 'Please select a future date for sending the notification.')
+        return
+      }
+    }
+    
+    newNotification.value.sendNotificationOnDate = new Date(newNotification.value.sendNotificationOnDate).toISOString() // Ensure the date is in ISO format
+    console.log('Creating notification with data:', newNotification.value)
+    await store.createNotification(newNotification.value as CreateNotificationDto)
+    toastSuccessMessage(
+      t('notificationSentSuccesfully'),
+      t('yourNotificationIsSavedToBeSendToYourCstomerOnDateSuccesfully', {
+        date: !newNotification.value.sendNow
+          ? newNotification.value.sendNotificationOnDate
+          : formatDate(new Date()),
+      }),
+    )
+    isDialogOpen.value = false
+    resetForm()
+  } catch (error) {
+    console.error(error)
+    toastErrorMessage(t('anErrorOccured'), t('notificationErrorTryAgain'))
+  }
 }
 // const form = ref<CreateNotificationDto>({
 //   title: '',
 //   message: '',
 //   type: 'info'
 // });
-const form = ref<any>(null)
-const title = ref('')
-const message = ref('')
-const type = ref('')
+// const form = ref<any>(null)
+// const title = ref('')
+// const message = ref('')
+// const type = ref('')
 
-const notificationTypes = [
-  { title: t('info'), value: 'info' },
-  { title: t('success'), value: 'success' },
-  { title: t('warning'), value: 'warning' },
-  { title: t('error'), value: 'error' },
-]
+// const notificationTypes = [
+//   { title: t('info'), value: 'info' },
+//   { title: t('success'), value: 'success' },
+//   { title: t('warning'), value: 'warning' },
+//   { title: t('error'), value: 'error' },
+// ]
 
 const headers = [
   { title: 'ID', key: '_id', sortable: false },
@@ -404,52 +572,6 @@ const getTypeColor = (type: string) => {
   )
 }
 
-const showCreateDialog = () => {
-  isEditing.value = false
-  currentId.value = null
-  form.value = {
-    title: '',
-    message: '',
-    type: 'info',
-  }
-  isDialogOpen.value = true
-}
-
-const showEditDialog = (notification: INotification) => {
-  isEditing.value = true
-  currentId.value = notification._id
-  form.value = {
-    title: notification.title,
-    message: notification.message,
-    type: notification.type,
-  }
-  isDialogOpen.value = true
-}
-
-const closeDialog = () => {
-  isDialogOpen.value = false
-  form.value = {
-    title: '',
-    message: '',
-    type: 'info',
-  }
-}
-
-const handleSubmit = async () => {
-  try {
-    if (isEditing.value && currentId.value) {
-      await store.updateNotification(currentId.value, form.value)
-      toastSuccessMessage(t('notificationUpdated'), t('notificationUpdatedSuccess'))
-    } else {
-      await store.createNotification(form.value)
-      toastSuccessMessage(t('notificationCreated'), t('notificationCreatedSuccess'))
-    }
-    closeDialog()
-  } catch (error) {
-    console.error('Operation failed:', error)
-  }
-}
-
 const confirmDelete = async (notification: INotification) => {
   if (!notification._id) {
     toastErrorMessage(
@@ -466,15 +588,6 @@ const confirmDelete = async (notification: INotification) => {
   } catch (error) {
     console.error('Failed to delete notification:', error)
     toastErrorMessage(t('anErrorOccured'), t('notificationErrorTryAgain'))
-  }
-}
-
-const markAsRead = async (id: string) => {
-  try {
-    await store.markAsRead(id)
-    toastSuccessMessage(t('notificationMarkedAsRead'), t('notificationMarkedAsReadSuccess'))
-  } catch (error) {
-    console.error('Failed to mark notification as read:', error)
   }
 }
 
@@ -517,5 +630,9 @@ watch([page, itemsPerPage], fetchNotifications)
   display: flex;
   gap: 12px;
   margin-top: 24px;
+}
+
+.v-text-field .v-input__details {
+  padding-inline: 0 !important;
 }
 </style>

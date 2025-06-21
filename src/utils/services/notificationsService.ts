@@ -18,7 +18,7 @@ export interface INotification {
   expiresAt: Date;
   createdAt: Date;
   updatedAt: Date;
-  sendNotificationOnDate?: Date;
+  sendNotificationOnDate?: Date | string | null;
   sendNow?: boolean;
   redirectTo?: string;
 }
@@ -30,7 +30,7 @@ export interface CreateNotificationDto {
   targetUsers?: string[];
   isGlobal?: boolean;
   expiresAt?: Date;
-  sendNotificationOnDate?: Date;
+  sendNotificationOnDate?: Date | string | null;
   sendNow?: boolean;
   redirectTo?: string;
 }

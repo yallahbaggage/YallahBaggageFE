@@ -48,6 +48,18 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  async function fetchUsers() {
+    error.value = null
+    try {
+      const users = await userService.getUsers()
+      return users.filter(u => u.role !== 'admin') // Exclude admin users from the list
+    } catch (err) {
+      const userError = err as UserStoreError
+      error.value = userError.message || 'Failed to fetch users'
+      throw new Error(error.value)
+    }
+  }
+
   async function register(data: {
     name: string
     email: string
@@ -142,6 +154,7 @@ export const useUserStore = defineStore('user', () => {
     clearError,
     init,
     getUserInfo,
-    deleteUserByNameEmailAndPass
+    deleteUserByNameEmailAndPass,
+    fetchUsers
   }
 }) 

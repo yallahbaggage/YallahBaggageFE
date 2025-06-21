@@ -193,5 +193,15 @@
   "toastAddBannerTitle": "Banner Added Successfully",
   "toastAddBannerDescription": "You have successfully added the banner. It will be visible to your customers.",
   "startDateCannotBeAfterExpireDate": "Start date cannot be after expire date",
-  "startDateCannotBeBeforeToday": "Start date cannot be before today"
+  "startDateCannotBeBeforeToday": "Start date cannot be before today",
+  "notificationWillRedirectTo":"Notification will redirect to",
+  "sendNotificationOn": "Send Notification On",
+  "sendNotificationNow": "Send notification now",
+  "notificationSentSuccesfully": "Notification sent successfully",
+  "yourNotificationIsSavedToBeSendToYourCstomerOnDateSuccesfully.": "Your notification is saved to be sent to your customer on {time} successfully.",
+  "isGlobalNotification": "Is Global?",
+  "selectTargetCustomers": "Select Target Customer/s",
+  "enterDateAndTime": "Enter Date and Time",
+  "enterDate": "Enter Date",
+  "enterTime": "Enter Time"
 }

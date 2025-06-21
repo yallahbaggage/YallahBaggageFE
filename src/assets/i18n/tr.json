@@ -193,5 +193,15 @@
   "toastAddBannerTitle": "Banner Başarıyla Eklendi",
   "toastAddBannerDescription": "Banner başarıyla eklendi. Artık yeni banner'lar ekleyebilirsiniz.",
   "startDateCannotBeAfterExpireDate": "Başlangıç tarihi bitiş tarihinden sonra olamaz",
-  "startDateCannotBeBeforeToday": "Başlangıç tarihi bugünden önce olamaz"
+  "startDateCannotBeBeforeToday": "Başlangıç tarihi bugünden önce olamaz",
+  "notificationWillRedirectTo":"Bildirim yönlendirecek",
+  "sendNotificationOn": "Bildirim Gönderilecek",
+  "sendNotificationNow": "Şimdi Bildirim Gönder",
+  "notificationSentSuccesfully": "Bildirim başarıyla gönderildi",
+  "yourNotificationIsSavedToBeSendToYourCstomerOnDateSuccesfully.": "Bildiriminiz, müşterinize {date} tarihinde gönderilmek üzere başarıyla kaydedildi.",
+  "isGlobalNotification": "Global mi?",
+  "selectTargetCustomers": "Hedef Müşteri/leri Seç",
+  "enterDateAndTime": "Tarih ve Saat Girin",
+  "enterDate": "Tarih Girin",
+  "enterTime": "Saat Girin"
 }

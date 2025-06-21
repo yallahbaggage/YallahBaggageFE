@@ -926,11 +926,4 @@ function deleteAd(item: any) {
 .banner-key {
   flex: 1;
 }
-
-.url-prefix {
-  color: #999;
-  font-weight: 500;
-}
-
-
 </style>
