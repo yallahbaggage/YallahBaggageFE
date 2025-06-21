@@ -17,9 +17,7 @@
         v-model:page="page"
         v-model:items-per-page="itemsPerPage"
       >
-         <template #cell-_id="{ item }">
-          #{{ item._id.substring(0, 6) }}
-        </template>
+        <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
         <template #cell-type="{ item }">
           <v-chip
             :color="getTypeColor(item?.createdAt ? 'sent' : 'failed')"
@@ -156,7 +154,7 @@
                     >
                       <span
                         :style="{
-                          backgroundColor: statusColor(
+                          backgroundColor: getTypeColor(
                             selectedNotification?.createdAt ? t('sent') : t('failed'),
                           ),
                         }"
@@ -225,6 +223,14 @@
                         text-color="white"
                         small
                       >
+                        <span
+                          :style="{
+                            backgroundColor: getTypeColor(
+                              selectedNotification?.createdAt ? t('sent') : t('failed'),
+                            ),
+                          }"
+                          class="status-circle"
+                        ></span>
                         {{ selectedNotification?.createdAt ? t('sent') : t('failed') }}
                       </v-chip>
                     </p>
@@ -344,11 +350,11 @@ const notificationTypes = [
 ]
 
 const headers = [
-  { title: 'ID', key: '_id', sortable: false  },
-  { title: t('notificationTitle'), key: 'title', sortable: false  },
-  { title: t('notificationDesc'), key: 'message' , sortable: false },
-  { title: t('sentOn'), key: 'createdAt', sortable: false  },
-  { title: t('status'), key: 'type' , sortable: false },
+  { title: 'ID', key: '_id', sortable: false },
+  { title: t('notificationTitle'), key: 'title', sortable: false },
+  { title: t('notificationDesc'), key: 'message', sortable: false },
+  { title: t('sentOn'), key: 'createdAt', sortable: false },
+  { title: t('status'), key: 'type', sortable: false },
   { title: t('actions'), key: '', sortable: false },
 ]
 
