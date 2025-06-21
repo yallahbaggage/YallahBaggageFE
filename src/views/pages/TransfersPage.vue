@@ -45,16 +45,11 @@
       >
         <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
         <template #cell-workerId="{ item }">
-          <template v-if="item.workerId">
-            <span>{{ item.workerId.name }}</span>
-          </template>
-          <template v-else>
-            <ActionButton
-              :buttonText="t('assign')"
-              buttonColor="white"
-              @button-pressed="() => assignEmployee(item as Transfer)"
-            />
-          </template>
+          
+            <span v-if="item?.workerId?.name">{{ item.workerId.name }}</span>
+            <v-btn v-else @click="() => assignEmployee(item as Transfer)">
+              {{ t('assign') }}
+            </v-btn>
         </template>
 
         <template #cell-customer="{ item }">
@@ -275,8 +270,7 @@ const headers = [
   { title: t('pickUpDate'), key: 'pickUpDate', sortable: false },
   { title: t('deliveryDate'), key: 'deliveryDate', sortable: false },
   { title: t('status'), key: 'status', sortable: false },
-  { title: t('assignChangeStaff'), key: 'assignChangeStaff', sortable: false },
-  { title: t('assigne'), key: 'workerId', sortable: false },
+  { title: t('assignChangeStaff'), key: 'workerId', sortable: false },
   { title: t('actions'), key: 'actions', sortable: false },
 ]
 
