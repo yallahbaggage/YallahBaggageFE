@@ -198,7 +198,7 @@
   "sendNotificationOn": "Bildirim Gönderilecek",
   "sendNotificationNow": "Şimdi Bildirim Gönder",
   "notificationSentSuccesfully": "Bildirim başarıyla gönderildi",
-  "yourNotificationIsSavedToBeSendToYourCstomerOnDateSuccesfully.": "Bildiriminiz, müşterinize {date} tarihinde gönderilmek üzere başarıyla kaydedildi.",
+  "yourNotificationIsSavedToBeSendToYourCstomerOnDateSuccesfully": "Bildiriminiz, müşterinize {date} tarihinde gönderilmek üzere başarıyla kaydedildi.",
   "isGlobalNotification": "Global mi?",
   "selectTargetCustomers": "Hedef Müşteri/leri Seç",
   "enterDateAndTime": "Tarih ve Saat Girin",

@@ -198,7 +198,7 @@
   "sendNotificationOn": "Send Notification On",
   "sendNotificationNow": "Send notification now",
   "notificationSentSuccesfully": "Notification sent successfully",
-  "yourNotificationIsSavedToBeSendToYourCstomerOnDateSuccesfully.": "Your notification is saved to be sent to your customer on {time} successfully.",
+  "yourNotificationIsSavedToBeSendToYourCstomerOnDateSuccesfully": "Your notification is saved to be sent to your customer on {time} successfully.",
   "isGlobalNotification": "Is Global?",
   "selectTargetCustomers": "Select Target Customer/s",
   "enterDateAndTime": "Enter Date and Time",

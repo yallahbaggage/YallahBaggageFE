@@ -24,3 +24,13 @@ export const formatDateWithoutTime = (date: string | Date): string => {
     year: 'numeric'
   })
 }
+
+export const parseDateTimeString = (input: string): string | null => {
+  const [datePart, timePart] = input.split(' ')
+  const [day, month, year] = datePart.split('/').map(Number)
+  const [hours, minutes] = timePart.split(':').map(Number)
+
+  const parsedDate = new Date(year, month - 1, day, hours, minutes)
+
+  return isNaN(parsedDate.getTime()) ? null : parsedDate.toISOString()
+}

@@ -17,7 +17,7 @@
         v-model:page="page"
         v-model:items-per-page="itemsPerPage"
       >
-        <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
+        <template #cell-_id="{ item }"> #{{ item?._id?.substring(0, 6) }} </template>
         <template #cell-type="{ item }">
           <v-chip
             :color="getTypeColor(item?.createdAt ? 'sent' : 'failed')"
@@ -401,7 +401,7 @@ import {
   toastSuccessMessage,
 } from '@/utils/helpers/notification'
 import type { CreateNotificationDto, INotification } from '@/utils/services/notificationsService'
-import { formatDate } from '@/utils/helpers/date-helper'
+import { formatDate, parseDateTimeString } from '@/utils/helpers/date-helper'
 import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
 import DateTimePicker from '@/components/base/DateTimePicker.vue'
 import { useUserStore } from '@/stores/modules/userStore'
@@ -425,14 +425,26 @@ const users = ref<IUser[]>([])
 onMounted(async () => {
   users.value = await useUserStore().fetchUsers() // calls the function and stores the result
 })
-const newNotification = ref({
+const newNotification = ref<{
+  title: string
+  message: string
+  type: string
+  startAt: string
+  expireDate: string
+  redirectTo: string
+  sendNotificationOnDate?: string
+  status: string
+  sendNow: boolean
+  isGlobal: boolean
+  targetUsers: string[]
+}>({
   title: '',
   message: '',
   type: 'info',
   startAt: '',
   expireDate: '',
   redirectTo: '',
-  sendNotificationOnDate: '',
+  // sendNotificationOnDate is now optional
   status: 'active',
   sendNow: true, // Default to true for sending immediately
   isGlobal: true, // Default to true for not global
@@ -457,49 +469,69 @@ const resetForm = () => {
 
 const onAddButtonPressed = async () => {
   try {
+    // 1. Validate target users or global setting
     if (!newNotification.value.isGlobal && newNotification.value.targetUsers.length === 0) {
-      toastErrorMessage('Please provide target users or set as global notification', 'You must select at least one user for the notification or select it as a global.')
+      toastErrorMessage(
+        'Please provide target users or set as global notification',
+        'You must select at least one user for the notification or select it as a global.'
+      )
       return
     }
+
     if (newNotification.value.isGlobal && newNotification.value.targetUsers.length !== 0) {
-      newNotification.value.targetUsers = [];
-      return
+      newNotification.value.targetUsers = [] // clear target users if global
     }
+
+    // 2. Validate sendNow vs sendNotificationOnDate
     if (!newNotification.value.sendNow && !newNotification.value.sendNotificationOnDate) {
-      toastErrorMessage('Please select a date', 'You must select a date to send the notification if you are not sending it now.');
+      toastErrorMessage('Please select a date', 'You must select a date to send the notification if you are not sending it now.')
       return
     }
+
     if (newNotification.value.sendNow) {
-      newNotification.value.sendNotificationOnDate = new Date().toISOString() // Set to current date if sending now
-      return
-    }
-    if (newNotification.value.sendNotificationOnDate) {
-      newNotification.value.sendNow = false // Ensure sendNow is false if a date is selected
-      const selectedDate = new Date(newNotification.value.sendNotificationOnDate)
-      if (selectedDate < new Date()) {
-        toastErrorMessage('Invalid date selected', 'Please select a future date for sending the notification.')
+      // Don't send sendNotificationOnDate if sending now
+      delete newNotification.value.sendNotificationOnDate
+    } else {
+      const isoDate = parseDateTimeString(newNotification.value.sendNotificationOnDate as string)
+
+      if (!isoDate) {
+        toastErrorMessage('Invalid date', 'The selected date format must be DD/MM/YYYY HH:mm')
         return
       }
+
+      const selectedDate = new Date(isoDate)
+      const now = new Date()
+      if (selectedDate <= now) {
+        toastErrorMessage('Invalid date', 'Please select a future date for sending the notification.')
+        return
+      }
+
+      newNotification.value.sendNotificationOnDate = isoDate
+      newNotification.value.sendNow = false
     }
-    
-    newNotification.value.sendNotificationOnDate = new Date(newNotification.value.sendNotificationOnDate).toISOString() // Ensure the date is in ISO format
+
+    // 3. Submit
     console.log('Creating notification with data:', newNotification.value)
     await store.createNotification(newNotification.value as CreateNotificationDto)
+
     toastSuccessMessage(
       t('notificationSentSuccesfully'),
       t('yourNotificationIsSavedToBeSendToYourCstomerOnDateSuccesfully', {
-        date: !newNotification.value.sendNow
-          ? newNotification.value.sendNotificationOnDate
-          : formatDate(new Date()),
-      }),
+        time: newNotification.value.sendNow
+          ? formatDate(new Date())
+          : newNotification.value.sendNotificationOnDate,
+      })
     )
-    isDialogOpen.value = false
+
     resetForm()
+    isDialogOpen.value = false
+    fetchNotifications() // Refresh the notifications list after adding a new notification
   } catch (error) {
     console.error(error)
     toastErrorMessage(t('anErrorOccured'), t('notificationErrorTryAgain'))
   }
 }
+
 // const form = ref<CreateNotificationDto>({
 //   title: '',
 //   message: '',
@@ -581,10 +613,11 @@ const confirmDelete = async (notification: INotification) => {
     return
   }
   try {
-    // await store.deleteNotification(notification._id)
+    await store.deleteNotification(notification._id)
     isDeleteNotificationDrawerOpen.value = false
     isConfirmDeletePopupVisible.value = false
     toastDeleteMessage(t('notificationDeletedSuccessfully'), '')
+
   } catch (error) {
     console.error('Failed to delete notification:', error)
     toastErrorMessage(t('anErrorOccured'), t('notificationErrorTryAgain'))
