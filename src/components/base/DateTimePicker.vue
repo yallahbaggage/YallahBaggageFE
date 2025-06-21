@@ -108,25 +108,22 @@ function onTimeChange(time: string) {
 function confirmSelection() {
   if (selectedDate.value) {
     try {
-      //INFO Convert selectedDate to locale-specific format
+      const timePart = props.showTime 
+        ? (selectedTime.value ?? new Date().toTimeString().slice(0, 5))
+        : '00:00';
+
       const localeDate = new Date(selectedDate.value).toLocaleDateString('en-GB');
 
-      //NOTE: Convert localeDate back to ISO format (yyyy-MM-dd)
       const [day, month, year] = localeDate.split('/')
       const isoDate = `${year}-${month}-${day}`
 
-      //NOTE: Handle time formatting or default to '00:00'
-      const timePart = props.showTime && selectedTime.value ? selectedTime.value : '00:00'
-
       const combinedDateTime = `${isoDate}T${timePart}:00`
 
-      //NOTE: Parse combinedDateTime to ensure it's valid
       const parsedDateTime = new Date(combinedDateTime)
       if (isNaN(parsedDateTime.getTime())) {
         throw new Error('Invalid combined date and time')
       }
 
-      //NOTE: Set the final fullDateTime value
       fullDateTime.value = props.showTime ? `${localeDate} ${timePart}` : localeDate;
 
       emit('update:modelValue', fullDateTime.value)

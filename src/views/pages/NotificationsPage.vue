@@ -18,6 +18,7 @@
         v-model:items-per-page="itemsPerPage"
       >
         <template #cell-_id="{ item }"> #{{ item?._id?.substring(0, 6) }} </template>
+        <template #cell-sendNotificationOnDate="{ item }"> {{ formatDate(item.sendNotificationOnDate) }}</template>
         <template #cell-type="{ item }">
           <v-chip
             :color="getTypeColor(item?.createdAt ? 'sent' : 'failed')"
@@ -541,7 +542,7 @@ import {
   toastSuccessMessage,
 } from '@/utils/helpers/notification'
 import type { CreateNotificationDto, INotification } from '@/utils/services/notificationsService'
-import { formatDate, parseDateTimeString } from '@/utils/helpers/date-helper'
+import { formatDate, formatDateWithoutTime, formatIsoToReadable, parseDateTimeString } from '@/utils/helpers/date-helper'
 import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
 import DateTimePicker from '@/components/base/DateTimePicker.vue'
 import { useUserStore } from '@/stores/modules/userStore'
@@ -601,7 +602,7 @@ const resetForm = () => {
     startAt: '',
     expireDate: '',
     redirectTo: '',
-    sendNotificationOnDate: '',
+    sendNotificationOnDate: new Date().toISOString(),
     status: 'active',
     sendNow: true, // Default to true for sending immediately
     isGlobal: true, // Default to true for not global
@@ -747,7 +748,7 @@ const headers = [
   { title: 'ID', key: '_id', sortable: false },
   { title: t('notificationTitle'), key: 'title', sortable: false },
   { title: t('notificationDesc'), key: 'message', sortable: false },
-  { title: t('sentOn'), key: 'createdAt', sortable: false },
+  { title: t('sentOn'), key: 'sendNotificationOnDate', sortable: false },
   { title: t('status'), key: 'type', sortable: false },
   { title: t('actions'), key: '', sortable: false },
 ]

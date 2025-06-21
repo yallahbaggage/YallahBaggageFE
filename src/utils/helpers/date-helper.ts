@@ -34,3 +34,25 @@ export const parseDateTimeString = (input: string): string | null => {
 
   return isNaN(parsedDate.getTime()) ? null : parsedDate.toISOString()
 }
+
+export function formatIsoToReadable(dateString: string): string {
+  const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) {
+    return 'Invalid Date';
+  }
+
+  const formattedDate = date.toLocaleDateString('en-GB', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+  });
+
+  const formattedTime = date.toLocaleTimeString('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
+
+  return `${formattedDate} ${formattedTime}`;
+}
