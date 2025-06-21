@@ -18,18 +18,22 @@
         v-model:items-per-page="itemsPerPage"
       >
         <template #cell-_id="{ item }"> #{{ item?._id?.substring(0, 6) }} </template>
-        <template #cell-sendNotificationOnDate="{ item }"> {{ formatDate(item.sendNotificationOnDate) }}</template>
+        <template #cell-sendNotificationOnDate="{ item }">
+          {{ formatDate(item.sendNotificationOnDate) }}</template
+        >
         <template #cell-type="{ item }">
           <v-chip
-            :color="statusColor(getStatusAccordingToSendDate(item.sendNotificationOnDate))"
+            :color="statusColor(getStatusAccordingToSendDate(item as INotification))"
             text-color="white"
             small
           >
             <span
-              :style="{ backgroundColor: statusColor(getStatusAccordingToSendDate(item.sendNotificationOnDate)) }"
+              :style="{
+                backgroundColor: statusColor(getStatusAccordingToSendDate(item as INotification)),
+              }"
               class="status-circle"
             ></span>
-            {{ t(getStatusAccordingToSendDate(item.sendNotificationOnDate)) }}
+            {{ t(getStatusAccordingToSendDate(item as INotification)) }}
           </v-chip>
         </template>
         <!-- <template #cell-isRead="{ item }">
@@ -616,7 +620,7 @@ const onAddButtonPressed = async () => {
     if (!newNotification.value.isGlobal && newNotification.value.targetUsers.length === 0) {
       toastErrorMessage(
         'Please provide target users or set as global notification',
-        'You must select at least one user for the notification or select it as a global.'
+        'You must select at least one user for the notification or select it as a global.',
       )
       return
     }
@@ -627,7 +631,10 @@ const onAddButtonPressed = async () => {
 
     // 2. Validate sendNow vs sendNotificationOnDate
     if (!newNotification.value.sendNow && !newNotification.value.sendNotificationOnDate) {
-      toastErrorMessage('Please select a date and time', 'You must select a date and time to send the notification if you are not sending it now.')
+      toastErrorMessage(
+        'Please select a date and time',
+        'You must select a date and time to send the notification if you are not sending it now.',
+      )
       return
     }
 
@@ -644,13 +651,20 @@ const onAddButtonPressed = async () => {
 
       const selectedDate = new Date(isoDate)
       const now = new Date()
-      
+
       // Allow today and future dates only
-      const selectedDateOnly = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate())
+      const selectedDateOnly = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate(),
+      )
       const todayOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-      
+
       if (selectedDateOnly < todayOnly) {
-        toastErrorMessage('Invalid date', 'Please select today or a future date for sending the notification.')
+        toastErrorMessage(
+          'Invalid date',
+          'Please select today or a future date for sending the notification.',
+        )
         return
       }
 
@@ -664,7 +678,10 @@ const onAddButtonPressed = async () => {
         const updatedIsoDate = parseDateTimeString(updatedDateTime)
         if (updatedIsoDate) {
           newNotification.value.sendNotificationOnDate = updatedDateTime
-          toastSuccessMessage('Time adjusted', 'The time has been adjusted to the current time since the selected time has already passed.')
+          toastSuccessMessage(
+            'Time adjusted',
+            'The time has been adjusted to the current time since the selected time has already passed.',
+          )
         }
       } else {
         newNotification.value.sendNotificationOnDate = isoDate
@@ -682,7 +699,7 @@ const onAddButtonPressed = async () => {
         time: newNotification.value.sendNow
           ? formatDate(new Date())
           : newNotification.value.sendNotificationOnDate,
-      })
+      }),
     )
 
     resetForm()
@@ -694,12 +711,21 @@ const onAddButtonPressed = async () => {
   }
 }
 
-const getStatusAccordingToSendDate = (sendNotificationOnDate: string) => {
-  if (!sendNotificationOnDate) return 'failed'
-  const sendDate = new Date(sendNotificationOnDate)
-  const now = new Date()
-
-  return sendDate <= now ? 'sent' : 'pending'
+const getStatusAccordingToSendDate = (item: INotification) => {
+  if (item.sendNow) {
+    return 'sent' // If sendNow is true, consider it sent immediately
+  }
+  if (item.sendNotificationOnDate) {
+    const sendDate = new Date(
+      item.sendNotificationOnDate.toLocaleString('en-GB', { timeZone: 'UTC' }),
+    )
+    const now = new Date()
+    if (item.sendNow) return 'sent' // If sendNow is true, consider it sent immediately
+    if (item.createdAt && new Date(item.createdAt) > sendDate) return 'failed' // If created date is after send date, consider it failed
+    if (sendDate < now && item.sendNotificationOnDate) return 'sent'
+    if (sendDate > now && item.sendNotificationOnDate) return 'pending'
+  }
+  return 'failed'
 }
 
 const editNotification = (notification: any) => {
@@ -731,8 +757,14 @@ const handleUpdate = async () => {
     const updatePayload = { ...editingNotification.value }
 
     // Similar validation as onAddButtonPressed
-    if (!updatePayload.isGlobal && (!updatePayload.targetUsers || updatePayload.targetUsers.length === 0)) {
-      toastErrorMessage('Please provide target users or set as global notification.', 'You must select at least one user for the notification or select it as a global.')
+    if (
+      !updatePayload.isGlobal &&
+      (!updatePayload.targetUsers || updatePayload.targetUsers.length === 0)
+    ) {
+      toastErrorMessage(
+        'Please provide target users or set as global notification.',
+        'You must select at least one user for the notification or select it as a global.',
+      )
       return
     }
     if (updatePayload.isGlobal) {
@@ -741,24 +773,34 @@ const handleUpdate = async () => {
 
     if (!updatePayload.sendNow) {
       if (!updatePayload.sendNotificationOnDate) {
-        toastErrorMessage('Please select a date', 'You must select a date to send the notification if you are not sending it now.')
+        toastErrorMessage(
+          'Please select a date',
+          'You must select a date to send the notification if you are not sending it now.',
+        )
         return
       }
 
       const dateValue = updatePayload.sendNotificationOnDate
-      
+
       // If it's already an ISO string, use it directly
       if (typeof dateValue === 'string' && dateValue.includes('T')) {
         // It's already an ISO string, validate it
         const selectedDate = new Date(dateValue)
         const now = new Date()
-        
+
         // Allow today and future dates only
-        const selectedDateOnly = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate())
+        const selectedDateOnly = new Date(
+          selectedDate.getFullYear(),
+          selectedDate.getMonth(),
+          selectedDate.getDate(),
+        )
         const todayOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-        
+
         if (selectedDateOnly < todayOnly) {
-          toastErrorMessage('Invalid date', 'Please select today or a future date for sending the notification.')
+          toastErrorMessage(
+            'Invalid date',
+            'Please select today or a future date for sending the notification.',
+          )
           return
         }
         updatePayload.sendNotificationOnDate = dateValue
@@ -770,19 +812,26 @@ const handleUpdate = async () => {
           toastErrorMessage('Invalid date', 'The selected date format must be DD/MM/YYYY HH:mm')
           return
         }
-        
+
         const selectedDate = new Date(isoDate)
         const now = new Date()
-        
+
         // Allow today and future dates only
-        const selectedDateOnly = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate())
+        const selectedDateOnly = new Date(
+          selectedDate.getFullYear(),
+          selectedDate.getMonth(),
+          selectedDate.getDate(),
+        )
         const todayOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-        
+
         if (selectedDateOnly < todayOnly) {
-          toastErrorMessage('Invalid date', 'Please select today or a future date for sending the notification.')
+          toastErrorMessage(
+            'Invalid date',
+            'Please select today or a future date for sending the notification.',
+          )
           return
         }
-        
+
         // If user selected today's date with a past time, adjust to current time
         const isToday = selectedDateOnly.getTime() === todayOnly.getTime()
         if (isToday && selectedDate < now) {
@@ -793,7 +842,10 @@ const handleUpdate = async () => {
           const updatedIsoDate = parseDateTimeString(updatedDateTime)
           if (updatedIsoDate) {
             updatePayload.sendNotificationOnDate = updatedDateTime
-            toastSuccessMessage('Time adjusted', 'The time has been adjusted to the current time since the selected time has already passed.')
+            toastSuccessMessage(
+              'Time adjusted',
+              'The time has been adjusted to the current time since the selected time has already passed.',
+            )
           }
         } else {
           updatePayload.sendNotificationOnDate = isoDate
@@ -884,7 +936,6 @@ const confirmDelete = async (notification: INotification) => {
     isDeleteNotificationDrawerOpen.value = false
     isConfirmDeletePopupVisible.value = false
     toastDeleteMessage(t('notificationDeletedSuccessfully'), '')
-
   } catch (error) {
     console.error('Failed to delete notification:', error)
     toastErrorMessage(t('anErrorOccured'), t('notificationErrorTryAgain'))
