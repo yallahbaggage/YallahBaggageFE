@@ -20,7 +20,7 @@
             <v-icon class="icon">mdi-swap-horizontal</v-icon>
             {{ t('transfers') }}
           </div>
-          <v-chip class="menu-chip" size="small" color="#FF5B5B" text-color="white">9+</v-chip>
+          <v-chip v-if="todaysTransfers > 0" class="menu-chip" size="small" color="#FF5B5B" text-color="white">{{ todaysTransfers }}</v-chip>
         </div>
       </router-link>
       <!-- Employees -->
@@ -74,7 +74,7 @@
             <v-icon class="icon">mdi-headphones</v-icon>
             {{ t('customerSupport') }}
           </div>
-          <v-chip class="menu-chip" size="small" color="#FF5B5B" text-color="white">2</v-chip>
+          <v-chip v-if="todaysOpenComplaints > 0" class="menu-chip" size="small" color="#FF5B5B" text-color="white">{{ todaysOpenComplaints }}</v-chip>
         </div>
       </router-link>
     </v-list>
@@ -140,6 +140,8 @@ import { useI18n } from 'vue3-i18n'
 const { t } = useI18n()
 
 import { useAuthStore } from '@/stores/modules/authStore'
+import { useComplaintsStore } from '@/stores/modules/complaints'
+import { useTransfersStore } from '@/stores/modules/transfer'
 
 // const themeStore = useThemeStore()
 const route = useRoute()
@@ -160,7 +162,7 @@ const links = computed(() => [
     path: '/transfers',
     icon: 'mdi-swap-horizontal',
     hasChip: true,
-    chipCount: '9+',
+    chipCount: todaysTransfers.value > 0 ? todaysTransfers.value : 0,
   },
   {
     name: t('employees'),
@@ -177,7 +179,7 @@ const links = computed(() => [
     path: '/customer-support',
     icon: 'mdi-headphones',
     hasChip: true,
-    chipCount: '2',
+    chipCount: todaysOpenComplaints.value > 0 ? todaysOpenComplaints.value : 0,
   },
 ])
 
@@ -186,6 +188,14 @@ const links = computed(() => [
 // }
 
 const isActiveLink = (path: string) => route.path === path
+
+const todaysOpenComplaints = computed(() => {
+  return useComplaintsStore().stats?.data?.todaysOpenComplaints ?? 0;
+});
+
+const todaysTransfers = computed(() => {
+  return useTransfersStore().stats?.data?.todaysTransfers ?? 0;
+});
 </script>
 
 <style scoped lang="scss">

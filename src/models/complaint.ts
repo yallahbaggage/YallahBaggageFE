@@ -81,10 +81,11 @@ export interface IAddComplaintResponse {
 }
 
 export interface IComplaintStats {
-  data: { totalComplaints: number; openComplaints: number; solvedComplaints: number } | null
+  data: { totalComplaints: number; openComplaints: number; solvedComplaints: number, todaysOpenComplaints: number } | null
   totalComplaints: number
   openComplaints: number
   solvedComplaints: number
+  todaysOpenComplaints: number
   // averageResolutionTime: number // in hours
   // complaintsByCategory: Record<ComplaintCategory, number>
   // complaintsByPriority: Record<ComplaintPriority, number>
