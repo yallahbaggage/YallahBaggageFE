@@ -310,21 +310,21 @@
                         <p class="status-desc">
                           {{
                             t('statusHasChangedTo', {
-                              status: t(selectedComplaint?.status ?? 'pending'),
+                              status: t('in_progress'),
                             })
                           }}
                         </p>
                       </v-timeline-item>
 
                       <v-timeline-item
-                        v-if="selectedComplaint?.closedAt"
+                        v-if="selectedComplaint?.status === 'closed' || selectedComplaint?.status === 'resolved'"
                         dot-color="white"
                         icon="mdi-check"
                         icon-color="success"
                       >
                         <div class="timeline-item-content">
                           <p>{{ t('statusHasChanged') }}</p>
-                          <span>{{ formatDate(selectedComplaint?.closedAt) }}</span>
+                          <span>{{ selectedComplaint?.closedAt ? formatDate(selectedComplaint.closedAt) : 'N/A' }}</span>
                         </div>
                         <p class="status-desc">
                           {{
