@@ -133,74 +133,81 @@
                     />
                   </p>
                 </div>
+
                 <div class="drawer-form-group">
                   <label for="url" class="drawer-label-group">
-                    {{ t('bannerwillRedirectTo') }}
-                  </label>
-                  <input
+                    {{ t('bannerwillRedirectTo') }}</label
+                  >
+                  <v-text-field
+                    id="banner-url"
                     v-model="newBanner.url"
-                    placeholder="https://www.example.com"
-                    id="url"
-                    type="text"
-                    class="form-input"
-                  />
+                    placeholder="www.example.com"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                  >
+                    <template v-slot:prepend-inner>
+                      <span class="url-prefix">://app</span>
+                    </template>
+                  </v-text-field>
                 </div>
 
                 <div class="drawer-form-group">
-                  <label for="name" class="drawer-label-group">
-                    {{ t('bannerImage') }}
-                  </label>
-                  <div class="image-upload-container">
+                  <label for="url" class="drawer-label-group"></label>
+                  <div
+                    class="image-upload-area"
+                    :class="{ 'drag-over': isDragOver }"
+                    @drop.prevent="handleDrop"
+                    @dragover.prevent="isDragOver = true"
+                    @dragleave.prevent="isDragOver = false"
+                  >
                     <div
-                      class="image-upload-area"
-                      :class="{ 'drag-over': isDragOver }"
-                      @drop="handleDrop"
-                      @dragover.prevent="isDragOver = true"
-                      @dragleave.prevent="isDragOver = false"
+                      v-if="!imageUrl && !imageUploadProgress"
+                      class="upload-placeholder"
                       @click="triggerFileInput"
                     >
-                      <div v-if="!imageUrl" class="upload-placeholder">
-                        <v-icon size="36" color="grey">mdi-cloud-upload-outline</v-icon>
-                        <p>{{ t('chooseFileOrDragDrop') }}</p>
-                        <p class="subtext">
-                          {{ t('supportedFormats') }}: JPEG, PNG, WebP. {{ t('maxSize') }}: 3 MB.
-                        </p>
-                        <v-file-input
-                          ref="fileInput"
-                          show-size
-                          accept="image/*"
-                          label="Browse File"
-                          prepend-icon=""
-                          @change="uploadImage"
-                          hide-details
-                          variant="outlined"
-                          density="compact"
-                          style="display: none"
-                        />
-                      </div>
-                      <div v-else class="uploaded-preview">
-                        <img :src="imageUrl" class="preview-img" />
-                        <div class="file-info">
-                          <span class="file-name">{{ uploadedFileName }}</span>
-                          <span class="file-size">{{ uploadedFileSize }}</span>
-                        </div>
-                        <v-btn icon @click="removeImage" variant="text" size="small">
-                          <v-icon color="red">mdi-close</v-icon>
-                        </v-btn>
-                      </div>
+                      <v-icon size="36" color="grey">mdi-cloud-upload-outline</v-icon>
+                      <p>{{ t('chooseFileOrDragDrop') }}</p>
+                      <p class="subtext">JPEG, PNG, and WebP formats, up to 3 MB.</p>
+                      <v-btn variant="outlined" color="primary" class="browse-btn"
+                        >Browse File</v-btn
+                      >
+                      <v-file-input
+                        ref="fileInput"
+                        @change="uploadImage"
+                        accept="image/*"
+                        style="display: none"
+                      />
                     </div>
 
-                    <div
-                      v-if="imageUploadProgress > 0 && imageUploadProgress < 100"
-                      class="upload-progress"
-                    >
-                      <v-progress-linear
-                        :model-value="imageUploadProgress"
-                        height="6"
-                        color="primary"
-                        rounded
-                      />
-                      <span>{{ imageUploadProgress }}%</span>
+                    <div v-if="imageUrl" class="uploaded-preview">
+                      <img :src="imageUrl" class="preview-img" />
+                      <div class="file-info">
+                        <span class="file-name">{{ uploadedFileName }}</span>
+                        <span class="file-size">{{ uploadedFileSize }}</span>
+                      </div>
+                      <v-btn icon @click.stop="removeImage" variant="text" size="small">
+                        <v-icon color="red">mdi-close</v-icon>
+                      </v-btn>
+                    </div>
+
+                    <div v-if="imageUploadProgress > 0" class="upload-progress-container">
+                      <img src="@/assets/images/logo.svg" alt="file" class="file-icon" />
+                      <div class="progress-details">
+                        <div class="file-name">{{ uploadedFileName }}</div>
+                        <div class="progress-text">
+                          {{ uploadedFileSize }} of {{ totalFileSize }} - Uploading...
+                        </div>
+                        <v-progress-linear
+                          :model-value="imageUploadProgress"
+                          height="6"
+                          color="primary"
+                          rounded
+                        />
+                      </div>
+                      <v-btn icon @click.stop="removeImage" variant="text" size="small">
+                        <v-icon>mdi-close</v-icon>
+                      </v-btn>
                     </div>
                   </div>
                 </div>
@@ -378,7 +385,11 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue3-i18n'
 import { useAdsStore } from '@/stores/modules/adsStore'
 import { IAd } from '@/models/ad'
-import { toastDeleteMessage, toastErrorMessage, toastSuccessMessage } from '@/utils/helpers/notification'
+import {
+  toastDeleteMessage,
+  toastErrorMessage,
+  toastSuccessMessage,
+} from '@/utils/helpers/notification'
 import { formatDateWithoutTime } from '@/utils/helpers/date-helper'
 
 const { t } = useI18n()
@@ -434,6 +445,7 @@ const imageUrl = ref('')
 const uploadedFileName = ref('')
 const uploadedFileSize = ref('')
 const isDragOver = ref(false)
+const totalFileSize = ref('')
 const fileInput = ref<HTMLInputElement>()
 
 const triggerFileInput = () => {
@@ -474,6 +486,7 @@ const processFile = (file: File) => {
       imageUrl.value = res.secure_url
       newBanner.value.image = res.secure_url
       imageUploadProgress.value = 0
+      totalFileSize.value = formatFileSize(res.bytes)
     }
   }
 
@@ -526,7 +539,10 @@ const onAddButtonPressed = async () => {
     toastErrorMessage('Title and Expire Date are required', 'Please fill out the required fields.')
     return
   }
-  if (newBanner.value.startAt && new Date(newBanner.value.startAt) > new Date(newBanner.value.expireDate)) {
+  if (
+    newBanner.value.startAt &&
+    new Date(newBanner.value.startAt) > new Date(newBanner.value.expireDate)
+  ) {
     toastErrorMessage('Please Check Again', t('startDateCannotBeAfterExpireDate'))
     return
   }
@@ -730,4 +746,11 @@ function deleteAd(item: any) {
 .banner-key {
   flex: 1;
 }
+
+.url-prefix {
+  color: #999;
+  font-weight: 500;
+}
+
+
 </style>
