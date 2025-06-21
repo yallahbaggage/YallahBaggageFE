@@ -206,5 +206,6 @@
   "enterDate": "Tarih Girin",
   "enterTime": "Saat Girin",
   "editNotification": "Bildirim Düzenle",
-  "fillOutAllTheInformationsToUpdate": "Güncelleme için tüm bilgileri doldurun"
+  "fillOutAllTheInformationsToUpdate": "Güncelleme için tüm bilgileri doldurun",
+  "updateTheBannerInformation": "Banner bilgilerini güncelle"
 }

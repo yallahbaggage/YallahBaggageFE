@@ -206,5 +206,6 @@
   "enterDate": "Enter Date",
   "enterTime": "Enter Time",
   "editNotification": "Edit Notification",
-  "fillOutAllTheInformationsToUpdate": "Fill out all the informations to update"
+  "fillOutAllTheInformationsToUpdate": "Fill out all the informations to update",
+  "updateTheBannerInformation": "Update the Banner Information"
 }
