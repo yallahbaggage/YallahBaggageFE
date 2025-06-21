@@ -13,7 +13,7 @@
                 <v-col class="drawer-close">
                   <v-chip :style="{ backgroundColor: statusBg(status) , color: statusColor(status) }" v-if="status" small>
                     <span
-                      :style="{ backgroundColor: statusBg(status) , color: statusColor(status) }"
+                      :style="{ backgroundColor: statusColor(status)}"
                       class="status-circle"
                     ></span>
                     {{ t(status) }}
