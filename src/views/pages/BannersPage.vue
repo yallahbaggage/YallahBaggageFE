@@ -217,7 +217,7 @@
                   </label>
                   <v-select
                     v-model="newBanner.status"
-                    :items="['Active', 'Deactive']"
+                    :items="['active', 'deactive']"
                     variant="outlined"
                     density="compact"
                     required
@@ -382,7 +382,7 @@
                   </label>
                   <v-select
                     v-model="editingBanner.status"
-                    :items="['Active', 'Deactive']"
+                    :items="['active', 'deactive']"
                     variant="outlined"
                     density="compact"
                     required
