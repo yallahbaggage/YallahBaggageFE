@@ -26,22 +26,22 @@
 
       <div class="form-group">
         <label for="priority">{{ t('priority') }}</label>
-        <DropdownListMap
+        <!-- <DropdownListMap
           id="priority"
           :list="priorityOptions"
           :selectedValue="formData.priority"
           @change="(value: ComplaintPriority) => formData.priority = value"
-        />
+        /> -->
       </div>
 
       <div class="form-group" v-if="isAdmin">
         <label for="status">{{ t('status') }}</label>
-        <DropdownListMap
+        <!-- <DropdownListMap
           id="status"
           :list="statusOptions"
           :selectedValue="formData.status"
           @change="(value: ComplaintStatus) => formData.status = value"
-        />
+        /> -->
       </div>
 
       <div class="form-group">

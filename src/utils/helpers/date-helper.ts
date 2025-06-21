@@ -8,7 +8,6 @@ export const formatDate = (date: string | Date): string => {
     year: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-    second: '2-digit',
     hour12: false // for 24-hour format; remove if you want AM/PM
   }).replace(',', '') // remove the comma after the date
 }
