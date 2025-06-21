@@ -626,7 +626,7 @@ const onAddButtonPressed = async () => {
 
     // 2. Validate sendNow vs sendNotificationOnDate
     if (!newNotification.value.sendNow && !newNotification.value.sendNotificationOnDate) {
-      toastErrorMessage('Please select a date', 'You must select a date to send the notification if you are not sending it now.')
+      toastErrorMessage('Please select a date and time', 'You must select a date and time to send the notification if you are not sending it now.')
       return
     }
 
@@ -643,7 +643,7 @@ const onAddButtonPressed = async () => {
 
       const selectedDate = new Date(isoDate)
       const now = new Date()
-      if (selectedDate <= now) {
+      if (selectedDate < now) {
         toastErrorMessage('Invalid date', 'Please select a future date for sending the notification.')
         return
       }
