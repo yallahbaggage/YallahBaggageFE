@@ -10,8 +10,10 @@
       </div>
     </div>
     <div class="header-right-content">
-      <v-icon class="action-icon">mdi-magnify</v-icon>
-      <v-icon class="action-icon">mdi-bell-outline</v-icon>
+      <!-- <v-icon class="action-icon">mdi-magnify</v-icon> -->
+      <router-link v-if="!hideIconIfPageRouteNotification" role="button" to="/notifications" class="menu-link" active-class="active">
+        <v-icon class="action-icon">mdi-bell-outline</v-icon>
+      </router-link>
       <template v-if="props.showButton">
         <ActionButton
           :button-text="props.buttonText"
@@ -26,7 +28,9 @@
   </div>
 </template>
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
 import ActionButton from './ActionButton.vue'
+import { computed } from 'vue'
 
 const props = defineProps({
   title: {
@@ -56,6 +60,12 @@ const emit = defineEmits(['button-pressed', 'icon-pressed'])
 const onButtonPressed = () => {
   emit('button-pressed')
 }
+
+const route = useRoute()
+
+
+const hideIconIfPageRouteNotification = computed(() => route.path === '/notifications')
+
 </script>
 <style scoped lang="scss">
 @use 'styles/main' as *;
