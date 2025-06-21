@@ -30,9 +30,21 @@ export const parseDateTimeString = (input: string): string | null => {
   const [day, month, year] = datePart.split('/').map(Number)
   const [hours, minutes] = timePart.split(':').map(Number)
 
-  const parsedDate = new Date(year, month - 1, day, hours, minutes)
+  // Create date in UTC to avoid timezone offset issues
+  const parsedDate = new Date(Date.UTC(year, month - 1, day, hours, minutes))
 
   return isNaN(parsedDate.getTime()) ? null : parsedDate.toISOString()
+}
+
+// Helper function to create a date in UTC consistently
+export const createUTCDate = (year: number, month: number, day: number, hours: number = 0, minutes: number = 0): string => {
+  const date = new Date(Date.UTC(year, month - 1, day, hours, minutes))
+  return date.toISOString()
+}
+
+// Helper function to get current date in UTC
+export const getCurrentUTCDate = (): string => {
+  return new Date().toISOString()
 }
 
 export function formatIsoToReadable(dateString: string): string {

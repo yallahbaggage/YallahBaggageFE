@@ -145,7 +145,7 @@
                     :placeholder="t('sendNotificationOn')"
                     variant="outlined"
                     density="compact"
-                    :min-date="new Date().toISOString().slice(0, 16)"
+                    :min-date="getCurrentUTCDate()"
                     hide-details
                     class="no-focus-border"
                   />
@@ -289,7 +289,7 @@
                     :placeholder="t('sendNotificationOn')"
                     variant="outlined"
                     density="compact"
-                    :min-date="new Date().toISOString().slice(0, 16)"
+                    :min-date="getCurrentUTCDate()"
                     hide-details
                     class="no-focus-border"
                   />
@@ -542,7 +542,7 @@ import {
   toastSuccessMessage,
 } from '@/utils/helpers/notification'
 import type { CreateNotificationDto, INotification } from '@/utils/services/notificationsService'
-import { formatDate, formatDateWithoutTime, formatIsoToReadable, parseDateTimeString } from '@/utils/helpers/date-helper'
+import { formatDate, formatDateWithoutTime, formatIsoToReadable, parseDateTimeString, getCurrentUTCDate } from '@/utils/helpers/date-helper'
 import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
 import DateTimePicker from '@/components/base/DateTimePicker.vue'
 import { useUserStore } from '@/stores/modules/userStore'
@@ -602,7 +602,7 @@ const resetForm = () => {
     startAt: '',
     expireDate: '',
     redirectTo: '',
-    sendNotificationOnDate: new Date().toISOString(),
+    // sendNotificationOnDate is optional, let user select it
     status: 'active',
     sendNow: true, // Default to true for sending immediately
     isGlobal: true, // Default to true for not global
@@ -692,9 +692,7 @@ const editNotification = (notification: any) => {
     sendNow: notification.sendNow,
     isGlobal: notification.isGlobal,
     targetUsers: notification.targetUsers.map((user: any) => user._id),
-    sendNotificationOnDate: notification.sendNotificationOnDate
-      ? new Date(notification.sendNotificationOnDate).toISOString()
-      : undefined,
+    sendNotificationOnDate: notification.sendNotificationOnDate || undefined,
   }
   isEditDialogOpen.value = true
 }
@@ -729,14 +727,35 @@ const handleUpdate = async () => {
       }
 
       const dateValue = updatePayload.sendNotificationOnDate
-      const dateString = dateValue instanceof Date ? dateValue.toISOString() : dateValue
-
-      const isoDate = parseDateTimeString(dateString)
-      if (!isoDate) {
-        toastErrorMessage('Invalid date', 'The selected date format must be DD/MM/YYYY HH:mm')
-        return
+      
+      // If it's already an ISO string, use it directly
+      if (typeof dateValue === 'string' && dateValue.includes('T')) {
+        // It's already an ISO string, validate it
+        const selectedDate = new Date(dateValue)
+        const now = new Date()
+        if (selectedDate < now) {
+          toastErrorMessage('Invalid date', 'Please select a future date for sending the notification.')
+          return
+        }
+        updatePayload.sendNotificationOnDate = dateValue
+      } else {
+        // It's in DD/MM/YYYY HH:mm format, parse it
+        const dateString = dateValue instanceof Date ? dateValue.toISOString() : dateValue
+        const isoDate = parseDateTimeString(dateString)
+        if (!isoDate) {
+          toastErrorMessage('Invalid date', 'The selected date format must be DD/MM/YYYY HH:mm')
+          return
+        }
+        
+        const selectedDate = new Date(isoDate)
+        const now = new Date()
+        if (selectedDate < now) {
+          toastErrorMessage('Invalid date', 'Please select a future date for sending the notification.')
+          return
+        }
+        
+        updatePayload.sendNotificationOnDate = isoDate
       }
-      updatePayload.sendNotificationOnDate = isoDate
       updatePayload.sendNow = false
     } else {
       delete updatePayload.sendNotificationOnDate
