@@ -410,7 +410,7 @@
                   "
                   class="action-Btn"
                 />
-                <ActionButton :buttonText="t('update')" buttonType="submit" class="action-Btn" />
+                <ActionButton :buttonText="t('save')" buttonType="submit" class="action-Btn" />
               </div>
             </div>
           </form>
@@ -702,11 +702,24 @@ const onAddButtonPressed = async () => {
 
 const editBanner = (item: any) => {
   editingBanner.value = item
-  isUpdateDrawerOpen.value = true
+
+  const formatDateForInput = (date: string | Date | undefined) => {
+    if (!date) return ''
+    return new Date(date).toISOString().split('T')[0]
+  }
+
+  if (editingBanner.value) {
+    editingBanner.value.startAt =
+      formatDateForInput(editingBanner.value.startAt) ||
+      formatDateForInput(editingBanner.value.createdAt)
+    editingBanner.value.expireDate = formatDateForInput(editingBanner.value.expireDate)
+  }
+
   if (item.image) {
     imageUrl.value = item.image
     uploadedFileName.value = 'current-image.jpg'
   }
+  isUpdateDrawerOpen.value = true
 }
 
 const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
