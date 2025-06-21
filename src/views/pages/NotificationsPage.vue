@@ -145,7 +145,7 @@
                     :placeholder="t('sendNotificationOn')"
                     variant="outlined"
                     density="compact"
-                    :min-date="getCurrentUTCDate()"
+                    :min-date="getTodayForDatePicker()"
                     hide-details
                     class="no-focus-border"
                   />
@@ -289,7 +289,7 @@
                     :placeholder="t('sendNotificationOn')"
                     variant="outlined"
                     density="compact"
-                    :min-date="getCurrentUTCDate()"
+                    :min-date="getTodayForDatePicker()"
                     hide-details
                     class="no-focus-border"
                   />
@@ -542,7 +542,7 @@ import {
   toastSuccessMessage,
 } from '@/utils/helpers/notification'
 import type { CreateNotificationDto, INotification } from '@/utils/services/notificationsService'
-import { formatDate, formatDateWithoutTime, formatIsoToReadable, parseDateTimeString, getCurrentUTCDate } from '@/utils/helpers/date-helper'
+import { formatDate, parseDateTimeString, getTodayForDatePicker } from '@/utils/helpers/date-helper'
 import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
 import DateTimePicker from '@/components/base/DateTimePicker.vue'
 import { useUserStore } from '@/stores/modules/userStore'
@@ -644,12 +644,31 @@ const onAddButtonPressed = async () => {
 
       const selectedDate = new Date(isoDate)
       const now = new Date()
-      if (selectedDate < now) {
-        toastErrorMessage('Invalid date', 'Please select a future date for sending the notification.')
+      
+      // Allow today and future dates only
+      const selectedDateOnly = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate())
+      const todayOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      
+      if (selectedDateOnly < todayOnly) {
+        toastErrorMessage('Invalid date', 'Please select today or a future date for sending the notification.')
         return
       }
 
-      newNotification.value.sendNotificationOnDate = isoDate
+      // If user selected today's date with a past time, adjust to current time
+      const isToday = selectedDateOnly.getTime() === todayOnly.getTime()
+      if (isToday && selectedDate < now) {
+        // Update the time to current time
+        const currentTime = now.toTimeString().slice(0, 5)
+        const [day, month, year] = selectedDate.toLocaleDateString('en-GB').split('/')
+        const updatedDateTime = `${day}/${month}/${year} ${currentTime}`
+        const updatedIsoDate = parseDateTimeString(updatedDateTime)
+        if (updatedIsoDate) {
+          newNotification.value.sendNotificationOnDate = updatedDateTime
+          toastSuccessMessage('Time adjusted', 'The time has been adjusted to the current time since the selected time has already passed.')
+        }
+      } else {
+        newNotification.value.sendNotificationOnDate = isoDate
+      }
       newNotification.value.sendNow = false
     }
 
@@ -733,8 +752,13 @@ const handleUpdate = async () => {
         // It's already an ISO string, validate it
         const selectedDate = new Date(dateValue)
         const now = new Date()
-        if (selectedDate < now) {
-          toastErrorMessage('Invalid date', 'Please select a future date for sending the notification.')
+        
+        // Allow today and future dates only
+        const selectedDateOnly = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate())
+        const todayOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+        
+        if (selectedDateOnly < todayOnly) {
+          toastErrorMessage('Invalid date', 'Please select today or a future date for sending the notification.')
           return
         }
         updatePayload.sendNotificationOnDate = dateValue
@@ -749,12 +773,31 @@ const handleUpdate = async () => {
         
         const selectedDate = new Date(isoDate)
         const now = new Date()
-        if (selectedDate < now) {
-          toastErrorMessage('Invalid date', 'Please select a future date for sending the notification.')
+        
+        // Allow today and future dates only
+        const selectedDateOnly = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate())
+        const todayOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+        
+        if (selectedDateOnly < todayOnly) {
+          toastErrorMessage('Invalid date', 'Please select today or a future date for sending the notification.')
           return
         }
         
-        updatePayload.sendNotificationOnDate = isoDate
+        // If user selected today's date with a past time, adjust to current time
+        const isToday = selectedDateOnly.getTime() === todayOnly.getTime()
+        if (isToday && selectedDate < now) {
+          // Update the time to current time
+          const currentTime = now.toTimeString().slice(0, 5)
+          const [day, month, year] = selectedDate.toLocaleDateString('en-GB').split('/')
+          const updatedDateTime = `${day}/${month}/${year} ${currentTime}`
+          const updatedIsoDate = parseDateTimeString(updatedDateTime)
+          if (updatedIsoDate) {
+            updatePayload.sendNotificationOnDate = updatedDateTime
+            toastSuccessMessage('Time adjusted', 'The time has been adjusted to the current time since the selected time has already passed.')
+          }
+        } else {
+          updatePayload.sendNotificationOnDate = isoDate
+        }
       }
       updatePayload.sendNow = false
     } else {
@@ -824,7 +867,7 @@ const getTypeColor = (type: string) => {
     {
       sent: 'green',
       failed: 'red',
-    }[type] || 'grey'
+    }[type] ?? 'grey'
   )
 }
 

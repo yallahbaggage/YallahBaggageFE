@@ -47,6 +47,28 @@ export const getCurrentUTCDate = (): string => {
   return new Date().toISOString()
 }
 
+// Helper function to get start of today in UTC
+export const getStartOfTodayUTC = (): string => {
+  const now = new Date()
+  const todayStart = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()))
+  return todayStart.toISOString()
+}
+
+// Helper function to get start of today in local timezone (for date picker)
+export const getStartOfTodayLocal = (): string => {
+  const now = new Date()
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  return todayStart.toISOString()
+}
+
+// Helper function to get today's date for date picker min restriction
+export const getTodayForDatePicker = (): string => {
+  const today = new Date()
+  // Create date at start of today and return as ISO string
+  const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+  return todayStart.toISOString()
+}
+
 export function formatIsoToReadable(dateString: string): string {
   const date = new Date(dateString);
 

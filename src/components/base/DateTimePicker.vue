@@ -108,9 +108,19 @@ function onTimeChange(time: string) {
 function confirmSelection() {
   if (selectedDate.value) {
     try {
-      const timePart = props.showTime 
-        ? (selectedTime.value ?? new Date().toTimeString().slice(0, 5))
-        : '00:00';
+      // Get current time
+      const now = new Date()
+      const currentTime = now.toTimeString().slice(0, 5)
+      
+      // Determine the time to use
+      let timePart: string
+      if (props.showTime && selectedTime.value) {
+        // User selected a specific time
+        timePart = selectedTime.value
+      } else {
+        // Use current time as default
+        timePart = currentTime
+      }
 
       const localeDate = new Date(selectedDate.value).toLocaleDateString('en-GB');
 
@@ -124,7 +134,7 @@ function confirmSelection() {
         throw new Error('Invalid combined date and time')
       }
 
-      fullDateTime.value = props.showTime ? `${localeDate} ${timePart}` : localeDate;
+      fullDateTime.value = `${localeDate} ${timePart}`;
 
       emit('update:modelValue', fullDateTime.value)
     } catch (error) {
