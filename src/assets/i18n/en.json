@@ -203,5 +203,7 @@
   "selectTargetCustomers": "Select Target Customer/s",
   "enterDateAndTime": "Enter Date and Time",
   "enterDate": "Enter Date",
-  "enterTime": "Enter Time"
+  "enterTime": "Enter Time",
+  "editNotification": "Edit Notification",
+  "fillOutAllTheInformationsToUpdate": "Fill out all the informations to update"
 }

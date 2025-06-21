@@ -203,5 +203,7 @@
   "selectTargetCustomers": "Hedef Müşteri/leri Seç",
   "enterDateAndTime": "Tarih ve Saat Girin",
   "enterDate": "Tarih Girin",
-  "enterTime": "Saat Girin"
+  "enterTime": "Saat Girin",
+  "editNotification": "Bildirim Düzenle",
+  "fillOutAllTheInformationsToUpdate": "Güncelleme için tüm bilgileri doldurun"
 }

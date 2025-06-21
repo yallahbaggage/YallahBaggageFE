@@ -76,7 +76,7 @@ class NotificationsService {
   }
 
   async update(id: string, notification: UpdateNotificationDto): Promise<INotification> {
-    const response = await api.patch(`${this.baseUrl}/${id}`, notification);
+    const response = await api.put(`${this.baseUrl}/${id}`, notification);
     return response.data;
   }
 

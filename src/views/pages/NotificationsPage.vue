@@ -52,6 +52,10 @@
                   <v-icon class="mr-2">mdi-eye-outline</v-icon>
                   {{ t('seeDetails') }}
                 </v-list-item>
+                <v-list-item class="menu-item" @click="editNotification(item)">
+                  <v-icon class="mr-2">mdi-pencil-outline</v-icon>
+                  {{ t('editNotification') }}
+                </v-list-item>
                 <v-list-item class="menu-item" @click="deleteNotification(item)">
                   <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
                   {{ t('deleteNotification') }}
@@ -211,6 +215,142 @@
         </div>
       </Drawer>
       <!-- add Drawer -->
+      <!-- Edit Drawer -->
+      <Drawer
+        :isOpen="isEditDialogOpen"
+        :title="t('editNotification')"
+        :desc="t('fillOutAllTheInformationsToUpdate')"
+        @close="closeEditDrawer"
+      >
+        <div style="max-height: 75vh">
+          <form @submit.prevent="handleUpdate()" class="form">
+            <div>
+              <div class="drawer-banner">
+                <p>{{ t('generalInformation') }}</p>
+              </div>
+              <div>
+                <div class="drawer-form-group">
+                  <label for="edit-name" class="drawer-label-group">
+                    {{ t('notificationTitle') }}<span class="required">*</span>
+                  </label>
+                  <input
+                    id="edit-name"
+                    type="text"
+                    class="form-input no-focus-border"
+                    :placeholder="t('notificationTitle')"
+                    v-model="editingNotification.title"
+                    required
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label for="edit-message" class="drawer-label-group">
+                    {{ t('notificationDesc') }}<span class="required">*</span>
+                  </label>
+                  <textarea
+                    id="edit-message"
+                    type="text"
+                    class="form-input no-focus-border"
+                    :placeholder="t('notificationDesc')"
+                    v-model="editingNotification.message"
+                    required
+                    maxlength="200"
+                  ></textarea>
+                </div>
+                <div class="drawer-banner">
+                  <p>{{ t('advancedDetails') }}</p>
+                </div>
+
+                <div class="drawer-form-group">
+                  <label for="edit-redirectTo" class="drawer-label-group">
+                    {{ t('notificationWillRedirectTo') }}</label
+                  >
+                  <v-text-field
+                    id="banner-redirectTo"
+                    v-model="editingNotification.redirectTo"
+                    placeholder="www.example.com"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    class="no-focus-border"
+                  >
+                    <template v-slot:prepend-inner>
+                      <span class="url-prefix">://app</span>
+                    </template>
+                  </v-text-field>
+                </div>
+                <div class="drawer-form-group" v-if="!editingNotification.sendNow">
+                  <label for="edit-sendOn" class="drawer-label-group">
+                    {{ t('sendNotificationOn') }}</label
+                  >
+                  <DateTimePicker
+                    v-model="editingNotification.sendNotificationOnDate"
+                    :show-time="true"
+                    :placeholder="t('sendNotificationOn')"
+                    variant="outlined"
+                    density="compact"
+                    :min-date="new Date().toISOString().slice(0, 16)"
+                    hide-details
+                    class="no-focus-border"
+                  />
+                </div>
+                <div class="drawer-form-group flex">
+                  <v-switch
+                    class="no-focus-border"
+                    color="primary"
+                    v-model="editingNotification.sendNow"
+                    hide-details
+                    :label="t('sendNotificationNow')"
+                  ></v-switch>
+                  <v-switch
+                    class="no-focus-border"
+                    color="primary"
+                    v-model="editingNotification.isGlobal"
+                    hide-details
+                    :label="t('isGlobalNotification')"
+                  ></v-switch>
+                </div>
+
+                <div
+                  class="drawer-form-group"
+                  v-if="!editingNotification.isGlobal && users?.length > 0"
+                >
+                  <label for="edit-target" class="drawer-label-group">
+                    {{ t('selectTargetCustomers') }}</label
+                  >
+                  <v-select
+                    v-model="editingNotification.targetUsers"
+                    :items="
+                      users?.map((user: IUser) => ({
+                        title: user.name,
+                        value: user._id,
+                      }))
+                    "
+                    item-title="title"
+                    item-value="value"
+                    multiple
+                    chips
+                    class="no-focus-border"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    :placeholder="t('selectTargetCustomers')"
+                  />
+                </div>
+              </div>
+              <div class="action-btns">
+                <ActionButton
+                  :buttonText="t('cancel')"
+                  buttonColor="white"
+                  @button-pressed="closeEditDrawer"
+                  class="action-Btn"
+                />
+                <ActionButton :buttonText="t('update')" buttonType="submit" class="action-Btn" />
+              </div>
+            </div>
+          </form>
+        </div>
+      </Drawer>
+      <!-- Edit Drawer -->
       <!-- details Drawer -->
       <Drawer
         :isOpen="isDetailsNotificationDrawerOpen"
@@ -413,10 +553,12 @@ const store = useNotificationsStore()
 const page = ref(1)
 const itemsPerPage = ref(8)
 const isDialogOpen = ref(false)
+const isEditDialogOpen = ref(false)
 const isDetailsNotificationDrawerOpen = ref(false)
 const isDeleteNotificationDrawerOpen = ref(false)
 const isConfirmDeletePopupVisible = ref(false)
 const selectedNotification = ref<INotification | null>(null)
+const editingNotification = ref<Partial<CreateNotificationDto & { _id: string }>>({})
 const items = computed(() => store.allNotifications)
 const totalItems = computed(() => store.paginationInfo?.total ?? 0)
 const loading = computed(() => store.isLoading)
@@ -532,22 +674,74 @@ const onAddButtonPressed = async () => {
   }
 }
 
-// const form = ref<CreateNotificationDto>({
-//   title: '',
-//   message: '',
-//   type: 'info'
-// });
-// const form = ref<any>(null)
-// const title = ref('')
-// const message = ref('')
-// const type = ref('')
+const editNotification = (notification: any) => {
+  editingNotification.value = {
+    _id: notification._id,
+    title: notification.title,
+    message: notification.message,
+    redirectTo: notification.redirectTo,
+    sendNow: notification.sendNow,
+    isGlobal: notification.isGlobal,
+    targetUsers: notification.targetUsers.map((user: any) => user._id),
+    sendNotificationOnDate: notification.sendNotificationOnDate
+      ? new Date(notification.sendNotificationOnDate).toISOString()
+      : undefined,
+  }
+  isEditDialogOpen.value = true
+}
 
-// const notificationTypes = [
-//   { title: t('info'), value: 'info' },
-//   { title: t('success'), value: 'success' },
-//   { title: t('warning'), value: 'warning' },
-//   { title: t('error'), value: 'error' },
-// ]
+const closeEditDrawer = () => {
+  isEditDialogOpen.value = false
+  editingNotification.value = {}
+}
+
+const handleUpdate = async () => {
+  try {
+    if (!editingNotification.value._id) {
+      toastErrorMessage('Notification ID is missing.', 'Cannot update notification without an ID.')
+      return
+    }
+
+    const updatePayload = { ...editingNotification.value }
+
+    // Similar validation as onAddButtonPressed
+    if (!updatePayload.isGlobal && (!updatePayload.targetUsers || updatePayload.targetUsers.length === 0)) {
+      toastErrorMessage('Please provide target users or set as global notification.', 'You must select at least one user for the notification or select it as a global.')
+      return
+    }
+    if (updatePayload.isGlobal) {
+      updatePayload.targetUsers = []
+    }
+
+    if (!updatePayload.sendNow) {
+      if (!updatePayload.sendNotificationOnDate) {
+        toastErrorMessage('Please select a date', 'You must select a date to send the notification if you are not sending it now.')
+        return
+      }
+
+      const dateValue = updatePayload.sendNotificationOnDate
+      const dateString = dateValue instanceof Date ? dateValue.toISOString() : dateValue
+
+      const isoDate = parseDateTimeString(dateString)
+      if (!isoDate) {
+        toastErrorMessage('Invalid date', 'The selected date format must be DD/MM/YYYY HH:mm')
+        return
+      }
+      updatePayload.sendNotificationOnDate = isoDate
+      updatePayload.sendNow = false
+    } else {
+      delete updatePayload.sendNotificationOnDate
+    }
+
+    await store.updateNotification(editingNotification.value._id!, updatePayload as any)
+    toastSuccessMessage(t('notificationUpdated'), 'The notification has been updated successfully.')
+    closeEditDrawer()
+    fetchNotifications()
+  } catch (error) {
+    console.error(error)
+    toastErrorMessage(t('anErrorOccured'), t('notificationErrorTryAgain'))
+  }
+}
 
 const headers = [
   { title: 'ID', key: '_id', sortable: false },
