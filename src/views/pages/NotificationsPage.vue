@@ -21,15 +21,15 @@
         <template #cell-sendNotificationOnDate="{ item }"> {{ formatDate(item.sendNotificationOnDate) }}</template>
         <template #cell-type="{ item }">
           <v-chip
-            :color="getTypeColor(item?.createdAt ? 'sent' : 'failed')"
+            :color="statusColor(getStatusAccordingToSendDate(item.sendNotificationOnDate))"
             text-color="white"
             small
           >
             <span
-              :style="{ backgroundColor: statusColor(item.status) }"
+              :style="{ backgroundColor: statusColor(getStatusAccordingToSendDate(item.sendNotificationOnDate)) }"
               class="status-circle"
             ></span>
-            {{ item?.createdAt ? t('sent') : t('failed') }}
+            {{ t(getStatusAccordingToSendDate(item.sendNotificationOnDate)) }}
           </v-chip>
         </template>
         <!-- <template #cell-isRead="{ item }">
@@ -675,6 +675,14 @@ const onAddButtonPressed = async () => {
   }
 }
 
+const getStatusAccordingToSendDate = (sendNotificationOnDate: string) => {
+  if (!sendNotificationOnDate) return 'failed'
+  const sendDate = new Date(sendNotificationOnDate)
+  const now = new Date()
+
+  return sendDate <= now ? 'sent' : 'pending'
+}
+
 const editNotification = (notification: any) => {
   editingNotification.value = {
     _id: notification._id,
@@ -769,6 +777,8 @@ function statusColor(status: string): string {
       return '#10b981' // green
     case 'failed':
       return '#ef4444' // red
+    case 'pending':
+      return '#f59e0b' // yellow
     default:
       return '#9ca3af' // fallback gray
   }
