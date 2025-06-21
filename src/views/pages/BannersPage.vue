@@ -104,7 +104,7 @@
                   <input
                     id="name"
                     type="text"
-                    class="form-input"
+                    class="form-input no-focus-border"
                     placeholder="Banner title here"
                     v-model="newBanner.title"
                     required
@@ -119,6 +119,7 @@
                       variant="outlined"
                       density="compact"
                       hide-details
+                      class="no-focus-border"
                     />
                   </p>
                   <p class="banner-value">
@@ -128,8 +129,9 @@
                       type="date"
                       variant="outlined"
                       density="compact"
-                      required
                       hide-details
+                      required
+                      class="no-focus-border"
                     />
                   </p>
                 </div>
@@ -145,6 +147,7 @@
                     variant="outlined"
                     density="compact"
                     hide-details
+                    class="no-focus-border"
                   >
                     <template v-slot:prepend-inner>
                       <span class="url-prefix">://app</span>
@@ -222,6 +225,7 @@
                     density="compact"
                     required
                     hide-details
+                    class="no-focus-border"
                   />
                 </div>
               </div>
@@ -270,7 +274,7 @@
                   <input
                     id="name"
                     type="text"
-                    class="form-input"
+                    class="form-input no-focus-border"
                     placeholder="Banner title here"
                     v-model="editingBanner.title"
                     required
@@ -285,6 +289,7 @@
                       variant="outlined"
                       density="compact"
                       hide-details
+                      class="no-focus-border"
                     />
                   </p>
                   <p class="banner-value">
@@ -296,6 +301,7 @@
                       density="compact"
                       hide-details
                       required
+                      class="no-focus-border"
                     />
                   </p>
                 </div>
@@ -311,6 +317,7 @@
                     variant="outlined"
                     density="compact"
                     hide-details
+                    class="no-focus-border"
                   >
                     <template v-slot:prepend-inner>
                       <span class="url-prefix">://app</span>
@@ -387,6 +394,7 @@
                     density="compact"
                     required
                     hide-details
+                    class="no-focus-border"
                   />
                 </div>
               </div>
