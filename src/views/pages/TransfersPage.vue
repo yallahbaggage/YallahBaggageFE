@@ -61,7 +61,7 @@
           <template #cell-workerId="{ item }">
             <span v-if="item?.workerId?.name">{{ item.workerId.name }}</span>
             <v-btn outline v-else @click="() => assignEmployee(item as Transfer)">
-            <v-icon>mdi-plus-circle-outline</v-icon>
+              <v-icon>mdi-plus-circle-outline</v-icon>
               {{ t('assign') }}
             </v-btn>
           </template>
@@ -189,14 +189,18 @@
                       <div class="status-stepper">
                         <v-timeline>
                           <v-timeline-item
-                            v-if="selectedTransfer?.createdAt"
                             dot-color="white"
-                            icon="mdi-ticket-confirmation-outline"
+                            icon="mdi-shopping-outline"
+                            icon-color="gray"
+                            v-if="selectedTransfer?.acceptedAt"
                           >
                             <div class="timeline-item-content">
-                              <p>{{ t('ticketCreatedAt') }}</p>
-                              <span>{{ formatDate(selectedTransfer?.createdAt) }}</span>
+                              <p>{{ t('orderConfirmed') }}</p>
+                              <span>{{ formatDate(selectedTransfer?.acceptedAt) }}</span>
                             </div>
+                            <p class="status-desc">
+                              {{ t('orderPlacedAndConfirmed') }}
+                            </p>
                           </v-timeline-item>
 
                           <v-timeline-item
@@ -204,21 +208,50 @@
                             dot-color="white"
                             icon="mdi-rotate-3d-variant"
                             icon-color="orange"
-                            v-if="selectedTransfer?.acceptedAt"
+                            v-if="selectedTransfer?.assigneedAt"
                           >
                             <div class="timeline-item-content">
-                              <p>{{ t('statusHasChanged') }}</p>
-                              <span>{{ formatDate(selectedTransfer?.acceptedAt) }}</span>
+                              <p>{{ t('staffAssigned') }}</p>
+                              <span>{{ formatDate(selectedTransfer?.assigneedAt) }}</span>
                             </div>
                             <p class="status-desc">
-                              {{
-                                t('statusHasChangedTo', {
-                                  status: t(selectedTransfer?.status ?? 'pending'),
-                                })
-                              }}
+                              <span class="stepper-worker-name">{{
+                                selectedTransfer.workerId.name
+                              }}</span>
+                              {{ t('assignedToTransfer') }}
                             </p>
                           </v-timeline-item>
 
+                          <v-timeline-item
+                            v-if="selectedTransfer?.onTheWayAt"
+                            dot-color="white"
+                            icon="mdi-check"
+                            icon-color="success"
+                          >
+                            <div class="timeline-item-content">
+                              <p>{{ t('courierIsOnTheWay') }}</p>
+                              <span>{{ formatDate(selectedTransfer?.onTheWayAt) }}</span>
+                            </div>
+                            <p class="status-desc">
+                              {{ t('ourCourierIsOnTheWayToPickUp') }}
+                            </p>
+                          </v-timeline-item>
+                          <v-timeline-item
+                            v-if="selectedTransfer?.inTransitAt"
+                            dot-color="white"
+                            icon="mdi-check"
+                            icon-color="success"
+                          >
+                            <div class="timeline-item-content">
+                              <p>{{ t('weReceivedYourLuggages') }}</p>
+                              <span>{{ formatDate(selectedTransfer?.inTransitAt) }}</span>
+                            </div>
+                            <p class="status-desc">
+                              {{
+                                t('packageInTransit')
+                              }}
+                            </p>
+                          </v-timeline-item>
                           <v-timeline-item
                             v-if="selectedTransfer?.completedAt"
                             dot-color="white"
@@ -226,13 +259,13 @@
                             icon-color="success"
                           >
                             <div class="timeline-item-content">
-                              <p>{{ t('statusHasChanged') }}</p>
+                              <p>{{ t('baggageDelivered') }}</p>
                               <span>{{ formatDate(selectedTransfer?.completedAt) }}</span>
                             </div>
                             <p class="status-desc">
                               {{
-                                t('statusHasChangedTo', {
-                                  status: t(selectedTransfer?.status ?? 'completed'),
+                                t('baggageHasBeenDeliveredTo', {
+                                  placeName: t(selectedTransfer?.to ?? 'N/A'),
                                 })
                               }}
                             </p>
@@ -274,7 +307,7 @@ const loading = computed(() => tranfersStore.isLoading)
 // Initial loading state for first page load
 const initialLoading = ref(true)
 
-const isDetailsTransfersDrawerOpen = ref(false)
+const isDetailsTransfersDrawerOpen = ref(true)
 const workers = ref<IWorker[]>([])
 const workersLoading = ref(false)
 const statusOptions = [
@@ -582,5 +615,10 @@ watch([page, itemsPerPage], fetchAllTranfers)
   flex-direction: column;
   gap: 12px;
   margin: 10px;
+}
+.stepper-worker-name {
+  // underline
+  text-decoration: underline;
+  color: rgb(var(--v-theme-primary));
 }
 </style>

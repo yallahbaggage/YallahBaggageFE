@@ -16,7 +16,7 @@ export interface TransferRating {
 export interface Transfer {
   _id: string;
   userId: string | User;
-  workerId?: string | Worker;
+  workerId?: any | Worker;
   complaintId?: string | Complaint;
   items: TransferItem[];
   status: 'pending' | 'in_progress' | 'in_transit' | 'onTheWay' | 'completed' | 'cancelled';
@@ -38,6 +38,7 @@ export interface Transfer {
   assigneedAt?: string;
   onTheWayAt?: string;
   acceptedAt?: string;
+  inTransitAt?: string;
 }
 
 

@@ -213,5 +213,15 @@
   "fillOutAllTheInformationsToUpdate": "Güncelleme için tüm bilgileri doldurun",
   "updateTheBannerInformation": "Banner bilgilerini güncelle",
   "assignEmployeeToTransfer": "Transfer #{transfer} için Çalışan Ata",
-  "page": "Sayfa"
+  "page": "Sayfa",
+  "orderConfirmed": "Sipariş Onaylandı",
+  "orderPlacedAndConfirmed":"Sipariş Verildi ve Onaylandı",
+  "staffAssigned": "Personel Atandı",
+  "assignedToTransfer":"Atandı",
+  "courierIsOnTheWay": "Kurye Yolda",
+  "ourCourierIsOnTheWayToPickUp": "Kurye Siparişi Almak İçin Yolda",
+  "weReceivedYourLuggages": "Bagajlarınız Alındı",
+  "packageInTransit": "Paket Transit'te",
+  "baggageDelivered": "Bagaj Teslim Edildi",
+  "baggageHasBeenDeliveredTo": "Bagajınız {{placeName}} adresine teslim edildi"
 }

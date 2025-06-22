@@ -215,5 +215,13 @@
   "assignEmployeeToTransfer": "Assign employee to transfer #{transferId}",
   "page": "Page",
   "orderConfirmed": "Order confirmed",
-  "orderPlacedAndConfirmed":"Order placed and confirmed"
+  "orderPlacedAndConfirmed":"Order placed and confirmed",
+  "staffAssigned": "Staff assigned",
+  "assignedToTransfer":"assigned to transfer",
+  "courierIsOnTheWay": "Courier is on the way",
+  "ourCourierIsOnTheWayToPickUp": "Our courier is on the way to pick up",
+  "weReceivedYourLuggages": "We received your luggages",
+  "packageInTransit": "Package in transit",
+  "baggageDelivered": "Baggage delivered",
+  "baggageHasBeenDeliveredTo": "Baggage has been delivered to {placeName}"
 }
