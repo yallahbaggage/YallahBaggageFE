@@ -9,293 +9,302 @@
       v-on:button-pressed="() => (isEmployeeDrawerOpen = true)"
     />
     <div class="page-content">
-      <div class="cards">
-        <InfoCard class="infoCard" :cardTitle="t('totalEmployees')">
-          {{ stats.totalWorkers }}
-        </InfoCard>
-        <InfoCard class="infoCard" :cardTitle="t('employeesOnTransfer')">
-          {{ stats.workersWithTransfers }}
-        </InfoCard>
-        <InfoCard class="infoCard" :cardTitle="t('availableEmployees')">
-          {{ stats.availableWorkers }}
-        </InfoCard>
+      <!-- Loading state for initial page load -->
+      <div v-if="initialLoading" class="loading-state">
+        <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
+        <p>{{ t('loading') }}</p>
       </div>
-      <hr class="infoHr" />
-      <ServerTable
-        :headers="headers"
-        :items="workers"
-        :total-items="pagination.total"
-        :loading="loading"
-        v-model:page="page"
-        v-model:items-per-page="itemsPerPage"
-      >
-        <template #cell-status="{ item }">
-          <v-chip :color="statusColor(item.status)" text-color="white" medium>
-            <span
-              :style="{ backgroundColor: statusColor(item.status) }"
-              class="status-circle"
-            ></span>
-            {{ t(item.status) ?? t('pending') }}
-          </v-chip>
-        </template>
-        <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
-        <!-- <template #cell-assignee="{ item }">
-          <span v-if="item.assignee">{{ item.assignee }}</span>
-          <v-btn v-else small outlined @click="assignStaff(item)"> Assign Staff </v-btn>
-        </template> -->
-        <template #actions="{ item }">
-          <v-menu location="bottom end" offset="4">
-            <template #activator="{ props }">
-              <v-btn icon v-bind="props" variant="text" density="comfortable">
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-            </template>
-            <v-list class="menu-list pa-0 ma-0">
-              <v-list-item class="menu-item" @click="viewDetails(item)">
-                <v-icon class="mr-2">mdi-eye-outline</v-icon>
-                {{ t('seeDetails') }}
-              </v-list-item>
-              <v-list-item class="menu-item" @click="deleteEmpeloyee(item)">
-                <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
-                {{ t('deleteEmployee') }}
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </template>
-      </ServerTable>
-      <!-- add Drawer -->
-      <Drawer
-        :isOpen="isEmployeeDrawerOpen"
-        :title="t('newEmployee')"
-        :desc="t('fillOutAllTheInformationsToAdd')"
-        @close="
-          () => {
-            isEmployeeDrawerOpen = false
-            resetForm()
-          }
-        "
-      >
-        <div style="max-height: 75vh">
-          <form @submit.prevent="onAddButtonPressed()" class="drawer-form">
-            <div class="drawer-banner">
-              <p>{{ t('information') }}</p>
-            </div>
-            <div class="drawer-form-group">
-              <label for="name" class="drawer-label-group">
-                {{ t('fullName') }}<span class="required">*</span>
-              </label>
-              <input
-                id="name"
-                type="text"
-                class="form-input"
-                placeholder="Employee full name here"
-                v-model="newWorker.name"
-                required
-              />
-            </div>
-            <div class="drawer-form-group">
-              <label for="email" class="drawer-label-group">
-                {{ t('email') }}<span class="required">*</span>
-              </label>
-              <input
-                id="email"
-                type="email"
-                class="form-input"
-                placeholder="employee@example.com"
-                v-model="newWorker.email"
-                required
-              />
-            </div>
-            <div class="drawer-form-group">
-              <label for="idNumber" class="drawer-label-group">
-                {{ t('identityNumber') }}<span class="required">*</span>
-              </label>
-              <input
-                id="idNumber"
-                type="text"
-                class="form-input"
-                placeholder="1234567890"
-                v-model="newWorker.identityNumber"
-                required
-              />
-            </div>
-            <div class="drawer-form-group">
-              <label for="phone" class="drawer-label-group">
-                {{ t('phoneNumber') }}<span class="required">*</span>
-              </label>
-              <div class="phone-input-wrapper">
-                <div class="country-select" @click="toggleCountryDropdown">
-                  <img :src="selectedCountry.flag" :alt="selectedCountry.name" class="flag" />
-                  <span class="country-code">{{ selectedCountry.dialCode }}</span>
-                  <span class="dropdown-arrow" :class="{ rotated: showCountryDropdown }">▼</span>
-                </div>
+      
+      <!-- Content when loaded -->
+      <div v-else>
+        <div class="cards">
+          <InfoCard class="infoCard" :cardTitle="t('totalEmployees')">
+            {{ stats.totalWorkers }}
+          </InfoCard>
+          <InfoCard class="infoCard" :cardTitle="t('employeesOnTransfer')">
+            {{ stats.workersWithTransfers }}
+          </InfoCard>
+          <InfoCard class="infoCard" :cardTitle="t('availableEmployees')">
+            {{ stats.availableWorkers }}
+          </InfoCard>
+        </div>
+        <hr class="infoHr" />
+        <ServerTable
+          :headers="headers"
+          :items="workers"
+          :total-items="pagination.total"
+          :loading="loading"
+          v-model:page="page"
+          v-model:items-per-page="itemsPerPage"
+        >
+          <template #cell-status="{ item }">
+            <v-chip :color="statusColor(item.status)" text-color="white" medium>
+              <span
+                :style="{ backgroundColor: statusColor(item.status) }"
+                class="status-circle"
+              ></span>
+              {{ t(item.status) ?? t('pending') }}
+            </v-chip>
+          </template>
+          <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
+          <!-- <template #cell-assignee="{ item }">
+            <span v-if="item.assignee">{{ item.assignee }}</span>
+            <v-btn v-else small outlined @click="assignStaff(item)"> Assign Staff </v-btn>
+          </template> -->
+          <template #actions="{ item }">
+            <v-menu location="bottom end" offset="4">
+              <template #activator="{ props }">
+                <v-btn icon v-bind="props" variant="text" density="comfortable">
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </template>
+              <v-list class="menu-list pa-0 ma-0">
+                <v-list-item class="menu-item" @click="viewDetails(item)">
+                  <v-icon class="mr-2">mdi-eye-outline</v-icon>
+                  {{ t('seeDetails') }}
+                </v-list-item>
+                <v-list-item class="menu-item" @click="deleteEmpeloyee(item)">
+                  <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
+                  {{ t('deleteEmployee') }}
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </template>
+        </ServerTable>
+        <!-- add Drawer -->
+        <Drawer
+          :isOpen="isEmployeeDrawerOpen"
+          :title="t('newEmployee')"
+          :desc="t('fillOutAllTheInformationsToAdd')"
+          @close="
+            () => {
+              isEmployeeDrawerOpen = false
+              resetForm()
+            }
+          "
+        >
+          <div style="max-height: 75vh">
+            <form @submit.prevent="onAddButtonPressed()" class="drawer-form">
+              <div class="drawer-banner">
+                <p>{{ t('information') }}</p>
+              </div>
+              <div class="drawer-form-group">
+                <label for="name" class="drawer-label-group">
+                  {{ t('fullName') }}<span class="required">*</span>
+                </label>
                 <input
-                  id="phone"
+                  id="name"
                   type="text"
-                  class="form-input phone-input"
-                  :placeholder="`(${selectedCountry.dialCode})`"
-                  v-model="phoneNumber"
+                  class="form-input"
+                  placeholder="Employee full name here"
+                  v-model="newWorker.name"
                   required
                 />
-                <!-- Country Dropdown -->
-                <div v-if="showCountryDropdown" class="country-dropdown">
-                  <div class="dropdown-search">
-                    <input
-                      type="text"
-                      v-model="countrySearch"
-                      placeholder="Search countries..."
-                      class="search-input"
-                    />
+              </div>
+              <div class="drawer-form-group">
+                <label for="email" class="drawer-label-group">
+                  {{ t('email') }}<span class="required">*</span>
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  class="form-input"
+                  placeholder="employee@example.com"
+                  v-model="newWorker.email"
+                  required
+                />
+              </div>
+              <div class="drawer-form-group">
+                <label for="idNumber" class="drawer-label-group">
+                  {{ t('identityNumber') }}<span class="required">*</span>
+                </label>
+                <input
+                  id="idNumber"
+                  type="text"
+                  class="form-input"
+                  placeholder="1234567890"
+                  v-model="newWorker.identityNumber"
+                  required
+                />
+              </div>
+              <div class="drawer-form-group">
+                <label for="phone" class="drawer-label-group">
+                  {{ t('phoneNumber') }}<span class="required">*</span>
+                </label>
+                <div class="phone-input-wrapper">
+                  <div class="country-select" @click="toggleCountryDropdown">
+                    <img :src="selectedCountry.flag" :alt="selectedCountry.name" class="flag" />
+                    <span class="country-code">{{ selectedCountry.dialCode }}</span>
+                    <span class="dropdown-arrow" :class="{ rotated: showCountryDropdown }">▼</span>
                   </div>
-                  <div class="dropdown-list">
-                    <div
-                      v-for="country in filteredCountries"
-                      :key="country.iso2"
-                      class="dropdown-item"
-                      @click="selectCountry(country)"
-                    >
-                      <img :src="country.flag" :alt="country.name" class="flag" />
-                      <span class="country-name">{{ country.name }}</span>
-                      <span class="country-dial">{{ country.dialCode }}</span>
+                  <input
+                    id="phone"
+                    type="text"
+                    class="form-input phone-input"
+                    :placeholder="`(${selectedCountry.dialCode})`"
+                    v-model="phoneNumber"
+                    required
+                  />
+                  <!-- Country Dropdown -->
+                  <div v-if="showCountryDropdown" class="country-dropdown">
+                    <div class="dropdown-search">
+                      <input
+                        type="text"
+                        v-model="countrySearch"
+                        placeholder="Search countries..."
+                        class="search-input"
+                      />
+                    </div>
+                    <div class="dropdown-list">
+                      <div
+                        v-for="country in filteredCountries"
+                        :key="country.iso2"
+                        class="dropdown-item"
+                        @click="selectCountry(country)"
+                      >
+                        <img :src="country.flag" :alt="country.name" class="flag" />
+                        <span class="country-name">{{ country.name }}</span>
+                        <span class="country-dial">{{ country.dialCode }}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <hr class="infoHr" />
-            <div class="action-btns">
-              <ActionButton
-                :buttonText="t('cancel')"
-                buttonColor="white"
-                class="action-Btn"
-                @button-pressed="
-                  () => {
-                    isEmployeeDrawerOpen = false
-                    resetForm()
-                  }
-                "
-              />
-              <ActionButton class="action-Btn" :buttonText="t('addEmployee')" buttonType="submit" />
-            </div>
-          </form>
-        </div>
-      </Drawer>
-      <!-- add Drawer -->
-      <!-- delete Drawer -->
-      <Drawer
-        :isOpen="isDeleteEmployeeDrawerOpen"
-        :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 6)"
-        :title="selectedWorker?.name"
-        :status="selectedWorker?.status ? selectedWorker?.status : 'available'"
-        @close="isDeleteEmployeeDrawerOpen = false"
-      >
-        <div style="max-height: 75vh">
-          <form class="form">
-            <div>
-              <div class="drawer-banner">
-                <p>{{ t('information') }}</p>
-              </div>
-              <div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('fullName') }}</p>
-                  <p class="drawer-value">{{ selectedWorker?.name }}</p>
-                </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('employeeID') }}</p>
-                  <p class="drawer-value">{{ selectedWorker?._id.substring(0, 6) }}</p>
-                </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('phoneNumber') }}</p>
-                  <p class="drawer-value">{{ selectedWorker?.phone }}</p>
-                </div>
-              </div>
               <hr class="infoHr" />
-
               <div class="action-btns">
                 <ActionButton
                   :buttonText="t('cancel')"
                   buttonColor="white"
-                  class="action-Btn"
-                  @button-pressed="() => (isDeleteEmployeeDrawerOpen = false)"
-                />
-                <ActionButton
-                  button-color="error"
-                  :buttonText="t('deleteEmployee')"
                   class="action-Btn"
                   @button-pressed="
                     () => {
-                      isConfirmDeletePopupVisible = true
-                      isDeleteEmployeeDrawerOpen = false
+                      isEmployeeDrawerOpen = false
+                      resetForm()
                     }
                   "
                 />
+                <ActionButton class="action-Btn" :buttonText="t('addEmployee')" buttonType="submit" />
               </div>
-            </div>
-          </form>
-        </div>
-      </Drawer>
-      <!-- delete Drawer -->
-      <!-- update Drawer -->
-      <Drawer
-        :isOpen="isUpdateEmployeeDrawerOpen"
-        :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 6)"
-        :title="selectedWorker?.name"
-        :status="t(selectedWorker?.status ? selectedWorker?.status : 'available')"
-        @close="isUpdateEmployeeDrawerOpen = false"
-      >
-        <div style="max-height: 75vh">
-          <form @submit.prevent="onUpdateButtonPressed()" class="form">
-            <div>
-              <div class="drawer-banner">
-                <p>{{ t('information') }}</p>
-              </div>
+            </form>
+          </div>
+        </Drawer>
+        <!-- add Drawer -->
+        <!-- delete Drawer -->
+        <Drawer
+          :isOpen="isDeleteEmployeeDrawerOpen"
+          :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 6)"
+          :title="selectedWorker?.name"
+          :status="selectedWorker?.status ? selectedWorker?.status : 'available'"
+          @close="isDeleteEmployeeDrawerOpen = false"
+        >
+          <div style="max-height: 75vh">
+            <form class="form">
               <div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('fullName') }}</p>
-                  <p class="drawer-value">{{ selectedWorker?.name }}</p>
+                <div class="drawer-banner">
+                  <p>{{ t('information') }}</p>
                 </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('employeeID') }}</p>
-                  <p class="drawer-value">{{ selectedWorker?._id.substring(0, 6) }}</p>
+                <div>
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('fullName') }}</p>
+                    <p class="drawer-value">{{ selectedWorker?.name }}</p>
+                  </div>
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('employeeID') }}</p>
+                    <p class="drawer-value">{{ selectedWorker?._id.substring(0, 6) }}</p>
+                  </div>
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('phoneNumber') }}</p>
+                    <p class="drawer-value">{{ selectedWorker?.phone }}</p>
+                  </div>
                 </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('phoneNumber') }}</p>
-                  <p class="drawer-value">{{ selectedWorker?.phone }}</p>
+                <hr class="infoHr" />
+
+                <div class="action-btns">
+                  <ActionButton
+                    :buttonText="t('cancel')"
+                    buttonColor="white"
+                    class="action-Btn"
+                    @button-pressed="() => (isDeleteEmployeeDrawerOpen = false)"
+                  />
+                  <ActionButton
+                    button-color="error"
+                    :buttonText="t('deleteEmployee')"
+                    class="action-Btn"
+                    @button-pressed="
+                      () => {
+                        isConfirmDeletePopupVisible = true
+                        isDeleteEmployeeDrawerOpen = false
+                      }
+                    "
+                  />
                 </div>
               </div>
-              <hr class="infoHr" />
+            </form>
+          </div>
+        </Drawer>
+        <!-- delete Drawer -->
+        <!-- update Drawer -->
+        <Drawer
+          :isOpen="isUpdateEmployeeDrawerOpen"
+          :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 6)"
+          :title="selectedWorker?.name"
+          :status="t(selectedWorker?.status ? selectedWorker?.status : 'available')"
+          @close="isUpdateEmployeeDrawerOpen = false"
+        >
+          <div style="max-height: 75vh">
+            <form @submit.prevent="onUpdateButtonPressed()" class="form">
+              <div>
+                <div class="drawer-banner">
+                  <p>{{ t('information') }}</p>
+                </div>
+                <div>
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('fullName') }}</p>
+                    <p class="drawer-value">{{ selectedWorker?.name }}</p>
+                  </div>
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('employeeID') }}</p>
+                    <p class="drawer-value">{{ selectedWorker?._id.substring(0, 6) }}</p>
+                  </div>
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('phoneNumber') }}</p>
+                    <p class="drawer-value">{{ selectedWorker?.phone }}</p>
+                  </div>
+                </div>
+                <hr class="infoHr" />
 
-              <div class="action-btns">
-                <ActionButton
-                  :buttonText="t('cancel')"
-                  buttonColor="white"
-                  class="action-Btn"
-                  @button-pressed="() => (isUpdateEmployeeDrawerOpen = false)"
-                />
-                <!-- <ActionButton
-                  button-color="error"
-                  :buttonText="t('deleteEmployee')"
-                  buttonType="submit"
-                  class="action-Btn"
-                /> -->
+                <div class="action-btns">
+                  <ActionButton
+                    :buttonText="t('cancel')"
+                    buttonColor="white"
+                    class="action-Btn"
+                    @button-pressed="() => (isUpdateEmployeeDrawerOpen = false)"
+                  />
+                  <!-- <ActionButton
+                    button-color="error"
+                    :buttonText="t('deleteEmployee')"
+                    buttonType="submit"
+                    class="action-Btn"
+                  /> -->
+                </div>
               </div>
-            </div>
-          </form>
-        </div>
-      </Drawer>
-      <!-- update Drawer -->
+            </form>
+          </div>
+        </Drawer>
+        <!-- update Drawer -->
 
-      <ConfirmPopupDialog
-        :isVisible="isConfirmDeletePopupVisible"
-        :title="t('deleteEmployeeConfirmTitle')"
-        :message="t('deleteEmployeeConfirmDescription')"
-        :icon="'mdi-trash-can-outline'"
-        :iconColor="'error'"
-        @cancel="closeDeletePopup"
-        @apply="onDeleteButtonPressed(selectedWorker!._id)"
-        :cancelText="t('cancel')"
-        :applyText="t('deleteConfirmButton')"
-      />
+        <ConfirmPopupDialog
+          :isVisible="isConfirmDeletePopupVisible"
+          :title="t('deleteEmployeeConfirmTitle')"
+          :message="t('deleteEmployeeConfirmDescription')"
+          :icon="'mdi-trash-can-outline'"
+          :iconColor="'error'"
+          @cancel="closeDeletePopup"
+          @apply="onDeleteButtonPressed(selectedWorker!._id)"
+          :cancelText="t('cancel')"
+          :applyText="t('deleteConfirmButton')"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -332,6 +341,10 @@ const newWorker = ref({
 const workersStore = useWorkersStore()
 const loading = computed(() => workersStore.isLoading)
 const workers = computed(() => workersStore.allWorkers)
+
+// Initial loading state for first page load
+const initialLoading = ref(true)
+
 const pagination = computed(
   () => workersStore.paginationInfo || { total: 0, page: 1, limit: 8, pageCount: 1 },
 )
@@ -367,9 +380,14 @@ const fetchStats = async () => {
   await workersStore.getWorkersStats()
 }
 
-onMounted(() => {
-  fetchWorkers()
-  fetchStats()
+onMounted(async () => {
+  try {
+    await Promise.all([fetchWorkers(), fetchStats()])
+  } catch (error) {
+    console.error('Error loading initial data:', error)
+  } finally {
+    initialLoading.value = false
+  }
 
   // Add click outside handler
   document.addEventListener('click', handleClickOutside)

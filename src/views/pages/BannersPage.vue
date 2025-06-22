@@ -9,500 +9,509 @@
       v-on:button-pressed="() => (isAddDrawerOpen = true)"
     />
     <div class="page-content">
-      <div class="cards">
-        <InfoCard class="infoCard" :cardTitle="t('totalBanners')">
-          {{ stats.totalAds }}
-        </InfoCard>
-        <InfoCard class="infoCard" :cardTitle="t('activeBanners')">
-          {{ stats.activeAds }}
-        </InfoCard>
-        <InfoCard class="infoCard" :cardTitle="t('deactiveBanners')">
-          {{ stats.deactiveAds }}
-        </InfoCard>
+      <!-- Loading state for initial page load -->
+      <div v-if="initialLoading" class="loading-state">
+        <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
+        <p>{{ t('loading') }}</p>
       </div>
-      <hr class="infoHr" />
-      <ServerTable
-        :headers="headers"
-        :items="ads"
-        :total-items="pagination.total"
-        :loading="loading"
-        v-model:page="page"
-        v-model:items-per-page="itemsPerPage"
-      >
-        <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
-        <template #cell-image="{ item }">
-          <img
-            :src="item.image"
-            style="max-width: 80px; width: 80px; max-height: 40px; object-fit: cover"
-          />
-        </template>
-        <!-- <template #cell-url="{ item }">
-          <span>{{ item.url }}</span>
-        </template> -->
-        <template #cell-status="{ item }">
-          <v-chip :color="getColorAccordingToExpireDate(item?.expireDate)" text-color="white" small>
-            <span
-              :style="{ backgroundColor: statusColorAccordingToExpireDate(item.expireDate) }"
-              class="status-circle"
-            ></span>
-            {{ getStatusAccordingToExpireDate(item.expireDate) }}
-          </v-chip>
-        </template>
-        <template #cell-expireDate="{ item }">
-          <span>
-            {{ formatDateWithoutTime(item?.startAt ?? item.createdAt) }} -
-            {{ formatDateWithoutTime(item.expireDate) }}</span
-          >
-        </template>
-        <template #actions="{ item }">
-          <v-menu location="bottom end" offset="4">
-            <template #activator="{ props }">
-              <v-btn icon v-bind="props" variant="text" density="comfortable">
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-            </template>
-            <v-list class="menu-list pa-0 ma-0">
-              <v-list-item class="menu-item" @click="viewDetails(item)">
-                <v-icon class="mr-2">mdi-eye-outline</v-icon>
-                {{ t('seeDetails') }}
-              </v-list-item>
-              <v-list-item class="menu-item" @click="editBanner(item)">
-                <v-icon class="mr-2">mdi-pencil-outline</v-icon>
-                {{ t('editBanner') }}
-              </v-list-item>
-              <v-list-item class="menu-item" @click="deleteAd(item)">
-                <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
-                {{ t('deleteBanner') }}
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </template>
-      </ServerTable>
-      <!-- add Drawer -->
-      <Drawer
-        :isOpen="isAddDrawerOpen"
-        :title="t('addNewBanner')"
-        :desc="t('fillOutAllTheInformationsToAdd')"
-        @close="
-          () => {
-            isAddDrawerOpen = false
-            resetForm()
-          }
-        "
-      >
-        <div style="max-height: 75vh">
-          <form @submit.prevent="onAddButtonPressed()" class="form">
-            <div>
-              <div class="drawer-banner">
-                <p>{{ t('generalInformation') }}</p>
-              </div>
+      
+      <!-- Content when loaded -->
+      <div v-else>
+        <div class="cards">
+          <InfoCard class="infoCard" :cardTitle="t('totalBanners')">
+            {{ stats.totalAds }}
+          </InfoCard>
+          <InfoCard class="infoCard" :cardTitle="t('activeBanners')">
+            {{ stats.activeAds }}
+          </InfoCard>
+          <InfoCard class="infoCard" :cardTitle="t('deactiveBanners')">
+            {{ stats.deactiveAds }}
+          </InfoCard>
+        </div>
+        <hr class="infoHr" />
+        <ServerTable
+          :headers="headers"
+          :items="ads"
+          :total-items="pagination.total"
+          :loading="loading"
+          v-model:page="page"
+          v-model:items-per-page="itemsPerPage"
+        >
+          <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
+          <template #cell-image="{ item }">
+            <img
+              :src="item.image"
+              style="max-width: 80px; width: 80px; max-height: 40px; object-fit: cover"
+            />
+          </template>
+          <!-- <template #cell-url="{ item }">
+            <span>{{ item.url }}</span>
+          </template> -->
+          <template #cell-status="{ item }">
+            <v-chip :color="getColorAccordingToExpireDate(item?.expireDate)" text-color="white" small>
+              <span
+                :style="{ backgroundColor: statusColorAccordingToExpireDate(item.expireDate) }"
+                class="status-circle"
+              ></span>
+              {{ getStatusAccordingToExpireDate(item.expireDate) }}
+            </v-chip>
+          </template>
+          <template #cell-expireDate="{ item }">
+            <span>
+              {{ formatDateWithoutTime(item?.startAt ?? item.createdAt) }} -
+              {{ formatDateWithoutTime(item.expireDate) }}</span
+            >
+          </template>
+          <template #actions="{ item }">
+            <v-menu location="bottom end" offset="4">
+              <template #activator="{ props }">
+                <v-btn icon v-bind="props" variant="text" density="comfortable">
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </template>
+              <v-list class="menu-list pa-0 ma-0">
+                <v-list-item class="menu-item" @click="viewDetails(item)">
+                  <v-icon class="mr-2">mdi-eye-outline</v-icon>
+                  {{ t('seeDetails') }}
+                </v-list-item>
+                <v-list-item class="menu-item" @click="editBanner(item)">
+                  <v-icon class="mr-2">mdi-pencil-outline</v-icon>
+                  {{ t('editBanner') }}
+                </v-list-item>
+                <v-list-item class="menu-item" @click="deleteAd(item)">
+                  <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
+                  {{ t('deleteBanner') }}
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </template>
+        </ServerTable>
+        <!-- add Drawer -->
+        <Drawer
+          :isOpen="isAddDrawerOpen"
+          :title="t('addNewBanner')"
+          :desc="t('fillOutAllTheInformationsToAdd')"
+          @close="
+            () => {
+              isAddDrawerOpen = false
+              resetForm()
+            }
+          "
+        >
+          <div style="max-height: 75vh">
+            <form @submit.prevent="onAddButtonPressed()" class="form">
               <div>
-                <div class="drawer-form-group">
-                  <label for="name" class="drawer-label-group">
-                    {{ t('bannerName') }}<span class="required">*</span>
-                  </label>
-                  <input
-                    id="name"
-                    type="text"
-                    class="form-input no-focus-border"
-                    placeholder="Banner title here"
-                    v-model="newBanner.title"
-                    required
-                  />
+                <div class="drawer-banner">
+                  <p>{{ t('generalInformation') }}</p>
                 </div>
-                <div class="drawer-info">
-                  <p class="banner-key">
-                    {{ t('startAt') }}
-                    <v-text-field
-                      v-model="newBanner.startAt"
-                      type="date"
-                      variant="outlined"
-                      density="compact"
-                      hide-details
-                      class="no-focus-border"
-                    />
-                  </p>
-                  <p class="banner-value">
-                    {{ t('expireAt') }}
-                    <v-text-field
-                      v-model="newBanner.expireDate"
-                      type="date"
-                      variant="outlined"
-                      density="compact"
-                      hide-details
+                <div>
+                  <div class="drawer-form-group">
+                    <label for="name" class="drawer-label-group">
+                      {{ t('bannerName') }}<span class="required">*</span>
+                    </label>
+                    <input
+                      id="name"
+                      type="text"
+                      class="form-input no-focus-border"
+                      placeholder="Banner title here"
+                      v-model="newBanner.title"
                       required
-                      class="no-focus-border"
                     />
-                  </p>
-                </div>
-
-                <div class="drawer-form-group">
-                  <label for="url" class="drawer-label-group">
-                    {{ t('bannerwillRedirectTo') }}</label
-                  >
-                  <v-text-field
-                    id="banner-url"
-                    v-model="newBanner.url"
-                    placeholder="www.example.com"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                    class="no-focus-border"
-                  >
-                    <template v-slot:prepend-inner>
-                      <span class="url-prefix">://app</span>
-                    </template>
-                  </v-text-field>
-                </div>
-
-                <div class="drawer-form-group">
-                  <label control="url" for="url" class="drawer-label-group"></label>
-                  <div
-                    class="image-upload-area"
-                    :class="{ 'drag-over': isDragOver }"
-                    @drop.prevent="handleDrop"
-                    @dragover.prevent="isDragOver = true"
-                    @dragleave.prevent="isDragOver = false"
-                  >
-                    <div
-                      v-if="!imageUrl && !imageUploadProgress"
-                      class="upload-placeholder"
-                      @click="triggerFileInput"
-                    >
-                      <v-icon size="36" color="grey">mdi-cloud-upload-outline</v-icon>
-                      <p>{{ t('chooseFileOrDragDrop') }}</p>
-                      <p class="subtext">JPEG, PNG, and WebP formats, up to 3 MB.</p>
-                      <v-btn variant="outlined" color="primary" class="browse-btn"
-                        >Browse File</v-btn
-                      >
-                      <v-file-input
-                        ref="fileInput"
-                        @change="uploadImage"
-                        accept="image/*"
-                        style="display: none"
+                  </div>
+                  <div class="drawer-info">
+                    <p class="banner-key">
+                      {{ t('startAt') }}
+                      <v-text-field
+                        v-model="newBanner.startAt"
+                        type="date"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                        class="no-focus-border"
                       />
-                    </div>
+                    </p>
+                    <p class="banner-value">
+                      {{ t('expireAt') }}
+                      <v-text-field
+                        v-model="newBanner.expireDate"
+                        type="date"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                        required
+                        class="no-focus-border"
+                      />
+                    </p>
+                  </div>
 
-                    <div v-if="imageUrl" class="uploaded-preview">
-                      <img :src="imageUrl" class="preview-img" />
-                      <div class="file-info">
-                        <span class="file-name">{{ uploadedFileName }}</span>
-                        <span class="file-size">{{ uploadedFileSize }}</span>
-                      </div>
-                      <v-btn icon @click.stop="removeImage" variant="text" size="small">
-                        <v-icon color="red">mdi-close</v-icon>
-                      </v-btn>
-                    </div>
+                  <div class="drawer-form-group">
+                    <label for="url" class="drawer-label-group">
+                      {{ t('bannerwillRedirectTo') }}</label
+                    >
+                    <v-text-field
+                      id="banner-url"
+                      v-model="newBanner.url"
+                      placeholder="www.example.com"
+                      variant="outlined"
+                      density="compact"
+                      hide-details
+                      class="no-focus-border"
+                    >
+                      <template v-slot:prepend-inner>
+                        <span class="url-prefix">://app</span>
+                      </template>
+                    </v-text-field>
+                  </div>
 
-                    <div v-if="imageUploadProgress > 0" class="upload-progress-container">
-                      <img src="@/assets/images/logo.svg" alt="file" class="file-icon" />
-                      <div class="progress-details">
-                        <div class="file-name">{{ uploadedFileName }}</div>
-                        <div class="progress-text">
-                          {{ uploadedFileSize }} of {{ totalFileSize }} - Uploading...
-                        </div>
-                        <v-progress-linear
-                          :model-value="imageUploadProgress"
-                          height="6"
-                          color="primary"
-                          rounded
+                  <div class="drawer-form-group">
+                    <label control="url" for="url" class="drawer-label-group"></label>
+                    <div
+                      class="image-upload-area"
+                      :class="{ 'drag-over': isDragOver }"
+                      @drop.prevent="handleDrop"
+                      @dragover.prevent="isDragOver = true"
+                      @dragleave.prevent="isDragOver = false"
+                    >
+                      <div
+                        v-if="!imageUrl && !imageUploadProgress"
+                        class="upload-placeholder"
+                        @click="triggerFileInput"
+                      >
+                        <v-icon size="36" color="grey">mdi-cloud-upload-outline</v-icon>
+                        <p>{{ t('chooseFileOrDragDrop') }}</p>
+                        <p class="subtext">JPEG, PNG, and WebP formats, up to 3 MB.</p>
+                        <v-btn variant="outlined" color="primary" class="browse-btn"
+                          >Browse File</v-btn
+                        >
+                        <v-file-input
+                          ref="fileInput"
+                          @change="uploadImage"
+                          accept="image/*"
+                          style="display: none"
                         />
                       </div>
-                      <v-btn icon @click.stop="removeImage" variant="text" size="small">
-                        <v-icon>mdi-close</v-icon>
-                      </v-btn>
+
+                      <div v-if="imageUrl" class="uploaded-preview">
+                        <img :src="imageUrl" class="preview-img" />
+                        <div class="file-info">
+                          <span class="file-name">{{ uploadedFileName }}</span>
+                          <span class="file-size">{{ uploadedFileSize }}</span>
+                        </div>
+                        <v-btn icon @click.stop="removeImage" variant="text" size="small">
+                          <v-icon color="red">mdi-close</v-icon>
+                        </v-btn>
+                      </div>
+
+                      <div v-if="imageUploadProgress > 0" class="upload-progress-container">
+                        <img src="@/assets/images/logo.svg" alt="file" class="file-icon" />
+                        <div class="progress-details">
+                          <div class="file-name">{{ uploadedFileName }}</div>
+                          <div class="progress-text">
+                            {{ uploadedFileSize }} of {{ totalFileSize }} - Uploading...
+                          </div>
+                          <v-progress-linear
+                            :model-value="imageUploadProgress"
+                            height="6"
+                            color="primary"
+                            rounded
+                          />
+                        </div>
+                        <v-btn icon @click.stop="removeImage" variant="text" size="small">
+                          <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="drawer-form-group">
-                  <label for="name" class="drawer-label-group">
-                    {{ t('bannerStatus') }}
-                  </label>
-                  <v-select
-                    v-model="newBanner.status"
-                    :items="['active', 'deactive']"
-                    variant="outlined"
-                    density="compact"
-                    required
-                    hide-details
-                    class="no-focus-border"
-                  />
-                </div>
-              </div>
-              <div class="action-btns">
-                <ActionButton
-                  :buttonText="t('cancel')"
-                  buttonColor="white"
-                  @button-pressed="
-                    () => {
-                      isAddDrawerOpen = false
-                      resetForm()
-                    }
-                  "
-                  class="action-Btn"
-                />
-                <ActionButton :buttonText="t('save')" buttonType="submit" class="action-Btn" />
-              </div>
-            </div>
-          </form>
-        </div>
-      </Drawer>
-      <!-- add Drawer -->
-      <!-- update Drawer -->
-      <Drawer
-        :isOpen="isUpdateDrawerOpen"
-        :title="t('updateBanner')"
-        :desc="t('updateTheBannerInformation')"
-        @close="
-          () => {
-            isUpdateDrawerOpen = false
-            resetForm()
-          }
-        "
-      >
-        <div style="max-height: 75vh">
-          <form @submit.prevent="onUpdateButtonPressed()" class="form" v-if="editingBanner">
-            <div>
-              <div class="drawer-banner">
-                <p>{{ t('generalInformation') }}</p>
-              </div>
-              <div>
-                <div class="drawer-form-group">
-                  <label for="name" class="drawer-label-group">
-                    {{ t('bannerName') }}<span class="required">*</span>
-                  </label>
-                  <input
-                    id="name"
-                    type="text"
-                    class="form-input no-focus-border"
-                    placeholder="Banner title here"
-                    v-model="editingBanner.title"
-                    required
-                  />
-                </div>
-                <div class="drawer-info">
-                  <p class="banner-key">
-                    {{ t('startAt') }}
-                    <v-text-field
-                      v-model="editingBanner.startAt"
-                      type="date"
+                  <div class="drawer-form-group">
+                    <label for="name" class="drawer-label-group">
+                      {{ t('bannerStatus') }}
+                    </label>
+                    <v-select
+                      v-model="newBanner.status"
+                      :items="['active', 'deactive']"
                       variant="outlined"
                       density="compact"
-                      hide-details
-                      class="no-focus-border"
-                    />
-                  </p>
-                  <p class="banner-value">
-                    {{ t('expireAt') }}
-                    <v-text-field
-                      v-model="editingBanner.expireDate"
-                      type="date"
-                      variant="outlined"
-                      density="compact"
-                      hide-details
                       required
+                      hide-details
                       class="no-focus-border"
                     />
-                  </p>
+                  </div>
                 </div>
-
-                <div class="drawer-form-group">
-                  <label for="url" class="drawer-label-group">
-                    {{ t('bannerwillRedirectTo') }}</label
-                  >
-                  <v-text-field
-                    id="banner-url"
-                    v-model="editingBanner.url"
-                    placeholder="www.example.com"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                    class="no-focus-border"
-                  >
-                    <template v-slot:prepend-inner>
-                      <span class="url-prefix">://app</span>
-                    </template>
-                  </v-text-field>
+                <div class="action-btns">
+                  <ActionButton
+                    :buttonText="t('cancel')"
+                    buttonColor="white"
+                    @button-pressed="
+                      () => {
+                        isAddDrawerOpen = false
+                        resetForm()
+                      }
+                    "
+                    class="action-Btn"
+                  />
+                  <ActionButton :buttonText="t('save')" buttonType="submit" class="action-Btn" />
                 </div>
-
-                <div class="drawer-form-group">
-                  <label for="url" class="drawer-label-group"></label>
-                  <div
-                    class="image-upload-area"
-                    :class="{ 'drag-over': isDragOver }"
-                    @drop.prevent="handleDrop"
-                    @dragover.prevent="isDragOver = true"
-                    @dragleave.prevent="isDragOver = false"
-                  >
-                    <div
-                      v-if="!imageUrl && !imageUploadProgress"
-                      class="upload-placeholder"
-                      @click="triggerFileInput"
-                    >
-                      <v-icon size="36" color="grey">mdi-cloud-upload-outline</v-icon>
-                      <p>{{ t('chooseFileOrDragDrop') }}</p>
-                      <p class="subtext">JPEG, PNG, and WebP formats, up to 3 MB.</p>
-                      <v-btn variant="outlined" color="primary" class="browse-btn"
-                        >Browse File</v-btn
-                      >
-                      <v-file-input
-                        ref="fileInput"
-                        @change="uploadImage"
-                        accept="image/*"
-                        style="display: none"
+              </div>
+            </form>
+          </div>
+        </Drawer>
+        <!-- add Drawer -->
+        <!-- update Drawer -->
+        <Drawer
+          :isOpen="isUpdateDrawerOpen"
+          :title="t('updateBanner')"
+          :desc="t('updateTheBannerInformation')"
+          @close="
+            () => {
+              isUpdateDrawerOpen = false
+              resetForm()
+            }
+          "
+        >
+          <div style="max-height: 75vh">
+            <form @submit.prevent="onUpdateButtonPressed()" class="form" v-if="editingBanner">
+              <div>
+                <div class="drawer-banner">
+                  <p>{{ t('generalInformation') }}</p>
+                </div>
+                <div>
+                  <div class="drawer-form-group">
+                    <label for="name" class="drawer-label-group">
+                      {{ t('bannerName') }}<span class="required">*</span>
+                    </label>
+                    <input
+                      id="name"
+                      type="text"
+                      class="form-input no-focus-border"
+                      placeholder="Banner title here"
+                      v-model="editingBanner.title"
+                      required
+                    />
+                  </div>
+                  <div class="drawer-info">
+                    <p class="banner-key">
+                      {{ t('startAt') }}
+                      <v-text-field
+                        v-model="editingBanner.startAt"
+                        type="date"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                        class="no-focus-border"
                       />
-                    </div>
-                    <div v-if="imageUrl && !imageUploadProgress" class="uploaded-preview">
-                      <img :src="imageUrl" class="preview-img" />
-                      <div class="file-info">
-                        <span class="file-name">{{ uploadedFileName }}</span>
-                        <span class="file-size">{{ uploadedFileSize }}</span>
-                      </div>
-                      <v-btn icon @click.stop="removeImage" variant="text" size="small">
-                        <v-icon color="red">mdi-trash-can-outline</v-icon>
-                      </v-btn>
-                    </div>
+                    </p>
+                    <p class="banner-value">
+                      {{ t('expireAt') }}
+                      <v-text-field
+                        v-model="editingBanner.expireDate"
+                        type="date"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                        required
+                        class="no-focus-border"
+                      />
+                    </p>
+                  </div>
 
-                    <div v-if="imageUploadProgress > 0" class="upload-progress-container">
-                      <img src="@/assets/images/logo.svg" alt="file" class="file-icon" />
-                      <div class="progress-details">
-                        <div class="file-name">{{ uploadedFileName }}</div>
-                        <div class="progress-text">
-                          {{ uploadedFileSize }} of {{ totalFileSize }} - Uploading...
-                        </div>
-                        <v-progress-linear
-                          :model-value="imageUploadProgress"
-                          height="6"
-                          color="primary"
-                          rounded
+                  <div class="drawer-form-group">
+                    <label for="url" class="drawer-label-group">
+                      {{ t('bannerwillRedirectTo') }}</label
+                    >
+                    <v-text-field
+                      id="banner-url"
+                      v-model="editingBanner.url"
+                      placeholder="www.example.com"
+                      variant="outlined"
+                      density="compact"
+                      hide-details
+                      class="no-focus-border"
+                    >
+                      <template v-slot:prepend-inner>
+                        <span class="url-prefix">://app</span>
+                      </template>
+                    </v-text-field>
+                  </div>
+
+                  <div class="drawer-form-group">
+                    <label for="url" class="drawer-label-group"></label>
+                    <div
+                      class="image-upload-area"
+                      :class="{ 'drag-over': isDragOver }"
+                      @drop.prevent="handleDrop"
+                      @dragover.prevent="isDragOver = true"
+                      @dragleave.prevent="isDragOver = false"
+                    >
+                      <div
+                        v-if="!imageUrl && !imageUploadProgress"
+                        class="upload-placeholder"
+                        @click="triggerFileInput"
+                      >
+                        <v-icon size="36" color="grey">mdi-cloud-upload-outline</v-icon>
+                        <p>{{ t('chooseFileOrDragDrop') }}</p>
+                        <p class="subtext">JPEG, PNG, and WebP formats, up to 3 MB.</p>
+                        <v-btn variant="outlined" color="primary" class="browse-btn"
+                          >Browse File</v-btn
+                        >
+                        <v-file-input
+                          ref="fileInput"
+                          @change="uploadImage"
+                          accept="image/*"
+                          style="display: none"
                         />
                       </div>
-                      <v-btn icon @click.stop="removeImage" variant="text" size="small">
-                        <v-icon>mdi-close</v-icon>
-                      </v-btn>
+                      <div v-if="imageUrl && !imageUploadProgress" class="uploaded-preview">
+                        <img :src="imageUrl" class="preview-img" />
+                        <div class="file-info">
+                          <span class="file-name">{{ uploadedFileName }}</span>
+                          <span class="file-size">{{ uploadedFileSize }}</span>
+                        </div>
+                        <v-btn icon @click.stop="removeImage" variant="text" size="small">
+                          <v-icon color="red">mdi-trash-can-outline</v-icon>
+                        </v-btn>
+                      </div>
+
+                      <div v-if="imageUploadProgress > 0" class="upload-progress-container">
+                        <img src="@/assets/images/logo.svg" alt="file" class="file-icon" />
+                        <div class="progress-details">
+                          <div class="file-name">{{ uploadedFileName }}</div>
+                          <div class="progress-text">
+                            {{ uploadedFileSize }} of {{ totalFileSize }} - Uploading...
+                          </div>
+                          <v-progress-linear
+                            :model-value="imageUploadProgress"
+                            height="6"
+                            color="primary"
+                            rounded
+                          />
+                        </div>
+                        <v-btn icon @click.stop="removeImage" variant="text" size="small">
+                          <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                      </div>
                     </div>
                   </div>
+                  <div class="drawer-form-group">
+                    <label for="name" class="drawer-label-group">
+                      {{ t('bannerStatus') }}
+                    </label>
+                    <v-select
+                      v-model="editingBanner.status"
+                      :items="['active', 'deactive']"
+                      variant="outlined"
+                      density="compact"
+                      required
+                      hide-details
+                      class="no-focus-border"
+                    />
+                  </div>
                 </div>
-                <div class="drawer-form-group">
-                  <label for="name" class="drawer-label-group">
-                    {{ t('bannerStatus') }}
-                  </label>
-                  <v-select
-                    v-model="editingBanner.status"
-                    :items="['active', 'deactive']"
-                    variant="outlined"
-                    density="compact"
-                    required
-                    hide-details
-                    class="no-focus-border"
+                <div class="action-btns">
+                  <ActionButton
+                    :buttonText="t('cancel')"
+                    buttonColor="white"
+                    @button-pressed="
+                      () => {
+                        isUpdateDrawerOpen = false
+                        resetForm()
+                      }
+                    "
+                    class="action-Btn"
+                  />
+                  <ActionButton :buttonText="t('save')" buttonType="submit" class="action-Btn" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </Drawer>
+        <!-- update Drawer -->
+        <!-- see details Drawer and delete-->
+        <Drawer
+          :isOpen="isDetailsDrawerOpen || isDeleteDrawerOpen"
+          :desc="t('id') + ' #' + selectedAd?._id.substring(0, 6)"
+          :title="selectedAd?.title"
+          @close="
+            () => {
+              isDetailsDrawerOpen = false
+              isDeleteDrawerOpen = false
+            }
+          "
+        >
+          <div style="max-height: 75vh">
+            <form class="form">
+              <div>
+                <div class="drawer-banner">
+                  <p>{{ t('information') }}</p>
+                </div>
+                <div>
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('bannerName') }}</p>
+                    <p class="drawer-value">{{ selectedAd?.title ?? 'N/A' }}</p>
+                  </div>
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('id') }}</p>
+                    <p class="drawer-value">#{{ selectedAd?._id.substring(0, 6) }}</p>
+                  </div>
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('url') }}</p>
+                    <p class="drawer-value">{{ selectedAd?.url ?? 'N/A' }}</p>
+                  </div>
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('startAt') }}</p>
+                    <p class="drawer-value">
+                      {{
+                        formatDateWithoutTime(selectedAd?.startAt ?? selectedAd?.createdAt ?? '') ??
+                        'N/A'
+                      }}
+                    </p>
+                  </div>
+                  <div class="drawer-info">
+                    <p class="drawer-key">{{ t('expireAt') }}</p>
+                    <p class="drawer-value">
+                      {{ formatDateWithoutTime(selectedAd?.expireDate ?? '') ?? 'N/A' }}
+                    </p>
+                  </div>
+                </div>
+                <hr v-if="isDeleteDrawerOpen" class="infoHr" />
+
+                <div v-if="isDeleteDrawerOpen" class="action-btns">
+                  <ActionButton
+                    :buttonText="t('cancel')"
+                    buttonColor="white"
+                    class="action-Btn"
+                    @button-pressed="() => (isDetailsDrawerOpen = false)"
+                  />
+                  <ActionButton
+                    button-color="error"
+                    :buttonText="t('deleteBanner')"
+                    class="action-Btn"
+                    @button-pressed="
+                      () => {
+                        isConfirmDeletePopupVisible = true
+                        isDetailsDrawerOpen = false
+                        isDeleteDrawerOpen = false
+                      }
+                    "
                   />
                 </div>
               </div>
-              <div class="action-btns">
-                <ActionButton
-                  :buttonText="t('cancel')"
-                  buttonColor="white"
-                  @button-pressed="
-                    () => {
-                      isUpdateDrawerOpen = false
-                      resetForm()
-                    }
-                  "
-                  class="action-Btn"
-                />
-                <ActionButton :buttonText="t('save')" buttonType="submit" class="action-Btn" />
-              </div>
-            </div>
-          </form>
-        </div>
-      </Drawer>
-      <!-- update Drawer -->
-      <!-- see details Drawer and delete-->
-      <Drawer
-        :isOpen="isDetailsDrawerOpen || isDeleteDrawerOpen"
-        :desc="t('id') + ' #' + selectedAd?._id.substring(0, 6)"
-        :title="selectedAd?.title"
-        @close="
-          () => {
-            isDetailsDrawerOpen = false
-            isDeleteDrawerOpen = false
-          }
-        "
-      >
-        <div style="max-height: 75vh">
-          <form class="form">
-            <div>
-              <div class="drawer-banner">
-                <p>{{ t('information') }}</p>
-              </div>
-              <div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('bannerName') }}</p>
-                  <p class="drawer-value">{{ selectedAd?.title ?? 'N/A' }}</p>
-                </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('id') }}</p>
-                  <p class="drawer-value">#{{ selectedAd?._id.substring(0, 6) }}</p>
-                </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('url') }}</p>
-                  <p class="drawer-value">{{ selectedAd?.url ?? 'N/A' }}</p>
-                </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('startAt') }}</p>
-                  <p class="drawer-value">
-                    {{
-                      formatDateWithoutTime(selectedAd?.startAt ?? selectedAd?.createdAt ?? '') ??
-                      'N/A'
-                    }}
-                  </p>
-                </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('expireAt') }}</p>
-                  <p class="drawer-value">
-                    {{ formatDateWithoutTime(selectedAd?.expireDate ?? '') ?? 'N/A' }}
-                  </p>
-                </div>
-              </div>
-              <hr v-if="isDeleteDrawerOpen" class="infoHr" />
+            </form>
+          </div>
+        </Drawer>
+        <!-- see details-->
 
-              <div v-if="isDeleteDrawerOpen" class="action-btns">
-                <ActionButton
-                  :buttonText="t('cancel')"
-                  buttonColor="white"
-                  class="action-Btn"
-                  @button-pressed="() => (isDetailsDrawerOpen = false)"
-                />
-                <ActionButton
-                  button-color="error"
-                  :buttonText="t('deleteBanner')"
-                  class="action-Btn"
-                  @button-pressed="
-                    () => {
-                      isConfirmDeletePopupVisible = true
-                      isDetailsDrawerOpen = false
-                      isDeleteDrawerOpen = false
-                    }
-                  "
-                />
-              </div>
-            </div>
-          </form>
-        </div>
-      </Drawer>
-      <!-- see details-->
-
-      <ConfirmPopupDialog
-        :isVisible="isConfirmDeletePopupVisible"
-        :title="t('deleteConfirmBanner')"
-        :message="t('deleteConfirmBannerDescription')"
-        :icon="'mdi-trash-can-outline'"
-        :iconColor="'error'"
-        @cancel="closeDeletePopup"
-        @apply="onDeleteButtonPressed(selectedAd!._id)"
-        :cancelText="t('cancel')"
-        :applyText="t('deleteConfirmButton')"
-      />
+        <ConfirmPopupDialog
+          :isVisible="isConfirmDeletePopupVisible"
+          :title="t('deleteConfirmBanner')"
+          :message="t('deleteConfirmBannerDescription')"
+          :icon="'mdi-trash-can-outline'"
+          :iconColor="'error'"
+          @cancel="closeDeletePopup"
+          @apply="onDeleteButtonPressed(selectedAd!._id)"
+          :cancelText="t('cancel')"
+          :applyText="t('deleteConfirmButton')"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -534,6 +543,9 @@ const isConfirmDeletePopupVisible = ref(false)
 const adsStore = useAdsStore()
 const loading = computed(() => adsStore.isLoading)
 const ads = computed(() => adsStore.allAds)
+
+// Initial loading state for first page load
+const initialLoading = ref(true)
 
 const editingBanner = ref<IAd | null>(null)
 
@@ -739,9 +751,14 @@ const fetchStats = async () => {
   await adsStore.getAdsStats()
 }
 
-onMounted(() => {
-  fetchAds()
-  fetchStats()
+onMounted(async () => {
+  try {
+    await Promise.all([fetchAds(), fetchStats()])
+  } catch (error) {
+    console.error('Error loading initial data:', error)
+  } finally {
+    initialLoading.value = false
+  }
 })
 
 watch([page, itemsPerPage], fetchAds)

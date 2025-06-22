@@ -6,233 +6,242 @@
       :desc="t('manageAndTrackYourTransfers')"
     />
     <div class="page-content">
-      <div class="cards">
-        <InfoCard class="infoCard" :cardTitle="t('todaysTransfers')">
-          <div class="stats-container">
-            {{ stats.todaysTransfers }}
-            <p class="present-change">
-              <span class="present">+{{ stats.todaysTransfersChange }}</span> {{ t('vsYesterday') }}
-            </p>
-          </div>
-        </InfoCard>
-        <InfoCard class="infoCard" :cardTitle="t('currentTransfers')">
-          <div class="stats-container">
-            {{ stats.currentTransfers }}
-            <p class="present-change">
-              <span class="present">+{{ stats.currentTransfersChange }}</span>
-              {{ t('vsYesterday') }}
-            </p>
-          </div></InfoCard
-        >
-        <InfoCard class="infoCard" :cardTitle="t('cancelledTransfers')">
-          <div class="stats-container">
-            {{ stats.cancelledTransfers }}
-            <p class="present-change">
-              <span class="cancel-present">+{{ stats.cancelledTransfersChange }}</span>
-              {{ t('vsYesterday') }}
-            </p>
-          </div></InfoCard
-        >
+      <!-- Loading state for initial page load -->
+      <div v-if="initialLoading" class="loading-state">
+        <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
+        <p>{{ t('loading') }}</p>
       </div>
-      <hr class="infoHr" />
-      <ServerTable
-        :headers="headers"
-        :items="ads"
-        :total-items="pagination.total"
-        :loading="loading"
-        v-model:page="page"
-        v-model:items-per-page="itemsPerPage"
-      >
-        <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
-        <template #cell-workerId="{ item }">
-          <span v-if="item?.workerId?.name">{{ item.workerId.name }}</span>
-          <v-btn v-else @click="() => assignEmployee(item as Transfer)">
-            {{ t('assign') }}
-          </v-btn>
-        </template>
+      
+      <!-- Content when loaded -->
+      <div v-else>
+        <div class="cards">
+          <InfoCard class="infoCard" :cardTitle="t('todaysTransfers')">
+            <div class="stats-container">
+              {{ stats.todaysTransfers }}
+              <p class="present-change">
+                <span class="present">+{{ stats.todaysTransfersChange }}</span> {{ t('vsYesterday') }}
+              </p>
+            </div>
+          </InfoCard>
+          <InfoCard class="infoCard" :cardTitle="t('currentTransfers')">
+            <div class="stats-container">
+              {{ stats.currentTransfers }}
+              <p class="present-change">
+                <span class="present">+{{ stats.currentTransfersChange }}</span>
+                {{ t('vsYesterday') }}
+              </p>
+            </div></InfoCard
+          >
+          <InfoCard class="infoCard" :cardTitle="t('cancelledTransfers')">
+            <div class="stats-container">
+              {{ stats.cancelledTransfers }}
+              <p class="present-change">
+                <span class="cancel-present">+{{ stats.cancelledTransfersChange }}</span>
+                {{ t('vsYesterday') }}
+              </p>
+            </div></InfoCard
+          >
+        </div>
+        <hr class="infoHr" />
+        <ServerTable
+          :headers="headers"
+          :items="ads"
+          :total-items="pagination.total"
+          :loading="loading"
+          v-model:page="page"
+          v-model:items-per-page="itemsPerPage"
+        >
+          <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
+          <template #cell-workerId="{ item }">
+            <span v-if="item?.workerId?.name">{{ item.workerId.name }}</span>
+            <v-btn v-else @click="() => assignEmployee(item as Transfer)">
+              {{ t('assign') }}
+            </v-btn>
+          </template>
 
-        <template #cell-customer="{ item }">
-          <span>{{ item.userId.name }}</span>
-        </template>
-        <template #cell-status="{ item }">
-          <v-chip :color="statusColor(item.status)" text-color="white" medium>
-            <span
-              :style="{ backgroundColor: statusColor(item.status) }"
-              class="status-circle"
-            ></span>
-            {{ t(item.status) ?? t('pending') }}
-          </v-chip>
-        </template>
-        <template #cell-pickUpDate="{ item }">
-          <span>{{ formatDate(item.pickUpDate) }}</span>
-        </template>
-        <template #cell-deliveryDate="{ item }">
-          <span>{{ formatDate(item.deliveryDate) }}</span>
-        </template>
-        <template #cell-actions="{ item }">
-          <v-menu location="bottom end" offset="4">
-            <template #activator="{ props }">
-              <v-btn icon v-bind="props" variant="text" density="comfortable">
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-            </template>
-            <v-list class="menu-list pa-0 ma-0">
-              <v-list-item class="menu-item" @click="viewDetails(item as Transfer)">
-                <v-icon class="mr-2">mdi-eye-outline</v-icon>
-                {{ t('seeDetails') }}
-              </v-list-item>
-              <v-list-item class="menu-item" @click="assignEmployee(item as Transfer)">
-                <v-icon class="mr-2">mdi-account-outline</v-icon>
-                {{ t('assignChangeStaff') }}
-              </v-list-item>
-              <v-list-item class="menu-item" @click="changeStatus(item)">
-                <v-icon class="mr-2">mdi-lightning-bolt-outline</v-icon>
-                {{ t('changeStatus') }}
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </template>
-      </ServerTable>
+          <template #cell-customer="{ item }">
+            <span>{{ item.userId.name }}</span>
+          </template>
+          <template #cell-status="{ item }">
+            <v-chip :color="statusColor(item.status)" text-color="white" medium>
+              <span
+                :style="{ backgroundColor: statusColor(item.status) }"
+                class="status-circle"
+              ></span>
+              {{ t(item.status) ?? t('pending') }}
+            </v-chip>
+          </template>
+          <template #cell-pickUpDate="{ item }">
+            <span>{{ formatDate(item.pickUpDate) }}</span>
+          </template>
+          <template #cell-deliveryDate="{ item }">
+            <span>{{ formatDate(item.deliveryDate) }}</span>
+          </template>
+          <template #cell-actions="{ item }">
+            <v-menu location="bottom end" offset="4">
+              <template #activator="{ props }">
+                <v-btn icon v-bind="props" variant="text" density="comfortable">
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </template>
+              <v-list class="menu-list pa-0 ma-0">
+                <v-list-item class="menu-item" @click="viewDetails(item as Transfer)">
+                  <v-icon class="mr-2">mdi-eye-outline</v-icon>
+                  {{ t('seeDetails') }}
+                </v-list-item>
+                <v-list-item class="menu-item" @click="assignEmployee(item as Transfer)">
+                  <v-icon class="mr-2">mdi-account-outline</v-icon>
+                  {{ t('assignChangeStaff') }}
+                </v-list-item>
+                <v-list-item class="menu-item" @click="changeStatus(item)">
+                  <v-icon class="mr-2">mdi-lightning-bolt-outline</v-icon>
+                  {{ t('changeStatus') }}
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </template>
+        </ServerTable>
 
-      <!-- assign empeloyee Drawer -->
-      <Drawer
-        :isOpen="isAssignEmployeeDrawerOpen"
-        :title="t('assignEmployee')"
-        :desc="
-          t('assignEmployeeToTransfer', {
-            transferId: selectedTransfer?._id?.substring(0, 6),
-          })
-        "
-        @close="isAssignEmployeeDrawerOpen = false"
-      >
-        <div class="drawer-content">
-          <form class="form">
-            <div>
-              <div class="drawer-banner">
-                <p>{{ t('selectAnEmployee') }}</p>
-              </div>
-              <div v-if="workersLoading" class="loading-state">
-                <p>{{ t('loading') }}...</p>
-              </div>
-              <div v-else-if="workers.length === 0" class="no-workers">
-                <p>{{ t('noWorkersAvailable') }}</p>
-              </div>
-              <div v-else>
-                <div class="workers-list">
-                  <AssignEmployeeCard
-                    v-for="(employee, index) in workers"
-                    :key="`employee-${employee._id}-${index}`"
-                    :fullName="employee.name"
-                    :status="employee.status"
-                    @assign="assignEmployeeProcess(employee, selectedTransfer as Transfer)"
+        <!-- assign empeloyee Drawer -->
+        <Drawer
+          :isOpen="isAssignEmployeeDrawerOpen"
+          :title="t('assignEmployee')"
+          :desc="
+            t('assignEmployeeToTransfer', {
+              transferId: selectedTransfer?._id?.substring(0, 6),
+            })
+          "
+          @close="isAssignEmployeeDrawerOpen = false"
+        >
+          <div class="drawer-content">
+            <form class="form">
+              <div>
+                <div class="drawer-banner">
+                  <p>{{ t('selectAnEmployee') }}</p>
+                </div>
+                <div v-if="workersLoading" class="loading-state">
+                  <p>{{ t('loading') }}...</p>
+                </div>
+                <div v-else-if="workers.length === 0" class="no-workers">
+                  <p>{{ t('noWorkersAvailable') }}</p>
+                </div>
+                <div v-else>
+                  <div class="workers-list">
+                    <AssignEmployeeCard
+                      v-for="(employee, index) in workers"
+                      :key="`employee-${employee._id}-${index}`"
+                      :fullName="employee.name"
+                      :status="employee.status"
+                      @assign="assignEmployeeProcess(employee, selectedTransfer as Transfer)"
+                    />
+                  </div>
+                </div>
+
+                <div class="action-btns">
+                  <ActionButton
+                    :buttonText="t('cancel')"
+                    buttonColor="white"
+                    class="action-Btn"
+                    @button-pressed="() => (isAssignEmployeeDrawerOpen = false)"
+                  />
+                  <ActionButton
+                    :buttonText="t('save')"
+                    class="action-Btn"
+                    @button-pressed="saveAssignment"
                   />
                 </div>
               </div>
+            </form>
+          </div>
+        </Drawer>
+        <!-- assign empeloyee Drawer -->
 
-              <div class="action-btns">
-                <ActionButton
-                  :buttonText="t('cancel')"
-                  buttonColor="white"
-                  class="action-Btn"
-                  @button-pressed="() => (isAssignEmployeeDrawerOpen = false)"
-                />
-                <ActionButton
-                  :buttonText="t('save')"
-                  class="action-Btn"
-                  @button-pressed="saveAssignment"
-                />
+        <!-- Details Drawer -->
+        <Drawer
+          :isOpen="isDetailsTransfersDrawerOpen"
+          :title="t('complaint') + ' ' + '#' + selectedTransfer?._id.substring(0, 6)"
+          :desc="t('employee')"
+          :status="selectedTransfer?.status ? t(selectedTransfer?.status) : t('available')"
+          @close="isDetailsTransfersDrawerOpen = false"
+        >
+          <div style="max-height: 75vh">
+            <form class="drawer-form">
+              <div>
+                <div class="drawer-banner">
+                  <p>{{ t('information') }}</p>
+                </div>
+                <v-card>
+                  <v-tabs v-model="tab" align-tabs="start" color="deep-purple-accent-4">
+                    <v-tab value="details">{{ t('details') }}</v-tab>
+                    <v-tab value="timeLine">{{ t('timeLine') }}</v-tab>
+                  </v-tabs>
+
+                  <v-tabs-window v-model="tab">
+                    <v-tabs-window-item value="details"> </v-tabs-window-item>
+
+                    <v-tabs-window-item value="timeLine">
+                      <div class="status-stepper">
+                        <v-timeline>
+                          <v-timeline-item
+                            v-if="selectedTransfer?.createdAt"
+                            dot-color="white"
+                            icon="mdi-ticket-confirmation-outline"
+                          >
+                            <div class="timeline-item-content">
+                              <p>{{ t('ticketCreatedAt') }}</p>
+                              <span>{{ formatDate(selectedTransfer?.createdAt) }}</span>
+                            </div>
+                          </v-timeline-item>
+
+                          <v-timeline-item
+                            v-slot:opposite
+                            dot-color="white"
+                            icon="mdi-rotate-3d-variant"
+                            icon-color="orange"
+                            v-if="selectedTransfer?.updatedAt"
+                          >
+                            <div class="timeline-item-content">
+                              <p>{{ t('statusHasChanged') }}</p>
+                              <span>{{ formatDate(selectedTransfer?.updatedAt) }}</span>
+                            </div>
+                            <p class="status-desc">
+                              {{
+                                t('statusHasChangedTo', {
+                                  status: t(selectedTransfer?.status ?? 'pending'),
+                                })
+                              }}
+                            </p>
+                          </v-timeline-item>
+
+                          <v-timeline-item
+                            v-if="selectedTransfer?.completedAt"
+                            dot-color="white"
+                            icon="mdi-check"
+                            icon-color="success"
+                          >
+                            <div class="timeline-item-content">
+                              <p>{{ t('statusHasChanged') }}</p>
+                              <span>{{ formatDate(selectedTransfer?.completedAt) }}</span>
+                            </div>
+                            <p class="status-desc">
+                              {{
+                                t('statusHasChangedTo', {
+                                  status: t(selectedTransfer?.status ?? 'completed'),
+                                })
+                              }}
+                            </p>
+                          </v-timeline-item>
+                        </v-timeline>
+                      </div>
+                    </v-tabs-window-item>
+                  </v-tabs-window>
+                </v-card>
               </div>
-            </div>
-          </form>
-        </div>
-      </Drawer>
-      <!-- assign empeloyee Drawer -->
-
-      <!-- Details Drawer -->
-      <Drawer
-        :isOpen="isDetailsTransfersDrawerOpen"
-        :title="t('complaint') + ' ' + '#' + selectedTransfer?._id.substring(0, 6)"
-        :desc="t('employee')"
-        :status="selectedTransfer?.status ? t(selectedTransfer?.status) : t('available')"
-        @close="isDetailsTransfersDrawerOpen = false"
-      >
-        <div style="max-height: 75vh">
-          <form class="drawer-form">
-            <div>
-              <div class="drawer-banner">
-                <p>{{ t('information') }}</p>
-              </div>
-              <v-card>
-                <v-tabs v-model="tab" align-tabs="start" color="deep-purple-accent-4">
-                  <v-tab value="details">{{ t('details') }}</v-tab>
-                  <v-tab value="timeLine">{{ t('timeLine') }}</v-tab>
-                </v-tabs>
-
-                <v-tabs-window v-model="tab">
-                  <v-tabs-window-item value="details"> </v-tabs-window-item>
-
-                  <v-tabs-window-item value="timeLine">
-                    <div class="status-stepper">
-                      <v-timeline>
-                        <v-timeline-item
-                          v-if="selectedTransfer?.createdAt"
-                          dot-color="white"
-                          icon="mdi-ticket-confirmation-outline"
-                        >
-                          <div class="timeline-item-content">
-                            <p>{{ t('ticketCreatedAt') }}</p>
-                            <span>{{ formatDate(selectedTransfer?.createdAt) }}</span>
-                          </div>
-                        </v-timeline-item>
-
-                        <v-timeline-item
-                          v-slot:opposite
-                          dot-color="white"
-                          icon="mdi-rotate-3d-variant"
-                          icon-color="orange"
-                          v-if="selectedTransfer?.updatedAt"
-                        >
-                          <div class="timeline-item-content">
-                            <p>{{ t('statusHasChanged') }}</p>
-                            <span>{{ formatDate(selectedTransfer?.updatedAt) }}</span>
-                          </div>
-                          <p class="status-desc">
-                            {{
-                              t('statusHasChangedTo', {
-                                status: t(selectedTransfer?.status ?? 'pending'),
-                              })
-                            }}
-                          </p>
-                        </v-timeline-item>
-
-                        <v-timeline-item
-                          v-if="selectedTransfer?.completedAt"
-                          dot-color="white"
-                          icon="mdi-check"
-                          icon-color="success"
-                        >
-                          <div class="timeline-item-content">
-                            <p>{{ t('statusHasChanged') }}</p>
-                            <span>{{ formatDate(selectedTransfer?.completedAt) }}</span>
-                          </div>
-                          <p class="status-desc">
-                            {{
-                              t('statusHasChangedTo', {
-                                status: t(selectedTransfer?.status ?? 'completed'),
-                              })
-                            }}
-                          </p>
-                        </v-timeline-item>
-                      </v-timeline>
-                    </div>
-                  </v-tabs-window-item>
-                </v-tabs-window>
-              </v-card>
-            </div>
-          </form>
-        </div>
-      </Drawer>
-      <!-- Details Drawer -->
+            </form>
+          </div>
+        </Drawer>
+        <!-- Details Drawer -->
+      </div>
     </div>
   </div>
 </template>
@@ -255,6 +264,10 @@ const { t } = useI18n()
 const tranfersStore = useTransfersStore()
 const workersStore = useWorkersStore()
 const loading = computed(() => tranfersStore.isLoading)
+
+// Initial loading state for first page load
+const initialLoading = ref(true)
+
 const isDetailsTransfersDrawerOpen = ref(false)
 const workers = ref<IWorker[]>([])
 const workersLoading = ref(false)
@@ -460,9 +473,13 @@ const fetchAllWorkers = async () => {
 }
 
 onMounted(async () => {
-  fetchAllTranfers()
-  fetchStats()
-  fetchAllWorkers()
+  try {
+    await Promise.all([fetchAllTranfers(), fetchStats(), fetchAllWorkers()])
+  } catch (error) {
+    console.error('Error loading initial data:', error)
+  } finally {
+    initialLoading.value = false
+  }
 })
 
 // Watch for changes in the workers store

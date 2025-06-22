@@ -9,433 +9,370 @@
       v-on:button-pressed="() => (isDialogOpen = true)"
     />
     <div class="page-content">
-      <ServerTable
-        :headers="headers"
-        :items="items"
-        :total-items="totalItems"
-        :loading="loading"
-        v-model:page="page"
-        v-model:items-per-page="itemsPerPage"
-      >
-        <template #cell-_id="{ item }"> #{{ item?._id?.substring(0, 6) }} </template>
-        <template #cell-sendNotificationOnDate="{ item }">
-          {{ formatDate(item.sendNotificationOnDate) }}</template
+      <!-- Loading state for initial page load -->
+      <div v-if="initialLoading" class="loading-state">
+        <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
+        <p>{{ t('loading') }}</p>
+      </div>
+      
+      <!-- Content when loaded -->
+      <div v-else>
+        <ServerTable
+          :headers="headers"
+          :items="items"
+          :total-items="totalItems"
+          :loading="loading"
+          v-model:page="page"
+          v-model:items-per-page="itemsPerPage"
         >
-        <template #cell-type="{ item }">
-          <v-chip
-            :color="statusColor(getStatusAccordingToSendDate(item as INotification))"
-            text-color="white"
-            small
+          <template #cell-_id="{ item }"> #{{ item?._id?.substring(0, 6) }} </template>
+          <template #cell-sendNotificationOnDate="{ item }">
+            {{ formatDate(item.sendNotificationOnDate) }}</template
           >
-            <span
-              :style="{
-                backgroundColor: statusColor(getStatusAccordingToSendDate(item as INotification)),
-              }"
-              class="status-circle"
-            ></span>
-            {{ t(getStatusAccordingToSendDate(item as INotification)) }}
-          </v-chip>
-        </template>
-        <!-- <template #cell-isRead="{ item }">
-          <v-chip :color="item.isRead ? 'grey' : 'warning'" text-color="white" small>
-            {{ item.isRead ? t('read') : t('unread') }}
-          </v-chip>
-        </template> -->
-        <template #cell-createdAt="{ item }">
-          {{ formatDate(item.createdAt) }}
-        </template>
-        <template #actions="{ item }">
-          <v-menu location="bottom end" offset="4">
-            <template #activator="{ props }">
-              <v-btn icon v-bind="props" variant="text" density="comfortable">
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-            </template>
-            <v-list class="menu-list pa-0 ma-0">
+          <template #cell-type="{ item }">
+            <v-chip
+              :color="statusColor(getStatusAccordingToSendDate(item as INotification))"
+              text-color="white"
+              small
+            >
+              <span
+                :style="{
+                  backgroundColor: statusColor(getStatusAccordingToSendDate(item as INotification)),
+                }"
+                class="status-circle"
+              ></span>
+              {{ t(getStatusAccordingToSendDate(item as INotification)) }}
+            </v-chip>
+          </template>
+          <!-- <template #cell-isRead="{ item }">
+            <v-chip :color="item.isRead ? 'grey' : 'warning'" text-color="white" small>
+              {{ item.isRead ? t('read') : t('unread') }}
+            </v-chip>
+          </template> -->
+          <template #cell-createdAt="{ item }">
+            {{ formatDate(item.createdAt) }}
+          </template>
+          <template #actions="{ item }">
+            <v-menu location="bottom end" offset="4">
+              <template #activator="{ props }">
+                <v-btn icon v-bind="props" variant="text" density="comfortable">
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </template>
               <v-list class="menu-list pa-0 ma-0">
-                <v-list-item class="menu-item" @click="viewDetails(item)">
-                  <v-icon class="mr-2">mdi-eye-outline</v-icon>
-                  {{ t('seeDetails') }}
-                </v-list-item>
-                <v-list-item class="menu-item" @click="editNotification(item)">
-                  <v-icon class="mr-2">mdi-pencil-outline</v-icon>
-                  {{ t('editNotification') }}
-                </v-list-item>
-                <v-list-item class="menu-item" @click="deleteNotification(item)">
-                  <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
-                  {{ t('deleteNotification') }}
-                </v-list-item>
+                <v-list class="menu-list pa-0 ma-0">
+                  <v-list-item class="menu-item" @click="viewDetails(item)">
+                    <v-icon class="mr-2">mdi-eye-outline</v-icon>
+                    {{ t('seeDetails') }}
+                  </v-list-item>
+                  <v-list-item class="menu-item" @click="editNotification(item)">
+                    <v-icon class="mr-2">mdi-pencil-outline</v-icon>
+                    {{ t('editNotification') }}
+                  </v-list-item>
+                  <v-list-item class="menu-item" @click="deleteNotification(item)">
+                    <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
+                    {{ t('deleteNotification') }}
+                  </v-list-item>
+                </v-list>
               </v-list>
-            </v-list>
-          </v-menu>
-        </template>
-      </ServerTable>
+            </v-menu>
+          </template>
+        </ServerTable>
 
-      <!-- add Drawer -->
-      <Drawer
-        :isOpen="isDialogOpen"
-        :title="t('sendNotification')"
-        :desc="t('fillOutAllTheInformationsToAdd')"
-        @close="
-          () => {
-            isDialogOpen = false
-            resetForm()
-          }
-        "
-      >
-        <div style="max-height: 75vh">
-          <form @submit.prevent="onAddButtonPressed()" class="form">
-            <div>
-              <div class="drawer-banner">
-                <p>{{ t('generalInformation') }}</p>
-              </div>
+        <!-- add Drawer -->
+        <Drawer
+          :isOpen="isDialogOpen"
+          :title="t('sendNotification')"
+          :desc="t('fillOutAllTheInformationsToAdd')"
+          @close="
+            () => {
+              isDialogOpen = false
+              resetForm()
+            }
+          "
+        >
+          <div style="max-height: 75vh">
+            <form @submit.prevent="onAddButtonPressed()" class="form">
               <div>
-                <div class="drawer-form-group">
-                  <label for="name" class="drawer-label-group">
-                    {{ t('notificationTitle') }}<span class="required">*</span>
-                  </label>
-                  <input
-                    id="name"
-                    type="text"
-                    class="form-input no-focus-border"
-                    :placeholder="t('notificationTitle')"
-                    v-model="newNotification.title"
-                    required
-                  />
-                </div>
-                <div class="drawer-form-group">
-                  <label for="message" class="drawer-label-group">
-                    {{ t('notificationDesc') }}<span class="required">*</span>
-                  </label>
-                  <textarea
-                    id="message"
-                    type="text"
-                    class="form-input no-focus-border"
-                    :placeholder="t('notificationDesc')"
-                    v-model="newNotification.message"
-                    required
-                    maxlength="200"
-                  ></textarea>
-                </div>
                 <div class="drawer-banner">
-                  <p>{{ t('advancedDetails') }}</p>
+                  <p>{{ t('generalInformation') }}</p>
                 </div>
+                <div>
+                  <div class="drawer-form-group">
+                    <label for="name" class="drawer-label-group">
+                      {{ t('notificationTitle') }}<span class="required">*</span>
+                    </label>
+                    <input
+                      id="name"
+                      type="text"
+                      class="form-input no-focus-border"
+                      :placeholder="t('notificationTitle')"
+                      v-model="newNotification.title"
+                      required
+                    />
+                  </div>
+                  <div class="drawer-form-group">
+                    <label for="message" class="drawer-label-group">
+                      {{ t('notificationDesc') }}<span class="required">*</span>
+                    </label>
+                    <textarea
+                      id="message"
+                      type="text"
+                      class="form-input no-focus-border"
+                      :placeholder="t('notificationDesc')"
+                      v-model="newNotification.message"
+                      required
+                      maxlength="200"
+                    ></textarea>
+                  </div>
+                  <div class="drawer-banner">
+                    <p>{{ t('advancedDetails') }}</p>
+                  </div>
 
-                <div class="drawer-form-group">
-                  <label for="redirectTo" class="drawer-label-group">
-                    {{ t('notificationWillRedirectTo') }}</label
-                  >
-                  <v-text-field
-                    id="banner-redirectTo"
-                    v-model="newNotification.redirectTo"
-                    placeholder="www.example.com"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                    class="no-focus-border"
-                  >
-                    <template v-slot:prepend-inner>
-                      <span class="url-prefix">://app</span>
-                    </template>
-                  </v-text-field>
-                </div>
-                <div class="drawer-form-group" v-if="!newNotification.sendNow">
-                  <label for="redirectTo" class="drawer-label-group">
-                    {{ t('sendNotificationOn') }}</label
-                  >
-                  <DateTimePicker
-                    v-model="newNotification.sendNotificationOnDate"
-                    :show-time="true"
-                    :placeholder="t('sendNotificationOn')"
-                    variant="outlined"
-                    density="compact"
-                    :min-date="getTodayForDatePicker()"
-                    hide-details
-                    class="no-focus-border"
-                  />
-                </div>
-                <div class="drawer-form-group flex">
-                  <v-switch
-                    class="no-focus-border"
-                    color="primary"
-                    v-model="newNotification.sendNow"
-                    hide-details
-                    indeterminate
-                    :label="t('sendNotificationNow')"
-                  ></v-switch>
-                  <v-switch
-                    class="no-focus-border"
-                    color="primary"
-                    v-model="newNotification.isGlobal"
-                    hide-details
-                    indeterminate
-                    :label="t('isGlobalNotification')"
-                  ></v-switch>
-                </div>
-
-                <div
-                  class="drawer-form-group"
-                  v-if="!newNotification.isGlobal && users?.length > 0"
-                >
-                  <label for="redirectTo" class="drawer-label-group">
-                    {{ t('selectTargetCustomers') }}</label
-                  >
-
-                  <v-select
-                    v-model="newNotification.targetUsers"
-                    :items="
-                      users?.map((user: IUser) => ({
-                        title: user.name,
-                        value: user._id,
-                      }))
-                    "
-                    item-title="title"
-                    item-value="value"
-                    multiple
-                    chips
-                    class="no-focus-border"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                    :placeholder="t('selectTargetCustomers')"
-                  />
-                </div>
-              </div>
-              <div class="action-btns">
-                <ActionButton
-                  :buttonText="t('cancel')"
-                  buttonColor="white"
-                  @button-pressed="
-                    () => {
-                      isDialogOpen = false
-                      resetForm()
-                    }
-                  "
-                  class="action-Btn"
-                />
-                <ActionButton :buttonText="t('save')" buttonType="submit" class="action-Btn" />
-              </div>
-            </div>
-          </form>
-        </div>
-      </Drawer>
-      <!-- add Drawer -->
-      <!-- Edit Drawer -->
-      <Drawer
-        :isOpen="isEditDialogOpen"
-        :title="t('editNotification')"
-        :desc="t('fillOutAllTheInformationsToUpdate')"
-        @close="closeEditDrawer"
-      >
-        <div style="max-height: 75vh">
-          <form @submit.prevent="handleUpdate()" class="form">
-            <div>
-              <div class="drawer-banner">
-                <p>{{ t('generalInformation') }}</p>
-              </div>
-              <div>
-                <div class="drawer-form-group">
-                  <label for="edit-name" class="drawer-label-group">
-                    {{ t('notificationTitle') }}<span class="required">*</span>
-                  </label>
-                  <input
-                    id="edit-name"
-                    type="text"
-                    class="form-input no-focus-border"
-                    :placeholder="t('notificationTitle')"
-                    v-model="editingNotification.title"
-                    required
-                  />
-                </div>
-                <div class="drawer-form-group">
-                  <label for="edit-message" class="drawer-label-group">
-                    {{ t('notificationDesc') }}<span class="required">*</span>
-                  </label>
-                  <textarea
-                    id="edit-message"
-                    type="text"
-                    class="form-input no-focus-border"
-                    :placeholder="t('notificationDesc')"
-                    v-model="editingNotification.message"
-                    required
-                    maxlength="200"
-                  ></textarea>
-                </div>
-                <div class="drawer-banner">
-                  <p>{{ t('advancedDetails') }}</p>
-                </div>
-
-                <div class="drawer-form-group">
-                  <label for="edit-redirectTo" class="drawer-label-group">
-                    {{ t('notificationWillRedirectTo') }}</label
-                  >
-                  <v-text-field
-                    id="banner-redirectTo"
-                    v-model="editingNotification.redirectTo"
-                    placeholder="www.example.com"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                    class="no-focus-border"
-                  >
-                    <template v-slot:prepend-inner>
-                      <span class="url-prefix">://app</span>
-                    </template>
-                  </v-text-field>
-                </div>
-                <div class="drawer-form-group" v-if="!editingNotification.sendNow">
-                  <label for="edit-sendOn" class="drawer-label-group">
-                    {{ t('sendNotificationOn') }}</label
-                  >
-                  <DateTimePicker
-                    v-model="editingNotification.sendNotificationOnDate"
-                    :show-time="true"
-                    :placeholder="t('sendNotificationOn')"
-                    variant="outlined"
-                    density="compact"
-                    :min-date="getTodayForDatePicker()"
-                    hide-details
-                    class="no-focus-border"
-                  />
-                </div>
-                <div class="drawer-form-group flex">
-                  <v-switch
-                    class="no-focus-border"
-                    color="primary"
-                    v-model="editingNotification.sendNow"
-                    hide-details
-                    :label="t('sendNotificationNow')"
-                  ></v-switch>
-                  <v-switch
-                    class="no-focus-border"
-                    color="primary"
-                    v-model="editingNotification.isGlobal"
-                    hide-details
-                    :label="t('isGlobalNotification')"
-                  ></v-switch>
-                </div>
-
-                <div
-                  class="drawer-form-group"
-                  v-if="!editingNotification.isGlobal && users?.length > 0"
-                >
-                  <label for="edit-target" class="drawer-label-group">
-                    {{ t('selectTargetCustomers') }}</label
-                  >
-                  <v-select
-                    v-model="editingNotification.targetUsers"
-                    :items="
-                      users?.map((user: IUser) => ({
-                        title: user.name,
-                        value: user._id,
-                      }))
-                    "
-                    item-title="title"
-                    item-value="value"
-                    multiple
-                    chips
-                    class="no-focus-border"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                    :placeholder="t('selectTargetCustomers')"
-                  />
-                </div>
-              </div>
-              <div class="action-btns">
-                <ActionButton
-                  :buttonText="t('cancel')"
-                  buttonColor="white"
-                  @button-pressed="closeEditDrawer"
-                  class="action-Btn"
-                />
-                <ActionButton :buttonText="t('update')" buttonType="submit" class="action-Btn" />
-              </div>
-            </div>
-          </form>
-        </div>
-      </Drawer>
-      <!-- Edit Drawer -->
-      <!-- details Drawer -->
-      <Drawer
-        :isOpen="isDetailsNotificationDrawerOpen"
-        :title="t('notificationDetails')"
-        :desc="t('seeYourNotificationDetail')"
-        @close="isDetailsNotificationDrawerOpen = false"
-      >
-        <div style="max-height: 75vh">
-          <form class="form">
-            <div>
-              <div class="drawer-banner">
-                <p>{{ t('generalInformation') }}</p>
-              </div>
-              <p class="drawer-title">{{ selectedNotification?.title }}</p>
-              <p class="drawer-description">{{ selectedNotification?.message }}</p>
-              <div class="drawer-banner">
-                <p>{{ t('advancedDetails') }}</p>
-              </div>
-              <div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('createdBy') }}</p>
-                  <p class="drawer-value">{{ selectedNotification?.createdBy?.name ?? 'N/A' }}</p>
-                </div>
-
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('status') }}</p>
-                  <p class="drawer-value">
-                    <v-chip
-                      :color="getTypeColor(selectedNotification?.createdAt ? 'sent' : 'failed')"
-                      text-color="white"
-                      small
+                  <div class="drawer-form-group">
+                    <label for="redirectTo" class="drawer-label-group">
+                      {{ t('notificationWillRedirectTo') }}</label
                     >
-                      <span
-                        :style="{
-                          backgroundColor: getTypeColor(
-                            selectedNotification?.createdAt ? t('sent') : t('failed'),
-                          ),
-                        }"
-                        class="status-circle"
-                      ></span>
-                      {{ selectedNotification?.createdAt ? t('sent') : t('failed') }}
-                    </v-chip>
-                  </p>
-                </div>
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('redirectTo') }}</p>
-                  <p class="drawer-value">
-                    {{ selectedNotification?.redirectTo ?? 'N/A' }}
-                  </p>
-                </div>
+                    <v-text-field
+                      id="banner-redirectTo"
+                      v-model="newNotification.redirectTo"
+                      placeholder="www.example.com"
+                      variant="outlined"
+                      density="compact"
+                      hide-details
+                      class="no-focus-border"
+                    >
+                      <template v-slot:prepend-inner>
+                        <span class="url-prefix">://app</span>
+                      </template>
+                    </v-text-field>
+                  </div>
+                  <div class="drawer-form-group" v-if="!newNotification.sendNow">
+                    <label for="redirectTo" class="drawer-label-group">
+                      {{ t('sendNotificationOn') }}</label
+                    >
+                    <DateTimePicker
+                      v-model="newNotification.sendNotificationOnDate"
+                      :show-time="true"
+                      :placeholder="t('sendNotificationOn')"
+                      variant="outlined"
+                      density="compact"
+                      :min-date="getTodayForDatePicker()"
+                      hide-details
+                      class="no-focus-border"
+                    />
+                  </div>
+                  <div class="drawer-form-group flex">
+                    <v-switch
+                      class="no-focus-border"
+                      color="primary"
+                      v-model="newNotification.sendNow"
+                      hide-details
+                      indeterminate
+                      :label="t('sendNotificationNow')"
+                    ></v-switch>
+                    <v-switch
+                      class="no-focus-border"
+                      color="primary"
+                      v-model="newNotification.isGlobal"
+                      hide-details
+                      indeterminate
+                      :label="t('isGlobalNotification')"
+                    ></v-switch>
+                  </div>
 
-                <div class="drawer-info">
-                  <p class="drawer-key">{{ t('sentOn') }}</p>
-                  <p class="drawer-value">
-                    {{
-                      selectedNotification?.sendNotificationOnDate
-                        ? formatDate(selectedNotification.sendNotificationOnDate)
-                        : selectedNotification?.createdAt
-                          ? formatDate(selectedNotification.createdAt)
-                          : 'N/A'
-                    }}
-                  </p>
+                  <div
+                    class="drawer-form-group"
+                    v-if="!newNotification.isGlobal && users?.length > 0"
+                  >
+                    <label for="redirectTo" class="drawer-label-group">
+                      {{ t('selectTargetCustomers') }}</label
+                    >
+
+                    <v-select
+                      v-model="newNotification.targetUsers"
+                      :items="
+                        users?.map((user: IUser) => ({
+                          title: user.name,
+                          value: user._id,
+                        }))
+                      "
+                      item-title="title"
+                      item-value="value"
+                      multiple
+                      chips
+                      class="no-focus-border"
+                      variant="outlined"
+                      density="compact"
+                      hide-details
+                      :placeholder="t('selectTargetCustomers')"
+                    />
+                  </div>
+                </div>
+                <div class="action-btns">
+                  <ActionButton
+                    :buttonText="t('cancel')"
+                    buttonColor="white"
+                    @button-pressed="
+                      () => {
+                        isDialogOpen = false
+                        resetForm()
+                      }
+                    "
+                    class="action-Btn"
+                  />
+                  <ActionButton :buttonText="t('save')" buttonType="submit" class="action-Btn" />
                 </div>
               </div>
-            </div>
-          </form>
-        </div>
-      </Drawer>
-      <!-- details Drawer -->
+            </form>
+          </div>
+        </Drawer>
+        <!-- add Drawer -->
+        <!-- Edit Drawer -->
+        <Drawer
+          :isOpen="isEditDialogOpen"
+          :title="t('editNotification')"
+          :desc="t('fillOutAllTheInformationsToUpdate')"
+          @close="closeEditDrawer"
+        >
+          <div style="max-height: 75vh">
+            <form @submit.prevent="handleUpdate()" class="form">
+              <div>
+                <div class="drawer-banner">
+                  <p>{{ t('generalInformation') }}</p>
+                </div>
+                <div>
+                  <div class="drawer-form-group">
+                    <label for="edit-name" class="drawer-label-group">
+                      {{ t('notificationTitle') }}<span class="required">*</span>
+                    </label>
+                    <input
+                      id="edit-name"
+                      type="text"
+                      class="form-input no-focus-border"
+                      :placeholder="t('notificationTitle')"
+                      v-model="editingNotification.title"
+                      required
+                    />
+                  </div>
+                  <div class="drawer-form-group">
+                    <label for="edit-message" class="drawer-label-group">
+                      {{ t('notificationDesc') }}<span class="required">*</span>
+                    </label>
+                    <textarea
+                      id="edit-message"
+                      type="text"
+                      class="form-input no-focus-border"
+                      :placeholder="t('notificationDesc')"
+                      v-model="editingNotification.message"
+                      required
+                      maxlength="200"
+                    ></textarea>
+                  </div>
+                  <div class="drawer-banner">
+                    <p>{{ t('advancedDetails') }}</p>
+                  </div>
 
-      <!-- delete Drawer -->
-      <Drawer
-        :isOpen="isDeleteNotificationDrawerOpen"
-        :title="t('notificationDetails')"
-        :desc="t('seeYourNotificationDetail')"
-        @close="isDeleteNotificationDrawerOpen = false"
-      >
-        <div style="max-height: 75vh">
-          <form class="form">
-            <div>
+                  <div class="drawer-form-group">
+                    <label for="edit-redirectTo" class="drawer-label-group">
+                      {{ t('notificationWillRedirectTo') }}</label
+                    >
+                    <v-text-field
+                      id="banner-redirectTo"
+                      v-model="editingNotification.redirectTo"
+                      placeholder="www.example.com"
+                      variant="outlined"
+                      density="compact"
+                      hide-details
+                      class="no-focus-border"
+                    >
+                      <template v-slot:prepend-inner>
+                        <span class="url-prefix">://app</span>
+                      </template>
+                    </v-text-field>
+                  </div>
+                  <div class="drawer-form-group" v-if="!editingNotification.sendNow">
+                    <label for="edit-sendOn" class="drawer-label-group">
+                      {{ t('sendNotificationOn') }}</label
+                    >
+                    <DateTimePicker
+                      v-model="editingNotification.sendNotificationOnDate"
+                      :show-time="true"
+                      :placeholder="t('sendNotificationOn')"
+                      variant="outlined"
+                      density="compact"
+                      :min-date="getTodayForDatePicker()"
+                      hide-details
+                      class="no-focus-border"
+                    />
+                  </div>
+                  <div class="drawer-form-group flex">
+                    <v-switch
+                      class="no-focus-border"
+                      color="primary"
+                      v-model="editingNotification.sendNow"
+                      hide-details
+                      :label="t('sendNotificationNow')"
+                    ></v-switch>
+                    <v-switch
+                      class="no-focus-border"
+                      color="primary"
+                      v-model="editingNotification.isGlobal"
+                      hide-details
+                      :label="t('isGlobalNotification')"
+                    ></v-switch>
+                  </div>
+
+                  <div
+                    class="drawer-form-group"
+                    v-if="!editingNotification.isGlobal && users?.length > 0"
+                  >
+                    <label for="edit-target" class="drawer-label-group">
+                      {{ t('selectTargetCustomers') }}</label
+                    >
+                    <v-select
+                      v-model="editingNotification.targetUsers"
+                      :items="
+                        users?.map((user: IUser) => ({
+                          title: user.name,
+                          value: user._id,
+                        }))
+                      "
+                      item-title="title"
+                      item-value="value"
+                      multiple
+                      chips
+                      class="no-focus-border"
+                      variant="outlined"
+                      density="compact"
+                      hide-details
+                      :placeholder="t('selectTargetCustomers')"
+                    />
+                  </div>
+                </div>
+                <div class="action-btns">
+                  <ActionButton
+                    :buttonText="t('cancel')"
+                    buttonColor="white"
+                    @button-pressed="closeEditDrawer"
+                    class="action-Btn"
+                  />
+                  <ActionButton :buttonText="t('update')" buttonType="submit" class="action-Btn" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </Drawer>
+        <!-- Edit Drawer -->
+        <!-- details Drawer -->
+        <Drawer
+          :isOpen="isDetailsNotificationDrawerOpen"
+          :title="t('notificationDetails')"
+          :desc="t('seeYourNotificationDetail')"
+          @close="isDetailsNotificationDrawerOpen = false"
+        >
+          <div style="max-height: 75vh">
+            <form class="form">
               <div>
                 <div class="drawer-banner">
                   <p>{{ t('generalInformation') }}</p>
@@ -492,30 +429,102 @@
                   </div>
                 </div>
               </div>
-              <div class="action-btns">
-                <ActionButton
-                  :buttonText="t('cancel')"
-                  buttonColor="white"
-                  class="action-Btn"
-                  @button-pressed="() => (isDeleteNotificationDrawerOpen = false)"
-                />
-                <ActionButton
-                  button-color="error"
-                  :buttonText="t('deleteNotification')"
-                  class="action-Btn"
-                  @button-pressed="
-                    () => {
-                      isConfirmDeletePopupVisible = true
-                      isDeleteNotificationDrawerOpen = false
-                    }
-                  "
-                />
+            </form>
+          </div>
+        </Drawer>
+        <!-- details Drawer -->
+
+        <!-- delete Drawer -->
+        <Drawer
+          :isOpen="isDeleteNotificationDrawerOpen"
+          :title="t('notificationDetails')"
+          :desc="t('seeYourNotificationDetail')"
+          @close="isDeleteNotificationDrawerOpen = false"
+        >
+          <div style="max-height: 75vh">
+            <form class="form">
+              <div>
+                <div>
+                  <div class="drawer-banner">
+                    <p>{{ t('generalInformation') }}</p>
+                  </div>
+                  <p class="drawer-title">{{ selectedNotification?.title }}</p>
+                  <p class="drawer-description">{{ selectedNotification?.message }}</p>
+                  <div class="drawer-banner">
+                    <p>{{ t('advancedDetails') }}</p>
+                  </div>
+                  <div>
+                    <div class="drawer-info">
+                      <p class="drawer-key">{{ t('createdBy') }}</p>
+                      <p class="drawer-value">{{ selectedNotification?.createdBy?.name ?? 'N/A' }}</p>
+                    </div>
+
+                    <div class="drawer-info">
+                      <p class="drawer-key">{{ t('status') }}</p>
+                      <p class="drawer-value">
+                        <v-chip
+                          :color="getTypeColor(selectedNotification?.createdAt ? 'sent' : 'failed')"
+                          text-color="white"
+                          small
+                        >
+                          <span
+                            :style="{
+                              backgroundColor: getTypeColor(
+                                selectedNotification?.createdAt ? t('sent') : t('failed'),
+                              ),
+                            }"
+                            class="status-circle"
+                          ></span>
+                          {{ selectedNotification?.createdAt ? t('sent') : t('failed') }}
+                        </v-chip>
+                      </p>
+                    </div>
+                    <div class="drawer-info">
+                      <p class="drawer-key">{{ t('redirectTo') }}</p>
+                      <p class="drawer-value">
+                        {{ selectedNotification?.redirectTo ?? 'N/A' }}
+                      </p>
+                    </div>
+
+                    <div class="drawer-info">
+                      <p class="drawer-key">{{ t('sentOn') }}</p>
+                      <p class="drawer-value">
+                        {{
+                          selectedNotification?.sendNotificationOnDate
+                            ? formatDate(selectedNotification.sendNotificationOnDate)
+                            : selectedNotification?.createdAt
+                              ? formatDate(selectedNotification.createdAt)
+                              : 'N/A'
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="action-btns">
+                  <ActionButton
+                    :buttonText="t('cancel')"
+                    buttonColor="white"
+                    class="action-Btn"
+                    @button-pressed="() => (isDeleteNotificationDrawerOpen = false)"
+                  />
+                  <ActionButton
+                    button-color="error"
+                    :buttonText="t('deleteNotification')"
+                    class="action-Btn"
+                    @button-pressed="
+                      () => {
+                        isConfirmDeletePopupVisible = true
+                        isDeleteNotificationDrawerOpen = false
+                      }
+                    "
+                  />
+                </div>
               </div>
-            </div>
-          </form>
-        </div>
-      </Drawer>
-      <!-- delete Drawer -->
+            </form>
+          </div>
+        </Drawer>
+        <!-- delete Drawer -->
+      </div>
     </div>
 
     <ConfirmPopupDialog
@@ -568,9 +577,19 @@ const items = computed(() => store.allNotifications)
 const totalItems = computed(() => store.paginationInfo?.total ?? 0)
 const loading = computed(() => store.isLoading)
 const users = ref<IUser[]>([])
+const initialLoading = ref(true)
 
 onMounted(async () => {
-  users.value = await useUserStore().fetchUsers() // calls the function and stores the result
+  try {
+    await Promise.all([
+      useUserStore().fetchUsers().then(result => users.value = result),
+      fetchNotifications()
+    ])
+  } catch (error) {
+    console.error('Error loading initial data:', error)
+  } finally {
+    initialLoading.value = false
+  }
 })
 const newNotification = ref<{
   title: string
@@ -941,10 +960,6 @@ const confirmDelete = async (notification: INotification) => {
     toastErrorMessage(t('anErrorOccured'), t('notificationErrorTryAgain'))
   }
 }
-
-onMounted(() => {
-  fetchNotifications()
-})
 
 watch([page, itemsPerPage], fetchNotifications)
 </script>

@@ -390,3 +390,19 @@ body {
 .v-timeline--vertical.v-timeline {
   width: fit-content !important;
 }
+
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  gap: 16px;
+  
+  p {
+    margin: 0;
+    font-size: 16px;
+    color: #666;
+  }
+}

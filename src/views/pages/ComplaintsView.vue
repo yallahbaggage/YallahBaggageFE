@@ -6,76 +6,85 @@
       :desc="t('manageYourCustomerSupportRequests')"
     />
     <div class="page-content">
-      <div class="cards">
-        <InfoCard class="infoCard" :cardTitle="t('totalIssues')">
-          {{ stats.totalComplaints }}
-        </InfoCard>
-        <InfoCard class="infoCard" :cardTitle="t('openIssues')">
-          {{ stats.openComplaints }}
-        </InfoCard>
-        <InfoCard class="infoCard" :cardTitle="t('solvedIssues')">
-          {{ stats.solvedComplaints }}
-        </InfoCard>
+      <!-- Loading state for initial page load -->
+      <div v-if="initialLoading" class="loading-state">
+        <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
+        <p>{{ t('loading') }}</p>
       </div>
-      <hr class="infoHr" />
-      <ServerSideTable
-        v-model:page="page"
-        v-model:items-per-page="itemsPerPage"
-        :headers="headers"
-        :items="items"
-        :total-items="totalItems"
-        :loading="loading"
-      >
-        <template #cell-status="{ item }">
-          <v-chip :color="statusColor(item.status)" text-color="white" small>
-            <span
-              :style="{ backgroundColor: statusColor(item.status) }"
-              class="status-circle"
-            ></span>
-            {{ t(item.status ?? 'pending') }}
-          </v-chip>
-        </template>
-        <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
-        <!-- <template #cell-priority="{ item }">
-          <v-chip
-            :color="
-              item.priority === 'urgent'
-                ? 'red'
-                : item.priority === 'high'
-                  ? 'orange'
-                  : item.priority === 'medium'
-                    ? 'blue'
-                    : 'grey'
-            "
-            text-color="white"
-            small
-          >
-            {{ item.priority }}
-          </v-chip>
-        </template> -->
-        <template #cell-createdAt="{ item }">
-          {{ formatDate(item.createdAt) }}
-        </template>
-        <template #actions="{ item }">
-          <v-menu location="bottom end" offset="4">
-            <template #activator="{ props }">
-              <v-btn icon v-bind="props" variant="text" density="comfortable">
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-            </template>
-            <v-list class="menu-list pa-0 ma-0">
-              <v-list-item class="menu-item" @click="viewDetails(item)">
-                <v-icon class="mr-2">mdi-eye-outline</v-icon>
-                {{ t('seeDetails') }}
-              </v-list-item>
-              <v-list-item class="menu-item" @click="deleteComplaint(item)">
-                <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
-                {{ t('deleteIssue') }}
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </template>
-      </ServerSideTable>
+      
+      <!-- Content when loaded -->
+      <div v-else>
+        <div class="cards">
+          <InfoCard class="infoCard" :cardTitle="t('totalIssues')">
+            {{ stats.totalComplaints }}
+          </InfoCard>
+          <InfoCard class="infoCard" :cardTitle="t('openIssues')">
+            {{ stats.openComplaints }}
+          </InfoCard>
+          <InfoCard class="infoCard" :cardTitle="t('solvedIssues')">
+            {{ stats.solvedComplaints }}
+          </InfoCard>
+        </div>
+        <hr class="infoHr" />
+        <ServerSideTable
+          v-model:page="page"
+          v-model:items-per-page="itemsPerPage"
+          :headers="headers"
+          :items="items"
+          :total-items="totalItems"
+          :loading="loading"
+        >
+          <template #cell-status="{ item }">
+            <v-chip :color="statusColor(item.status)" text-color="white" small>
+              <span
+                :style="{ backgroundColor: statusColor(item.status) }"
+                class="status-circle"
+              ></span>
+              {{ t(item.status ?? 'pending') }}
+            </v-chip>
+          </template>
+          <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
+          <!-- <template #cell-priority="{ item }">
+            <v-chip
+              :color="
+                item.priority === 'urgent'
+                  ? 'red'
+                  : item.priority === 'high'
+                    ? 'orange'
+                    : item.priority === 'medium'
+                      ? 'blue'
+                      : 'grey'
+              "
+              text-color="white"
+              small
+            >
+              {{ item.priority }}
+            </v-chip>
+          </template> -->
+          <template #cell-createdAt="{ item }">
+            {{ formatDate(item.createdAt) }}
+          </template>
+          <template #actions="{ item }">
+            <v-menu location="bottom end" offset="4">
+              <template #activator="{ props }">
+                <v-btn icon v-bind="props" variant="text" density="comfortable">
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </template>
+              <v-list class="menu-list pa-0 ma-0">
+                <v-list-item class="menu-item" @click="viewDetails(item)">
+                  <v-icon class="mr-2">mdi-eye-outline</v-icon>
+                  {{ t('seeDetails') }}
+                </v-list-item>
+                <v-list-item class="menu-item" @click="deleteComplaint(item)">
+                  <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
+                  {{ t('deleteIssue') }}
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </template>
+        </ServerSideTable>
+      </div>
     </div>
     <!-- delete Drawer -->
     <Drawer
@@ -469,6 +478,8 @@ const stats = computed(
   () => complaintsStore.stats ?? { totalComplaints: 0, openComplaints: 0, solvedComplaints: 0 },
 )
 
+const initialLoading = ref(true)
+
 const fetchComplaints = async () => {
   await complaintsStore.fetchComplaints({
     page: String(page.value),
@@ -602,9 +613,14 @@ const sendMessage = async () => {
   }
 }
 
-onMounted(() => {
-  fetchComplaints()
-  fetchStats()
+onMounted(async () => {
+  try {
+    await Promise.all([fetchComplaints(), fetchStats()])
+  } catch (error) {
+    console.error('Error loading initial data:', error)
+  } finally {
+    initialLoading.value = false
+  }
 })
 
 watch([page, itemsPerPage], fetchComplaints)
