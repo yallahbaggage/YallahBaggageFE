@@ -8,10 +8,15 @@
     <div class="page-content">
       <!-- Loading state for initial page load -->
       <div v-if="initialLoading" class="loading-state">
-        <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
         <p>{{ t('loading') }}</p>
       </div>
-      
+
       <!-- Content when loaded -->
       <div v-else>
         <div class="cards">
@@ -19,7 +24,8 @@
             <div class="stats-container">
               {{ stats.todaysTransfers }}
               <p class="present-change">
-                <span class="present">+{{ stats.todaysTransfersChange }}</span> {{ t('vsYesterday') }}
+                <span class="present">+{{ stats.todaysTransfersChange }}</span>
+                {{ t('vsYesterday') }}
               </p>
             </div>
           </InfoCard>
@@ -54,11 +60,11 @@
           <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
           <template #cell-workerId="{ item }">
             <span v-if="item?.workerId?.name">{{ item.workerId.name }}</span>
-            <v-btn v-else @click="() => assignEmployee(item as Transfer)">
+            <v-btn elevation="true" outline v-else @click="() => assignEmployee(item as Transfer)">
+            <v-icon>mdi-plus-circle-outline</v-icon>
               {{ t('assign') }}
             </v-btn>
           </template>
-
           <template #cell-customer="{ item }">
             <span>{{ item.userId.name }}</span>
           </template>
@@ -354,7 +360,7 @@ const fetchAllTranfers = async () => {
 const assignEmployee = async (item: Transfer) => {
   selectedTransfer.value = item as Transfer
   isAssignEmployeeDrawerOpen.value = true
-  
+
   // Reset the current transfer's assigned worker ID for the new transfer
   currentTransferAssignedWorkerId.value = null
 
@@ -384,51 +390,63 @@ const currentTransferAssignedWorkerId = ref<string | null>(null)
 const assignEmployeeProcess = async (employee: IWorker, selectedTransfer: Transfer) => {
   console.log('Assigning employee:', employee.name)
   if (employee.status !== 'Available') {
-    toastErrorMessage('Plese select another empoloyee','Employee is not available:'+ employee.name)
+    toastErrorMessage(
+      'Plese select another empoloyee',
+      'Employee is not available:' + employee.name,
+    )
     return
   }
-  
+
   // If there's a previously assigned worker for this transfer in the current session, make them available
   if (currentTransferAssignedWorkerId.value) {
-    const previousWorkerIndex = workers.value.findIndex(w => w._id === currentTransferAssignedWorkerId.value)
+    const previousWorkerIndex = workers.value.findIndex(
+      (w) => w._id === currentTransferAssignedWorkerId.value,
+    )
     if (previousWorkerIndex !== -1) {
       workers.value[previousWorkerIndex].status = 'Available'
       workers.value[previousWorkerIndex].isAvailable = true
-      console.log('Previous session worker status updated to Available:', workers.value[previousWorkerIndex].name)
+      console.log(
+        'Previous session worker status updated to Available:',
+        workers.value[previousWorkerIndex].name,
+      )
     }
   }
-  
+
   // If the transfer already has a worker assigned from the database, update the status of that worker to Available
   if (selectedTransfer.workerId) {
     // Handle both string and object cases for workerId
-    const previousWorkerId = typeof selectedTransfer.workerId === 'string' 
-      ? selectedTransfer.workerId 
-      : selectedTransfer.workerId._id
-    
+    const previousWorkerId =
+      typeof selectedTransfer.workerId === 'string'
+        ? selectedTransfer.workerId
+        : selectedTransfer.workerId._id
+
     // Only update if it's different from the current session assigned worker
     if (previousWorkerId !== currentTransferAssignedWorkerId.value) {
-      const previousWorkerIndex = workers.value.findIndex(w => w._id === previousWorkerId)
+      const previousWorkerIndex = workers.value.findIndex((w) => w._id === previousWorkerId)
       if (previousWorkerIndex !== -1) {
         workers.value[previousWorkerIndex].status = 'Available'
         workers.value[previousWorkerIndex].isAvailable = true
-        console.log('Previous database worker status updated to Available:', workers.value[previousWorkerIndex].name)
+        console.log(
+          'Previous database worker status updated to Available:',
+          workers.value[previousWorkerIndex].name,
+        )
       }
     }
   }
-  
+
   // Update the selected employee's status to Assigned
-  const workerIndex = workers.value.findIndex(w => w._id === employee._id)
+  const workerIndex = workers.value.findIndex((w) => w._id === employee._id)
   if (workerIndex !== -1) {
     workers.value[workerIndex].status = 'Assigned'
     workers.value[workerIndex].isAvailable = false
   }
-  
+
   // Update the current transfer's assigned worker ID
   currentTransferAssignedWorkerId.value = employee._id
-  
+
   // Store the selected employee for later use when saving
   selectedEmployee.value = employee
-  
+
   console.log('Worker status updated locally to Assigned:', employee.name)
 }
 
@@ -437,7 +455,7 @@ const saveAssignment = async () => {
     console.error('No employee or transfer selected')
     return
   }
-  
+
   try {
     await tranfersStore.updateTransfer({
       transferId: selectedTransfer.value._id ?? '',
@@ -446,7 +464,7 @@ const saveAssignment = async () => {
         items: selectedTransfer.value?.items ?? [],
       },
       emitSocket: false,
-    }) 
+    })
 
     // Refresh the transfers list and workers list
     await fetchAllTranfers()
