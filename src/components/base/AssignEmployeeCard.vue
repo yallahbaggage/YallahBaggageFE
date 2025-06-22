@@ -4,46 +4,18 @@
       <div class="avatar">{{ initials }}</div>
       <div class="details">
         <div class="name">{{ fullName }}</div>
-        <v-chip v-if="status && status != 'Assigned'" :color="getStatusColor(status)" text-color="white" small>
-          <span
-            :style="{
-              backgroundColor: getStatusColor(status),
-            }"
-            class="status-circle"
-          ></span>
-          <p
-            :style="{
-              color: getStatusColor(status),
-            }"
-          >
-            {{ status }}
-          </p>
-        </v-chip>
+        <div class="status" v-if="status">
+          <span class="dot" :style="{ backgroundColor: getStatusColor(status) }" />
+          <span class="text" :style="{ color: getStatusColor(status) }">{{ status }}</span>
+        </div>
       </div>
     </div>
-    <button v-if="!status || status == 'Available'" class="assign-button" @click.prevent="onAssign">
+    <button v-if="!status || status === 'Available'" class="assign-button" @click.prevent="onAssign">
       {{ t('assign') }}
     </button>
-    <v-chip
-      v-if="status && status != 'Available'"
-      :color="getStatusColor(status)"
-      text-color="white"
-      small
-    >
-      <span
-        :style="{
-          backgroundColor: getStatusColor(status),
-        }"
-        class="status-circle"
-      ></span>
-      <p
-        :style="{
-          color: getStatusColor(status),
-        }"
-      >
-        {{ status }}
-      </p>
-    </v-chip>
+    <div v-else class="status-display">
+      <span class="status-text" :style="{ color: getStatusColor(status) }">{{ status }}</span>
+    </div>
   </div>
 </template>
 
@@ -72,9 +44,9 @@ const onAssign = () => emit('assign')
 const getStatusColor = (status: string) => {
   return (
     {
-      Assigned: 'blue',
-      onTheWay: 'orange',
-      Available: 'green',
+      'Assigned': 'blue',
+      'On The Way': 'orange',
+      'Available': 'green',
     }[status] ?? 'grey'
   )
 }
@@ -139,6 +111,19 @@ const getStatusColor = (status: string) => {
   background: #28a745;
   border-radius: 50%;
   margin-right: 6px;
+}
+
+.status-display {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.status-text {
+  font-size: 12px;
+  font-weight: 500;
 }
 
 .assign-button {

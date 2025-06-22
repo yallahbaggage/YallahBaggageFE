@@ -210,5 +210,6 @@
   "editNotification": "Edit Notification",
   "fillOutAllTheInformationsToUpdate": "Fill out all the informations to update",
   "updateTheBannerInformation": "Update the Banner Information",
-  "assignEmployeeToTransfer": "Assign employee to transfer #{transferId}"
+  "assignEmployeeToTransfer": "Assign employee to transfer #{transferId}",
+  "page": "Page"
 }
