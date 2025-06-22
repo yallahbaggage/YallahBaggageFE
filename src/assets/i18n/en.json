@@ -31,6 +31,8 @@
   "transferDetails": "Transfer Details",
   "pending": "Pending",
   "completed": "Completed",
+  "Completed": "Completed",
+  "Cancelled": "Cancelled",
   "cancelled": "Cancelled",
   "paymentStatus": "Payment Status",
   "paid": "Paid",

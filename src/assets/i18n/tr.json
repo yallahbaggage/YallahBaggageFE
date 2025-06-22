@@ -32,6 +32,8 @@
   "in_progress": "Devam Ediyor",
   "completed": "Tamamlandı",
   "cancelled": "İptal Edildi",
+  "Completed": "Tamamlandı",
+  "Cancelled": "İptal Edildi",
   "paymentStatus": "Ödeme Durumu",
   "pending": "Beklemede",
   "paid": "Ödendi",

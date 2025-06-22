@@ -6,17 +6,22 @@
         <div class="name">{{ fullName }}</div>
         <div class="status">
           <span class="dot" />
-          <span class="text">Available</span>
+          <span class="text">{{status ? t(status) : 'available'}}</span>
         </div>
       </div>
     </div>
-    <button class="assign-button" @click="onAssign">Assign</button>
+    <button class="assign-button" @click.prevent="onAssign">Assign</button>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue3-i18n';
+
+
+const { t } = useI18n()
 const props = defineProps<{
-  fullName: string
+  fullName: string;
+  status: "Available" | "Assigned" | "On The Way" | undefined
 }>()
 
 const emit = defineEmits<{

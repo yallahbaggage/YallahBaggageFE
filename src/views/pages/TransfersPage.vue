@@ -45,11 +45,10 @@
       >
         <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
         <template #cell-workerId="{ item }">
-          
-            <span v-if="item?.workerId?.name">{{ item.workerId.name }}</span>
-            <v-btn v-else @click="() => assignEmployee(item as Transfer)">
-              {{ t('assign') }}
-            </v-btn>
+          <span v-if="item?.workerId?.name">{{ item.workerId.name }}</span>
+          <v-btn v-else @click="() => assignEmployee(item as Transfer)">
+            {{ t('assign') }}
+          </v-btn>
         </template>
 
         <template #cell-customer="{ item }">
@@ -99,13 +98,49 @@
       <Drawer
         :isOpen="isAssignEmployeeDrawerOpen"
         :title="t('assignEmployee')"
-        :desc="t('Assign employee to transfer')"
-        :status="selectedTransfer?.status ? selectedTransfer?.status : 'pending'"
+        :desc="
+          t('assignEmployeeToTransfer', {
+            transferId: selectedTransfer?._id?.substring(0, 6),
+          })
+        "
         @close="isAssignEmployeeDrawerOpen = false"
       >
-        <div style="max-height: 75vh">
+        <div class="drawer-content">
           <form class="form">
             <div>
+              <div class="drawer-banner">
+                <p>{{ t('selectAnEmployee') }}</p>
+              </div>
+              <div v-if="workersLoading" class="loading-state">
+                <p>{{ t('loading') }}...</p>
+              </div>
+              <div v-else-if="workers.length === 0" class="no-workers">
+                <p>{{ t('noWorkersAvailable') }}</p>
+              </div>
+              <div v-else>
+                <div class="workers-list">
+                  <AssignEmployeeCard
+                    v-for="(employee, index) in workers"
+                    :key="`employee-${employee._id}-${index}`"
+                    :fullName="employee.name"
+                    :status="employee.status"
+                    @assign="
+                      async () => {
+                        console.log('Assigning employee:', employee.name)
+                        await tranfersStore.updateTransfer({
+                          transferId: selectedTransfer?._id ?? '',
+                          transferData: {
+                            workerId: employee._id ?? '',
+                            items: selectedTransfer?.items ?? [],
+                          },
+                          emitSocket: false,
+                        })
+                      }
+                    "
+                  />
+                </div>
+              </div>
+
               <div class="action-btns">
                 <ActionButton
                   :buttonText="t('cancel')"
@@ -114,8 +149,7 @@
                   @button-pressed="() => (isAssignEmployeeDrawerOpen = false)"
                 />
                 <ActionButton
-                  button-color="error"
-                  :buttonText="t('deleteIssue')"
+                  :buttonText="t('save')"
                   class="action-Btn"
                   @button-pressed="
                     () => {
@@ -227,12 +261,18 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { Transfer } from '@/models/transfer'
 import ServerTable from '@/components/base/ServerTable.vue'
 import { formatDate } from '@/utils/helpers/date-helper'
+import AssignEmployeeCard from '@/components/base/AssignEmployeeCard.vue'
+import { useWorkersStore } from '@/stores/modules/workers'
+import { IWorker } from '@/models/worker'
 
 const { t } = useI18n()
 
 const tranfersStore = useTransfersStore()
+const workersStore = useWorkersStore()
 const loading = computed(() => tranfersStore.isLoading)
 const isDetailsTransfersDrawerOpen = ref(false)
+const workers = ref<IWorker[]>([])
+const workersLoading = ref(false)
 const statusOptions = [
   { label: 'pending' },
   { label: 'in_progress' },
@@ -316,16 +356,53 @@ const fetchAllTranfers = async () => {
 const assignEmployee = async (item: Transfer) => {
   selectedTransfer.value = item as Transfer
   isAssignEmployeeDrawerOpen.value = true
+  console.log('Assign employee drawer opened')
+  console.log('Current workers:', workers.value)
+  console.log('Workers from store:', workersStore.allWorkers)
+
+  // If workers are not loaded, try to load them again
+  if (workers.value.length === 0) {
+    try {
+      workersLoading.value = true
+      await workersStore.getWorkers()
+      workers.value = workersStore.allWorkers
+      console.log('Workers reloaded:', workers.value.length)
+    } catch (error) {
+      console.error('Error reloading workers:', error)
+    } finally {
+      workersLoading.value = false
+    }
+  }
 }
 
 const fetchStats = async () => {
   await tranfersStore.getTransfersStats()
 }
 
-onMounted(() => {
+onMounted(async () => {
   fetchAllTranfers()
   fetchStats()
+  try {
+    workersLoading.value = true
+    await workersStore.getWorkers()
+    workers.value = workersStore.allWorkers
+    console.log('Workers loaded:', workers.value.length)
+  } catch (error) {
+    console.error('Error fetching workers:', error)
+  } finally {
+    workersLoading.value = false
+  }
 })
+
+// Watch for changes in the workers store
+watch(
+  () => workersStore.allWorkers,
+  (newWorkers) => {
+    workers.value = newWorkers
+    console.log('Workers updated from store:', newWorkers.length)
+  },
+  { immediate: true },
+)
 
 watch([page, itemsPerPage], fetchAllTranfers)
 </script>
@@ -355,5 +432,49 @@ watch([page, itemsPerPage], fetchAllTranfers)
   font-style: normal;
   font-weight: 500;
   line-height: 16px;
+}
+
+.loading-state,
+.no-workers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.form {
+  overflow-y: auto;
+  max-height: 75vh;
+}
+
+.drawer-content {
+  max-height: 75vh;
+  overflow: hidden;
+}
+
+.drawer-banner {
+  margin-bottom: 16px;
+}
+
+.drawer-banner p {
+  font-weight: 500;
+  color: #374151;
+  margin: 0;
+}
+
+.action-btns {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.workers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 10px;
 }
 </style>
