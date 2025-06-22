@@ -139,11 +139,7 @@
                 <ActionButton
                   :buttonText="t('save')"
                   class="action-Btn"
-                  @button-pressed="
-                    () => {
-                      isAssignEmployeeDrawerOpen = false
-                    }
-                  "
+                  @button-pressed="saveAssignment"
                 />
               </div>
             </div>
@@ -368,29 +364,51 @@ const fetchStats = async () => {
   await tranfersStore.getTransfersStats()
 }
 
+const selectedEmployee = ref<IWorker | null>(null)
+
 const assignEmployeeProcess = async (employee: IWorker, selectedTransfer: Transfer) => {
   console.log('Assigning employee:', employee.name)
   if (employee.status !== 'Available') {
     toastErrorMessage('Plese select another empoloyee','Employee is not available:'+ employee.name)
     return
-    
   }
+  
+  // Just update the local UI state to show the worker as "Assigned"
+  const workerIndex = workers.value.findIndex(w => w._id === employee._id)
+  if (workerIndex !== -1) {
+    workers.value[workerIndex].status = 'Assigned'
+    workers.value[workerIndex].isAvailable = false
+  }
+  
+  // Store the selected employee for later use when saving
+  selectedEmployee.value = employee
+  
+  console.log('Worker status updated locally to Assigned:', employee.name)
+}
+
+const saveAssignment = async () => {
+  if (!selectedEmployee.value || !selectedTransfer.value) {
+    console.error('No employee or transfer selected')
+    return
+  }
+  
   try {
     await tranfersStore.updateTransfer({
-      transferId: selectedTransfer?._id ?? '',
+      transferId: selectedTransfer.value._id ?? '',
       transferData: {
-        workerId: employee._id ?? '',
-        items: selectedTransfer?.items ?? [],
+        workerId: selectedEmployee.value._id ?? '',
+        items: selectedTransfer.value?.items ?? [],
       },
       emitSocket: false,
     }) 
 
-    // Refresh the transfers list
+    // Refresh the transfers list and workers list
     await fetchAllTranfers()
     await fetchAllWorkers()
     isAssignEmployeeDrawerOpen.value = false
+    selectedEmployee.value = null // Reset selected employee
   } catch (error) {
-    console.error('Error assigning employee:', error)
+    console.error('Error saving assignment:', error)
   }
 }
 
