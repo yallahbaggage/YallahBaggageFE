@@ -25,7 +25,7 @@ import { useI18n } from 'vue3-i18n'
 const { t } = useI18n()
 const props = defineProps<{
   fullName: string
-  status: 'Available' | 'Assigned' | 'On The Way' | undefined
+  status: 'Available' | 'Assigned' | 'OnTheWay' | undefined
 }>()
 
 const emit = defineEmits<{
