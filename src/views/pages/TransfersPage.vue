@@ -193,21 +193,31 @@
 
                   <v-tabs-window v-model="tab">
                     <v-tabs-window-item value="details">
-                      <div class="drawer-banner">
-                        <p>{{ t('customerContacts') }}</p>
-                      </div>
-                      <div class="employee-card">
-                        <div class="employee-info">
-                          <div class="avatar">{{ selectedTransfer?.userId.name.substring(0, 2) }}</div>
-                          <div class="details">
-                            <div class="name">{{ selectedTransfer?.userId.name }}</div>
-                            <div class="phone">{{ selectedTransfer && selectedTransfer.userId ? selectedTransfer.userId.email : '' }}  - {{ selectedTransfer && selectedTransfer.userId ? selectedTransfer.userId.phone : '' }}</div>
-                            
-                          </div>
-                        </div>
-                        
-                       
-                      </div>
+                  <v-expansion-panels v-model="panel" multiple>
+  <v-expansion-panel elevation="0" :title="t('customerContacts')" :value="'customerContacts'">
+    <template #default>
+      <div class="employee-card" v-if="panel.includes('customerContacts')">
+        <div class="employee-info">
+          <div class="avatar">
+            {{ selectedTransfer?.userId.name?.substring(0, 2).toUpperCase() }}
+          </div>
+          <div class="details">
+            <div class="name">{{ selectedTransfer?.userId.name }}</div>
+            <div class="phone">
+              {{ selectedTransfer?.userId.email ?? '' }}
+              -
+              {{ selectedTransfer?.userId.phone ?? '' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+  </v-expansion-panel>
+
+  <v-expansion-panel elevation="0" :title="t('contactPerson')" :value="'contactPerson'" text="Lorem ipsum..." />
+  <v-expansion-panel elevation="0" :title="t('transferSummary')" :value="'transferSummary'" text="Lorem ipsum..." />
+</v-expansion-panels>
+
                     </v-tabs-window-item>
 
                     <v-tabs-window-item value="timeLine">
@@ -344,6 +354,9 @@ const statusOptions = [
   { label: 'rejected' },
   { label: 'closed' },
 ]
+
+const panel = ref(['customerContacts', 'contactPerson', 'transferSummary'])
+
 const selectedTransfer = ref<Transfer | null>(null)
 const tab = ref(null)
 const isAssignEmployeeDrawerOpen = ref(false)
@@ -690,10 +703,9 @@ watch([page, itemsPerPage], fetchAllTranfers)
 }
 
 .phone {
-font-size: 12px;
-font-style: normal;
-font-weight: 400;
-color: #5C5C5C
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  color: #5c5c5c;
 }
-
 </style>
