@@ -341,9 +341,6 @@ const fetchAllTranfers = async () => {
 const assignEmployee = async (item: Transfer) => {
   selectedTransfer.value = item as Transfer
   isAssignEmployeeDrawerOpen.value = true
-  console.log('Assign employee drawer opened')
-  console.log('Current workers:', workers.value)
-  console.log('Workers from store:', workersStore.allWorkers)
 
   // If workers are not loaded, try to load them again
   if (workers.value.length === 0) {
@@ -373,7 +370,22 @@ const assignEmployeeProcess = async (employee: IWorker, selectedTransfer: Transf
     return
   }
   
-  // Just update the local UI state to show the worker as "Assigned"
+  // If the transfer already has a worker assigned, update the status of that worker to Available
+  if (selectedTransfer.workerId) {
+    // Handle both string and object cases for workerId
+    const previousWorkerId = typeof selectedTransfer.workerId === 'string' 
+      ? selectedTransfer.workerId 
+      : selectedTransfer.workerId._id
+    
+    const previousWorkerIndex = workers.value.findIndex(w => w._id === previousWorkerId)
+    if (previousWorkerIndex !== -1) {
+      workers.value[previousWorkerIndex].status = 'Available'
+      workers.value[previousWorkerIndex].isAvailable = true
+      console.log('Previous worker status updated to Available:', workers.value[previousWorkerIndex].name)
+    }
+  }
+  
+  // Update the selected employee's status to Assigned
   const workerIndex = workers.value.findIndex(w => w._id === employee._id)
   if (workerIndex !== -1) {
     workers.value[workerIndex].status = 'Assigned'
