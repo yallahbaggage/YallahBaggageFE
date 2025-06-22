@@ -83,6 +83,9 @@
           <template #cell-deliveryDate="{ item }">
             <span>{{ formatDate(item.deliveryDate) }}</span>
           </template>
+          <template #cell-createdAt="{ item }">
+            <span>{{ formatDate(item.createdAt) }}</span>
+          </template>
           <template #cell-actions="{ item }">
             <v-menu location="bottom end" offset="4">
               <template #activator="{ props }">
@@ -307,7 +310,7 @@ const loading = computed(() => tranfersStore.isLoading)
 // Initial loading state for first page load
 const initialLoading = ref(true)
 
-const isDetailsTransfersDrawerOpen = ref(true)
+const isDetailsTransfersDrawerOpen = ref(false)
 const workers = ref<IWorker[]>([])
 const workersLoading = ref(false)
 const statusOptions = [
