@@ -207,5 +207,6 @@
   "enterTime": "Saat Girin",
   "editNotification": "Bildirim Düzenle",
   "fillOutAllTheInformationsToUpdate": "Güncelleme için tüm bilgileri doldurun",
-  "updateTheBannerInformation": "Banner bilgilerini güncelle"
+  "updateTheBannerInformation": "Banner bilgilerini güncelle",
+  "assignEmployeeToTransfer": "Transfer #{transfer} için Çalışan Ata"
 }

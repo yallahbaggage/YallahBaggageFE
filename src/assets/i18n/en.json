@@ -207,5 +207,6 @@
   "enterTime": "Enter Time",
   "editNotification": "Edit Notification",
   "fillOutAllTheInformationsToUpdate": "Fill out all the informations to update",
-  "updateTheBannerInformation": "Update the Banner Information"
+  "updateTheBannerInformation": "Update the Banner Information",
+  "assignEmployeeToTransfer": "Assign employee to transfer #{transferId}"
 }

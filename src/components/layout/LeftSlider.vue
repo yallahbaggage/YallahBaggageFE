@@ -381,7 +381,7 @@ li {
 
   .user-profile-arrow {
     position: absolute;
-    right: 16px;
+    right: -50px;
     color: #9e9e9e;
     margin-top: 15px;
   }

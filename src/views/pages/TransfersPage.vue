@@ -95,11 +95,11 @@
         </template>
       </ServerTable>
 
-      <!-- delete Drawer -->
+      <!-- assign empeloyee Drawer -->
       <Drawer
         :isOpen="isAssignEmployeeDrawerOpen"
-        :title="t('complaint') + ' ' + '#' + selectedTransfer?._id.substring(0, 6)"
-        :desc="t('employee')"
+        :title="t('assignEmployee')"
+        :desc="t('Assign employee to transfer')"
         :status="selectedTransfer?.status ? selectedTransfer?.status : 'pending'"
         @close="isAssignEmployeeDrawerOpen = false"
       >
@@ -128,7 +128,7 @@
           </form>
         </div>
       </Drawer>
-      <!-- delete Drawer -->
+      <!-- assign empeloyee Drawer -->
 
       <!-- Details Drawer -->
       <Drawer
