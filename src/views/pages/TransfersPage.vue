@@ -124,20 +124,7 @@
                     :key="`employee-${employee._id}-${index}`"
                     :fullName="employee.name"
                     :status="employee.status"
-                    @assign="
-                      async () => {
-                        console.log('Assigning employee:', employee.name)
-                        await tranfersStore.updateTransfer({
-                          transferId: selectedTransfer?._id ?? '',
-                          transferData: {
-                            workerId: employee._id ?? '',
-                            items: selectedTransfer?.items ?? [],
-                          },
-                          emitSocket: false,
-                        })
-                        employee.status = 'Assigned';
-                      }
-                    "
+                    @assign="assignEmployeeProcess(employee, selectedTransfer as Transfer)"
                   />
                 </div>
               </div>
@@ -265,6 +252,7 @@ import { formatDate } from '@/utils/helpers/date-helper'
 import AssignEmployeeCard from '@/components/base/AssignEmployeeCard.vue'
 import { useWorkersStore } from '@/stores/modules/workers'
 import { IWorker } from '@/models/worker'
+import { toastErrorMessage } from '@/utils/helpers/notification'
 
 const { t } = useI18n()
 
@@ -380,19 +368,49 @@ const fetchStats = async () => {
   await tranfersStore.getTransfersStats()
 }
 
-onMounted(async () => {
-  fetchAllTranfers()
-  fetchStats()
+const assignEmployeeProcess = async (employee: IWorker, selectedTransfer: Transfer) => {
+  console.log('Assigning employee:', employee.name)
+  if (employee.status !== 'Available') {
+    toastErrorMessage('Plese select another empoloyee','Employee is not available:'+ employee.name)
+    return
+    
+  }
+  try {
+    await tranfersStore.updateTransfer({
+      transferId: selectedTransfer?._id ?? '',
+      transferData: {
+        workerId: employee._id ?? '',
+        items: selectedTransfer?.items ?? [],
+      },
+      emitSocket: false,
+    }) 
+
+    // Refresh the transfers list
+    await fetchAllTranfers()
+    await fetchAllWorkers()
+    isAssignEmployeeDrawerOpen.value = false
+  } catch (error) {
+    console.error('Error assigning employee:', error)
+  }
+}
+
+const fetchAllWorkers = async () => {
   try {
     workersLoading.value = true
     await workersStore.getWorkers()
     workers.value = workersStore.allWorkers
-    console.log('Workers loaded:', workers.value.length)
+    console.log('Workers fetched:', workers.value.length)
   } catch (error) {
     console.error('Error fetching workers:', error)
   } finally {
     workersLoading.value = false
   }
+}
+
+onMounted(async () => {
+  fetchAllTranfers()
+  fetchStats()
+  fetchAllWorkers()
 })
 
 // Watch for changes in the workers store
