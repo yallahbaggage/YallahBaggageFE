@@ -225,5 +225,6 @@
   "baggageDelivered": "Baggage delivered",
   "baggageHasBeenDeliveredTo": "Baggage has been delivered to {placeName}",
   "changeEmployee": "Change Employee",
-  "changeEmployeeForTransfer": "Change employee for transfer #{transferId}"
+  "changeEmployeeForTransfer": "Change employee for transfer #{transferId}",
+  "customerContacts": "Customer & Contacts"
 }

@@ -116,13 +116,13 @@
           :isOpen="isAssignEmployeeDrawerOpen"
           :title="!selectedTransfer?.workerId ? t('assignEmployee') : t('changeEmployee')"
           :desc="
-          !selectedTransfer?.workerId ?
-            t('assignEmployeeToTransfer', {
-              transferId: selectedTransfer?._id?.substring(0, 10)
-            }) :
-            t('changeEmployeeForTransfer', {
-              transferId: selectedTransfer?._id?.substring(0, 10)
-            })
+            !selectedTransfer?.workerId
+              ? t('assignEmployeeToTransfer', {
+                  transferId: selectedTransfer?._id?.substring(0, 10),
+                })
+              : t('changeEmployeeForTransfer', {
+                  transferId: selectedTransfer?._id?.substring(0, 10),
+                })
           "
           @close="isAssignEmployeeDrawerOpen = false"
         >
@@ -172,17 +172,19 @@
         <!-- Details Drawer -->
         <Drawer
           :isOpen="isDetailsTransfersDrawerOpen"
-          :title="t('complaint') + ' ' + '#' + selectedTransfer?._id.substring(0, 10)"
-          :desc="t('employee')"
+          :title="'Transfer' + ' ' + '#' + selectedTransfer?._id.substring(0, 10)"
+          :desc="
+            (selectedTransfer?.createdAt ? formatDateWithoutTime(selectedTransfer.createdAt) : '') +
+            ' - ' +
+            (selectedTransfer?.totalAmount ?? 0) +
+            '$'
+          "
           :status="selectedTransfer?.status ? t(selectedTransfer?.status) : t('available')"
           @close="isDetailsTransfersDrawerOpen = false"
         >
           <div style="max-height: 75vh">
             <form class="drawer-form">
               <div>
-                <div class="drawer-banner">
-                  <p>{{ t('information') }}</p>
-                </div>
                 <v-card>
                   <v-tabs v-model="tab" align-tabs="start" color="deep-purple-accent-4">
                     <v-tab value="details">{{ t('details') }}</v-tab>
@@ -190,7 +192,11 @@
                   </v-tabs>
 
                   <v-tabs-window v-model="tab">
-                    <v-tabs-window-item value="details"> </v-tabs-window-item>
+                    <v-tabs-window-item value="details">
+                      <div class="drawer-banner">
+                        <p>{{ t('customerContacts') }}</p>
+                      </div>
+                    </v-tabs-window-item>
 
                     <v-tabs-window-item value="timeLine">
                       <div class="drawer-banner">
@@ -274,7 +280,7 @@
                             <p class="status-desc">
                               {{
                                 t('baggageHasBeenDeliveredTo', {
-                                  placeName: t(selectedTransfer?.to ?? 'N/A'),
+                                  placeName: selectedTransfer?.to ? t(selectedTransfer?.to) : 'N/A',
                                 })
                               }}
                             </p>
@@ -301,7 +307,7 @@ import { useTransfersStore } from '@/stores/modules/transfer'
 import { ref, onMounted, computed, watch } from 'vue'
 import { Transfer } from '@/models/transfer'
 import ServerTable from '@/components/base/ServerTable.vue'
-import { formatDate } from '@/utils/helpers/date-helper'
+import { formatDate, formatDateWithoutTime } from '@/utils/helpers/date-helper'
 import AssignEmployeeCard from '@/components/base/AssignEmployeeCard.vue'
 import { useWorkersStore } from '@/stores/modules/workers'
 import { IWorker } from '@/models/worker'
@@ -630,5 +636,4 @@ watch([page, itemsPerPage], fetchAllTranfers)
   text-decoration: underline;
   color: rgb(var(--v-theme-primary));
 }
-
 </style>
