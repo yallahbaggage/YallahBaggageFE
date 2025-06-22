@@ -19,7 +19,7 @@ export interface Transfer {
   workerId?: string | Worker;
   complaintId?: string | Complaint;
   items: TransferItem[];
-  status: 'pending' | 'in_progress' | 'onTheWay' | 'completed' | 'cancelled';
+  status: 'pending' | 'in_progress' | 'in_transit' | 'onTheWay' | 'completed' | 'cancelled';
   totalAmount: number;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
   deliveryDate: string;

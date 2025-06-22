@@ -204,11 +204,11 @@
                             dot-color="white"
                             icon="mdi-rotate-3d-variant"
                             icon-color="orange"
-                            v-if="selectedTransfer?.updatedAt"
+                            v-if="selectedTransfer?.acceptedAt"
                           >
                             <div class="timeline-item-content">
                               <p>{{ t('statusHasChanged') }}</p>
-                              <span>{{ formatDate(selectedTransfer?.updatedAt) }}</span>
+                              <span>{{ formatDate(selectedTransfer?.acceptedAt) }}</span>
                             </div>
                             <p class="status-desc">
                               {{

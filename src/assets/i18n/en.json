@@ -79,6 +79,7 @@
   "OnLeave": "On Leave",
   "OnTheWay": "On The Way",
   "Assigned": "Assigned",
+  "in_transit": "In Transit",
   "addEmployee": "Add Employee",
   "information": "Information",
   "fullName": "Full Name",
@@ -212,5 +213,7 @@
   "fillOutAllTheInformationsToUpdate": "Fill out all the informations to update",
   "updateTheBannerInformation": "Update the Banner Information",
   "assignEmployeeToTransfer": "Assign employee to transfer #{transferId}",
-  "page": "Page"
+  "page": "Page",
+  "orderConfirmed": "Order confirmed",
+  "orderPlacedAndConfirmed":"Order placed and confirmed"
 }
