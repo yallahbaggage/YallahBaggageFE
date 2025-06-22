@@ -45,7 +45,7 @@ const getStatusColor = (status: string) => {
   return (
     {
       'Assigned': 'blue',
-      'On The Way': 'orange',
+      'OnTheWay': 'orange',
       'Available': 'green',
     }[status] ?? 'grey'
   )
