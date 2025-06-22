@@ -25,7 +25,7 @@
           v-model:page="page"
           v-model:items-per-page="itemsPerPage"
         >
-          <template #cell-_id="{ item }"> #{{ item?._id?.substring(0, 6) }} </template>
+          <template #cell-_id="{ item }"> #{{ item?._id?.substring(0, 10) }} </template>
           <template #cell-sendNotificationOnDate="{ item }">
             {{ formatDate(item.sendNotificationOnDate) }}</template
           >

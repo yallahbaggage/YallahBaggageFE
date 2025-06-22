@@ -57,7 +57,7 @@
           v-model:page="page"
           v-model:items-per-page="itemsPerPage"
         >
-          <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
+          <template #cell-_id="{ item }"> #{{ item._id.substring(0, 10) }} </template>
           <template #cell-workerId="{ item }">
             <span v-if="item?.workerId?.name">{{ item.workerId.name }}</span>
             <v-btn outline v-else @click="() => assignEmployee(item as Transfer)">
@@ -114,10 +114,14 @@
         <!-- assign empeloyee Drawer -->
         <Drawer
           :isOpen="isAssignEmployeeDrawerOpen"
-          :title="t('assignEmployee')"
+          :title="!selectedTransfer?.workerId ? t('assignEmployee') : t('changeEmployee')"
           :desc="
+          !selectedTransfer?.workerId ?
             t('assignEmployeeToTransfer', {
-              transferId: selectedTransfer?._id?.substring(0, 6),
+              transferId: selectedTransfer?._id?.substring(0, 10)
+            }) :
+            t('changeEmployeeForTransfer', {
+              transferId: selectedTransfer?._id?.substring(0, 10)
             })
           "
           @close="isAssignEmployeeDrawerOpen = false"
@@ -168,7 +172,7 @@
         <!-- Details Drawer -->
         <Drawer
           :isOpen="isDetailsTransfersDrawerOpen"
-          :title="t('complaint') + ' ' + '#' + selectedTransfer?._id.substring(0, 6)"
+          :title="t('complaint') + ' ' + '#' + selectedTransfer?._id.substring(0, 10)"
           :desc="t('employee')"
           :status="selectedTransfer?.status ? t(selectedTransfer?.status) : t('available')"
           @close="isDetailsTransfersDrawerOpen = false"

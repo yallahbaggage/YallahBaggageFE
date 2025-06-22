@@ -43,7 +43,7 @@
               {{ t(item.status ?? 'pending') }}
             </v-chip>
           </template>
-          <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
+          <template #cell-_id="{ item }"> #{{ item._id.substring(0, 10) }} </template>
           <!-- <template #cell-priority="{ item }">
             <v-chip
               :color="
@@ -89,13 +89,13 @@
     <!-- delete Drawer -->
     <Drawer
       :isOpen="isDeleteComplaintDrawerOpen"
-      :title="t('complaint') + ' ' + '#' + selectedComplaint?._id.substring(0, 6)"
+      :title="t('complaint') + ' ' + '#' + selectedComplaint?._id.substring(0, 10)"
       :desc="
         t('employee') +
         ' ' +
         '#' +
         (selectedComplaint?.relatedWorkerId?._id
-          ? selectedComplaint.relatedWorkerId._id?.substring(0, 6)
+          ? selectedComplaint.relatedWorkerId._id?.substring(0, 10)
           : 'N/A')
       "
       :status="selectedComplaint?.status ? selectedComplaint?.status : 'pending'"
@@ -117,7 +117,7 @@
               <div class="drawer-info">
                 <p class="drawer-key">{{ t('reporterId') }}</p>
                 <p class="drawer-value">
-                  {{ selectedComplaint?.userId?._id?.substring(0, 6) ?? 'N/A' }}
+                  {{ selectedComplaint?.userId?._id?.substring(0, 10) ?? 'N/A' }}
                 </p>
               </div>
               <div class="drawer-info">
@@ -181,15 +181,15 @@
       :isOpen="isDetailsComplaintDrawerOpen && !isLoading"
       :title="
         tab == 'chat'
-          ? t('complaint') + ' ' + '#' + selectedComplaint?.userId?._id?.substring(0, 6)
-          : t('ticket') + ' ' + '#' + selectedComplaint?._id?.substring(0, 6)
+          ? t('complaint') + ' ' + '#' + selectedComplaint?.userId?._id?.substring(0, 10)
+          : t('ticket') + ' ' + '#' + selectedComplaint?._id?.substring(0, 10)
       "
       :desc="
         t('employee') +
         ' ' +
         '#' +
         (selectedComplaint?.relatedWorkerId?._id
-          ? selectedComplaint.relatedWorkerId?._id?.substring(0, 6)
+          ? selectedComplaint.relatedWorkerId?._id?.substring(0, 10)
           : 'N/A')
       "
       :status="selectedComplaint?.status ? selectedComplaint?.status : 'pemding'"
@@ -220,7 +220,7 @@
                     <div class="drawer-info">
                       <p class="drawer-key">{{ t('reporterId') }}</p>
                       <p class="drawer-value">
-                        {{ selectedComplaint?.userId?._id?.substring(0, 6) ?? 'N/A' }}
+                        {{ selectedComplaint?.userId?._id?.substring(0, 10) ?? 'N/A' }}
                       </p>
                     </div>
                     <div class="drawer-info">

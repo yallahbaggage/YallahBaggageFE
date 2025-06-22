@@ -223,5 +223,7 @@
   "weReceivedYourLuggages": "We received your luggages",
   "packageInTransit": "Package in transit",
   "baggageDelivered": "Baggage delivered",
-  "baggageHasBeenDeliveredTo": "Baggage has been delivered to {placeName}"
+  "baggageHasBeenDeliveredTo": "Baggage has been delivered to {placeName}",
+  "changeEmployee": "Change Employee",
+  "changeEmployeeForTransfer": "Change employee for transfer #{transferId}"
 }

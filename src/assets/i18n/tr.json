@@ -223,5 +223,7 @@
   "weReceivedYourLuggages": "Bagajlarınız Alındı",
   "packageInTransit": "Paket Transit'te",
   "baggageDelivered": "Bagaj Teslim Edildi",
-  "baggageHasBeenDeliveredTo": "Bagajınız {{placeName}} adresine teslim edildi"
+  "baggageHasBeenDeliveredTo": "Bagajınız {placeName} adresine teslim edildi",
+  "changeEmployee": "Çalışanı Değiştir",
+  "changeEmployeeForTransfer": "Transfer #{transferId} için Çalışanı Değiştir"
 }

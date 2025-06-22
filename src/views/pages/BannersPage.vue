@@ -37,7 +37,7 @@
           v-model:page="page"
           v-model:items-per-page="itemsPerPage"
         >
-          <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
+          <template #cell-_id="{ item }"> #{{ item._id.substring(0, 10) }} </template>
           <template #cell-image="{ item }">
             <img
               :src="item.image"
@@ -430,7 +430,7 @@
         <!-- see details Drawer and delete-->
         <Drawer
           :isOpen="isDetailsDrawerOpen || isDeleteDrawerOpen"
-          :desc="t('id') + ' #' + selectedAd?._id.substring(0, 6)"
+          :desc="t('id') + ' #' + selectedAd?._id.substring(0, 10)"
           :title="selectedAd?.title"
           @close="
             () => {
@@ -452,7 +452,7 @@
                   </div>
                   <div class="drawer-info">
                     <p class="drawer-key">{{ t('id') }}</p>
-                    <p class="drawer-value">#{{ selectedAd?._id.substring(0, 6) }}</p>
+                    <p class="drawer-value">#{{ selectedAd?._id.substring(0, 10) }}</p>
                   </div>
                   <div class="drawer-info">
                     <p class="drawer-key">{{ t('url') }}</p>

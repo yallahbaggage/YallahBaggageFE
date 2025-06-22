@@ -46,7 +46,7 @@
               {{ t(item.status) ?? t('pending') }}
             </v-chip>
           </template>
-          <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
+          <template #cell-_id="{ item }"> #{{ item._id.substring(0, 10) }} </template>
           <!-- <template #cell-assignee="{ item }">
             <span v-if="item.assignee">{{ item.assignee }}</span>
             <v-btn v-else small outlined @click="assignStaff(item)"> Assign Staff </v-btn>
@@ -192,7 +192,7 @@
         <!-- delete Drawer -->
         <Drawer
           :isOpen="isDeleteEmployeeDrawerOpen"
-          :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 6)"
+          :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 10)"
           :title="selectedWorker?.name"
           :status="selectedWorker?.status ? selectedWorker?.status : 'available'"
           @close="isDeleteEmployeeDrawerOpen = false"
@@ -210,7 +210,7 @@
                   </div>
                   <div class="drawer-info">
                     <p class="drawer-key">{{ t('employeeID') }}</p>
-                    <p class="drawer-value">{{ selectedWorker?._id.substring(0, 6) }}</p>
+                    <p class="drawer-value">{{ selectedWorker?._id.substring(0, 10) }}</p>
                   </div>
                   <div class="drawer-info">
                     <p class="drawer-key">{{ t('phoneNumber') }}</p>
@@ -246,7 +246,7 @@
         <!-- update Drawer -->
         <Drawer
           :isOpen="isUpdateEmployeeDrawerOpen"
-          :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 6)"
+          :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 10)"
           :title="selectedWorker?.name"
           :status="t(selectedWorker?.status ? selectedWorker?.status : 'available')"
           @close="isUpdateEmployeeDrawerOpen = false"
@@ -264,7 +264,7 @@
                   </div>
                   <div class="drawer-info">
                     <p class="drawer-key">{{ t('employeeID') }}</p>
-                    <p class="drawer-value">{{ selectedWorker?._id.substring(0, 6) }}</p>
+                    <p class="drawer-value">{{ selectedWorker?._id.substring(0, 10) }}</p>
                   </div>
                   <div class="drawer-info">
                     <p class="drawer-key">{{ t('phoneNumber') }}</p>
