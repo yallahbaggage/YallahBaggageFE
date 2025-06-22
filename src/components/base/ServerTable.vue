@@ -51,8 +51,10 @@
         </div>
         <v-select
           class="pagination-size"
-          :items="pageSizes"
+          :items="pageSizesFormatted"
           v-model="localItemsPerPage"
+          item-title="label"
+          item-value="value"
           variant="outlined"
           density="compact"
           hide-details
@@ -66,6 +68,7 @@
 <script setup lang="ts">
 import type { DataTableHeader } from 'vuetify'
 import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue3-i18n';
 
 const props = defineProps<{
   headers: DataTableHeader[]
@@ -75,6 +78,8 @@ const props = defineProps<{
   page: number
   itemsPerPage: number
 }>()
+
+const { t } = useI18n()
 
 const emit = defineEmits(['update:page', 'update:items-per-page'])
 
@@ -88,10 +93,13 @@ watch(
   },
 )
 
+
 function onPageChange(val: number) {
   currentPage.value = val
   emit('update:page', val)
 }
+
+
 
 function goToPage(val: number) {
   if (val >= 1 && val <= totalPages.value) {
@@ -101,6 +109,12 @@ function goToPage(val: number) {
 }
 
 const pageSizes = [8, 16, 32, 64]
+
+const pageSizesFormatted = pageSizes.map(size => ({
+  label: `${size} / ${t('page')}`,
+  value: size,
+}))
+
 const localItemsPerPage = ref(props.itemsPerPage)
 watch(
   () => props.itemsPerPage,
@@ -155,8 +169,8 @@ function onPageSizeChange(val: number) {
   margin: 0 8px;
 }
 .pagination-size {
-  width: 100px;
-  max-width: 100px;
+  width: fit-content;
+  max-width: fit-content;
 }
 
 .v-pagination .v-btn.v-btn--density-default{
