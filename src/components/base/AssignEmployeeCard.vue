@@ -4,18 +4,23 @@
       <div class="avatar">{{ initials }}</div>
       <div class="details">
         <div class="name">{{ fullName }}</div>
-        <div class="status" v-if="status">
-          <span class="dot" :style="{ backgroundColor: getStatusColor(status) }" />
-          <span class="text" :style="{ color: getStatusColor(status) }">{{ status }}</span>
-        </div>
+        <v-chip v-if="status" :color="statusColor(status)" text-color="white" medium>
+          <span :style="{ backgroundColor: statusColor(status) }" class="status-circle"></span>
+          {{ t(status) ?? 'available' }}
+        </v-chip>
       </div>
     </div>
-    <button v-if="!status || status === 'Available'" class="assign-button" @click.prevent="onAssign">
+    <button
+      v-if="!status || status === 'Available'"
+      class="assign-button"
+      @click.prevent="onAssign"
+    >
       {{ t('assign') }}
     </button>
-    <div v-else class="status-display">
-      <span class="status-text" :style="{ color: getStatusColor(status) }">{{ status }}</span>
-    </div>
+    <v-chip v-else :color="statusColor(status)" text-color="white" medium>
+      <span :style="{ backgroundColor: statusColor(status) }" class="status-circle"></span>
+      {{ t(status) ?? 'available' }}
+    </v-chip>
   </div>
 </template>
 
@@ -41,14 +46,19 @@ const initials = props.fullName
 
 const onAssign = () => emit('assign')
 
-const getStatusColor = (status: string) => {
-  return (
-    {
-      'Assigned': 'blue',
-      'OnTheWay': 'orange',
-      'Available': 'green',
-    }[status] ?? 'grey'
-  )
+function statusColor(status: string): string {
+  switch (status) {
+    case 'OnTheWay':
+      return '#f59e0b' // amber
+    case 'Assigned':
+      return '#3b82f6' // blue
+    case 'Available':
+      return '#10b981' // green
+    case 'OnLeave':
+      return '#ef4444' // red
+    default:
+      return '#9ca3af' // fallback gray
+  }
 }
 </script>
 
@@ -92,38 +102,6 @@ const getStatusColor = (status: string) => {
   font-weight: 500;
   font-size: 16px;
   color: #222;
-}
-
-.status {
-  display: flex;
-  align-items: center;
-  margin-top: 4px;
-  background: #e8fdf2;
-  border-radius: 8px;
-  padding: 2px 8px;
-  font-size: 13px;
-  color: #28a745;
-}
-
-.status .dot {
-  width: 8px;
-  height: 8px;
-  background: #28a745;
-  border-radius: 50%;
-  margin-right: 6px;
-}
-
-.status-display {
-  display: flex;
-  align-items: center;
-  padding: 4px 8px;
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.status-text {
-  font-size: 12px;
-  font-weight: 500;
 }
 
 .assign-button {
