@@ -145,11 +145,11 @@
                   </div>
 
                   <div class="drawer-form-group">
-                    <label for="url" class="drawer-label-group">
+                    <label for="banner-url-add" class="drawer-label-group">
                       {{ t('bannerwillRedirectTo') }}</label
                     >
                     <v-text-field
-                      id="banner-url"
+                      id="banner-url-add"
                       v-model="newBanner.url"
                       placeholder="www.example.com"
                       variant="outlined"
@@ -164,7 +164,7 @@
                   </div>
 
                   <div class="drawer-form-group">
-                    <label control="url" for="url" class="drawer-label-group"></label>
+                    <label for="file-upload-add" class="drawer-label-group">Image</label>
                     <div
                       class="image-upload-area"
                       :class="{ 'drag-over': isDragOver }"
@@ -185,6 +185,7 @@
                         >
                         <v-file-input
                           ref="fileInput"
+                          id="file-upload-add"
                           @change="uploadImage"
                           accept="image/*"
                           style="display: none"
@@ -315,11 +316,11 @@
                   </div>
 
                   <div class="drawer-form-group">
-                    <label for="url" class="drawer-label-group">
+                    <label for="banner-url-update" class="drawer-label-group">
                       {{ t('bannerwillRedirectTo') }}</label
                     >
                     <v-text-field
-                      id="banner-url"
+                      id="banner-url-update"
                       v-model="editingBanner.url"
                       placeholder="www.example.com"
                       variant="outlined"
@@ -334,7 +335,7 @@
                   </div>
 
                   <div class="drawer-form-group">
-                    <label for="url" class="drawer-label-group"></label>
+                    <label for="file-upload-update" class="drawer-label-group">Image</label>
                     <div
                       class="image-upload-area"
                       :class="{ 'drag-over': isDragOver }"
@@ -355,6 +356,7 @@
                         >
                         <v-file-input
                           ref="fileInput"
+                          id="file-upload-update"
                           @change="uploadImage"
                           accept="image/*"
                           style="display: none"
