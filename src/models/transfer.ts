@@ -1,4 +1,4 @@
-import { Complaint, User } from '@/stores/types';
+import { Complaint, User, Worker } from '@/stores/types';
 
 export interface TransferItem {
   name: string;

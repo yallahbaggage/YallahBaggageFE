@@ -5,7 +5,7 @@ export interface IWorker extends IBaseUser {
   specialization?: string;
   rating?: number;
   totalTransfers?: number;
-  status?: 'Available' | 'Assigned' | 'On The Way';
+  status?: 'Available' | 'Assigned' | 'OnTheWay';
 }
 
 export interface IWorkerUpdateData {
@@ -18,6 +18,7 @@ export interface IWorkerUpdateData {
   skills?: string[]
   certificates?: string[]
   experience?: number
+  status?: 'Available' | 'Assigned' | 'OnTheWay';
 }
 
 export interface IWorkerStats {
