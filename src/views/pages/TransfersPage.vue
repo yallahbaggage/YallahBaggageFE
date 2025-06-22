@@ -135,6 +135,7 @@
                           },
                           emitSocket: false,
                         })
+                        employee.status = 'Assigned';
                       }
                     "
                   />

@@ -30,17 +30,15 @@
         v-model:items-per-page="itemsPerPage"
       >
         <template #cell-status="{ item }">
-          <v-chip :color="statusColor(item.status)" text-color="white" small>
+          <v-chip :color="statusColor(item.status)" text-color="white" medium>
             <span
               :style="{ backgroundColor: statusColor(item.status) }"
               class="status-circle"
             ></span>
-            {{ t(item.status) ?? t('Available') }}
+            {{ t(item.status) ?? t('pending') }}
           </v-chip>
         </template>
-        <template #cell-_id="{ item }">
-          #{{ item._id.substring(0, 6) }}
-        </template>
+        <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
         <!-- <template #cell-assignee="{ item }">
           <span v-if="item.assignee">{{ item.assignee }}</span>
           <v-btn v-else small outlined @click="assignStaff(item)"> Assign Staff </v-btn>
@@ -65,7 +63,7 @@
           </v-menu>
         </template>
       </ServerTable>
-            <!-- add Drawer -->
+      <!-- add Drawer -->
       <Drawer
         :isOpen="isEmployeeDrawerOpen"
         :title="t('newEmployee')"
@@ -346,11 +344,11 @@ const selectedWorker = ref<IWorker | null>(null)
 const itemsPerPage = ref(8)
 
 const headers = [
-  { title: 'ID', key: '_id', sortable: false  },
-  { title: t('employee'), key: 'name', sortable: false  },
-  { title: t('identityNumber'), key: 'identityNumber', sortable: false  },
-  { title: t('phoneNumber'), key: 'phone', sortable: false  },
-  { title: t('status'), key: 'status' , sortable: false },
+  { title: 'ID', key: '_id', sortable: false },
+  { title: t('employee'), key: 'name', sortable: false },
+  { title: t('identityNumber'), key: 'identityNumber', sortable: false },
+  { title: t('phoneNumber'), key: 'phone', sortable: false },
+  { title: t('status'), key: 'status', sortable: false },
   { title: t('actions'), key: '', sortable: false },
 ]
 

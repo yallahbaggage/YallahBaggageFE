@@ -4,24 +4,56 @@
       <div class="avatar">{{ initials }}</div>
       <div class="details">
         <div class="name">{{ fullName }}</div>
-        <div class="status">
-          <span class="dot" />
-          <span class="text">{{status ? t(status) : 'available'}}</span>
-        </div>
+        <v-chip v-if="status && status != 'Assigned'" :color="getStatusColor(status)" text-color="white" small>
+          <span
+            :style="{
+              backgroundColor: getStatusColor(status),
+            }"
+            class="status-circle"
+          ></span>
+          <p
+            :style="{
+              color: getStatusColor(status),
+            }"
+          >
+            {{ status }}
+          </p>
+        </v-chip>
       </div>
     </div>
-    <button class="assign-button" @click.prevent="onAssign">Assign</button>
+    <button v-if="!status || status == 'Available'" class="assign-button" @click.prevent="onAssign">
+      {{ t('assign') }}
+    </button>
+    <v-chip
+      v-if="status && status != 'Available'"
+      :color="getStatusColor(status)"
+      text-color="white"
+      small
+    >
+      <span
+        :style="{
+          backgroundColor: getStatusColor(status),
+        }"
+        class="status-circle"
+      ></span>
+      <p
+        :style="{
+          color: getStatusColor(status),
+        }"
+      >
+        {{ status }}
+      </p>
+    </v-chip>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue3-i18n';
-
+import { useI18n } from 'vue3-i18n'
 
 const { t } = useI18n()
 const props = defineProps<{
-  fullName: string;
-  status: "Available" | "Assigned" | "On The Way" | undefined
+  fullName: string
+  status: 'Available' | 'Assigned' | 'On The Way' | undefined
 }>()
 
 const emit = defineEmits<{
@@ -36,6 +68,16 @@ const initials = props.fullName
   .toUpperCase()
 
 const onAssign = () => emit('assign')
+
+const getStatusColor = (status: string) => {
+  return (
+    {
+      Assigned: 'blue',
+      onTheWay: 'orange',
+      Available: 'green',
+    }[status] ?? 'grey'
+  )
+}
 </script>
 
 <style scoped lang="scss">
