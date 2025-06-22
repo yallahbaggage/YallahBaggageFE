@@ -60,7 +60,7 @@
           <template #cell-_id="{ item }"> #{{ item._id.substring(0, 6) }} </template>
           <template #cell-workerId="{ item }">
             <span v-if="item?.workerId?.name">{{ item.workerId.name }}</span>
-            <v-btn elevation="true" outline v-else @click="() => assignEmployee(item as Transfer)">
+            <v-btn outline v-else @click="() => assignEmployee(item as Transfer)">
             <v-icon>mdi-plus-circle-outline</v-icon>
               {{ t('assign') }}
             </v-btn>
