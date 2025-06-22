@@ -38,10 +38,7 @@ const emit = defineEmits<{
 }>()
 
 const initials = props.fullName
-  .split(' ')
-  .map((name) => name[0])
-  .join('')
-  .slice(0, 2)
+  .substring(0, 2)
   .toUpperCase()
 
 const onAssign = () => emit('assign')

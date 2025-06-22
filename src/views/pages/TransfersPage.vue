@@ -196,6 +196,18 @@
                       <div class="drawer-banner">
                         <p>{{ t('customerContacts') }}</p>
                       </div>
+                      <div class="employee-card">
+                        <div class="employee-info">
+                          <div class="avatar">{{ selectedTransfer?.userId.name.substring(0, 2) }}</div>
+                          <div class="details">
+                            <div class="name">{{ selectedTransfer?.userId.name }}</div>
+                            <div class="phone">{{ selectedTransfer && selectedTransfer.userId ? selectedTransfer.userId.email : '' }}  - {{ selectedTransfer && selectedTransfer.userId ? selectedTransfer.userId.phone : '' }}</div>
+                            
+                          </div>
+                        </div>
+                        
+                       
+                      </div>
                     </v-tabs-window-item>
 
                     <v-tabs-window-item value="timeLine">
@@ -636,4 +648,52 @@ watch([page, itemsPerPage], fetchAllTranfers)
   text-decoration: underline;
   color: rgb(var(--v-theme-primary));
 }
+
+.employee-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 12px;
+  padding: 12px 16px;
+  background: #fff;
+  max-width: 400px;
+}
+
+.employee-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background: #ffeecc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #5a4217;
+  font-size: 14px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: 500;
+  font-size: 16px;
+  color: #222;
+}
+
+.phone {
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+color: #5C5C5C
+}
+
 </style>

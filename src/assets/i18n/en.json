@@ -226,5 +226,14 @@
   "baggageHasBeenDeliveredTo": "Baggage has been delivered to {placeName}",
   "changeEmployee": "Change Employee",
   "changeEmployeeForTransfer": "Change employee for transfer #{transferId}",
-  "customerContacts": "Customer & Contacts"
+  "customerContacts": "Customer & Contacts",
+  "contactPerson": "Contact Person",
+  "contactPreference": "Contact Preference",
+  "transferSummary": "Transfer Summary",
+  "subtotal": "Subtotal",
+  "vat": "VAT (2.00%)",
+  "total": "Total",
+  "destination": "Destination",
+  "pickUpLocation": "Pick Up Location",
+  "deliveryLocation": "Delivery Location"
 }

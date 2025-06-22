@@ -226,5 +226,14 @@
   "baggageHasBeenDeliveredTo": "Bagajınız {placeName} adresine teslim edildi",
   "changeEmployee": "Çalışanı Değiştir",
   "changeEmployeeForTransfer": "Transfer #{transferId} için Çalışanı Değiştir",
-  "customerContacts": "MÜŞTERİ & İLETİŞİM"
+  "customerContacts": "MÜŞTERİ & İLETİŞİM",
+  "contactPerson": "İletişim Kişisi",
+  "contactPreference": "İletişim Tercihi",
+  "transferSummary": "Transfer Özeti",
+  "subtotal": "Ara Toplam",
+  "vat": "KDV (2.00%)",
+  "total": "Toplam",
+  "destination": "DESTİNASYONLAR",
+  "pickUpLocation": "Alım Yeri",
+  "deliveryLocation": "Teslimat Yeri"
 }

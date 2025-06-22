@@ -15,7 +15,7 @@ export interface TransferRating {
 
 export interface Transfer {
   _id: string;
-  userId: string | User;
+  userId: any | User;
   workerId?: any | Worker;
   complaintId?: string | Complaint;
   items: TransferItem[];
