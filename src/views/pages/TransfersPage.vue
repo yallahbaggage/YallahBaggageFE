@@ -341,6 +341,9 @@ const fetchAllTranfers = async () => {
 const assignEmployee = async (item: Transfer) => {
   selectedTransfer.value = item as Transfer
   isAssignEmployeeDrawerOpen.value = true
+  
+  // Reset the current transfer's assigned worker ID for the new transfer
+  currentTransferAssignedWorkerId.value = null
 
   // If workers are not loaded, try to load them again
   if (workers.value.length === 0) {
@@ -362,6 +365,8 @@ const fetchStats = async () => {
 }
 
 const selectedEmployee = ref<IWorker | null>(null)
+// Track the currently assigned worker for the current transfer (for local UI state)
+const currentTransferAssignedWorkerId = ref<string | null>(null)
 
 const assignEmployeeProcess = async (employee: IWorker, selectedTransfer: Transfer) => {
   console.log('Assigning employee:', employee.name)
@@ -370,18 +375,31 @@ const assignEmployeeProcess = async (employee: IWorker, selectedTransfer: Transf
     return
   }
   
-  // If the transfer already has a worker assigned, update the status of that worker to Available
+  // If there's a previously assigned worker for this transfer in the current session, make them available
+  if (currentTransferAssignedWorkerId.value) {
+    const previousWorkerIndex = workers.value.findIndex(w => w._id === currentTransferAssignedWorkerId.value)
+    if (previousWorkerIndex !== -1) {
+      workers.value[previousWorkerIndex].status = 'Available'
+      workers.value[previousWorkerIndex].isAvailable = true
+      console.log('Previous session worker status updated to Available:', workers.value[previousWorkerIndex].name)
+    }
+  }
+  
+  // If the transfer already has a worker assigned from the database, update the status of that worker to Available
   if (selectedTransfer.workerId) {
     // Handle both string and object cases for workerId
     const previousWorkerId = typeof selectedTransfer.workerId === 'string' 
       ? selectedTransfer.workerId 
       : selectedTransfer.workerId._id
     
-    const previousWorkerIndex = workers.value.findIndex(w => w._id === previousWorkerId)
-    if (previousWorkerIndex !== -1) {
-      workers.value[previousWorkerIndex].status = 'Available'
-      workers.value[previousWorkerIndex].isAvailable = true
-      console.log('Previous worker status updated to Available:', workers.value[previousWorkerIndex].name)
+    // Only update if it's different from the current session assigned worker
+    if (previousWorkerId !== currentTransferAssignedWorkerId.value) {
+      const previousWorkerIndex = workers.value.findIndex(w => w._id === previousWorkerId)
+      if (previousWorkerIndex !== -1) {
+        workers.value[previousWorkerIndex].status = 'Available'
+        workers.value[previousWorkerIndex].isAvailable = true
+        console.log('Previous database worker status updated to Available:', workers.value[previousWorkerIndex].name)
+      }
     }
   }
   
@@ -391,6 +409,9 @@ const assignEmployeeProcess = async (employee: IWorker, selectedTransfer: Transf
     workers.value[workerIndex].status = 'Assigned'
     workers.value[workerIndex].isAvailable = false
   }
+  
+  // Update the current transfer's assigned worker ID
+  currentTransferAssignedWorkerId.value = employee._id
   
   // Store the selected employee for later use when saving
   selectedEmployee.value = employee
@@ -419,6 +440,7 @@ const saveAssignment = async () => {
     await fetchAllWorkers()
     isAssignEmployeeDrawerOpen.value = false
     selectedEmployee.value = null // Reset selected employee
+    currentTransferAssignedWorkerId.value = null // Reset current transfer assigned worker
   } catch (error) {
     console.error('Error saving assignment:', error)
   }
