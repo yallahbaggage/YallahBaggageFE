@@ -189,6 +189,9 @@
                     <v-tabs-window-item value="details"> </v-tabs-window-item>
 
                     <v-tabs-window-item value="timeLine">
+                      <div class="drawer-banner">
+                        <p>{{ t('timeLine') }}</p>
+                      </div>
                       <div class="status-stepper">
                         <v-timeline>
                           <v-timeline-item
@@ -209,8 +212,8 @@
                           <v-timeline-item
                             v-slot:opposite
                             dot-color="white"
-                            icon="mdi-rotate-3d-variant"
-                            icon-color="orange"
+                            icon="mdi-account-outline"
+                            icon-color="gray"
                             v-if="selectedTransfer?.assigneedAt"
                           >
                             <div class="timeline-item-content">
@@ -228,8 +231,8 @@
                           <v-timeline-item
                             v-if="selectedTransfer?.onTheWayAt"
                             dot-color="white"
-                            icon="mdi-check"
-                            icon-color="success"
+                            icon="mdi-car-estate"
+                            icon-color="orange"
                           >
                             <div class="timeline-item-content">
                               <p>{{ t('courierIsOnTheWay') }}</p>
@@ -240,19 +243,18 @@
                             </p>
                           </v-timeline-item>
                           <v-timeline-item
+                            v-slot:opposite
                             v-if="selectedTransfer?.inTransitAt"
                             dot-color="white"
-                            icon="mdi-check"
-                            icon-color="success"
+                            icon="mdi-clock-time-three-outline"
+                            icon-color="blue"
                           >
                             <div class="timeline-item-content">
                               <p>{{ t('weReceivedYourLuggages') }}</p>
                               <span>{{ formatDate(selectedTransfer?.inTransitAt) }}</span>
                             </div>
                             <p class="status-desc">
-                              {{
-                                t('packageInTransit')
-                              }}
+                              {{ t('packageInTransit') }}
                             </p>
                           </v-timeline-item>
                           <v-timeline-item
@@ -624,4 +626,5 @@ watch([page, itemsPerPage], fetchAllTranfers)
   text-decoration: underline;
   color: rgb(var(--v-theme-primary));
 }
+
 </style>
