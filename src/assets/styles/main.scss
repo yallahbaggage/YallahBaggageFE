@@ -441,17 +441,15 @@ body {
   text-transform: uppercase;
 }
 
-.filter-section {
-  .v-card .v-card-text {
-    padding: 10px !important;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 500;
-    width: 260px;
-    line-height: 20px;
-    background-color: #fff;
-    border: 1px solid #ebebeb;
-    margin-top: 15px;
-    box-shadow: $darkShadow;
-  }
+.filter-section .v-card .v-card-text {
+  padding: 10px !important;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  width: 260px;
+  line-height: 20px;
+  background-color: #fff;
+  border: 1px solid #ebebeb;
+  margin-top: 15px;
+  box-shadow: $darkShadow;
 }

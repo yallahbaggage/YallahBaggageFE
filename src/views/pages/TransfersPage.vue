@@ -5,6 +5,7 @@
       :title="t('transfers')"
       :desc="t('manageAndTrackYourTransfers')"
     />
+
     <div class="page-content">
       <!-- Loading state for initial page load -->
       <div v-if="initialLoading" class="loading-state">
@@ -49,6 +50,87 @@
           >
         </div>
         <hr class="infoHr" />
+        <div class="filter-section">
+          <!-- Filter Button + Panel -->
+          <v-menu
+            v-model="filterMenu"
+            :close-on-content-click="false"
+            offset-y
+            transition="scale-transition"
+            max-width="320"
+            min-width="280"
+          >
+            <template #activator="{ props }">
+              <v-btn
+                v-bind="props"
+                variant="outlined"
+                class="text-capitalize"
+                prepend-icon="mdi-filter-variant"
+              >
+                Filter
+              </v-btn>
+            </template>
+
+            <!-- Filter Content -->
+            <v-card>
+              <v-card-text>
+                <div class="d-flex justify-space-between align-center mb-2">
+                  <h4 class="text-subtitle-1 font-weight-medium">Filters</h4>
+                  <v-btn variant="text" @click="clearFilters" class="text-primary">Clear</v-btn>
+                </div>
+
+                <v-text-field
+                  v-model="filters.client"
+                  label="Client ID"
+                  placeholder="Write client ID here"
+                  density="comfortable"
+                  variant="outlined"
+                />
+
+                <v-select
+                  v-model="filters.workers"
+                  :items="workers.map((w) => w.name)"
+                  label=""
+                  variant="outlined"
+                  density="comfortable"
+                />
+
+                <div class="drawer-form-group">
+                  <label for="name" class="drawer-label-group">
+                    {{ t('transferStatus') }}
+                  </label>
+                  <v-select
+                    v-model="filters.transferStatus"
+                    :items="statusOptions.map((s) => t(s.label))"
+                    variant="outlined"
+                    density="compact"
+                    required
+                    hide-details
+                    class="no-focus-border"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label for="name" class="drawer-label-group">
+                    {{ t('paymentStatus') }}
+                  </label>
+                  <v-select
+                    v-model="filters.paymentStatus"
+                    :items="paymentStatusOptions.map((s) => t(s))"
+                    variant="outlined"
+                    density="compact"
+                    required
+                    hide-details
+                    class="no-focus-border"
+                  />
+                </div>
+                <div class="d-flex justify-space-between mt-4">
+                  <v-btn variant="outlined" @click="clearFilters">Clear</v-btn>
+                  <v-btn color="primary" @click="applyFilters">Apply</v-btn>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-menu>
+        </div>
         <ServerTable
           :headers="headers"
           :items="ads"
@@ -793,6 +875,33 @@ const assignEmployee = async (item: Transfer) => {
   }
 }
 
+const filterMenu = ref(false)
+
+const filters = ref({
+  client: '',
+  workers: null,
+  paymentStatus: null,
+  transferStatus: null,
+})
+
+const paymentStatusOptions = ['pending', 'paid', 'failed', 'refunded']
+// const staffOptions = ['John', 'Sarah', 'Ahmed']
+
+function clearFilters() {
+  filters.value = {
+    client: '',
+    workers: null,
+    paymentStatus: null,
+    transferStatus: null,
+  }
+}
+
+function applyFilters() {
+  // You can emit these or use for API
+  console.log('Applied filters:', filters.value)
+  menu.value = false
+}
+
 const fetchStats = async () => {
   await tranfersStore.getTransfersStats()
 }
@@ -934,6 +1043,8 @@ watch(
 )
 </script>
 <style lang="scss">
+@use 'styles/main.scss' as *;
+
 .stats-container {
   display: flex;
   gap: 10px;
