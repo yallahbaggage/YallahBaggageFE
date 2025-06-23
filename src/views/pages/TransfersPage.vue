@@ -701,7 +701,7 @@ import InfoCard from '@/components/base/InfoCard.vue'
 import { useI18n } from 'vue3-i18n'
 import { useTransfersStore } from '@/stores/modules/transfer'
 import { ref, onMounted, computed, watch } from 'vue'
-import type { Transfer } from '@/models/transfer'
+import { Transfer } from '@/models/transfer'
 import ServerTable from '@/components/base/ServerTable.vue'
 import { formatDate, formatDateWithoutTime } from '@/utils/helpers/date-helper'
 import AssignEmployeeCard from '@/components/base/AssignEmployeeCard.vue'
@@ -732,7 +732,8 @@ const statusOptions = [
 
 const panel = ref<string>('contactPerson') // Default open panel
 
-const selectedTransfer = ref<Transfer | null>(null)
+import type { Ref } from 'vue'
+const selectedTransfer: Ref<Transfer | null> = ref<Transfer | null>(null)
 const tab = ref(null)
 const isAssignEmployeeDrawerOpen = ref(false)
 const editableStatus = ref(selectedTransfer.value?.status ?? 'pending')
@@ -1003,10 +1004,38 @@ const assignEmployeeProcess = async (employee: IWorker, selectedTransfer: Transf
   // Update the selectedTransfer's worker reference for immediate UI update (ensure reactivity)
   if (selectedTransfer) {
     selectedTransfer.worker = employee
-  }
-
+  } 
   console.log('Worker status updated locally to Assigned:', employee.name)
 }
+
+// Function to send WhatsApp message to the assigned worker
+function sendWhatsappToWorker(worker: IWorker, transfer: Transfer) {
+  // Format phone number (remove non-digits)
+  const phone = (worker.phone || '').replace(/\D/g, '')
+
+  if (!phone) {
+    console.error('Invalid phone number')
+    return
+  }
+
+  const message = `
+New Transfer Assigned!
+Transfer ID: #${transfer._id.substring(0, 10)}
+From: ${transfer.from}
+To: ${transfer.to}
+Pickup: ${formatDate(transfer.pickUpDate)} ${transfer.pickUpTime}
+Delivery: ${formatDate(transfer.deliveryDate)} ${transfer.deliveryTime}
+Customer: ${transfer?.user?.name || ''}
+Phone: ${transfer?.user?.phone || ''}
+  `.trim()
+
+  const encodedMessage = encodeURIComponent(message)
+  const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`
+
+  console.log('Opening WhatsApp:', whatsappUrl)
+  window.open(whatsappUrl, '_blank')
+}
+
 
 const saveAssignment = async () => {
   if (!selectedEmployee.value || !selectedTransfer.value) {
@@ -1015,6 +1044,14 @@ const saveAssignment = async () => {
   }
 
   try {
+    await fetchAllTranfers()
+    await fetchAllWorkers()
+
+    if (selectedEmployee.value && selectedTransfer.value) {
+      console.log('Calling WhatsApp function');
+      sendWhatsappToWorker(selectedEmployee.value, selectedTransfer.value)
+    }
+
     await tranfersStore.updateTransfer({
       transferId: selectedTransfer.value._id ?? '',
       transferData: {
@@ -1027,9 +1064,10 @@ const saveAssignment = async () => {
     // Refresh the transfers list and workers list
     await fetchAllTranfers()
     await fetchAllWorkers()
-    isAssignEmployeeDrawerOpen.value = false
     selectedEmployee.value = null // Reset selected employee
     currentTransferAssignedWorkerId.value = null // Reset current transfer assigned worker
+    
+    isAssignEmployeeDrawerOpen.value = false
   } catch (error) {
     console.error('Error saving assignment:', error)
   }
