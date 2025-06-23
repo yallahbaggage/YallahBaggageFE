@@ -485,7 +485,7 @@ const workersLoading = ref(false)
 //   { label: 'closed' },
 // ]
 
-const panel = ref(['customerContacts', 'contactPerson', 'transferSummary', 'destination'])
+const panel = ref(['customerContacts'])
 
 const selectedTransfer = ref<Transfer | null>(null)
 const tab = ref(null)
