@@ -866,15 +866,34 @@ function viewDetails(item: Transfer) {
 }
 
 const fetchAllTranfers = async () => {
-  const response = await tranfersStore.getTransfers({ page: page.value, limit: itemsPerPage.value })
+  const params: any = {
+    page: page.value,
+    limit: itemsPerPage.value,
+  };
+
+  // Add filters if set
+  if (filters.value.client) params.search = filters.value.client;
+  if (filters.value.workers) params.workerName = filters.value.workers;
+  if (filters.value.transferStatus) {
+    // Find the status key from the label if translated
+    const found = statusOptions.find(s => t(s.label) === filters.value.transferStatus);
+    params.status = found ? found.label : filters.value.transferStatus;
+  }
+  if (filters.value.paymentStatus) {
+    // Find the payment status key from the label if translated
+    const found = paymentStatusOptions.find(s => t(s) === filters.value.paymentStatus);
+    params.paymentStatus = found || filters.value.paymentStatus;
+  }
+
+  const response = await tranfersStore.getTransfers(params);
   if (response.pagination && response.pagination.page !== page.value) {
-    page.value = response.pagination.page
+    page.value = response.pagination.page;
   }
-  const totalPages = Math.ceil((response.pagination?.total ?? 0) / itemsPerPage.value)
+  const totalPages = Math.ceil((response.pagination?.total ?? 0) / itemsPerPage.value);
   if (page.value > totalPages && totalPages > 0) {
-    page.value = totalPages
+    page.value = totalPages;
   }
-}
+};
 
 const assignEmployee = async (item: Transfer) => {
   selectedTransfer.value = item as Transfer
@@ -935,9 +954,8 @@ function clearFilters() {
 }
 
 function applyFilters() {
-  // You can emit these or use for API
-  console.log('Applied filters:', filters.value)
-  menu.value = false
+  fetchAllTranfers();
+  menu.value = false;
 }
 
 const fetchStats = async () => {
