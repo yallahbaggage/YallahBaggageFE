@@ -236,5 +236,6 @@
   "destination": "DESTİNASYONLAR",
   "pickUpLocation": "Alım Yeri",
   "deliveryLocation": "Teslimat Yeri",
-  "fragile": "Kırılabilir"
+  "fragile": "Kırılabilir",
+  "transferStatus": "Transfer Durumu"
 }

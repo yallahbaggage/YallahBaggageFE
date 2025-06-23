@@ -236,5 +236,7 @@
   "destination": "DESTINATION",
   "pickUpLocation": "Pick Up Location",
   "deliveryLocation": "Delivery Location",
-  "fragile": "Fragile"
+  "fragile": "Fragile",
+  "transferStatus": "Transfer Status",
+  "client": "Client Id, Email or Phone Number"
 }
