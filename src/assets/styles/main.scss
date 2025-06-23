@@ -291,6 +291,10 @@ body {
 .v-window {
   height: 50% !important;
   margin-bottom: 15px;
+  overflow: hidden;
+}
+.v-window__container{
+  overflow: hidden;
 }
 .status-stepper {
   margin: 10px 0;

@@ -98,7 +98,7 @@
           ? selectedComplaint.relatedWorkerId._id?.substring(0, 10)
           : 'N/A')
       "
-      :status="selectedComplaint?.status ? selectedComplaint?.status : 'pending'"
+      :drawerStatus="selectedComplaint?.status ? selectedComplaint?.status : 'pending'"
       @close="isDeleteComplaintDrawerOpen = false"
     >
       <div style="max-height: 75vh">
@@ -192,7 +192,7 @@
           ? selectedComplaint.relatedWorkerId?._id?.substring(0, 10)
           : 'N/A')
       "
-      :status="selectedComplaint?.status ? selectedComplaint?.status : 'pemding'"
+      :drawerStatus="selectedComplaint?.status ? selectedComplaint?.status : 'pemding'"
       @close="isDetailsComplaintDrawerOpen = false"
     >
       <div v-if="isLoading" class="d-flex justify-center my-5">
@@ -278,7 +278,7 @@
                                 :style="{ backgroundColor: statusColor(status.label) }"
                               ></span>
                             </template>
-                            <v-list-item-title>{{ status.label }}</v-list-item-title>
+                            <v-list-item-title>{{ t(status.label) }}</v-list-item-title>
                             <template #append>
                               <v-icon v-if="status.label === editableStatus" color="green"
                                 >mdi-check-circle</v-icon
@@ -439,7 +439,7 @@ import { useI18n } from 'vue3-i18n'
 import { ComplaintStatus, IComplaint } from '@/models/complaint'
 import Drawer from '@/components/base/Drawer.vue'
 import ActionButton from '@/components/base/ActionButton.vue'
-import { toastDeleteMessage } from '@/utils/helpers/notification'
+import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
 import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
 import { formatDate } from '@/utils/helpers/date-helper'
 
@@ -510,7 +510,7 @@ const saveStatus = async () => {
     await complaintsStore.updateComplaint(selectedComplaint.value._id, {status: editableStatus.value})
     selectedComplaint.value.status = editableStatus.value // Update local state
     isDetailsComplaintDrawerOpen.value = false 
-    toastDeleteMessage(t('toastUpdateStatusTitle'), t('toastUpdateStatusDescription'))
+    toastSuccessMessage(t('toastUpdateStatusTitle'), t('toastUpdateStatusDescription'))
   } catch (error) {
     console.error('Error updating status:', error)
   }

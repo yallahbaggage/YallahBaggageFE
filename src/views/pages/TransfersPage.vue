@@ -178,11 +178,59 @@
               ? (selectedTransfer.totalAmount * 1.02).toFixed(2)
               : '0.00'
           }$`"
-          :status="selectedTransfer?.status ? t(selectedTransfer?.status) : t('available')"
           @close="isDetailsTransfersDrawerOpen = false"
         >
+          <template #drawerStatus>
+            <v-menu v-model="menu" :close-on-content-click="false" offset-y>
+              <template #activator="{ props }">
+                <v-btn
+                  :style="{
+                    backgroundColor: statusBg(editableStatus),
+                    color: statusColor(editableStatus),
+                  }"
+                  v-bind="props"
+                  class="status-btn"
+                  variant="tonal"
+                  rounded
+                >
+                  <span
+                    class="status-dot"
+                    :style="{ backgroundColor: statusColor(editableStatus) }"
+                  ></span>
+                  {{ t(statusLabel(editableStatus)) }}
+                  <v-icon size="18" class="ml-1">mdi-chevron-down</v-icon>
+                </v-btn>
+              </template>
+
+              <v-list class="status-list">
+                <v-list-item
+                  v-for="status in statusOptions"
+                  :key="status.label"
+                  @click="selectStatus(status.label)"
+                  class="status-item"
+                  :style="{
+                    backgroundColor: statusBg(status.label),
+                    color: statusColor(status.label),
+                  }"
+                >
+                  <template #prepend>
+                    <span
+                      class="status-dot"
+                      :style="{ backgroundColor: statusColor(status.label) }"
+                    ></span>
+                  </template>
+                  <v-list-item-title>{{ t(status.label) }}</v-list-item-title>
+                  <template #append>
+                    <v-icon v-if="status.label === editableStatus" color="green"
+                      >mdi-check-circle</v-icon
+                    >
+                  </template>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </template>
           <div style="max-height: 75vh">
-            <form class="drawer-form">
+            <form v-on:submit.prevent="saveStatus" class="drawer-form">
               <div>
                 <v-card>
                   <v-tabs v-model="tab" align-tabs="start" color="deep-purple-accent-4">
@@ -522,6 +570,19 @@
                   </v-tabs-window>
                 </v-card>
               </div>
+              <div class="action-btns">
+                <ActionButton
+                  :buttonText="t('cancel')"
+                  buttonColor="white"
+                  @button-pressed="() => (isDetailsTransfersDrawerOpen = false)"
+                  class="action-Btn"
+                />
+                <ActionButton
+                  class="action-Btn"
+                  :buttonText="t('saveStatus')"
+                  buttonType="submit"
+                />
+              </div>
             </form>
           </div>
         </Drawer>
@@ -542,7 +603,7 @@ import { formatDate, formatDateWithoutTime } from '@/utils/helpers/date-helper'
 import AssignEmployeeCard from '@/components/base/AssignEmployeeCard.vue'
 import { useWorkersStore } from '@/stores/modules/workers'
 import { IWorker } from '@/models/worker'
-import { toastErrorMessage } from '@/utils/helpers/notification'
+import { toastErrorMessage, toastSuccessMessage } from '@/utils/helpers/notification'
 
 const { t } = useI18n()
 
@@ -556,15 +617,16 @@ const initialLoading = ref(true)
 const isDetailsTransfersDrawerOpen = ref(false)
 const workers = ref<IWorker[]>([])
 const workersLoading = ref(false)
-// const statusOptions = [
-//   { label: 'pending' },
-//   { label: 'in_progress' },
-//   { label: 'resolved' },
-//   { label: 'rejected' },
-//   { label: 'closed' },
-// ]
+const statusOptions = [
+  { label: 'pending' },
+  { label: 'in_progress' },
+  { label: 'in_transit' },
+  { label: 'onTheWay' },
+  { label: 'completed' },
+  { label: 'cancelled' },
+]
 
-const panel = ref(['customerContacts'])
+const panel = ref<string>('contactPerson') // Default open panel
 
 const selectedTransfer = ref<Transfer | null>(null)
 const tab = ref(null)
@@ -588,6 +650,7 @@ const stats = computed(
 )
 const page = ref(1)
 const itemsPerPage = ref(8)
+const menu = ref(false)
 
 const headers = [
   { title: 'ID', key: '_id', sortable: false },
@@ -600,21 +663,90 @@ const headers = [
   { title: t('actions'), key: 'actions', sortable: false },
 ]
 
-function statusColor(status: string): string {
+// function statusColor(status: string): string {
+//   switch (status) {
+//     case 'pending':
+//       return '#f59e0b' // amber
+//     case 'in_progress':
+//       return '#3b82f6' // blue
+//     case 'resolved':
+//       return '#10b981' // green
+//     case 'rejected':
+//       return '#ef4444' // red
+//     case 'closed':
+//       return '#6b7280' // gray
+//     default:
+//       return '#9ca3af' // fallback gray
+//   }
+// }
+
+const statusLabel = (status: string) => {
+  return statusOptions.find((s) => s.label === status)?.label ?? status
+}
+
+const selectStatus = (status: string) => {
+  editableStatus.value = status as Transfer['status']
+  menu.value = false
+}
+
+const statusColor = (status: string): string => {
   switch (status) {
     case 'pending':
-      return '#f59e0b' // amber
+      return '#FF9800' // amber
     case 'in_progress':
-      return '#3b82f6' // blue
+      return '#1976D2' // blue
+    case 'in_transit':
+      return '#FFC107' // amber
+    case 'on_the_way':
+      return '#00B894' // teal
     case 'resolved':
     case 'completed':
-      return '#10b981' // green
+      return '#2E7D32' // green
     case 'rejected':
-      return '#ef4444' // red
+      return '#D32F2F' // red
     case 'closed':
-      return '#6b7280' // gray
+      return '#616161' // gray
     default:
-      return '#9ca3af' // fallback gray
+      return '#757575' // fallback gray
+  }
+}
+
+const statusBg = (status: string): string => {
+  switch (status) {
+    case 'pending':
+      return '#FFF4E5' // soft orange
+    case 'in_progress':
+      return '#E6F0FF' // light blue
+    case 'in_transit':
+      return '#FFF8D9' // pale yellow
+    case 'onTheWay':
+      return '#E6FFF4' // soft teal green
+    case 'resolved':
+    case 'completed':
+      return '#E9F9EE' // soft green
+    case 'rejected':
+      return '#FFE5E5' // light red
+    case 'closed':
+      return '#F0F0F0' // neutral gray
+    default:
+      return '#F5F5F5' // fallback gray
+  }
+}
+
+const saveStatus = async () => {
+  if (!selectedTransfer.value) return
+
+  try {
+    await tranfersStore.updateTransfer({
+      transferId: selectedTransfer.value._id,
+      transferData: { status: editableStatus.value, items: selectedTransfer.value.items },
+      emitSocket: false,
+    })
+    selectedTransfer.value.status = editableStatus.value // Update local state
+    isDetailsTransfersDrawerOpen.value = false
+    toastSuccessMessage(t('toastUpdateStatusTitle'), t('toastUpdateStatusDescription'))
+  } catch (error) {
+    console.error('Error updating status:', error)
   }
 }
 
@@ -793,6 +925,13 @@ watch(
 )
 
 watch([page, itemsPerPage], fetchAllTranfers)
+
+watch(
+  () => selectedTransfer.value?.status,
+  (newStatus) => {
+    editableStatus.value = newStatus ?? 'pending'
+  },
+)
 </script>
 <style lang="scss">
 .stats-container {
@@ -957,5 +1096,30 @@ watch([page, itemsPerPage], fetchAllTranfers)
 
 .baggage-price {
   font-weight: 500;
+}
+
+.status-btn {
+  text-transform: none;
+  padding: 6px 12px;
+  font-weight: 500;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+.status-dot {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+}
+.status-list {
+  min-width: 200px;
+  padding: 8px;
+}
+.status-item {
+  border-radius: 12px;
+  margin-bottom: 4px;
+  padding: 8px 12px;
 }
 </style>
