@@ -158,7 +158,7 @@
         >
           <template #cell-_id="{ item }"> #{{ item._id.substring(0, 10) }} </template>
           <template #cell-workerId="{ item }">
-            <span v-if="item?.workerId?.name">{{ item.workerId.name }}</span>
+            <span v-if="item?.worker?.name">{{ item.worker?.name }}</span>
             <v-btn
               outline
               class="text-capitalize"
@@ -170,7 +170,7 @@
             </v-btn>
           </template>
           <template #cell-customer="{ item }">
-            <span>{{ item.userId.name }}</span>
+            <span>{{ item?.user?.name }}</span>
           </template>
           <template #cell-status="{ item }">
             <v-chip :color="statusColor(item.status)" text-color="white" medium>
@@ -218,9 +218,9 @@
         <!-- assign empeloyee Drawer -->
         <Drawer
           :isOpen="isAssignEmployeeDrawerOpen"
-          :title="!selectedTransfer?.workerId ? t('assignEmployee') : t('changeEmployee')"
+          :title="!selectedTransfer?.worker?.name ? t('assignEmployee') : t('changeEmployee')"
           :desc="
-            !selectedTransfer?.workerId
+            !selectedTransfer?.worker?.name
               ? t('assignEmployeeToTransfer', {
                   transferId: selectedTransfer?._id?.substring(0, 10),
                 })
@@ -356,14 +356,14 @@
                               <div class="employee-info">
                                 <div class="avatar">
                                   {{
-                                    selectedTransfer?.userId?.name?.substring(0, 2).toUpperCase()
+                                    selectedTransfer?.user?.name?.substring(0, 2).toUpperCase()
                                   }}
                                 </div>
                                 <div class="details">
-                                  <div class="name">{{ selectedTransfer?.userId?.name }}</div>
+                                  <div class="name">{{ selectedTransfer?.user?.name }}</div>
                                   <div class="phone">
-                                    {{ selectedTransfer?.userId?.email ?? '' }} -
-                                    {{ selectedTransfer?.userId?.phone ?? '' }}
+                                    {{ selectedTransfer?.user?.email ?? '' }} -
+                                    {{ selectedTransfer?.user?.phone ?? '' }}
                                   </div>
                                 </div>
                               </div>
@@ -382,7 +382,7 @@
                               <div class="drawer-info">
                                 <p class="drawer-key">{{ t('fullName') }}</p>
                                 <p class="drawer-value">
-                                  {{ selectedTransfer?.userId?.name ?? 'N/A' }}
+                                  {{ selectedTransfer?.user?.name ?? 'N/A' }}
                                 </p>
                               </div>
 
@@ -391,45 +391,45 @@
                                 <p class="drawer-value">
                                   <template
                                     v-if="
-                                      selectedTransfer?.userId?.informationPreference?.[0] ===
+                                      selectedTransfer?.user?.informationPreference?.[0] ===
                                       'whatsapp'
                                     "
                                   >
                                     <v-icon color="success">mdi-whatsapp</v-icon>
                                     {{
-                                      selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A'
+                                      selectedTransfer?.user?.informationPreference?.[0] ?? 'N/A'
                                     }}
                                   </template>
                                   <template
                                     v-else-if="
-                                      selectedTransfer?.userId?.informationPreference?.[0] ===
+                                      selectedTransfer?.user?.informationPreference?.[0] ===
                                       'email'
                                     "
                                   >
                                     <v-icon color="primary">mdi-email</v-icon>
                                     {{
-                                      selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A'
+                                      selectedTransfer?.user?.informationPreference?.[0] ?? 'N/A'
                                     }}
                                   </template>
                                   <template
                                     v-else-if="
-                                      selectedTransfer?.userId?.informationPreference?.[0] ===
+                                      selectedTransfer?.user?.informationPreference?.[0] ===
                                       'call'
                                     "
                                   >
                                     <v-icon color="error">mdi-phone</v-icon>
                                     {{
-                                      selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A'
+                                      selectedTransfer?.user?.informationPreference?.[0] ?? 'N/A'
                                     }}
                                   </template>
                                   <template
                                     v-else-if="
-                                      selectedTransfer?.userId?.informationPreference?.[0] === 'sms'
+                                      selectedTransfer?.user?.informationPreference?.[0] === 'sms'
                                     "
                                   >
                                     <v-icon color="info">mdi-sms</v-icon>
                                     {{
-                                      selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A'
+                                      selectedTransfer?.user?.informationPreference?.[0] ?? 'N/A'
                                     }}
                                   </template>
                                 </p>
@@ -438,7 +438,7 @@
                               <div class="drawer-info">
                                 <p class="drawer-key">{{ t('phoneNumber') }}</p>
                                 <p class="drawer-value">
-                                  {{ selectedTransfer?.userId?.phone ?? 'N/A' }}
+                                  {{ selectedTransfer?.user?.phone ?? 'N/A' }}
                                 </p>
                               </div>
                             </div>
@@ -615,7 +615,7 @@
                             </div>
                             <p class="status-desc">
                               <span class="stepper-worker-name">{{
-                                selectedTransfer.workerId.name
+                                selectedTransfer.worker?.name
                               }}</span>
                               {{ t('assignedToTransfer') }}
                             </p>
@@ -958,12 +958,12 @@ const assignEmployeeProcess = async (employee: IWorker, selectedTransfer: Transf
   }
 
   // If the transfer already has a worker assigned from the database, update the status of that worker to Available
-  if (selectedTransfer.workerId) {
-    // Handle both string and object cases for workerId
+  if (selectedTransfer.worker) {
+    // Handle both string and object cases for worker
     const previousWorkerId =
-      typeof selectedTransfer.workerId === 'string'
-        ? selectedTransfer.workerId
-        : selectedTransfer.workerId._id
+      typeof selectedTransfer.worker === 'string'
+        ? selectedTransfer.worker
+        : selectedTransfer.worker._id
 
     // Only update if it's different from the current session assigned worker
     if (previousWorkerId !== currentTransferAssignedWorkerId.value) {
