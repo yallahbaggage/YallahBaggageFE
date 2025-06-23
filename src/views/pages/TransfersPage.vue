@@ -102,7 +102,7 @@
                   <v-icon class="mr-2">mdi-account-outline</v-icon>
                   {{ t('assignChangeStaff') }}
                 </v-list-item>
-                <v-list-item class="menu-item" @click="changeStatus(item)">
+                <v-list-item class="menu-item" @click="viewDetails(item as Transfer)">
                   <v-icon class="mr-2">mdi-lightning-bolt-outline</v-icon>
                   {{ t('changeStatus') }}
                 </v-list-item>
