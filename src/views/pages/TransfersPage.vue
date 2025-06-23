@@ -239,28 +239,28 @@
                                   "
                                 >
                                   <v-icon color="success">mdi-whatsapp</v-icon>
-                                  {{ selectedTransfer?.userId?.informationPreference[0] ?? 'N/A' }}
+                                  {{ selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A' }}
                                 </template>
 
                                 <template
                                   v-if="selectedTransfer?.userId?.informationPreference?.[0] && selectedTransfer?.userId?.informationPreference?.[0] == 'email'"
                                 >
                                   <v-icon color="primary">mdi-email</v-icon>
-                                  {{ selectedTransfer?.userId?.informationPreference[0] ?? 'N/A' }}
+                                  {{ selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A' }}
                                 </template>
 
                                 <template
                                   v-if="selectedTransfer?.userId?.informationPreference?.[0] && selectedTransfer?.userId?.informationPreference?.[0] == 'call'"
                                 >
                                   <v-icon color="error">mdi-phone</v-icon>
-                                  {{ selectedTransfer?.userId?.informationPreference[0] ?? 'N/A' }}
+                                  {{ selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A' }}
                                 </template>
 
                                 <template
                                   v-if="selectedTransfer?.userId?.contactPreference?.[0] && selectedTransfer?.userId?.contactPreference?.[0] === 'sms'"
                                 >
                                   <v-icon color="info">mdi-sms</v-icon>
-                                  {{ selectedTransfer?.userId?.informationPreference[0] ?? 'N/A' }}
+                                  {{ selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A' }}
                                 </template>
                               </p>
                             </div>
