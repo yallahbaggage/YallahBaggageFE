@@ -67,7 +67,7 @@
                 class="text-capitalize"
                 prepend-icon="mdi-filter-variant"
               >
-                {{t('filters')}}
+                {{ t('filters') }}
               </v-btn>
             </template>
 
@@ -96,21 +96,30 @@
                   <v-btn variant="text" @click="clearFilters" class="text-primary">Clear</v-btn>
                 </div>
 
-                <v-text-field
-                  v-model="filters.client"
-                  label="Client ID"
-                  placeholder="Write client ID here"
-                  density="comfortable"
-                  variant="outlined"
-                />
-
-                <v-select
-                  v-model="filters.workers"
-                  :items="workers.map((w) => w.name)"
-                  label=""
-                  variant="outlined"
-                  density="comfortable"
-                />
+                <div class="drawer-form-group">
+                  <label for="name" class="drawer-label-group">
+                    {{ t('client') }}
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    class="form-input no-focus-border"
+                    placeholder="client name or email"
+                    v-model="filters.client"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label for="name" class="drawer-label-group">
+                    {{ t('employees') }}
+                  </label>
+                  <v-select
+                    v-model="filters.workers"
+                    :items="workers.map((w) => w.name)"
+                    label=""
+                    variant="outlined"
+                    density="comfortable"
+                  />
+                </div>
 
                 <div class="drawer-form-group">
                   <label for="name" class="drawer-label-group">
@@ -355,9 +364,7 @@
                             <div class="employee-card" v-if="panel.includes('customerContacts')">
                               <div class="employee-info">
                                 <div class="avatar">
-                                  {{
-                                    selectedTransfer?.user?.name?.substring(0, 2).toUpperCase()
-                                  }}
+                                  {{ selectedTransfer?.user?.name?.substring(0, 2).toUpperCase() }}
                                 </div>
                                 <div class="details">
                                   <div class="name">{{ selectedTransfer?.user?.name }}</div>
@@ -402,8 +409,7 @@
                                   </template>
                                   <template
                                     v-else-if="
-                                      selectedTransfer?.user?.informationPreference?.[0] ===
-                                      'email'
+                                      selectedTransfer?.user?.informationPreference?.[0] === 'email'
                                     "
                                   >
                                     <v-icon color="primary">mdi-email</v-icon>
@@ -413,8 +419,7 @@
                                   </template>
                                   <template
                                     v-else-if="
-                                      selectedTransfer?.user?.informationPreference?.[0] ===
-                                      'call'
+                                      selectedTransfer?.user?.informationPreference?.[0] === 'call'
                                     "
                                   >
                                     <v-icon color="error">mdi-phone</v-icon>
@@ -1004,7 +1009,7 @@ const assignEmployeeProcess = async (employee: IWorker, selectedTransfer: Transf
   // Update the selectedTransfer's worker reference for immediate UI update (ensure reactivity)
   if (selectedTransfer) {
     selectedTransfer.worker = employee
-  } 
+  }
   console.log('Worker status updated locally to Assigned:', employee.name)
 }
 
@@ -1036,7 +1041,6 @@ Phone: ${transfer?.user?.phone || ''}
   window.open(whatsappUrl, '_blank')
 }
 
-
 const saveAssignment = async () => {
   if (!selectedEmployee.value || !selectedTransfer.value) {
     console.error('No employee or transfer selected')
@@ -1048,7 +1052,7 @@ const saveAssignment = async () => {
     await fetchAllWorkers()
 
     if (selectedEmployee.value && selectedTransfer.value) {
-      console.log('Calling WhatsApp function');
+      console.log('Calling WhatsApp function')
       sendWhatsappToWorker(selectedEmployee.value, selectedTransfer.value)
     }
 
@@ -1066,7 +1070,7 @@ const saveAssignment = async () => {
     await fetchAllWorkers()
     selectedEmployee.value = null // Reset selected employee
     currentTransferAssignedWorkerId.value = null // Reset current transfer assigned worker
-    
+
     isAssignEmployeeDrawerOpen.value = false
   } catch (error) {
     console.error('Error saving assignment:', error)

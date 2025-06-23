@@ -238,5 +238,5 @@
   "deliveryLocation": "Delivery Location",
   "fragile": "Fragile",
   "transferStatus": "Transfer Status",
-  "client": "Client Id, Email or Phone Number"
+  "client": "Client Id, name"
 }

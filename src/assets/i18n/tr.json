@@ -237,5 +237,6 @@
   "pickUpLocation": "Alım Yeri",
   "deliveryLocation": "Teslimat Yeri",
   "fragile": "Kırılabilir",
-  "transferStatus": "Transfer Durumu"
+  "transferStatus": "Transfer Durumu",
+    "client": "Müşteri id veya adı"
 }
