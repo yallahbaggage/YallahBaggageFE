@@ -701,7 +701,7 @@ import InfoCard from '@/components/base/InfoCard.vue'
 import { useI18n } from 'vue3-i18n'
 import { useTransfersStore } from '@/stores/modules/transfer'
 import { ref, onMounted, computed, watch } from 'vue'
-import { Transfer } from '@/models/transfer'
+import type { Transfer } from '@/models/transfer'
 import ServerTable from '@/components/base/ServerTable.vue'
 import { formatDate, formatDateWithoutTime } from '@/utils/helpers/date-helper'
 import AssignEmployeeCard from '@/components/base/AssignEmployeeCard.vue'
@@ -859,11 +859,6 @@ function viewDetails(item: Transfer) {
   isDetailsTransfersDrawerOpen.value = true
 }
 
-function changeStatus(item: any) {
-  selectedTransfer.value = item as Transfer
-  // isDeleteEmployeeDrawerOpen.value = true
-}
-
 const fetchAllTranfers = async () => {
   const response = await tranfersStore.getTransfers({ page: page.value, limit: itemsPerPage.value })
   if (response.pagination && response.pagination.page !== page.value) {
@@ -882,6 +877,9 @@ const assignEmployee = async (item: Transfer) => {
   // Reset the current transfer's assigned worker ID for the new transfer
   currentTransferAssignedWorkerId.value = null
 
+  // Reset all worker statuses to their original state from the database
+  await resetWorkerStatuses()
+
   // If workers are not loaded, try to load them again
   if (workers.value.length === 0) {
     try {
@@ -894,6 +892,18 @@ const assignEmployee = async (item: Transfer) => {
     } finally {
       workersLoading.value = false
     }
+  }
+}
+
+// Function to reset worker statuses to their original state
+const resetWorkerStatuses = async () => {
+  try {
+    // Fetch fresh worker data from the store to get original statuses
+    await workersStore.getWorkers()
+    workers.value = workersStore.allWorkers
+    console.log('Worker statuses reset to original state')
+  } catch (error) {
+    console.error('Error resetting worker statuses:', error)
   }
 }
 
@@ -965,17 +975,15 @@ const assignEmployeeProcess = async (employee: IWorker, selectedTransfer: Transf
         ? selectedTransfer.worker
         : selectedTransfer.worker._id
 
-    // Only update if it's different from the current session assigned worker
-    if (previousWorkerId !== currentTransferAssignedWorkerId.value) {
-      const previousWorkerIndex = workers.value.findIndex((w) => w._id === previousWorkerId)
-      if (previousWorkerIndex !== -1) {
-        workers.value[previousWorkerIndex].status = 'Available'
-        workers.value[previousWorkerIndex].isAvailable = true
-        console.log(
-          'Previous database worker status updated to Available:',
-          workers.value[previousWorkerIndex].name,
-        )
-      }
+    // Always make the previous database worker available when selecting a new worker
+    const previousWorkerIndex = workers.value.findIndex((w) => w._id === previousWorkerId)
+    if (previousWorkerIndex !== -1) {
+      workers.value[previousWorkerIndex].status = 'Available'
+      workers.value[previousWorkerIndex].isAvailable = true
+      console.log(
+        'Previous database worker status updated to Available:',
+        workers.value[previousWorkerIndex].name,
+      )
     }
   }
 
@@ -991,6 +999,11 @@ const assignEmployeeProcess = async (employee: IWorker, selectedTransfer: Transf
 
   // Store the selected employee for later use when saving
   selectedEmployee.value = employee
+
+  // Update the selectedTransfer's worker reference for immediate UI update (ensure reactivity)
+  if (selectedTransfer) {
+    selectedTransfer.worker = employee
+  }
 
   console.log('Worker status updated locally to Assigned:', employee.name)
 }
