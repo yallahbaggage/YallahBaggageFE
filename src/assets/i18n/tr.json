@@ -227,13 +227,14 @@
   "changeEmployee": "Çalışanı Değiştir",
   "changeEmployeeForTransfer": "Transfer #{transferId} için Çalışanı Değiştir",
   "customerContacts": "MÜŞTERİ & İLETİŞİM",
-  "contactPerson": "İletişim Kişisi",
+  "contactPerson": "İLETİŞİM KİŞİSİ",
   "contactPreference": "İletişim Tercihi",
-  "transferSummary": "Transfer Özeti",
+  "transferSummary": "TRANSFER ÖZETİ",
   "subtotal": "Ara Toplam",
   "vat": "KDV (2.00%)",
   "total": "Toplam",
   "destination": "DESTİNASYONLAR",
   "pickUpLocation": "Alım Yeri",
-  "deliveryLocation": "Teslimat Yeri"
+  "deliveryLocation": "Teslimat Yeri",
+  "fragile": "Kırılabilir"
 }

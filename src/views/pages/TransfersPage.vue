@@ -173,12 +173,11 @@
         <Drawer
           :isOpen="isDetailsTransfersDrawerOpen"
           :title="'Transfer' + ' ' + '#' + selectedTransfer?._id.substring(0, 10)"
-          :desc="
-            (selectedTransfer?.createdAt ? formatDateWithoutTime(selectedTransfer.createdAt) : '') +
-            ' - ' +
-            (selectedTransfer?.totalAmount ?? 0) +
-            '$'
-          "
+          :desc="`${selectedTransfer?.createdAt ? formatDateWithoutTime(selectedTransfer.createdAt) : ''} - ${
+            selectedTransfer?.totalAmount
+              ? (selectedTransfer.totalAmount * 1.02).toFixed(2)
+              : '0.00'
+          }$`"
           :status="selectedTransfer?.status ? t(selectedTransfer?.status) : t('available')"
           @close="isDetailsTransfersDrawerOpen = false"
         >
@@ -302,6 +301,45 @@
                         >
                           <template #default>
                             <div class="accordion-card" v-if="panel.includes('transferSummary')">
+                              <template
+                                v-if="selectedTransfer.items && selectedTransfer.items.length > 0"
+                                v-for="(item, index) in selectedTransfer.items"
+                                :key="`employee-${item._id}-${index}`"
+                              >
+                                <div class="baggage-item">
+                                  <img
+                                    class="baggage-img"
+                                    :src="item?.images?.[0]"
+                                    :alt="item?.name"
+                                  />
+                                  <div class="baggage-info">
+                                    <div class="baggage-title">
+                                      {{ item?.name ?? 'N/A' }}
+                                      <v-chip
+                                        v-if="item?.isBreakable"
+                                        size="x-small"
+                                        color="orange-lighten-2"
+                                        class="ml-2"
+                                        text-color="orange-darken-2"
+                                      >
+                                        <v-icon start size="12" color="orange-darken-2"
+                                          >mdi-alert</v-icon
+                                        >
+                                        {{ t('fragile') }}
+                                      </v-chip>
+                                    </div>
+                                    <div class="baggage-weight">{{ item.weight }}kg</div>
+                                  </div>
+                                  <div class="baggage-price">
+                                    {{
+                                      selectedTransfer?.totalAmount /
+                                      selectedTransfer?.items?.length
+                                    }}$
+                                  </div>
+                                </div>
+                              </template>
+
+                              <v-divider class="my-2" />
                               <div class="drawer-info">
                                 <p class="drawer-key">{{ t('subtotal') }}</p>
                                 <p class="drawer-value">
@@ -882,5 +920,42 @@ watch([page, itemsPerPage], fetchAllTranfers)
 
 .accordion-card {
   padding: 0px 7px;
+}
+
+.baggage-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.baggage-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.baggage-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.baggage-title {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.baggage-weight {
+  font-size: 13px;
+  color: gray;
+}
+
+.baggage-price {
+  font-weight: 500;
 }
 </style>
