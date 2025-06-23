@@ -293,7 +293,7 @@ body {
   margin-bottom: 15px;
   overflow: hidden;
 }
-.v-window__container{
+.v-window__container {
   overflow: hidden;
 }
 .status-stepper {
@@ -439,4 +439,19 @@ body {
   line-height: 16px; /* 133.333% */
   letter-spacing: 0.48px;
   text-transform: uppercase;
+}
+
+.filter-section {
+  .v-card .v-card-text {
+    padding: 10px !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    width: 260px;
+    line-height: 20px;
+    background-color: #fff;
+    border: 1px solid #ebebeb;
+    margin-top: 15px;
+    box-shadow: $darkShadow;
+  }
 }
