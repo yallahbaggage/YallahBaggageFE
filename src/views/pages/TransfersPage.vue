@@ -193,87 +193,161 @@
 
                   <v-tabs-window v-model="tab">
                     <v-tabs-window-item value="details">
-                   <v-expansion-panels v-if="selectedTransfer" v-model="panel" multiple>
-    
-    <!-- Panel 1: Customer Contacts -->
-    <v-expansion-panel elevation="0" :title="t('customerContacts')" :value="'customerContacts'">
-      <template #default>
-        <div class="employee-card" v-if="panel.includes('customerContacts')">
-          <div class="employee-info">
-            <div class="avatar">
-              {{ selectedTransfer?.userId?.name?.substring(0, 2).toUpperCase() }}
-            </div>
-            <div class="details">
-              <div class="name">{{ selectedTransfer?.userId?.name }}</div>
-              <div class="phone">
-                {{ selectedTransfer?.userId?.email ?? '' }} -
-                {{ selectedTransfer?.userId?.phone ?? '' }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
-    </v-expansion-panel>
+                      <v-expansion-panels v-if="selectedTransfer" v-model="panel" multiple>
+                        <!-- Panel 1: Customer Contacts -->
+                        <v-expansion-panel
+                          elevation="0"
+                          :title="t('customerContacts')"
+                          :value="'customerContacts'"
+                        >
+                          <template #default>
+                            <div class="employee-card" v-if="panel.includes('customerContacts')">
+                              <div class="employee-info">
+                                <div class="avatar">
+                                  {{
+                                    selectedTransfer?.userId?.name?.substring(0, 2).toUpperCase()
+                                  }}
+                                </div>
+                                <div class="details">
+                                  <div class="name">{{ selectedTransfer?.userId?.name }}</div>
+                                  <div class="phone">
+                                    {{ selectedTransfer?.userId?.email ?? '' }} -
+                                    {{ selectedTransfer?.userId?.phone ?? '' }}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </template>
+                        </v-expansion-panel>
 
-    <!-- Panel 2: Contact Person -->
-    <v-expansion-panel elevation="0" :title="t('contactPerson')" :value="'contactPerson'">
-      <template #default>
-        <div v-if="panel.includes('contactPerson')">
-          <div class="drawer-info">
-            <p class="drawer-key">{{ t('fullName') }}</p>
-            <p class="drawer-value">{{ selectedTransfer?.userId?.name ?? 'N/A' }}</p>
-          </div>
+                        <!-- Panel 2: Contact Person -->
+                        <v-expansion-panel
+                          elevation="0"
+                          :title="t('contactPerson')"
+                          :value="'contactPerson'"
+                        >
+                          <template #default>
+                            <div class="accordion-card" v-if="panel.includes('contactPerson')">
+                              <div class="drawer-info">
+                                <p class="drawer-key">{{ t('fullName') }}</p>
+                                <p class="drawer-value">
+                                  {{ selectedTransfer?.userId?.name ?? 'N/A' }}
+                                </p>
+                              </div>
 
-          <div class="drawer-info">
-            <p class="drawer-key">{{ t('contactPreference') }}</p>
-            <p class="drawer-value">
-              <template
-                v-if="selectedTransfer?.userId?.informationPreference?.[0] === 'whatsapp'"
-              >
-                <v-icon color="success">mdi-whatsapp</v-icon>
-                {{ selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A' }}
-              </template>
-              <template
-                v-else-if="selectedTransfer?.userId?.informationPreference?.[0] === 'email'"
-              >
-                <v-icon color="primary">mdi-email</v-icon>
-                {{ selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A' }}
-              </template>
-              <template
-                v-else-if="selectedTransfer?.userId?.informationPreference?.[0] === 'call'"
-              >
-                <v-icon color="error">mdi-phone</v-icon>
-                {{ selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A' }}
-              </template>
-              <template
-                v-else-if="selectedTransfer?.userId?.informationPreference?.[0] === 'sms'"
-              >
-                <v-icon color="info">mdi-sms</v-icon>
-                {{ selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A' }}
-              </template>
-            </p>
-          </div>
+                              <div class="drawer-info">
+                                <p class="drawer-key">{{ t('contactPreference') }}</p>
+                                <p class="drawer-value">
+                                  <template
+                                    v-if="
+                                      selectedTransfer?.userId?.informationPreference?.[0] ===
+                                      'whatsapp'
+                                    "
+                                  >
+                                    <v-icon color="success">mdi-whatsapp</v-icon>
+                                    {{
+                                      selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A'
+                                    }}
+                                  </template>
+                                  <template
+                                    v-else-if="
+                                      selectedTransfer?.userId?.informationPreference?.[0] ===
+                                      'email'
+                                    "
+                                  >
+                                    <v-icon color="primary">mdi-email</v-icon>
+                                    {{
+                                      selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A'
+                                    }}
+                                  </template>
+                                  <template
+                                    v-else-if="
+                                      selectedTransfer?.userId?.informationPreference?.[0] ===
+                                      'call'
+                                    "
+                                  >
+                                    <v-icon color="error">mdi-phone</v-icon>
+                                    {{
+                                      selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A'
+                                    }}
+                                  </template>
+                                  <template
+                                    v-else-if="
+                                      selectedTransfer?.userId?.informationPreference?.[0] === 'sms'
+                                    "
+                                  >
+                                    <v-icon color="info">mdi-sms</v-icon>
+                                    {{
+                                      selectedTransfer?.userId?.informationPreference?.[0] ?? 'N/A'
+                                    }}
+                                  </template>
+                                </p>
+                              </div>
 
-          <div class="drawer-info">
-            <p class="drawer-key">{{ t('phoneNumber') }}</p>
-            <p class="drawer-value">
-              {{ selectedTransfer?.userId?.phone ?? 'N/A' }}
-            </p>
-          </div>
-        </div>
-      </template>
-    </v-expansion-panel>
+                              <div class="drawer-info">
+                                <p class="drawer-key">{{ t('phoneNumber') }}</p>
+                                <p class="drawer-value">
+                                  {{ selectedTransfer?.userId?.phone ?? 'N/A' }}
+                                </p>
+                              </div>
+                            </div>
+                          </template>
+                        </v-expansion-panel>
 
-    <!-- Panel 3: Transfer Summary (empty for now) -->
-    <v-expansion-panel elevation="0" :title="t('transferSummary')" :value="'transferSummary'">
-      <template #default>
-        <div v-if="panel.includes('transferSummary')">
-          <p></p>
-        </div>
-      </template>
-    </v-expansion-panel>
-  </v-expansion-panels>
-
+                        <!-- Panel 3: Transfer Summary-->
+                        <v-expansion-panel
+                          elevation="0"
+                          :title="t('transferSummary')"
+                          :value="'transferSummary'"
+                        >
+                          <template #default>
+                            <div class="accordion-card" v-if="panel.includes('transferSummary')">
+                              <div class="drawer-info">
+                                <p class="drawer-key">{{ t('subtotal') }}</p>
+                                <p class="drawer-value">
+                                  {{ selectedTransfer?.totalAmount ?? 'N/A' }}
+                                  {{ selectedTransfer.totalAmount ? '$' : '' }}
+                                </p>
+                              </div>
+                              <div class="drawer-info">
+                                <p class="drawer-key">{{ t('vat') }}</p>
+                                <p class="drawer-value">
+                                  <template v-if="selectedTransfer?.totalAmount">
+                                    {{ (selectedTransfer.totalAmount * 0.02).toFixed(2) }}$
+                                  </template>
+                                  <template v-else> N/A </template>
+                                </p>
+                              </div>
+                              <div class="drawer-info">
+                                <p class="drawer-key">{{ t('total') }}</p>
+                                <p class="drawer-value">
+                                  <template v-if="selectedTransfer?.totalAmount">
+                                    {{
+                                      (
+                                        selectedTransfer.totalAmount +
+                                        selectedTransfer.totalAmount * 0.02
+                                      ).toFixed(2)
+                                    }}$
+                                  </template>
+                                  <template v-else> N/A </template>
+                                </p>
+                              </div>
+                            </div>
+                          </template>
+                        </v-expansion-panel>
+                        <!-- Panel 4: Destination-->
+                        <v-expansion-panel
+                          elevation="0"
+                          :title="t('destination')"
+                          :value="'destination'"
+                        >
+                          <template #default>
+                            <div class="accordion-card" v-if="panel.includes('destination')">
+                              <p></p>
+                            </div>
+                          </template>
+                        </v-expansion-panel>
+                      </v-expansion-panels>
                     </v-tabs-window-item>
 
                     <v-tabs-window-item value="timeLine">
@@ -411,7 +485,7 @@ const workersLoading = ref(false)
 //   { label: 'closed' },
 // ]
 
-const panel = ref(['customerContacts', 'contactPerson', 'transferSummary'])
+const panel = ref(['customerContacts', 'contactPerson', 'transferSummary', 'destination'])
 
 const selectedTransfer = ref<Transfer | null>(null)
 const tab = ref(null)
@@ -763,5 +837,9 @@ watch([page, itemsPerPage], fetchAllTranfers)
   font-style: normal;
   font-weight: 400;
   color: #5c5c5c;
+}
+
+.accordion-card {
+  padding: 0px 7px;
 }
 </style>
