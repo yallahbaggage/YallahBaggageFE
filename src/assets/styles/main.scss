@@ -441,15 +441,58 @@ body {
   text-transform: uppercase;
 }
 
-.filter-section .v-card .v-card-text {
+.filter-section {
+  margin-bottom: 16px;
+  position: relative;
+  
+  :deep(.v-menu .v-card .v-card-text) {
+    padding: 10px !important;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    width: 260px;
+    line-height: 20px;
+    background-color: #fff;
+    border: 1px solid #ebebeb;
+    margin-top: 15px;
+    box-shadow: $darkShadow;
+  }
+  
+  :deep(.v-btn) {
+    text-transform: none;
+    font-weight: 500;
+  }
+  
+  :deep(.v-menu) {
+    z-index: 1000;
+  }
+  
+  :deep(.v-card) {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+}
+
+// Global filter section styles with high specificity
+.filter-section .v-menu .v-card .v-card-text {
   padding: 10px !important;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  width: 260px;
-  line-height: 20px;
-  background-color: #fff;
-  border: 1px solid #ebebeb;
-  margin-top: 15px;
-  box-shadow: $darkShadow;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  width: 260px !important;
+  line-height: 20px !important;
+  background-color: #fff !important;
+  border: 1px solid #ebebeb !important;
+  margin-top: 15px !important;
+  box-shadow: $darkShadow !important;
+}
+
+.filter-section .v-menu .v-card {
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.filter-section .v-btn {
+  text-transform: none !important;
+  font-weight: 500 !important;
 }

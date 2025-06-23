@@ -50,30 +50,47 @@
           >
         </div>
         <hr class="infoHr" />
-        <div class="filter-section">
+        <div class="filter-section" style="margin-bottom: 16px; position: relative">
           <!-- Filter Button + Panel -->
           <v-menu
             v-model="filterMenu"
             :close-on-content-click="false"
             offset-y
             transition="scale-transition"
-            max-width="320"
+            max-width="360"
             min-width="280"
           >
             <template #activator="{ props }">
               <v-btn
                 v-bind="props"
-                variant="outlined"
+                outline
                 class="text-capitalize"
                 prepend-icon="mdi-filter-variant"
               >
-                Filter
+                {{t('filters')}}
               </v-btn>
             </template>
 
             <!-- Filter Content -->
-            <v-card>
-              <v-card-text>
+            <v-card
+              style="
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 4px 6px 6px rgba(0, 0, 0, 0.1);
+              "
+            >
+              <v-card-text
+                style="
+                  padding: 10px;
+                  font-size: 14px;
+                  font-weight: 500;
+                  width: 260px;
+                  line-height: 20px;
+                  background-color: #fff;
+                  border: 1px solid #ebebeb;
+                  margin-top: 15px;
+                "
+              >
                 <div class="d-flex justify-space-between align-center mb-2">
                   <h4 class="text-subtitle-1 font-weight-medium">Filters</h4>
                   <v-btn variant="text" @click="clearFilters" class="text-primary">Clear</v-btn>
@@ -142,7 +159,12 @@
           <template #cell-_id="{ item }"> #{{ item._id.substring(0, 10) }} </template>
           <template #cell-workerId="{ item }">
             <span v-if="item?.workerId?.name">{{ item.workerId.name }}</span>
-            <v-btn outline v-else @click="() => assignEmployee(item as Transfer)">
+            <v-btn
+              outline
+              class="text-capitalize"
+              v-else
+              @click="() => assignEmployee(item as Transfer)"
+            >
               <v-icon>mdi-plus-circle-outline</v-icon>
               {{ t('assign') }}
             </v-btn>
@@ -1233,4 +1255,37 @@ watch(
   margin-bottom: 4px;
   padding: 8px 12px;
 }
+
+// // Filter section styles
+// .filter-section {
+//   margin-bottom: 16px !important;
+//   position: relative;
+
+//   :deep(.v-menu) {
+//     z-index: 1000 !important;
+//   }
+
+//   :deep(.v-card) {
+//     border-radius: 8px !important;
+//     overflow: hidden !important;
+//     box-shadow: 0 4px 6px 6px rgba(0, 0, 0, 0.1) !important;
+//   }
+
+//   :deep(.v-card-text) {
+//     padding: 10px !important;
+//     font-size: 14px !important;
+//     font-style: normal !important;
+//     font-weight: 500 !important;
+//     width: 260px !important;
+//     line-height: 20px !important;
+//     background-color: #fff !important;
+//     border: 1px solid #ebebeb !important;
+//     margin-top: 15px !important;
+//   }
+
+//   :deep(.v-btn) {
+//     text-transform: none !important;
+//     font-weight: 500 !important;
+//   }
+// }
 </style>
