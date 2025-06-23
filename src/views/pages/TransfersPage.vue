@@ -343,7 +343,48 @@
                         >
                           <template #default>
                             <div class="accordion-card" v-if="panel.includes('destination')">
-                              <p></p>
+                              <div class="status-stepper">
+                                <v-timeline>
+                                  <v-timeline-item
+                                    dot-color="white"
+                                    icon="mdi-arrow-down"
+                                    icon-color="primary"
+                                    v-if="selectedTransfer?.from"
+                                  >
+                                    <div class="timeline-item-content">
+                                      <h4>{{ selectedTransfer?.from }}</h4>
+                                      <span
+                                        >{{ formatDateWithoutTime(selectedTransfer?.pickUpDate) }}
+                                        {{ selectedTransfer?.pickUpTime }}</span
+                                      >
+                                    </div>
+                                    <p class="status-desc">
+                                      {{ t('pickUpLocation') }}
+                                    </p>
+                                  </v-timeline-item>
+
+                                  <v-timeline-item
+                                    v-slot:opposite
+                                    dot-color="white"
+                                    icon="mdi-map-marker-outline"
+                                    icon-color="gray"
+                                    v-if="selectedTransfer?.to"
+                                  >
+                                    <div class="timeline-item-content">
+                                      <h4>{{ selectedTransfer?.to }}</h4>
+                                      <span
+                                        >{{
+                                          formatDateWithoutTime(selectedTransfer?.deliveryDate)
+                                        }}
+                                        {{ selectedTransfer?.deliveryTime }}</span
+                                      >
+                                    </div>
+                                    <p class="status-desc">
+                                      {{ t('deliveryLocation') }}
+                                    </p>
+                                  </v-timeline-item>
+                                </v-timeline>
+                              </div>
                             </div>
                           </template>
                         </v-expansion-panel>
