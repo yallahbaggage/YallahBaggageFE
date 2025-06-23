@@ -13,6 +13,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const token = localStorage.getItem('accessToken')
       const expiresIn = localStorage.getItem('accessTokenExpiresIn')
+      const keepLoggedIn = localStorage.getItem('keepLoggedIn')
       const refreshToken = localStorage.getItem('refreshToken')
       const refreshExpiresIn = localStorage.getItem('refreshExpiresIn')
 
@@ -21,7 +22,7 @@ export const useAuthStore = defineStore('auth', () => {
         isAuthenticated.value = true
         access_token.value = token
         await fetchUserData()
-      } else if (refreshToken && refreshExpiresIn && Date.now() < parseInt(refreshExpiresIn)) {
+      } else if (refreshToken && keepLoggedIn && refreshExpiresIn && Date.now() < parseInt(refreshExpiresIn)) {
         console.log('Token is expired but refresh token is valid')
         await refreshLogin()
       } else {
@@ -54,6 +55,10 @@ export const useAuthStore = defineStore('auth', () => {
   async function fetchUserData() {
     try {
       const userData = await authService.getMe()
+      if (userData.role !== 'admin') {
+        console.log('User is not an admin')
+        resetAuthState()
+      }
       user.value = userData
     } catch (error) {
       console.error('Failed to fetch user data:', error)
@@ -107,6 +112,7 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('accessTokenExpiresIn')
     localStorage.removeItem('refreshToken')
     localStorage.removeItem('refreshExpiresIn')
+    localStorage.removeItem('keepLoggedIn')
     
     authService.logout()
     router.push('/login')

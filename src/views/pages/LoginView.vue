@@ -135,7 +135,7 @@ const email = ref('')
 const password = ref('')
 const showPassword = ref(false)
 const loading = ref(false)
-const keepLoggedIn = ref(false)
+const keepLoggedIn = ref(true)
 
 const snackbar = ref({
   show: false,
@@ -176,7 +176,13 @@ const handleSubmit = async () => {
 
   loading.value = true
   try {
-    await authStore.login({ email: email.value, password: password.value })
+    await authStore.login({ email: email.value, password: password.value }).then(() => {
+      if (keepLoggedIn.value) {
+        localStorage.setItem('keepLoggedIn', 'true')
+      } else {
+        localStorage.removeItem('keepLoggedIn')
+      }
+    })
     return router.push('/employees')
   } catch (error: any) {
     snackbar.value = {
