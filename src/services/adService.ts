@@ -3,7 +3,7 @@ import { IAd } from '../models/ad';
 
 const API_URL = process.env.NODE_ENV === 'production'
 ? 'https://baggs10.onrender.com/'
-: 'http://localhost:9091/';
+: 'https://baggs10.onrender.com/';
 
 // Get all ads
 export const getAds = async (): Promise<IAd[]> => {
