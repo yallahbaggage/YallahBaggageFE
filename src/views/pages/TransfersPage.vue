@@ -113,7 +113,7 @@
                     {{ t('employees') }}
                   </label>
                   <v-select
-                    v-model="filters.workers"
+                    v-model="filters.workerName"
                     :items="workers.map((w) => w.name)"
                     label=""
                     variant="outlined"
@@ -869,31 +869,31 @@ const fetchAllTranfers = async () => {
   const params: any = {
     page: page.value,
     limit: itemsPerPage.value,
-  };
+  }
 
   // Add filters if set
-  if (filters.value.client) params.search = filters.value.client;
-  if (filters.value.workers) params.workerName = filters.value.workers;
+  if (filters.value.client) params.search = filters.value.client
+  if (filters.value.workerName) params.workerName = filters.value.workerName
   if (filters.value.transferStatus) {
     // Find the status key from the label if translated
-    const found = statusOptions.find(s => t(s.label) === filters.value.transferStatus);
-    params.status = found ? found.label : filters.value.transferStatus;
+    const found = statusOptions.find((s) => t(s.label) === filters.value.transferStatus)
+    params.status = found ? found.label : filters.value.transferStatus
   }
   if (filters.value.paymentStatus) {
     // Find the payment status key from the label if translated
-    const found = paymentStatusOptions.find(s => t(s) === filters.value.paymentStatus);
-    params.paymentStatus = found || filters.value.paymentStatus;
+    const found = paymentStatusOptions.find((s) => t(s) === filters.value.paymentStatus)
+    params.paymentStatus = found || filters.value.paymentStatus
   }
 
-  const response = await tranfersStore.getTransfers(params);
+  const response = await tranfersStore.getTransfers(params)
   if (response.pagination && response.pagination.page !== page.value) {
-    page.value = response.pagination.page;
+    page.value = response.pagination.page
   }
-  const totalPages = Math.ceil((response.pagination?.total ?? 0) / itemsPerPage.value);
+  const totalPages = Math.ceil((response.pagination?.total ?? 0) / itemsPerPage.value)
   if (page.value > totalPages && totalPages > 0) {
-    page.value = totalPages;
+    page.value = totalPages
   }
-};
+}
 
 const assignEmployee = async (item: Transfer) => {
   selectedTransfer.value = item as Transfer
@@ -936,7 +936,7 @@ const filterMenu = ref(false)
 
 const filters = ref({
   client: '',
-  workers: null,
+  workerName: null,
   paymentStatus: null,
   transferStatus: null,
 })
@@ -947,15 +947,17 @@ const paymentStatusOptions = ['pending', 'paid', 'failed', 'refunded']
 function clearFilters() {
   filters.value = {
     client: '',
-    workers: null,
+    workerName: null,
     paymentStatus: null,
     transferStatus: null,
   }
+  fetchAllTranfers()
+  filterMenu.value = false
 }
 
 function applyFilters() {
-  fetchAllTranfers();
-  menu.value = false;
+  fetchAllTranfers()
+  filterMenu.value = false
 }
 
 const fetchStats = async () => {
