@@ -1,4 +1,5 @@
 import { Complaint, User, Worker } from '@/stores/types';
+import { IWorker } from './worker';
 
 export interface TransferItem {
   name: string;
@@ -16,9 +17,9 @@ export interface TransferRating {
 export interface Transfer {
   _id: string;
   userId: string;
-  user: any | User;
+  user: User;
   workerId?: string;
-  worker?: any | Worker;
+  worker?: IWorker;
   complaintId?: string | Complaint;
   items: TransferItem[];
   status: 'pending' | 'in_progress' | 'in_transit' | 'onTheWay' | 'completed' | 'cancelled';
