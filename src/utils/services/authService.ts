@@ -2,7 +2,7 @@ import axios from 'axios'
 import type { IUser, LoginData, RegisterData } from '@/models/user'
 
 const API_URL = process.env.NODE_ENV === 'production'
-? 'https://baggs10.onrender.com/'
+? 'https://baggs10.onrender.com/api/v1'
 : 'https://baggs10.onrender.com/api/v1';
 
 // Create axios instance with default config
