@@ -1043,6 +1043,12 @@ function sendWhatsappToWorker(worker: IWorker, transfer: Transfer) {
     return
   }
 
+  // Only include real URLs, not base64 data
+  const imagesSection = transfer.items
+    .flatMap(item => item.images || [])
+    .filter(img => !!img && (img.startsWith('http://') || img.startsWith('https://')))
+    .join('\n\n')
+
   const message = `
 New Transfer Assigned!
 Transfer ID: #${transfer._id.substring(0, 10)}
@@ -1052,6 +1058,9 @@ Pickup: ${formatDate(transfer.pickUpDate)} ${transfer.pickUpTime}
 Delivery: ${formatDate(transfer.deliveryDate)} ${transfer.deliveryTime}
 Customer: ${transfer?.user?.name || ''}
 Phone: ${transfer?.user?.phone || ''}
+
+Images:
+${imagesSection}
   `.trim()
 
   const encodedMessage = encodeURIComponent(message)
