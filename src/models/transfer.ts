@@ -1,4 +1,4 @@
-import { Complaint, User, Worker } from '@/stores/types';
+import { Complaint, User } from '@/stores/types';
 import { IWorker } from './worker';
 
 export interface TransferItem {

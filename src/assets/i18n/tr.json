@@ -240,5 +240,18 @@
   "transferStatus": "Transfer Durumu",
   "client": "Müşteri id veya adı",
   "yes": "Evet",
-  "no": "Hayır"
+  "no": "Hayır",
+  "category": "Kategori",
+  "priority": "Öncelik",
+  "fromDate": "Başlangıç Tarihi",
+  "toDate": "Bitiş Tarihi",
+  "clearFilters": "Filtreleri Temizle",
+  "applyFilters": "Filtreleri Uygula",
+  "low": "Düşük",
+  "medium": "Orta",
+  "high": "Yüksek",
+  "urgent": "Acil",
+  "payment": "Ödeme",
+  "technical": "Teknik",
+  "other": "Diğer"
 }

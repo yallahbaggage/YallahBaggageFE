@@ -240,5 +240,18 @@
   "transferStatus": "Transfer Status",
   "client": "Client Id, name",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "category": "Category",
+  "priority": "Priority",
+  "fromDate": "From Date",
+  "toDate": "To Date",
+  "clearFilters": "Clear Filters",
+  "applyFilters": "Apply Filters",
+  "low": "Low",
+  "medium": "Medium",
+  "high": "High",
+  "urgent": "Urgent",
+  "payment": "Payment",
+  "technical": "Technical",
+  "other": "Other"
 }

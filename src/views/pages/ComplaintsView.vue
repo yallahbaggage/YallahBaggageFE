@@ -26,6 +26,118 @@
           </InfoCard>
         </div>
         <hr class="infoHr" />
+        
+        <!-- Filter Section -->
+        <div class="filter-section" style="margin-bottom: 16px; position: relative">
+          <v-menu
+            v-model="filterMenu"
+            :close-on-content-click="false"
+            offset-y
+            transition="scale-transition"
+            max-width="360"
+            min-width="280"
+          >
+            <template #activator="{ props }">
+              <v-btn v-bind="props" outline class="text-capitalize" prepend-icon="mdi-filter-variant">
+                {{ t('filters') }}
+              </v-btn>
+            </template>
+            <v-card
+              style="
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 4px 6px 6px rgba(0, 0, 0, 0.1);
+              "
+            >
+              <v-card-text
+                style="
+                  padding: 10px;
+                  font-size: 14px;
+                  font-weight: 500;
+                  width: 260px;
+                  line-height: 20px;
+                  background-color: #fff;
+                  border: 1px solid #ebebeb;
+                  margin-top: 15px;
+                "
+              >
+                <div class="d-flex justify-space-between align-center mb-2">
+                  <h4 class="text-subtitle-1 font-weight-medium">{{ t('filters') }}</h4>
+                  <v-btn variant="text" @click="clearFilters" class="text-primary">{{ t('clearFilters') }}</v-btn>
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('search') }}</label>
+                  <input
+                    type="text"
+                    class="form-input no-focus-border"
+                    :placeholder="t('search')"
+                    v-model="filters.search"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('status') }}</label>
+                  <v-select
+                    v-model="filters.status"
+                    :items="statusFilterOptions"
+                    item-title="title"
+                    item-value="value"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    class="no-focus-border"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('category') }}</label>
+                  <v-select
+                    v-model="filters.category"
+                    :items="categoryFilterOptions"
+                    item-title="title"
+                    item-value="value"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    class="no-focus-border"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('priority') }}</label>
+                  <v-select
+                    v-model="filters.priority"
+                    :items="priorityFilterOptions"
+                    item-title="title"
+                    item-value="value"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    class="no-focus-border"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('fromDate') }}</label>
+                  <input
+                    type="date"
+                    class="form-input no-focus-border"
+                    v-model="filters.createdAt.from"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('toDate') }}</label>
+                  <input
+                    type="date"
+                    class="form-input no-focus-border"
+                    v-model="filters.createdAt.to"
+                  />
+                </div>
+                <div class="d-flex justify-space-between mt-4">
+                  <v-btn variant="outlined" @click="clearFilters">{{ t('clearFilters') }}</v-btn>
+                  <v-btn color="primary" @click="applyFilters">{{ t('applyFilters') }}</v-btn>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-menu>
+        </div>
+        
         <ServerSideTable
           v-model:page="page"
           v-model:items-per-page="itemsPerPage"
@@ -457,6 +569,99 @@ const isConfirmDeletePopupVisible = ref(false)
 const isLoading = ref(false)
 const chatContainerRef = ref<HTMLElement | null>(null)
 const menu = ref(false)
+const filterMenu = ref(false)
+
+// Filter reactive data
+const filters = ref({
+  search: '',
+  status: null,
+  category: null,
+  priority: null,
+  createdAt: {
+    from: '',
+    to: '',
+  },
+})
+
+// Filter options
+const statusFilterOptions = [
+  { title: t('pending'), value: 'pending' },
+  { title: t('in_progress'), value: 'in_progress' },
+  { title: t('resolved'), value: 'resolved' },
+  { title: t('rejected'), value: 'rejected' },
+  { title: t('closed'), value: 'closed' },
+]
+
+const categoryFilterOptions = [
+  { title: t('service'), value: 'service' },
+  { title: t('worker'), value: 'worker' },
+  { title: t('payment'), value: 'payment' },
+  { title: t('technical'), value: 'technical' },
+  { title: t('other'), value: 'other' },
+]
+
+const priorityFilterOptions = [
+  { title: t('low'), value: 'low' },
+  { title: t('medium'), value: 'medium' },
+  { title: t('high'), value: 'high' },
+  { title: t('urgent'), value: 'urgent' },
+]
+
+// Filter functions
+const applyFilters = async () => {
+  page.value = 1 // Reset to first page when applying filters
+  const filterParams: any = {
+    page: String(page.value),
+    limit: String(itemsPerPage.value),
+  }
+  if (filters.value.search) filterParams.search = filters.value.search
+  if (filters.value.status) filterParams.status = filters.value.status
+  if (filters.value.category) filterParams.category = filters.value.category
+  if (filters.value.priority) filterParams.priority = filters.value.priority
+  if (filters.value.createdAt.from && filters.value.createdAt.to) {
+    filterParams.createdAt = {
+      from: filters.value.createdAt.from,
+      to: filters.value.createdAt.to,
+    }
+  }
+  await fetchComplaints(filterParams)
+  filterMenu.value = false
+}
+
+const clearFilters = async () => {
+  filters.value = {
+    search: '',
+    status: null,
+    category: null,
+    priority: null,
+   createdAt: {
+      from: '',
+      to: '',
+    }, 
+  }
+  page.value = 1
+  await fetchComplaints({
+    page: String(page.value),
+    limit: String(itemsPerPage.value),
+  })
+  filterMenu.value = false
+}
+
+// Priority color function
+const priorityColor = (priority: string): string => {
+  switch (priority) {
+    case 'urgent':
+      return '#ef4444' // red
+    case 'high':
+      return '#f97316' // orange
+    case 'medium':
+      return '#3b82f6' // blue
+    case 'low':
+      return '#10b981' // green
+    default:
+      return '#6b7280' // gray
+  }
+}
 
 const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
 
@@ -480,11 +685,8 @@ const stats = computed(
 
 const initialLoading = ref(true)
 
-const fetchComplaints = async () => {
-  await complaintsStore.fetchComplaints({
-    page: String(page.value),
-    limit: String(itemsPerPage.value),
-  })
+const fetchComplaints = async (params: any) => {
+  await complaintsStore.fetchComplaints(params)
   if (complaintsStore.paginationInfo && complaintsStore.paginationInfo.page !== page.value) {
     page.value = Number(complaintsStore.paginationInfo.page)
   }
@@ -615,7 +817,7 @@ const sendMessage = async () => {
 
 onMounted(async () => {
   try {
-    await Promise.all([fetchComplaints(), fetchStats()])
+    await Promise.all([fetchComplaints({}), fetchStats()])
   } catch (error) {
     console.error('Error loading initial data:', error)
   } finally {
@@ -623,7 +825,26 @@ onMounted(async () => {
   }
 })
 
-watch([page, itemsPerPage], fetchComplaints)
+watch([page, itemsPerPage], () => {
+  const params: any = {
+    page: String(page.value),
+    limit: String(itemsPerPage.value),
+  }
+  
+  // Preserve current filters when pagination changes
+  if (filters.value.search) params.search = filters.value.search
+  if (filters.value.status) params.status = filters.value.status
+  if (filters.value.category) params.category = filters.value.category
+  if (filters.value.priority) params.priority = filters.value.priority
+  if (filters.value.createdAt && filters.value.createdAt.from && filters.value.createdAt.to) {
+    params.createdAt = {
+      from: filters.value.createdAt.from,
+      to: filters.value.createdAt.to,
+    }
+  }
+  
+  fetchComplaints(params)
+})
 
 watch([isDetailsComplaintDrawerOpen, tab], ([drawerOpen, currentTab]) => {
   if (drawerOpen && currentTab === 'chat') {
@@ -838,5 +1059,54 @@ watch(
   border-radius: 12px;
   margin-bottom: 4px;
   padding: 8px 12px;
+}
+
+/* Filter Section Styles */
+.filter-section {
+  margin-bottom: 24px;
+}
+
+.filter-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.filter-title {
+  background-color: rgb(var(--v-theme-surface));
+  color: rgb(var(--v-theme-on-surface));
+  font-weight: 600;
+  font-size: 16px;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgb(var(--v-theme-outline));
+}
+
+.filter-content {
+  padding: 20px;
+}
+
+.filter-content .v-col {
+  padding: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 960px) {
+  .filter-content .v-col {
+    margin-bottom: 8px;
+  }
+  
+  .filter-content .v-row:last-child {
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .filter-title {
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+  
+  .filter-content {
+    padding: 16px;
+  }
 }
 </style>
