@@ -9,12 +9,115 @@
       v-on:button-pressed="() => (isEmployeeDrawerOpen = true)"
     />
     <div class="page-content">
+      <!-- Filter Section -->
+      <div class="filter-section" style="margin-bottom: 16px; position: relative">
+        <v-menu
+          v-model="filterMenu"
+          :close-on-content-click="false"
+          offset-y
+          transition="scale-transition"
+          max-width="360"
+          min-width="280"
+        >
+          <template #activator="{ props }">
+            <v-btn v-bind="props" outline class="text-capitalize" prepend-icon="mdi-filter-variant">
+              {{ t('filters') }}
+            </v-btn>
+          </template>
+          <v-card
+            style="
+              border-radius: 8px;
+              overflow: hidden;
+              box-shadow: 0 4px 6px 6px rgba(0, 0, 0, 0.1);
+            "
+          >
+            <v-card-text
+              style="
+                padding: 10px;
+                font-size: 14px;
+                font-weight: 500;
+                width: 260px;
+                line-height: 20px;
+                background-color: #fff;
+                border: 1px solid #ebebeb;
+                margin-top: 15px;
+              "
+            >
+              <div class="d-flex justify-space-between align-center mb-2">
+                <h4 class="text-subtitle-1 font-weight-medium">Filters</h4>
+                <v-btn variant="text" @click="clearFilters" class="text-primary">Clear</v-btn>
+              </div>
+              <div class="drawer-form-group">
+                <label class="drawer-label-group">{{ t('fullName') }}</label>
+                <input
+                  type="text"
+                  class="form-input no-focus-border"
+                  placeholder="Employee name"
+                  v-model="filters.name"
+                />
+              </div>
+              <div class="drawer-form-group">
+                <label class="drawer-label-group">{{ t('identityNumber') }}</label>
+                <input
+                  type="text"
+                  class="form-input no-focus-border"
+                  placeholder="Identity Number"
+                  v-model="filters.identityNumber"
+                />
+              </div>
+              <div class="drawer-form-group">
+                <label class="drawer-label-group">{{ t('phoneNumber') }}</label>
+                <input
+                  type="text"
+                  class="form-input no-focus-border"
+                  placeholder="Phone Number"
+                  v-model="filters.phone"
+                />
+              </div>
+              <div class="drawer-form-group">
+                <label class="drawer-label-group">{{ t('status') }}</label>
+                <v-select
+                  v-model="filters.status"
+                  :items="statusOptions"
+                  variant="outlined"
+                  density="compact"
+                  hide-details
+                  class="no-focus-border"
+                />
+              </div>
+              <div class="drawer-form-group">
+                <label class="drawer-label-group">{{ t('available') }}</label>
+                <v-select
+                  v-model="filters.isAvailable"
+                  :items="availabilityItems"
+                  item-title="text"
+                  item-value="value"
+                  :return-object="false"
+                  variant="outlined"
+                  density="compact"
+                  hide-details
+                />
+              </div>
+              <div class="d-flex justify-space-between mt-4">
+                <v-btn variant="outlined" @click="clearFilters">Clear</v-btn>
+                <v-btn color="primary" @click="applyFilters">Apply</v-btn>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-menu>
+      </div>
+      <!-- End Filter Section -->
       <!-- Loading state for initial page load -->
       <div v-if="initialLoading" class="loading-state">
-        <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
         <p>{{ t('loading') }}</p>
       </div>
-      
+
       <!-- Content when loaded -->
       <div v-else>
         <div class="cards">
@@ -183,7 +286,11 @@
                     }
                   "
                 />
-                <ActionButton class="action-Btn" :buttonText="t('addEmployee')" buttonType="submit" />
+                <ActionButton
+                  class="action-Btn"
+                  :buttonText="t('addEmployee')"
+                  buttonType="submit"
+                />
               </div>
             </form>
           </div>
@@ -365,8 +472,50 @@ const headers = [
   { title: t('actions'), key: '', sortable: false },
 ]
 
+const availabilityItems = [
+  { text: t('yes'), value: true },
+  { text: t('no'), value: false },
+]
+
+const filterMenu = ref(false)
+const filters = ref({
+  name: '',
+  identityNumber: '',
+  phone: '',
+  isAvailable: null,
+  status: null,
+})
+const statusOptions = ['Available', 'Assigned', 'On The Way', 'Delivered']
+
+function clearFilters() {
+  filters.value = {
+    name: '',
+    identityNumber: '',
+    phone: '',
+    isAvailable: null,
+    status: null,
+  }
+  fetchWorkers()
+  filterMenu.value = false
+}
+
+function applyFilters() {
+  fetchWorkers()
+  filterMenu.value = false
+}
+
 const fetchWorkers = async () => {
-  const response = await workersStore.getWorkers({ page: page.value, limit: itemsPerPage.value })
+  const params: any = {
+    page: page.value,
+    limit: itemsPerPage.value,
+  }
+  if (filters.value.name) params.name = filters.value.name
+  if (filters.value.identityNumber) params.identityNumber = filters.value.identityNumber
+  if (filters.value.phone) params.phone = filters.value.phone
+  if (filters.value.isAvailable !== null) params.isAvailable = filters.value.isAvailable
+  if (filters.value.status) params.status = filters.value.status
+
+  const response = await workersStore.getWorkers(params)
   if (response.pagination && response.pagination.page !== page.value) {
     page.value = response.pagination.page
   }

@@ -114,7 +114,7 @@
                   </label>
                   <v-select
                     v-model="filters.workerName"
-                    :items="workers.map((w) => w.name)"
+                    :items="workers.map((w:IWorker) => w.name)"
                     label=""
                     variant="outlined"
                     density="comfortable"
@@ -127,7 +127,7 @@
                   </label>
                   <v-select
                     v-model="filters.transferStatus"
-                    :items="statusOptions.map((s) => t(s.label))"
+                    :items="statusOptions.map((s:any) => t(s.label))"
                     variant="outlined"
                     density="compact"
                     required
@@ -141,7 +141,7 @@
                   </label>
                   <v-select
                     v-model="filters.paymentStatus"
-                    :items="paymentStatusOptions.map((s) => t(s))"
+                    :items="paymentStatusOptions.map((s:string) => t(s))"
                     variant="outlined"
                     density="compact"
                     required
@@ -1045,8 +1045,8 @@ function sendWhatsappToWorker(worker: IWorker, transfer: Transfer) {
 
   // Only include real URLs, not base64 data
   const imagesSection = transfer.items
-    .flatMap(item => item.images || [])
-    .filter(img => !!img && (img.startsWith('http://') || img.startsWith('https://')))
+    .flatMap((item) => item.images || [])
+    .filter((img) => !!img && (img.startsWith('http://') || img.startsWith('https://')))
     .join('\n\n')
 
   const message = `

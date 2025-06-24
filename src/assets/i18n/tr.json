@@ -238,5 +238,7 @@
   "deliveryLocation": "Teslimat Yeri",
   "fragile": "Kırılabilir",
   "transferStatus": "Transfer Durumu",
-    "client": "Müşteri id veya adı"
+  "client": "Müşteri id veya adı",
+  "yes": "Evet",
+  "no": "Hayır"
 }

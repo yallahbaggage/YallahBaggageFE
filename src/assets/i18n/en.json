@@ -238,5 +238,7 @@
   "deliveryLocation": "Delivery Location",
   "fragile": "Fragile",
   "transferStatus": "Transfer Status",
-  "client": "Client Id, name"
+  "client": "Client Id, name",
+  "yes": "Yes",
+  "no": "No"
 }
