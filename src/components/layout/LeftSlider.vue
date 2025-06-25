@@ -15,12 +15,12 @@
     <v-list dense nav bg-color="white" class="menu">
       <!-- Transfers -->
       <router-link role="button" to="/transfers" class="menu-link" active-class="active">
-        <div class="menu-item" :class="{ active: isActiveLink('/transfers') }" @click="showTransfersChip = false">
+        <div class="menu-item" :class="{ active: isActiveLink('/transfers') }">
           <div class="menu-item-name">
             <v-icon class="icon">mdi-swap-horizontal</v-icon>
             {{ t('transfers') }}
           </div>
-          <v-chip v-if="showTransfersChip && todaysTransfers > 0" class="menu-chip" size="small" color="#FF5B5B" text-color="white">{{ todaysTransfers > 9 ? '+9' : todaysTransfers  }}</v-chip>
+          <v-chip v-if="todaysTransfers && todaysTransfers > 0" class="menu-chip" size="small" color="#FF5B5B" text-color="white">{{ todaysTransfers }}</v-chip>
         </div>
       </router-link>
       <!-- Employees -->
@@ -69,12 +69,12 @@
 
       <!-- Customer Support -->
       <router-link role="button" to="/customer-support" class="menu-link" active-class="active">
-        <div class="menu-item" :class="{ active: isActiveLink('/customer-support') }" @click="showComplaintsChip = false">
+        <div class="menu-item" :class="{ active: isActiveLink('/customer-support') }">
           <div class="menu-item-name">
             <v-icon class="icon">mdi-headphones</v-icon>
             {{ t('customerSupport') }}
           </div>
-          <v-chip v-if="showComplaintsChip && todaysOpenComplaints > 0" class="menu-chip" size="small" color="#FF5B5B" text-color="white">{{ todaysOpenComplaints  > 9 ? '+9' : todaysOpenComplaints }}</v-chip>
+          <v-chip v-if="todaysOpenComplaints && todaysOpenComplaints > 0" class="menu-chip" size="small" color="#FF5B5B" text-color="white">{{ todaysOpenComplaints }}</v-chip>
         </div>
       </router-link>
     </v-list>
@@ -132,7 +132,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watchEffect, onMounted } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue3-i18n'
 
@@ -146,15 +146,9 @@ import { useTransfersStore } from '@/stores/modules/transfer'
 // const themeStore = useThemeStore()
 const route = useRoute()
 const authStore = useAuthStore()
-const complaintsStore = useComplaintsStore()
-const transfersStore = useTransfersStore()
 
 const user = computed(() => authStore.user)
 const isManagementMenuOpen = ref(false)
-
-// Add reactive variables to control chip visibility
-const showTransfersChip = ref(true)
-const showComplaintsChip = ref(true)
 
 watchEffect(async () => {
   if (!user.value) {
@@ -162,7 +156,32 @@ watchEffect(async () => {
   }
 })
 
-
+const links = computed(() => [
+  {
+    name: t('transfers'),
+    path: '/transfers',
+    icon: 'mdi-swap-horizontal',
+    hasChip: true,
+    chipCount: todaysTransfers.value > 0 ? todaysTransfers.value : 0,
+  },
+  {
+    name: t('employees'),
+    path: '/employees',
+    icon: 'mdi-account-group',
+  },
+  {
+    name: t('appManagement'),
+    path: '/app-management',
+    icon: 'mdi-file-cog-outline',
+  },
+  {
+    name: t('customerSupport'),
+    path: '/customer-support',
+    icon: 'mdi-headphones',
+    hasChip: true,
+    chipCount: todaysOpenComplaints.value > 0 ? todaysOpenComplaints.value : 0,
+  },
+])
 
 // const toggleTheme = () => {
 //   themeStore.toggleTheme()
@@ -170,31 +189,13 @@ watchEffect(async () => {
 
 const isActiveLink = (path: string) => route.path === path
 
-// Function to reset chip visibility when new stats are loaded
-const resetChipVisibility = () => {
-  showTransfersChip.value = true
-  showComplaintsChip.value = true
-}
-
 const todaysOpenComplaints = computed(() => {
-  return complaintsStore.stats?.todaysOpenComplaints ?? 0;
+  return useComplaintsStore().stats?.data?.todaysOpenComplaints ?? 0;
 });
 
 const todaysTransfers = computed(() => {
-  return transfersStore.stats?.todaysTransfers ?? 0;
+  return useTransfersStore().stats?.data?.todaysTransfers ?? 0;
 });
-
-onMounted(async () => {
-  try {
-    await complaintsStore.getComplaintsStatsPage()
-    await transfersStore.getTransfersStats()
-    
-    // Reset chip visibility when stats are loaded
-    resetChipVisibility()
-  } catch (error) {
-    console.error('Error loading stats:', error)
-  }
-})
 </script>
 
 <style scoped lang="scss">
