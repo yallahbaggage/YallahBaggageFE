@@ -181,7 +181,7 @@
             </v-btn>
           </template>
           <template #cell-customer="{ item }">
-            <span>{{ selectedTransfer?.newContact?.name ?? item?.user?.name ?? item.userId?.name }}</span>
+            <span>{{ item?.newContact?.name ?? item?.user?.name ?? item.userId?.name }}</span>
           </template>
           <template #cell-status="{ item }">
             <v-chip :color="statusColor(item.status)" text-color="white" medium>
