@@ -167,7 +167,7 @@
         >
           <template #cell-_id="{ item }"> #{{ item._id.substring(0, 10) }} </template>
           <template #cell-worker="{ item }">
-            <span v-if="item?.worker?.name">{{ item.worker?.name }}</span>
+            <span v-if="item?.worker?.name ?? item.workerId?.name">{{ item.worker?.name ?? item.workerId?.name }}</span>
             <v-btn
               outline
               class="text-capitalize"
@@ -806,7 +806,7 @@ const statusColor = (status: string): string => {
       return '#1976D2' // blue
     case 'in_transit':
       return '#FFC107' // amber
-    case 'on_the_way':
+    case 'onTheWay':
       return '#00B894' // teal
     case 'resolved':
     case 'completed':
