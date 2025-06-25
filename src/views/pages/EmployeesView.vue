@@ -44,8 +44,8 @@
               "
             >
               <div class="d-flex justify-space-between align-center mb-2">
-                <h4 class="text-subtitle-1 font-weight-medium">Filters</h4>
-                <v-btn variant="text" @click="clearFilters" class="text-primary">Clear</v-btn>
+                <h4 class="text-subtitle-1 font-weight-medium">{{t('filters')}}</h4>
+                <v-btn variant="text" @click="clearFilters" class="text-primary">{{t('clear')}}</v-btn>
               </div>
               <div class="drawer-form-group">
                 <label class="drawer-label-group">{{ t('fullName') }}</label>
@@ -99,8 +99,8 @@
                 />
               </div>
               <div class="d-flex justify-space-between mt-4">
-                <v-btn variant="outlined" @click="clearFilters">Clear</v-btn>
-                <v-btn color="primary" @click="applyFilters">Apply</v-btn>
+                <v-btn variant="outlined" @click="clearFilters">{{t('clear')}}</v-btn>
+                <v-btn color="primary" @click="applyFilters">{{t('apply')}}</v-btn>
               </div>
             </v-card-text>
           </v-card>
@@ -355,7 +355,7 @@
           :isOpen="isUpdateEmployeeDrawerOpen"
           :desc="t('employee') + ' ' + '#' + selectedWorker?._id.substring(0, 10)"
           :title="selectedWorker?.name"
-          :drawerStatus="t(selectedWorker?.status ? selectedWorker?.status : 'available')"
+          :drawerStatus="selectedWorker?.status ? selectedWorker?.status : 'available'"
           @close="isUpdateEmployeeDrawerOpen = false"
         >
           <div style="max-height: 75vh">
@@ -485,7 +485,7 @@ const filters = ref({
   isAvailable: null,
   status: null,
 })
-const statusOptions = ['Available', 'Assigned', 'On The Way', 'Delivered']
+const statusOptions = ['Available', 'Assigned', 'OnTheWay', 'Delivered']
 
 function clearFilters() {
   filters.value = {
