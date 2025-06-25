@@ -52,7 +52,7 @@
                   />
                 </div>
 
-                <!-- <div class="form-options-row">
+                <div class="form-options-row">
                   <v-checkbox
                     v-model="keepLoggedIn"
                     :label="t('keepMeLoggedIn')"
@@ -61,10 +61,10 @@
                     hide-details
                     class="text-style"
                   />
-                  <router-link to="/forgot-password" class="forgot-password-link text-style">{{
+                  <!-- <router-link to="/forgot-password" class="forgot-password-link text-style">{{
                     t('forgotPassword')
-                  }}</router-link>
-                </div> -->
+                  }}</router-link> -->
+                </div>
 
                 <v-btn
                   color="primary"
