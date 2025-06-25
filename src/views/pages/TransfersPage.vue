@@ -181,7 +181,7 @@
             </v-btn>
           </template>
           <template #cell-customer="{ item }">
-            <span>{{ item?.user?.name ?? item.userId?.name }}</span>
+            <span>{{ selectedTransfer?.newContact?.name ?? item?.user?.name ?? item.userId?.name }}</span>
           </template>
           <template #cell-status="{ item }">
             <v-chip :color="statusColor(item.status)" text-color="white" medium>
@@ -406,7 +406,7 @@
                               <div class="drawer-info">
                                 <p class="drawer-key">{{ t('fullName') }}</p>
                                 <p class="drawer-value">
-                                  {{ selectedTransfer?.user?.name ?? 'N/A' }}
+                                  {{ selectedTransfer?.newContact?.name ?? selectedTransfer?.user?.name ?? 'N/A' }}
                                 </p>
                               </div>
 
@@ -1059,8 +1059,8 @@ From: ${transfer.from}
 To: ${transfer.to}
 Pickup: ${formatDate(transfer.pickUpDate)} ${transfer.pickUpTime}
 Delivery: ${formatDate(transfer.deliveryDate)} ${transfer.deliveryTime}
-Customer: ${transfer?.user?.name || ''}
-Phone: ${transfer?.user?.phone || ''}
+Customer: ${transfer?.newContact?.name ?? transfer?.user?.name ?? ''}
+Phone: ${transfer?.newContact?.phone ?? transfer?.user?.phone ?? ''}
 
 Images:
 ${imagesSection}
