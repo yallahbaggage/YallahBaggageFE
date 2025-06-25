@@ -114,7 +114,7 @@
                   </label>
                   <v-select
                     v-model="filters.workerName"
-                    :items="workers.map((w:IWorker) => w.name)"
+                    :items="workers.map((w: IWorker) => w.name)"
                     label=""
                     variant="outlined"
                     density="comfortable"
@@ -127,7 +127,7 @@
                   </label>
                   <v-select
                     v-model="filters.transferStatus"
-                    :items="statusOptions.map((s:any) => t(s.label))"
+                    :items="statusOptions.map((s: any) => t(s.label))"
                     variant="outlined"
                     density="compact"
                     required
@@ -141,7 +141,7 @@
                   </label>
                   <v-select
                     v-model="filters.paymentStatus"
-                    :items="paymentStatusOptions.map((s:string) => t(s))"
+                    :items="paymentStatusOptions.map((s: string) => t(s))"
                     variant="outlined"
                     density="compact"
                     required
@@ -167,7 +167,9 @@
         >
           <template #cell-_id="{ item }"> #{{ item._id.substring(0, 10) }} </template>
           <template #cell-worker="{ item }">
-            <span v-if="item?.worker?.name ?? item.workerId?.name">{{ item.worker?.name ?? item.workerId?.name }}</span>
+            <span v-if="item?.worker?.name ?? item.workerId?.name">{{
+              item.worker?.name ?? item.workerId?.name
+            }}</span>
             <v-btn
               outline
               class="text-capitalize"
@@ -364,13 +366,28 @@
                             <div class="employee-card" v-if="panel.includes('customerContacts')">
                               <div class="employee-info">
                                 <div class="avatar">
-                                  {{ selectedTransfer?.user?.name?.substring(0, 2).toUpperCase() }}
+                                  {{
+                                    selectedTransfer?.newContact?.name
+                                      ?.substring(0, 2)
+                                      .toUpperCase() ??
+                                    selectedTransfer?.user?.name?.substring(0, 2).toUpperCase()
+                                  }}
                                 </div>
                                 <div class="details">
-                                  <div class="name">{{ selectedTransfer?.user?.name }}</div>
+                                  <div class="name">
+                                    {{
+                                      selectedTransfer?.newContact?.name ??
+                                      selectedTransfer?.user?.name ??
+                                      ''
+                                    }}
+                                  </div>
                                   <div class="phone">
-                                    {{ selectedTransfer?.user?.email ?? '' }} -
-                                    {{ selectedTransfer?.user?.phone ?? '' }}
+                                    {{ selectedTransfer?.newContact?.email ?? selectedTransfer?.user?.email ?? '' }} -
+                                    {{
+                                      selectedTransfer?.newContact?.phone ??
+                                      selectedTransfer?.user?.phone ??
+                                      ''
+                                    }}
                                   </div>
                                 </div>
                               </div>
@@ -396,45 +413,24 @@
                               <div class="drawer-info">
                                 <p class="drawer-key">{{ t('contactPreference') }}</p>
                                 <p class="drawer-value">
-                                  <template
-                                    v-if="
-                                      (selectedTransfer?.user?.informationPreference?.[0] as string) === 'whatsapp'
-                                    "
-                                  >
+                                  <template v-if="preferredInfo === 'whatsapp'">
                                     <v-icon color="success">mdi-whatsapp</v-icon>
-                                    {{
-                                      selectedTransfer?.user?.informationPreference?.[0] ?? 'N/A'
-                                    }}
+                                    {{ preferredInfo }}
                                   </template>
-                                  <template
-                                    v-else-if="
-                                      selectedTransfer?.user?.informationPreference?.[0] === 'email'
-                                    "
-                                  >
+                                  <template v-else-if="preferredInfo === 'email'">
                                     <v-icon color="primary">mdi-email</v-icon>
-                                    {{
-                                      selectedTransfer?.user?.informationPreference?.[0] ?? 'N/A'
-                                    }}
+                                    {{ preferredInfo }}
                                   </template>
-                                  <template
-                                    v-else-if="
-                                      selectedTransfer?.user?.informationPreference?.[0] === 'call'
-                                    "
-                                  >
+                                  <template v-else-if="preferredInfo === 'call'">
                                     <v-icon color="error">mdi-phone</v-icon>
-                                    {{
-                                      selectedTransfer?.user?.informationPreference?.[0] ?? 'N/A'
-                                    }}
+                                    {{ preferredInfo }}
                                   </template>
-                                  <template
-                                    v-else-if="
-                                      selectedTransfer?.user?.informationPreference?.[0] === 'sms'
-                                    "
-                                  >
+                                  <template v-else-if="preferredInfo === 'sms'">
                                     <v-icon color="info">mdi-sms</v-icon>
-                                    {{
-                                      selectedTransfer?.user?.informationPreference?.[0] ?? 'N/A'
-                                    }}
+                                    {{ preferredInfo }}
+                                  </template>
+                                  <template v-else>
+                                    {{ preferredInfo ?? 'N/A' }}
                                   </template>
                                 </p>
                               </div>
@@ -942,6 +938,14 @@ const filters = ref({
 
 const paymentStatusOptions = ['pending', 'paid', 'failed', 'refunded']
 // const staffOptions = ['John', 'Sarah', 'Ahmed']
+
+const preferredInfo = computed(() => {
+  return (
+    selectedTransfer.value?.newContact?.informationPreference?.[0] ??
+    selectedTransfer.value?.user?.informationPreference?.[0] ??
+    'N/A'
+  ) as 'whatsapp' | 'email' | 'call' | 'sms' | 'N/A';
+});
 
 function clearFilters() {
   filters.value = {

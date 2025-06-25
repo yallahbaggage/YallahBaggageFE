@@ -1,49 +1,54 @@
-import { Complaint, User } from '@/stores/types';
-import { IWorker } from './worker';
+import { Complaint, User } from '@/stores/types'
+import { IWorker } from './worker'
 
 export interface TransferItem {
-  name: string;
-  weight: number;
-  images: string[];
-  isBreakable: boolean;
+  name: string
+  weight: number
+  images: string[]
+  isBreakable: boolean
 }
 
 export interface TransferRating {
-  rating: number;
-  comment?: string;
-  createdAt: string;
+  rating: number
+  comment?: string
+  createdAt: string
 }
 
 export interface Transfer {
-  _id: string;
-  userId: string;
-  user: User;
-  workerId?: string;
-  worker?: IWorker;
-  complaintId?: string | Complaint;
-  items: TransferItem[];
-  status: 'pending' | 'in_progress' | 'in_transit' | 'onTheWay' | 'completed' | 'cancelled';
-  totalAmount: number;
-  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
-  deliveryDate: string;
-  from: string;
-  to: string;
-  flightGate?: string;
-  flightNumber?: string;
-  pickUpDate: string;
-  pickUpTime: string;
-  deliveryTime: string;
-  completedAt?: string;
-  cancelledAt?: string;
-  rating?: TransferRating;
-  createdAt: string;
-  updatedAt: string;
-  assigneedAt?: string;
-  onTheWayAt?: string;
-  acceptedAt?: string;
-  inTransitAt?: string;
+  _id: string
+  userId: string
+  user: User
+  workerId?: string
+  worker?: IWorker
+  complaintId?: string | Complaint
+  items: TransferItem[]
+  status: 'pending' | 'in_progress' | 'in_transit' | 'onTheWay' | 'completed' | 'cancelled'
+  totalAmount: number
+  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded'
+  deliveryDate: string
+  from: string
+  to: string
+  flightGate?: string
+  flightNumber?: string
+  pickUpDate: string
+  pickUpTime: string
+  deliveryTime: string
+  completedAt?: string
+  cancelledAt?: string
+  rating?: TransferRating
+  createdAt: string
+  updatedAt: string
+  assigneedAt?: string
+  onTheWayAt?: string
+  acceptedAt?: string
+  inTransitAt?: string
+  newContact?: {
+    name: string
+    phone: string
+    email: string
+    informationPreference: ['email', 'sms', 'call', 'whatsapp']
+  } | null
 }
-
 
 export interface ITrnsfersStats {
   data: {
