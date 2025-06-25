@@ -724,8 +724,8 @@ const workersLoading = ref(false)
 const statusOptions = [
   { label: 'pending' },
   { label: 'in_progress' },
-  { label: 'in_transit' },
   { label: 'onTheWay' },
+  { label: 'in_transit' },
   { label: 'completed' },
   { label: 'cancelled' },
 ]
