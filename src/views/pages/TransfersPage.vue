@@ -166,7 +166,7 @@
           v-model:items-per-page="itemsPerPage"
         >
           <template #cell-_id="{ item }"> #{{ item._id.substring(0, 10) }} </template>
-          <template #cell-workerId="{ item }">
+          <template #cell-worker="{ item }">
             <span v-if="item?.worker?.name">{{ item.worker?.name }}</span>
             <v-btn
               outline
@@ -179,7 +179,7 @@
             </v-btn>
           </template>
           <template #cell-customer="{ item }">
-            <span>{{ item?.user?.name }}</span>
+            <span>{{ item?.user?.name ?? item.userId?.name }}</span>
           </template>
           <template #cell-status="{ item }">
             <v-chip :color="statusColor(item.status)" text-color="white" medium>
@@ -398,8 +398,7 @@
                                 <p class="drawer-value">
                                   <template
                                     v-if="
-                                      selectedTransfer?.user?.informationPreference?.[0] ===
-                                      'whatsapp'
+                                      (selectedTransfer?.user?.informationPreference?.[0] as string) === 'whatsapp'
                                     "
                                   >
                                     <v-icon color="success">mdi-whatsapp</v-icon>
@@ -769,7 +768,7 @@ const headers = [
   { title: t('pickUpDate'), key: 'pickUpDate', sortable: false },
   { title: t('deliveryDate'), key: 'deliveryDate', sortable: false },
   { title: t('status'), key: 'status', sortable: false },
-  { title: t('assignChangeStaff'), key: 'workerId', sortable: false },
+  { title: t('assignChangeStaff'), key: 'worker', sortable: false },
   { title: t('actions'), key: 'actions', sortable: false },
 ]
 
