@@ -63,14 +63,14 @@
               >
                 <div class="d-flex justify-space-between align-center mb-2">
                   <h4 class="text-subtitle-1 font-weight-medium">{{ t('filters') }}</h4>
-                  <v-btn variant="text" @click="clearFilters" class="text-primary">{{ t('clearFilters') }}</v-btn>
+                  <v-btn variant="text" @click="clearFilters" class="text-primary">{{ t('clear') }}</v-btn>
                 </div>
                 <div class="drawer-form-group">
-                  <label class="drawer-label-group">{{ t('search') }}</label>
+                  <label class="drawer-label-group">{{ t('searchComplaintsTitle') }}</label>
                   <input
                     type="text"
                     class="form-input no-focus-border"
-                    :placeholder="t('search')"
+                    :placeholder="t('searchComplaintsTitle')"
                     v-model="filters.search"
                   />
                 </div>
@@ -87,7 +87,7 @@
                     class="no-focus-border"
                   />
                 </div>
-                <div class="drawer-form-group">
+                <!-- <div class="drawer-form-group">
                   <label class="drawer-label-group">{{ t('category') }}</label>
                   <v-select
                     v-model="filters.category"
@@ -112,7 +112,7 @@
                     hide-details
                     class="no-focus-border"
                   />
-                </div>
+                </div> -->
                 <div class="drawer-form-group">
                   <label class="drawer-label-group">{{ t('fromDate') }}</label>
                   <input
@@ -130,8 +130,8 @@
                   />
                 </div>
                 <div class="d-flex justify-space-between mt-4">
-                  <v-btn variant="outlined" @click="clearFilters">{{ t('clearFilters') }}</v-btn>
-                  <v-btn color="primary" @click="applyFilters">{{ t('applyFilters') }}</v-btn>
+                  <v-btn variant="outlined" @click="clearFilters">{{ t('clear') }}</v-btn>
+                  <v-btn color="primary" @click="applyFilters">{{ t('apply') }}</v-btn>
                 </div>
               </v-card-text>
             </v-card>
@@ -575,8 +575,8 @@ const filterMenu = ref(false)
 const filters = ref({
   search: '',
   status: null,
-  category: null,
-  priority: null,
+  // category: null,
+  // priority: null,
   createdAt: {
     from: '',
     to: '',
@@ -616,8 +616,8 @@ const applyFilters = async () => {
   }
   if (filters.value.search) filterParams.search = filters.value.search
   if (filters.value.status) filterParams.status = filters.value.status
-  if (filters.value.category) filterParams.category = filters.value.category
-  if (filters.value.priority) filterParams.priority = filters.value.priority
+  // if (filters.value.category) filterParams.category = filters.value.category
+  // if (filters.value.priority) filterParams.priority = filters.value.priority
   if (filters.value.createdAt.from && filters.value.createdAt.to) {
     filterParams.createdAt = {
       from: filters.value.createdAt.from,
@@ -632,8 +632,8 @@ const clearFilters = async () => {
   filters.value = {
     search: '',
     status: null,
-    category: null,
-    priority: null,
+    // category: null,
+    // priority: null,
    createdAt: {
       from: '',
       to: '',
@@ -668,7 +668,7 @@ const closeDeletePopup = () => (isConfirmDeletePopupVisible.value = false)
 const headers = ref([
   { title: 'ID', key: '_id', sortable: false },
   { title: 'Title', key: 'title', sortable: false },
-  { title: 'Category', key: 'category', sortable: false },
+  // { title: 'Category', key: 'category', sortable: false },
   // { title: 'Priority', key: 'priority' , sortable: false },
   { title: 'Status', key: 'status', sortable: false },
   { title: 'Created At', key: 'createdAt', sortable: false },
@@ -834,8 +834,8 @@ watch([page, itemsPerPage], () => {
   // Preserve current filters when pagination changes
   if (filters.value.search) params.search = filters.value.search
   if (filters.value.status) params.status = filters.value.status
-  if (filters.value.category) params.category = filters.value.category
-  if (filters.value.priority) params.priority = filters.value.priority
+  // if (filters.value.category) params.category = filters.value.category
+  // if (filters.value.priority) params.priority = filters.value.priority
   if (filters.value.createdAt && filters.value.createdAt.from && filters.value.createdAt.to) {
     params.createdAt = {
       from: filters.value.createdAt.from,
