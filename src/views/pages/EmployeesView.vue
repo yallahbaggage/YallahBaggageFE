@@ -633,7 +633,7 @@ function statusColor(status: string) {
     {
       New: 'green',
       Assigned: 'blue',
-      'On The Way': 'orange',
+      'OnTheWay': 'orange',
       Delivered: 'grey',
       Cancelled: 'red',
       Available: 'green',
