@@ -1,7 +1,7 @@
 <template>
   <div class="app-management-page">
     <BaseHeader
-      pageImage="/src/assets/images/banner.svg"
+      :pageIcon="'mdi-image-area'"
       :title="t('banners')"
       :desc="t('manageYourAppsBanners')"
       :show-button="true"
