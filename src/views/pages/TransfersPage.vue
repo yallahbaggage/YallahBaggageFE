@@ -200,7 +200,7 @@
               ></span>
               {{ t(item.status) ?? t('pending') }}
             </v-chip>
-            <btn class="flex button-border" outline v-else>
+            <div class="flex button-border" outline v-else>
               <v-icon v-if="item.status === 'cancelled'" color="error" size="20"
                 >mdi-alert-circle</v-icon
               >
@@ -208,7 +208,7 @@
                 >mdi-check-circle</v-icon
               >
               {{ t(item.status) ?? t('pending') }}
-            </btn>
+            </div>
           </template>
           <template #cell-pickUpDate="{ item }">
             <span>{{ formatDate(item.pickUpDate) }}</span>
