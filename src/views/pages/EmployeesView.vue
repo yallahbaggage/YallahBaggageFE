@@ -1,7 +1,7 @@
 <template>
   <div class="app-management-page">
     <BaseHeader
-      :pageIcon="'mdi-account-group'"
+      :pageImage="UserIcon"
       :title="t('employees')"
       :desc="t('manageAndTrackYourEmployees')"
       :show-button="true"
@@ -428,6 +428,8 @@ import { useWorkersStore } from '@/stores/modules/workers'
 import { IWorker } from '@/models/worker'
 import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
 import { Country, countries } from '@/utils/constants/countries'
+import UserIcon from '@/assets/images/users.svg'
+
 const { t } = useI18n()
 const isEmployeeDrawerOpen = ref(false)
 const isDeleteEmployeeDrawerOpen = ref(false)

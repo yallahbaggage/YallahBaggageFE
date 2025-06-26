@@ -1,7 +1,7 @@
 <template>
   <div class="app-management-page">
     <BaseHeader
-      :pageImage="UserIcon"
+      :pageImage="BannerIcon"
       :title="t('banners')"
       :desc="t('manageYourAppsBanners')"
       :show-button="true"
@@ -534,7 +534,7 @@ import {
   toastSuccessMessage,
 } from '@/utils/helpers/notification'
 import { formatDateWithoutTime } from '@/utils/helpers/date-helper'
-import UserIcon from '@/assets/images/users.svg'
+import BannerIcon from '@/assets/images/banner.svg'
 
 const { t } = useI18n()
 const isDetailsDrawerOpen = ref(false)
