@@ -17,17 +17,30 @@
       <router-link role="button" to="/transfers" class="menu-link" active-class="active">
         <div class="menu-item" :class="{ active: isActiveLink('/transfers') }">
           <div class="menu-item-name">
-            <v-icon class="icon">mdi-swap-horizontal</v-icon>
+            <v-icon :color="isActiveLink('/transfers') ? 'primary' : ''" class="icon"
+              >mdi-swap-horizontal</v-icon
+            >
             {{ t('transfers') }}
           </div>
-          <v-chip v-if="todaysTransfers && todaysTransfers > 0" class="menu-chip" size="small" color="#FF5B5B" text-color="white">{{ todaysTransfers }}</v-chip>
+          <v-chip
+            v-if="todaysTransfers && todaysTransfers > 0"
+            class="menu-chip"
+            size="small"
+            color="#FF5B5B"
+            text-color="white"
+            >{{ todaysTransfers }}</v-chip
+          >
         </div>
       </router-link>
       <!-- Employees -->
       <router-link role="button" to="/employees" class="menu-link" active-class="active">
         <div class="menu-item" :class="{ active: isActiveLink('/employees') }">
           <div class="menu-item-name">
-            <v-icon class="icon">mdi-account-group</v-icon>
+            <img
+              src="@/assets/images/users.svg"
+              :class="{ 'svg-blue': isActiveLink('/employees') }"
+              style="width: 20px; height: 20px"
+            />
             {{ t('employees') }}
           </div>
         </div>
@@ -40,7 +53,7 @@
           @click="isManagementMenuOpen = !isManagementMenuOpen"
         >
           <div class="settings-container">
-            <v-icon class="icon">mdi-file-cog-outline</v-icon>
+            <img :class="{ 'svg-blue': isManagementMenuOpen }" src="@/assets/images/app-management.svg" />
             {{ t('appManagement') }}
           </div>
           <v-icon class="accordion-icon">
@@ -51,7 +64,11 @@
           <router-link role="button" to="/banners" class="menu-link" active-class="active">
             <v-list-item class="menu-item" :class="{ active: isActiveLink('/banners') }">
               <div class="menu-item-name">
-                <img src="@/assets/images/banner.svg" />
+                <img
+                  src="@/assets/images/banner.svg"
+                  :class="{ 'svg-blue': isActiveLink('/banners') }"
+                  class="link-icon"
+                />
                 <span>{{ t('banners') }}</span>
               </div>
             </v-list-item>
@@ -59,7 +76,9 @@
           <router-link role="button" to="/notifications" class="menu-link" active-class="active">
             <v-list-item class="menu-item" :class="{ active: isActiveLink('/notifications') }">
               <div class="menu-item-name">
-                <v-icon class="icon">mdi-bell-outline</v-icon>
+                <v-icon :color="isActiveLink('/notifications') ? 'primary' : ''" class="icon"
+                  >mdi-bell-outline</v-icon
+                >
                 {{ t('notifications') }}
               </div>
             </v-list-item>
@@ -71,10 +90,19 @@
       <router-link role="button" to="/customer-support" class="menu-link" active-class="active">
         <div class="menu-item" :class="{ active: isActiveLink('/customer-support') }">
           <div class="menu-item-name">
-            <v-icon class="icon">mdi-headphones</v-icon>
+            <v-icon :color="isActiveLink('/customer-support') ? 'primary' : ''" class="icon"
+              >mdi-headphones</v-icon
+            >
             {{ t('customerSupport') }}
           </div>
-          <v-chip v-if="todaysOpenComplaints && todaysOpenComplaints > 0" class="menu-chip" size="small" color="#FF5B5B" text-color="white">{{ todaysOpenComplaints }}</v-chip>
+          <v-chip
+            v-if="todaysOpenComplaints && todaysOpenComplaints > 0"
+            class="menu-chip"
+            size="small"
+            color="#FF5B5B"
+            text-color="white"
+            >{{ todaysOpenComplaints }}</v-chip
+          >
         </div>
       </router-link>
     </v-list>
@@ -107,17 +135,12 @@
         </svg>
         <v-menu location="bottom right" offset="4">
           <template #activator="{ props }">
-            <v-btn
-              icon
-              v-bind="props"
-              variant="text"
-              density="comfortable"
-            >
+            <v-btn icon v-bind="props" variant="text" density="comfortable">
               <v-icon class="user-profile-arrow">mdi-chevron-right</v-icon>
             </v-btn>
           </template>
           <v-list class="menu-list pa-0 ma-0">
-            <v-list-item  class="logout-item" @click="authStore.resetAuthState()">
+            <v-list-item class="logout-item" @click="authStore.resetAuthState()">
               <div class="menu-item-name">
                 <v-icon class="icon"> mdi-logout</v-icon>
                 {{ t('logout') }}
@@ -190,19 +213,20 @@ const links = computed(() => [
 const isActiveLink = (path: string) => route.path === path
 
 const todaysOpenComplaints = computed(() => {
-  return useComplaintsStore().stats?.data?.todaysOpenComplaints ?? 0;
-});
+  return useComplaintsStore().stats?.data?.todaysOpenComplaints ?? 0
+})
 
 const todaysTransfers = computed(() => {
-  return useTransfersStore().stats?.data?.todaysTransfers ?? 0;
-});
+  return useTransfersStore().stats?.data?.todaysTransfers ?? 0
+})
 </script>
 
 <style scoped lang="scss">
 @use 'styles/main' as *;
 
 .settings-container {
-  gap: 3px !important;
+  display: flex;
+  gap: 10px !important;
   text-transform: capitalize;
 }
 
@@ -230,6 +254,7 @@ const todaysTransfers = computed(() => {
 .menu-item-name {
   display: flex;
   align-items: center;
+  gap: 8px;
 }
 
 .main-section-title {
@@ -290,6 +315,7 @@ li {
 .menu-item {
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 12px 16px;
   border-radius: 8px;
   font-size: $normalSize !important;
@@ -312,7 +338,7 @@ li {
 }
 
 .icon {
-  font-size: $middle !important;
+  font-size: $large !important;
   color: inherit;
 }
 
@@ -400,5 +426,14 @@ li {
   border: none;
   color: inherit;
   padding: 16px;
+}
+
+.link-logo {
+  width: 20px;
+  height: 20px;
+}
+
+.svg-blue {
+  filter: brightness(0) saturate(100%) invert(36%) sepia(100%) saturate(2480%) hue-rotate(225deg) brightness(101%) contrast(103%);
 }
 </style>
