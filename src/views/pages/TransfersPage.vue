@@ -438,7 +438,7 @@
                               <div class="drawer-info">
                                 <p class="drawer-key">{{ t('phoneNumber') }}</p>
                                 <p class="drawer-value">
-                                  {{ selectedTransfer?.user?.phone ?? 'N/A' }}
+                                  {{ selectedTransfer?.newContact?.phone ?? selectedTransfer?.user?.phone ?? 'N/A' }}
                                 </p>
                               </div>
                             </div>
