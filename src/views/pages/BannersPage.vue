@@ -1,7 +1,7 @@
 <template>
   <div class="app-management-page">
     <BaseHeader
-      pageImage="@/assets/images/banner.svg"
+      pageImage="/src/assets/images/banner.svg"
       :title="t('banners')"
       :desc="t('manageYourAppsBanners')"
       :show-button="true"
