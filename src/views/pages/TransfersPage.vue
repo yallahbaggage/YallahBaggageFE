@@ -171,12 +171,12 @@
               item.worker?.name ?? item.workerId?.name
             }}</span>
             <v-btn
-              outline
-              class="text-capitalize"
+              class="text-capitalize btn-border"
               v-else
+              :style="{ color: '#5C5C5C' }"
               @click="() => assignEmployee(item as Transfer)"
             >
-              <v-icon>mdi-plus-circle-outline</v-icon>
+              <v-icon color="#5C5C5C">mdi-plus-circle-outline</v-icon>
               {{ t('assign') }}
             </v-btn>
           </template>
