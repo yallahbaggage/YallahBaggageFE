@@ -184,13 +184,31 @@
             <span>{{ item?.newContact?.name ?? item?.user?.name ?? item.userId?.name }}</span>
           </template>
           <template #cell-status="{ item }">
-            <v-chip :color="statusColor(item.status)" text-color="white" medium>
+            <v-chip
+              v-if="
+                item.status != 'cancelled' &&
+                item.status != 'rejected' &&
+                item.status != 'completed'
+              "
+              :color="statusColor(item.status)"
+              text-color="white"
+              medium
+            >
               <span
                 :style="{ backgroundColor: statusColor(item.status) }"
                 class="status-circle"
               ></span>
               {{ t(item.status) ?? t('pending') }}
             </v-chip>
+            <btn class="flex button-border" outline v-else>
+              <v-icon v-if="item.status === 'cancelled'" color="error" size="20"
+                >mdi-alert-circle</v-icon
+              >
+              <v-icon v-if="item.status === 'completed'" color="success" size="20"
+                >mdi-check-circle</v-icon
+              >
+              {{ t(item.status) ?? t('pending') }}
+            </btn>
           </template>
           <template #cell-pickUpDate="{ item }">
             <span>{{ formatDate(item.pickUpDate) }}</span>
@@ -382,7 +400,12 @@
                                     }}
                                   </div>
                                   <div class="phone">
-                                    {{ selectedTransfer?.newContact?.email ?? selectedTransfer?.user?.email ?? '' }} -
+                                    {{
+                                      selectedTransfer?.newContact?.email ??
+                                      selectedTransfer?.user?.email ??
+                                      ''
+                                    }}
+                                    -
                                     {{
                                       selectedTransfer?.newContact?.phone ??
                                       selectedTransfer?.user?.phone ??
@@ -406,7 +429,11 @@
                               <div class="drawer-info">
                                 <p class="drawer-key">{{ t('fullName') }}</p>
                                 <p class="drawer-value">
-                                  {{ selectedTransfer?.newContact?.name ?? selectedTransfer?.user?.name ?? 'N/A' }}
+                                  {{
+                                    selectedTransfer?.newContact?.name ??
+                                    selectedTransfer?.user?.name ??
+                                    'N/A'
+                                  }}
                                 </p>
                               </div>
 
@@ -438,7 +465,11 @@
                               <div class="drawer-info">
                                 <p class="drawer-key">{{ t('phoneNumber') }}</p>
                                 <p class="drawer-value">
-                                  {{ selectedTransfer?.newContact?.phone ?? selectedTransfer?.user?.phone ?? 'N/A' }}
+                                  {{
+                                    selectedTransfer?.newContact?.phone ??
+                                    selectedTransfer?.user?.phone ??
+                                    'N/A'
+                                  }}
                                 </p>
                               </div>
                             </div>
@@ -940,12 +971,10 @@ const paymentStatusOptions = ['pending', 'paid', 'failed', 'refunded']
 // const staffOptions = ['John', 'Sarah', 'Ahmed']
 
 const preferredInfo = computed(() => {
-  return (
-    selectedTransfer.value?.newContact?.informationPreference?.[0] ??
+  return (selectedTransfer.value?.newContact?.informationPreference?.[0] ??
     selectedTransfer.value?.user?.informationPreference?.[0] ??
-    'N/A'
-  ) as 'whatsapp' | 'email' | 'call' | 'sms' | 'N/A';
-});
+    'N/A') as 'whatsapp' | 'email' | 'call' | 'sms' | 'N/A'
+})
 
 function clearFilters() {
   filters.value = {

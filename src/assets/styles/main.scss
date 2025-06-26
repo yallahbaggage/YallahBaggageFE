@@ -387,6 +387,13 @@ body {
   align-items: center;
 }
 
+.button-border {
+  border: 1px solid #EBEBEB;
+  border-radius: 6px;
+  padding: 3px;
+  color: #5C5C5C;
+}
+
 .v-table {
   height: 55dvh;
   max-height: 60dvh;
@@ -445,7 +452,7 @@ body {
 .filter-section {
   margin-bottom: 16px;
   position: relative;
-  
+
   :deep(.v-menu .v-card .v-card-text) {
     padding: 10px !important;
     font-size: 14px;
@@ -459,16 +466,16 @@ body {
     box-shadow: $darkShadow;
     border-radius: 10px;
   }
-  
+
   :deep(.v-btn) {
     text-transform: none;
     font-weight: 500;
   }
-  
+
   :deep(.v-menu) {
     z-index: 1000;
   }
-  
+
   :deep(.v-card) {
     border-radius: 8px;
     overflow: hidden;
@@ -498,4 +505,3 @@ body {
   text-transform: none !important;
   font-weight: 500 !important;
 }
-
