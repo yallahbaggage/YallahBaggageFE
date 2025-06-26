@@ -1,7 +1,7 @@
 <template>
   <div class="app-management-page">
     <BaseHeader
-      pageImage="src/assets/images/users.svg"
+      pageImage="@/assets/images/users.svg"
       :title="t('employees')"
       :desc="t('manageAndTrackYourEmployees')"
       :show-button="true"
