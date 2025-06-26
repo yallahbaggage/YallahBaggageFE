@@ -1,9 +1,13 @@
 <template>
   <div class="base-header">
     <div class="header-left-content">
-      <div class="page-icon-wrapper">
+      <div class="page-icon-wrapper" v-if="pageIcon">
         <v-icon>{{ pageIcon }}</v-icon>
       </div>
+      <div class="page-icon-wrapper" v-if="pageImage">
+        <img class="logo-img" :src="pageImage"/>
+      </div>
+
       <div class="page-text-content">
         <h1 class="page-title">{{ title }}</h1>
         <p class="page-description">{{ desc }}</p>
@@ -11,7 +15,13 @@
     </div>
     <div class="header-right-content">
       <!-- <v-icon class="action-icon">mdi-magnify</v-icon> -->
-      <router-link v-if="!hideIconIfPageRouteNotification" role="button" to="/notifications" class="menu-link" active-class="active">
+      <router-link
+        v-if="!hideIconIfPageRouteNotification"
+        role="button"
+        to="/notifications"
+        class="menu-link"
+        active-class="active"
+      >
         <v-icon class="action-icon">mdi-bell-outline</v-icon>
       </router-link>
       <template v-if="props.showButton">
@@ -53,6 +63,10 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  pageImage: {
+    type: String,
+    default: '',
+  },
 })
 
 const emit = defineEmits(['button-pressed', 'icon-pressed'])
@@ -63,9 +77,7 @@ const onButtonPressed = () => {
 
 const route = useRoute()
 
-
 const hideIconIfPageRouteNotification = computed(() => route.path === '/notifications')
-
 </script>
 <style scoped lang="scss">
 @use 'styles/main' as *;

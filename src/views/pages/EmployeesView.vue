@@ -1,7 +1,7 @@
 <template>
   <div class="app-management-page">
     <BaseHeader
-      :pageIcon="'mdi-account-group'"
+      pageImage="src/assets/images/users.svg"
       :title="t('employees')"
       :desc="t('manageAndTrackYourEmployees')"
       :show-button="true"
