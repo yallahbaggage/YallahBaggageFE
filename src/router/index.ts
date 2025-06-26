@@ -30,6 +30,18 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('pages/deleteUserMobile.vue'),
         meta: { requiresAuth: false, requiresGuest: true },
       },
+            {
+        path: '/privacy-policy',
+        name: 'Privacy Policy',
+        component: () => import('pages/privarcy.vue'),
+        meta: { requiresAuth: false, requiresGuest: true },
+      },
+      {
+        path: '/terms-of-service',
+        name: 'Terms of Service',
+        component: () => import('pages/terms.vue'),
+        meta: { requiresAuth: false, requiresGuest: true },
+      },
     ],
   },
   {
