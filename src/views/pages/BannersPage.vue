@@ -1,7 +1,7 @@
 <template>
   <div class="app-management-page">
     <BaseHeader
-      :pageIcon="'mdi-image-area'"
+      :pageImage="UserIcon"
       :title="t('banners')"
       :desc="t('manageYourAppsBanners')"
       :show-button="true"
@@ -534,6 +534,7 @@ import {
   toastSuccessMessage,
 } from '@/utils/helpers/notification'
 import { formatDateWithoutTime } from '@/utils/helpers/date-helper'
+import UserIcon from '@/assets/images/users.svg'
 
 const { t } = useI18n()
 const isDetailsDrawerOpen = ref(false)
