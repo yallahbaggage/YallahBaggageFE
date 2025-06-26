@@ -97,16 +97,22 @@ const closeDrawer = () => {
 function statusColor(status: string): string {
   switch (status) {
     case 'pending':
+    case 'onTheWay':
+    case 'OnTheWay':
       return '#f59e0b'
     case 'in_progress':
+    case 'Assigned':
       return '#3b82f6'
     case 'resolved':
     case 'success':
     case 'completed':
+    case 'available':
+    case 'Available':
     case 'sent':
       return '#10b981'
     case 'rejected':
     case 'failed':
+    case 'OnLeave':
       return '#ef4444'
     case 'closed':
       return '#6b7280'
