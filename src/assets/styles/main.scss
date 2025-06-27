@@ -388,10 +388,10 @@ body {
 }
 
 .button-border {
-  border: 1px solid #EBEBEB;
+  border: 1px solid #ebebeb;
   border-radius: 6px;
   padding: 5px;
-  color: #5C5C5C;
+  color: #5c5c5c;
 }
 
 .v-table {
@@ -506,15 +506,21 @@ body {
   font-weight: 500 !important;
 }
 
-.v-btn.v-btn--density-default{
+.v-btn.v-btn--density-default {
   height: 28px !important;
 }
 
-.v-pagination .v-btn.v-btn--density-default{
+.v-pagination .v-btn.v-btn--density-default {
   min-height: 30px !important;
   max-height: 32px !important;
   min-width: 30px !important;
   max-width: 32px !important;
-  border: 1px solid #EBEBEB !important;
+  border: 1px solid #ebebeb !important;
+}
 
+.v-table > .v-table__wrapper > table > tbody > tr > th,
+.v-table > .v-table__wrapper > table > thead > tr > th,
+.v-table > .v-table__wrapper > table > tfoot > tr > th {
+  width: 160px !important;
+  height: 42px !important;
 }
