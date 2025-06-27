@@ -253,5 +253,6 @@
   "urgent": "Urgent",
   "payment": "Payment",
   "technical": "Technical",
-  "other": "Other"
+  "other": "Other",
+  "chooseFileOrDragDrop": "Choose file or drag and drop here"
 }

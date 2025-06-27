@@ -253,5 +253,6 @@
   "urgent": "Acil",
   "payment": "Ödeme",
   "technical": "Teknik",
-  "other": "Diğer"
+  "other": "Diğer",
+  "chooseFileOrDragDrop": "Dosya Seçin veya Sürükleyip Bırakın"
 }
