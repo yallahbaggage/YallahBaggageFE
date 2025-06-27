@@ -4,7 +4,7 @@
       <div class="avatar">{{ initials }}</div>
       <div class="details">
         <div class="name">{{ fullName }}</div>
-        <v-chip v-if="status" :color="statusColor(status)" text-color="white" medium>
+        <v-chip class="assign-status" v-if="status" :color="statusColor(status)" text-color="white" medium>
           <span :style="{ backgroundColor: statusColor(status) }" class="status-circle"></span>
           {{ t(status) ?? 'available' }}
         </v-chip>
@@ -114,5 +114,9 @@ function statusColor(status: string): string {
   &:hover {
     background: #1e4ed8;
   }
+}
+
+.assign-status{
+  width: fit-content;
 }
 </style>
