@@ -390,7 +390,7 @@ body {
 .button-border {
   border: 1px solid #EBEBEB;
   border-radius: 6px;
-  padding: 3px;
+  padding: 5px;
   color: #5C5C5C;
 }
 
@@ -504,4 +504,8 @@ body {
 .filter-section .v-btn {
   text-transform: none !important;
   font-weight: 500 !important;
+}
+
+.v-btn.v-btn--density-default{
+  height: 28px !important;
 }
