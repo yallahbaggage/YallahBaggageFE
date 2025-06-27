@@ -15,7 +15,7 @@ export class ComplaintService {
       const response = await api.get('/complaints', {
         params: {
           page,
-          pageSize,
+          limit: pageSize,
           ...filters,
         },
       })
