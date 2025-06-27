@@ -509,3 +509,12 @@ body {
 .v-btn.v-btn--density-default{
   height: 28px !important;
 }
+
+.v-pagination .v-btn.v-btn--density-default{
+  min-height: 30px !important;
+  max-height: 32px !important;
+  min-width: 30px !important;
+  max-width: 32px !important;
+  border: 1px solid #EBEBEB !important;
+
+}
