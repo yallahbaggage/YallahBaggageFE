@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import DefaultLayout from 'layouts/DefaultLayout.vue'
 import AuthLayout from 'layouts/AuthLayout.vue'
-import RegisterView from 'pages/RegisterView.vue'
+// import RegisterView from 'pages/RegisterView.vue'
 import LoginView from 'pages/LoginView.vue'
 import { useAuthStore } from 'modules/authStore'
 import { roleGuard } from './guards/roleGuard'
@@ -13,24 +13,30 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '',
+        name: 'Lunch Page',
+        component: () => import('pages/LunchPage.vue'),
+        meta: { requiresAuth: false, requiresGuest: true },
+      },
+      {
+        path: '/login',
         name: 'Login',
         component: LoginView,
         meta: { requiresAuth: false, requiresGuest: true },
         alias: '/login',
       },
-      {
-        path: '/register',
-        name: 'Register',
-        component: RegisterView,
-        meta: { requiresAuth: false, requiresGuest: true },
-      },
+      // {
+      //   path: '/register',
+      //   name: 'Register',
+      //   component: RegisterView,
+      //   meta: { requiresAuth: false, requiresGuest: true },
+      // },
       {
         path: '/delete-user',
         name: 'Delete User',
-        component: () => import('pages/deleteUserMobile.vue'),
+        component: () => import('pages/DeleteUserMobile.vue'),
         meta: { requiresAuth: false, requiresGuest: true },
       },
-            {
+      {
         path: '/privacy-policy',
         name: 'Privacy Policy',
         component: () => import('pages/privarcy.vue'),

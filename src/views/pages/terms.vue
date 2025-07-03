@@ -31,7 +31,7 @@
             <li><strong>Camera:</strong> To scan QR codes for pickup/delivery confirmation.</li>
             <li><strong>Notifications:</strong> To send you real-time updates on your luggage status.</li>
           </ul>
-          <p>Your data is handled in accordance with our <a href="#">Privacy Policy</a>.</p>
+          <p>Your data is handled in accordance with our <a href="/privacy-policy">Privacy Policy</a>.</p>
         </li>
 
         <li>
@@ -62,7 +62,7 @@
             <li>Any indirect, incidental, or consequential damages.</li>
             <li>Loss or damage caused by misuse or delay not caused by our direct negligence.</li>
           </ul>
-          <p>See our <a href="#">Claims and Refunds Policy</a> for more details.</p>
+          <p>See our <a href="/privacy-policy">Claims and Refunds Policy</a> for more details.</p>
         </li>
 
         <li>

@@ -62,7 +62,7 @@ async function registerComponents() {
   await Promise.all(componentPromises) //NOTE: Tüm bileşenlerin yüklenmesini bekle
 }
 
-registerComponents().then(() => {
+registerComponents().then(async () => {
   app.config.globalProperties.$globalHelpers = globalHelpers
   app.use(pinia)
   app.use(vuetify)
@@ -70,5 +70,6 @@ registerComponents().then(() => {
   app.use(router)
   app.use(ElementPlus)
 
+  await router.isReady() // ✅ Wait for router before mounting (fixes Pinia timing issues)
   app.mount('#app')
 })

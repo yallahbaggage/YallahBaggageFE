@@ -37,11 +37,11 @@ export class ComplaintService {
         formData.append('relatedWorkerId', complaintData.relatedWorkerId)
       }
 
-      if (complaintData.attachments) {
-        for (let i = 0; i < complaintData.attachments.length; i++) {
-          formData.append('attachments', complaintData.attachments[i])
-        }
-      }
+      // if (complaintData.attachments) {
+      //   for (let i = 0; i < complaintData.attachments.length; i++) {
+      //     formData.append('attachments', complaintData.attachments[i])
+      //   }
+      // }
 
       const response = await api.post('/complaints', formData, {
         headers: {
@@ -66,11 +66,11 @@ export class ComplaintService {
       if (complaintData.assignedToId) formData.append('assignedToId', complaintData.assignedToId)
       if (complaintData.resolution) formData.append('resolution', complaintData.resolution)
 
-      if (complaintData.attachments) {
-        for (let i = 0; i < complaintData.attachments.length; i++) {
-          formData.append('attachments', complaintData.attachments[i])
-        }
-      }
+      // if (complaintData.attachments) {
+      //   for (let i = 0; i < complaintData.attachments.length; i++) {
+      //     formData.append('attachments', complaintData.attachments[i])
+      //   }
+      // }
 
       const response = await api.put(`/complaints/${id}`,formData)
       return response.data
