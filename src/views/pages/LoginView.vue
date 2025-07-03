@@ -197,6 +197,9 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped lang="scss">
+.login-page .v-container{
+  padding: 0 !important;
+}
 .login-page {
   background-color: #f5f7fa;
   position: relative;
