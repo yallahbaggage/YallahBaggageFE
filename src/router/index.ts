@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import DefaultLayout from 'layouts/DefaultLayout.vue'
 import AuthLayout from 'layouts/AuthLayout.vue'
-import RegisterView from 'pages/RegisterView.vue'
 import LoginView from 'pages/LoginView.vue'
+import RegisterView from 'pages/RegisterView.vue'
 import { useAuthStore } from 'modules/authStore'
 import { roleGuard } from './guards/roleGuard'
 
@@ -12,6 +12,12 @@ const routes: Array<RouteRecordRaw> = [
     component: AuthLayout,
     redirect: '/home',
     children: [
+      {
+        path: '/home',
+        name: 'Lunch Page',
+        component: () => import('pages/LunchPage.vue'),
+        meta: { requiresAuth: false }, // ✅ Open to everyone
+      },
       {
         path: '/login',
         name: 'Login',
@@ -35,19 +41,13 @@ const routes: Array<RouteRecordRaw> = [
         path: '/privacy-policy',
         name: 'Privacy Policy',
         component: () => import('pages/privarcy.vue'),
-        meta: { requiresAuth: false, requiresGuest: true },
-      },
-      {
-        path: '/home',
-        name: 'Lunch Page',
-        component: () => import('pages/LunchPage.vue'),
-        meta: { requiresAuth: false, requiresGuest: true },
+        meta: { requiresAuth: false },
       },
       {
         path: '/terms-of-service',
         name: 'Terms of Service',
         component: () => import('pages/terms.vue'),
-        meta: { requiresAuth: false, requiresGuest: true },
+        meta: { requiresAuth: false },
       },
     ],
   },
@@ -87,31 +87,6 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
-  // {
-  //   path: '/',
-  //   component: DefaultLayout,
-  //   children: [
-  //     {
-  //       path: '/users',
-  //       name: 'Users',
-  //       component: UsersView,
-  //       meta: { requiresAuth: true },
-  //     },
-  //   ]
-  // },
-
-  // {
-  //   path: '/transfers/:id',
-  //   name: 'TransferDetails',
-  //   component: () => import('@/views/pages/TransferDetailsPage.vue'),
-  //   meta: { requiresAuth: true }
-  // },
-  // {
-  //   path: '/profile',
-  //   name: 'Profile',
-  //   component: () => import('@/views/pages/ProfilePage.vue'),
-  //   meta: { requiresAuth: true }
-  // },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
@@ -125,32 +100,32 @@ const router = createRouter({
   routes,
 })
 
+// Navigation guard
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
   const isAuthenticated = authStore.isAuthenticated
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
 
-  // Check if we need to restore auth state
+  // Always try to restore auth state from localStorage token
   if (!isAuthenticated && localStorage.getItem('accessToken')) {
     try {
       await authStore.restoreAuthState()
     } catch (error) {
       console.error('Failed to restore auth state:', error)
-      next('/login')
-      return
+      localStorage.removeItem('accessToken') // optional cleanup
     }
   }
 
-  if (requiresAuth && !authStore.isAuthenticated) {
-    next('/login')
-  } else if (to.meta.requiresGuest && isAuthenticated) {
-    next({ name: 'Employees' })
+  if (requiresAuth && !authStore.isAuthenticated && to.path !== '/login') {
+    return next('/login')
+  } else if (to.meta.requiresGuest && authStore.isAuthenticated) {
+    return next({ name: 'Employees' })
   } else {
-    next()
+    return next()
   }
 })
 
-// Add role guard to all routes
+// Role-based access control
 router.beforeEach(roleGuard)
 
 export default router
