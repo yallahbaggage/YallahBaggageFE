@@ -10,10 +10,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     component: AuthLayout,
-    redirect: '/home',
+    //redirect: '/home',
     children: [
       {
-        path: '/home',
+        path: '',
         name: 'Lunch Page',
         component: () => import('pages/LunchPage.vue'),
         meta: { requiresAuth: false }, // ✅ Open to everyone
