@@ -11,7 +11,7 @@ const routes: Array<RouteRecordRaw> = [
     component: AuthLayout,
     children: [
       {
-        path: '', // Home - Lunch Page
+        path: 'home', // Home - Lunch Page
         name: 'Lunch Page',
         component: () => import('pages/LunchPage.vue'),
         meta: { requiresAuth: false }, // ← Open to all
