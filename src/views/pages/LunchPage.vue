@@ -23,7 +23,7 @@
             <button class="waitlist-button" @click="redirectToWaitlist">Join Waitlist</button>
           </div>
 
-          <h1 class="title">Lunch App Coming Soon!</h1>
+          <h1 class="title">Launch 🚀 App Coming Soon!</h1>
           <p class="subtitle">We're cooking up something tasty. Stay tuned!</p>
           <div class="countdown">
             <div class="time-box" v-for="(value, label) in countdown" :key="label">
@@ -69,7 +69,7 @@
         <div v-for="(faq, index) in faqs" :key="index" class="accordion">
           <button class="accordion-header" @click="toggleFAQ(index)">
             {{ faq.question }}
-            <span>{{ openFAQ === index ? '?' : '+' }}</span>
+            <span>{{ openFAQ === index ? '−' : '+' }}</span>
           </button>
           <div class="accordion-body" v-show="openFAQ === index">
             <div v-html="faq.answer"></div>
@@ -90,7 +90,7 @@
                 structure, don't hesitate to get in touch with us.
               </p>
             </div>
-            <button v-on:click="redirectToWaitlist" class="email-button">Contact Us ?</button>
+            <button v-on:click="redirectToWaitlist" class="email-button">Contact Us →</button>
           </div>
         </div>
       </div>
@@ -191,11 +191,11 @@ Yallah Baggage gives you the freedom to explore Dubai or wider UAE hands-free, w
     answer: `
     <p>We’re built for anyone who wants to travel smarter in Dubai, including:</p>
     <ul>
-      <li>?? Tourists with early check-outs or late-night flights</li>
-      <li>?? Business travelers heading to meetings after checkout</li>
-      <li>?? Pilgrims transiting to/from Saudi Arabia</li>
-      <li>??? Digital nomads and Airbnb guests with no concierge</li>
-      <li>??‍??‍??‍?? Families who want to enjoy the city without luggage hassle</li>
+      <li>✈️ Tourists with early check-outs or late-night flights</li>
+      <li>💼 Business travelers heading to meetings after checkout</li>
+      <li>🕌 Pilgrims transiting to/from Saudi Arabia</li>
+      <li>🏙️ Digital nomads and Airbnb guests with no concierge</li>
+      <li>👨‍👩‍👧‍👦 Families who want to enjoy the city without luggage hassle</li>
     </ul>
   `,
   },
@@ -313,6 +313,7 @@ onUnmounted(() => {
       display: flex;
       justify-content: center;
       gap: 1.5rem;
+      flex-wrap: wrap;
 
       .time-box {
         background: rgba(255, 255, 255, 0.25);
