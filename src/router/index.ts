@@ -10,9 +10,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     component: AuthLayout,
-    redirect(to) {
-        return '/home'
-    },
+    redirect: '/home',
     children: [
       {
         path: '/login',
@@ -39,7 +37,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('pages/privarcy.vue'),
         meta: { requiresAuth: false, requiresGuest: true },
       },
-        {
+      {
         path: '/home',
         name: 'Lunch Page',
         component: () => import('pages/LunchPage.vue'),
