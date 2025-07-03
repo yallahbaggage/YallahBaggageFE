@@ -23,7 +23,7 @@
             <button class="waitlist-button" @click="redirectToWaitlist">Join Waitlist</button>
           </div>
 
-          <h1 class="title">Lunch App Coming Soon!</h1>
+          <h1 class="title">Launch 🚀 App Coming Soon!</h1>
           <p class="subtitle">We're cooking up something tasty. Stay tuned!</p>
           <div class="countdown">
             <div class="time-box" v-for="(value, label) in countdown" :key="label">
