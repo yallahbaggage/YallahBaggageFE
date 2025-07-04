@@ -140,7 +140,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 
-const targetDate = new Date('2025-08-16T00:00:00').getTime()
+const targetDate = new Date('2025-10-16T00:00:00').getTime()
 const countdown = ref({ days: 0, hours: 0, min: 0, sec: 0 })
 let interval: ReturnType<typeof setInterval>
 
