@@ -106,13 +106,13 @@
           </div>
           <p class="footer-desc">Helping you pack smarter and launch stronger.</p>
           <div class="social-icons">
-            <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+            <a href="https://www.facebook.com/profile.php?id=61559429296077&sk=about" target="_blank" aria-label="Facebook">
               <i class="fab fa-facebook-f"></i>
             </a>
-            <a href="https://linkedin.com" target="_blank" aria-label="linkedin">
+            <a href="https://www.linkedin.com/company/yallah-baggage/?viewAsMember=true" target="_blank" aria-label="linkedin">
               <i class="fab fa-linkedin"></i>
             </a>
-            <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+            <a href="https://www.instagram.com/yallah_baggage/" target="_blank" aria-label="Instagram">
               <i class="fab fa-instagram"></i>
             </a>
           </div>
