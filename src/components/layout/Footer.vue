@@ -69,7 +69,7 @@
       align-items: center;
       font-weight: bold;
       font-size: 1.5rem;
-      color: #335cff;
+      color: #335CFF;
       margin-bottom: 0.5rem;
       text-decoration: none;
 
