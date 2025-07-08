@@ -34,7 +34,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/delete-user',
         name: 'Delete User',
-        component: () => import('pages/deleteUserMobile.vue'),
+        component: () => import('pages/DeleteUserMobile.vue'),
         meta: { requiresAuth: false, requiresGuest: true },
       },
       {
@@ -98,6 +98,18 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth',
+      }
+    } else if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  },
 })
 
 // Navigation guard
@@ -122,6 +134,19 @@ router.beforeEach(async (to, from, next) => {
     return next({ name: 'Employees' })
   } else {
     return next()
+  }
+})
+
+router.onError((error, to) => {
+  if (
+    error.message.includes('Failed to fetch dynamically imported module') ||
+    error.message.includes('Importing a module script failed')
+  ) {
+    if (!to?.fullPath) {
+      window.location.reload()
+    } else {
+      window.location.href = to.fullPath
+    }
   }
 })
 

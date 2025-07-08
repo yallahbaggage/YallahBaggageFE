@@ -53,7 +53,10 @@
           @click="isManagementMenuOpen = !isManagementMenuOpen"
         >
           <div class="settings-container">
-            <img :class="{ 'svg-blue': isManagementMenuOpen }" src="@/assets/images/app-management.svg" />
+            <img
+              :class="{ 'svg-blue': isManagementMenuOpen }"
+              src="@/assets/images/app-management.svg"
+            />
             {{ t('appManagement') }}
           </div>
           <v-icon class="accordion-icon">
@@ -277,6 +280,13 @@ const todaysTransfers = computed(() => {
   flex-direction: column;
   border-right: 1px solid #e0e0e0;
   width: 272px;
+  
+  // RTL Support
+  [dir="rtl"] & {
+    border-radius: 10px 0 0 10px;
+    border-right: none;
+    border-left: 1px solid #e0e0e0;
+  }
 }
 
 li {
@@ -291,7 +301,6 @@ li {
 .menu {
   display: flex;
   flex-direction: column;
-  // height: 100%;
   margin: 16px 0;
   flex-grow: 1;
   gap: 4px;
@@ -315,7 +324,7 @@ li {
 .menu-item {
   display: flex;
   align-items: center;
-  justify-content: center;
+  // justify-content: center;
   padding: 12px 16px;
   border-radius: 8px;
   font-size: $normalSize !important;
@@ -363,6 +372,13 @@ li {
   margin-top: 4px;
   padding: 0 0 0 8px;
   box-shadow: none;
+  
+  // RTL Support
+  [dir="rtl"] & {
+    margin-left: 0;
+    margin-right: 8px;
+    padding: 0 8px 0 0;
+  }
 }
 
 .submenu-link {
@@ -389,6 +405,12 @@ li {
     font-weight: 600;
     color: rgb(var(--v-theme-black));
     margin-left: 10px;
+    
+    // RTL Support
+    [dir="rtl"] & {
+      margin-left: 0;
+      margin-right: 10px;
+    }
   }
 
   .username-verified-icon {
@@ -396,6 +418,12 @@ li {
     margin-left: 5px;
     vertical-align: middle; /* Align with text */
     color: rgb(var(--v-theme-primary)); /* Green color for verified icon */
+    
+    // RTL Support
+    [dir="rtl"] & {
+      margin-left: 0;
+      margin-right: 5px;
+    }
   }
 
   .user-email {
@@ -403,6 +431,12 @@ li {
     color: #9e9e9e;
     width: 100%; /* Take full width on a new line */
     margin-left: 10px; /* Align with username */
+    
+    // RTL Support
+    [dir="rtl"] & {
+      margin-left: 0;
+      margin-right: 10px;
+    }
   }
 
   .user-profile-arrow {
@@ -410,6 +444,12 @@ li {
     right: -50px;
     color: #9e9e9e;
     margin-top: 15px;
+    
+    // RTL Support
+    [dir="rtl"] & {
+      right: auto;
+      left: -50px;
+    }
   }
 }
 
@@ -418,7 +458,6 @@ li {
   align-items: center;
   justify-content: space-between;
   font-size: $normalSize !important;
-  // font-weight: 600;
   text-transform: uppercase;
   width: 100%;
   cursor: pointer;
@@ -434,6 +473,7 @@ li {
 }
 
 .svg-blue {
-  filter: brightness(0) saturate(100%) invert(36%) sepia(100%) saturate(2480%) hue-rotate(225deg) brightness(101%) contrast(103%);
+  filter: brightness(0) saturate(100%) invert(36%) sepia(100%) saturate(2480%) hue-rotate(225deg)
+    brightness(101%) contrast(103%);
 }
 </style>

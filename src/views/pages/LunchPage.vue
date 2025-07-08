@@ -1,18 +1,7 @@
 <template>
   <div class="landing-page">
     <!-- Header -->
-    <header class="page-header">
-      <div class="container header-content">
-        <div class="logo">
-          <img src="@/assets/images/logo.svg" alt="Logo" />
-          Yallah Baggage
-        </div>
-        <nav class="nav-links">
-          <a href="#contact">Contact</a>
-          <a href="#faqs">FAQs</a>
-        </nav>
-      </div>
-    </header>
+    <Header/>
 
     <!-- Hero Section -->
     <section class="full-width-section hero-section">
@@ -97,38 +86,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
-      <div class="container footer-content">
-        <div class="footer-left">
-          <div class="footer-logo">
-            <img src="@/assets/images/logo.svg" alt="Logo" />
-            <span>Yallah Baggage</span>
-          </div>
-          <p class="footer-desc">Helping you pack smarter and launch stronger.</p>
-          <div class="social-icons">
-            <a href="https://www.facebook.com/profile.php?id=61559429296077&sk=about" target="_blank" aria-label="Facebook">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="https://www.linkedin.com/company/yallah-baggage/?viewAsMember=true" target="_blank" aria-label="linkedin">
-              <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="https://www.instagram.com/yallah_baggage/" target="_blank" aria-label="Instagram">
-              <i class="fab fa-instagram"></i>
-            </a>
-          </div>
-        </div>
-        <div class="footer-right">
-          <nav class="footer-links">
-            <a href="#contact">Contact</a>
-            <a href="#faqs">FAQs</a>
-            <a href="#">Home</a>
-          </nav>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© {{ new Date().getFullYear() }} Yallah Baggage. All rights reserved.</p>
-      </div>
-    </footer>
+    <Footer/>
 
     <!-- Back to Top -->
     <button v-show="showToTop" class="to-top-button" @click="scrollToTop" aria-label="Back to top">
@@ -138,11 +96,11 @@
 </template>
 
 <script setup lang="ts">
+import Footer from '@/components/layout/Footer.vue'
+import Header from '@/components/layout/Header.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 
-// const targetDate = new Date('2025-10-16T00:00:00').getTime()
 const targetDate = Date.UTC(2025, 9, 16, 0, 0, 0)
-
 const countdown = ref({ days: 0, hours: 0, min: 0, sec: 0 })
 let interval: ReturnType<typeof setInterval>
 
@@ -236,42 +194,7 @@ onUnmounted(() => {
   background: linear-gradient(to bottom, #f4f7ff, #e6ecff);
   color: #1a1a1a;
 
-  .page-header {
-    background: linear-gradient(to right, #1c1f2a, #2c2f3a);
-    border-bottom: 1px solid #eee;
-    padding: 1rem 0;
-    color: #335cff;
 
-    .header-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      font-weight: bold;
-      font-size: 1.5rem;
-
-      img {
-        height: 40px;
-        margin-right: 0.5rem;
-      }
-    }
-
-    .nav-links a {
-      color: #ffffff;
-      text-decoration: none;
-      margin-left: 1.5rem;
-      font-weight: 500;
-      transition: color 0.2s ease;
-
-      &:hover {
-        color: #5f79ff;
-      }
-    }
-  }
 
   .container {
     max-width: 1000px;
@@ -501,84 +424,6 @@ onUnmounted(() => {
           opacity: 0.9;
         }
       }
-    }
-  }
-
-  .footer {
-    background: linear-gradient(to right, #1c1f2a, #2c2f3a);
-    padding: 2rem 0 1rem;
-    border-top: 1px solid #e6ecff;
-
-    .footer-content {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 2rem;
-    }
-
-    .footer-left {
-      max-width: 300px;
-
-      .footer-logo {
-        display: flex;
-        align-items: center;
-        font-weight: bold;
-        font-size: 1.5rem;
-        color: #335cff;
-        margin-bottom: 0.5rem;
-
-        img {
-          height: 30px;
-          margin-right: 0.5rem;
-        }
-      }
-
-      .footer-desc {
-        font-size: 0.95rem;
-        color: #fff;
-        margin-bottom: 1rem;
-      }
-
-      .social-icons {
-        display: flex;
-        gap: 0.75rem;
-
-        a {
-          color: #335cff;
-          font-size: 1.2rem;
-          transition: color 0.3s;
-
-          &:hover {
-            color: #2549d9;
-          }
-        }
-      }
-    }
-
-    .footer-right {
-      .footer-links {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-
-        a {
-          color: #fff;
-          text-decoration: none;
-          font-weight: 500;
-          transition: color 0.3s;
-
-          &:hover {
-            color: #335cff;
-          }
-        }
-      }
-    }
-
-    .footer-bottom {
-      text-align: center;
-      font-size: 0.85rem;
-      color: #ccc;
-      margin-top: 1.5rem;
     }
   }
 
