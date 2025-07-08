@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import DefaultLayout from 'layouts/DefaultLayout.vue'
-import AuthLayout from 'layouts/AuthLayout.vue'
+import DefaultLayout from '@/views/layouts/DefaultLayout.vue'
+import AuthLayout from '@/views/layouts/AuthLayout.vue'
 import LoginView from 'pages/LoginView.vue'
 import { useAuthStore } from 'modules/authStore'
 import { roleGuard } from './guards/roleGuard'
