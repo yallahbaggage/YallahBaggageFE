@@ -1,4 +1,4 @@
-import { ITrnsfersStats } from "@/models/transfer"
+import { ITrnsfersStats } from '@/models/transfer'
 
 export interface RootState {
   auth: AuthState
@@ -29,44 +29,45 @@ export interface WorkerState {
 }
 
 export interface User {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  role: 'customer' | 'admin' | 'worker' | 'manager' | 'supervisor';
-  preferredLang?: string;
-  region?: string;
-  timeFormat: '12' | '24';
-  image?: string;
-  createdAt: string;
-  updatedAt: string;
+  _id: string
+  name: string
+  email: string
+  phone: string
+  role: 'customer' | 'admin' | 'worker' | 'manager' | 'supervisor'
+  preferredLang?: string
+  region?: string
+  timeFormat: '12' | '24'
+  image?: string
+  createdAt: string
+  updatedAt: string
+  informationPreference: ['email', 'sms', 'call', 'whatsapp']
 }
 
 export interface Complaint {
-  _id: string;
-  title: string;
-  description: string;
-  category: 'service' | 'worker' | 'payment' | 'technical' | 'other';
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  status: 'pending' | 'in_progress' | 'resolved' | 'rejected' | 'closed';
-  transferId: string;
-  userId: string | User;
-  assignedToId?: string | User;
-  relatedWorkerId?: string | Worker;
-  closedByAdminId?: string | User;
-  attachments?: string[];
-  resolution?: string;
+  _id: string
+  title: string
+  description: string
+  category: 'service' | 'worker' | 'payment' | 'technical' | 'other'
+  priority: 'low' | 'medium' | 'high' | 'urgent'
+  status: 'pending' | 'in_progress' | 'resolved' | 'rejected' | 'closed'
+  transferId: string
+  userId: string | User
+  assignedToId?: string | User
+  relatedWorkerId?: string | Worker
+  closedByAdminId?: string | User
+  attachments?: string[]
+  resolution?: string
   responses?: Array<{
-    message: string;
-    responderId: string | User;
-    responderRole: 'customer' | 'admin';
-    attachments?: string[];
-    createdAt: string;
-    updatedAt: string;
-  }>;
-  closedAt?: string;
-  createdAt: string;
-  updatedAt: string;
+    message: string
+    responderId: string | User
+    responderRole: 'customer' | 'admin'
+    attachments?: string[]
+    createdAt: string
+    updatedAt: string
+  }>
+  closedAt?: string
+  createdAt: string
+  updatedAt: string
 }
 export interface Service {
   _id: string
@@ -79,24 +80,24 @@ export interface Service {
 }
 
 export interface ServiceRating {
-  serviceId: string;
-  rating: number;
-  comment?: string;
+  serviceId: string
+  rating: number
+  comment?: string
 }
 
 export interface Worker {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  status: 'Available' | 'Assigned' | 'OnTheWay' | 'OnLeave';
-  specialization: string;
-  rating: number;
-  completedJobs: number;
-  skills: string[];
-  certificates?: string[];
-  experience: number;
-  serviceRatings: ServiceRating[];
-  createdAt: string;
-  updatedAt: string;
-} 
+  _id: string
+  name: string
+  email: string
+  phone: string
+  status: 'Available' | 'Assigned' | 'OnTheWay' | 'OnLeave'
+  specialization: string
+  rating: number
+  completedJobs: number
+  skills: string[]
+  certificates?: string[]
+  experience: number
+  serviceRatings: ServiceRating[]
+  createdAt: string
+  updatedAt: string
+}

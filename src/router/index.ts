@@ -2,7 +2,6 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import DefaultLayout from 'layouts/DefaultLayout.vue'
 import AuthLayout from 'layouts/AuthLayout.vue'
 import LoginView from 'pages/LoginView.vue'
-import RegisterView from 'pages/RegisterView.vue'
 import { useAuthStore } from 'modules/authStore'
 import { roleGuard } from './guards/roleGuard'
 
@@ -15,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '',
         name: 'Lunch Page',
-        component: () => import('pages/LunchPage.vue'),
+        component: () => import('@/views/pages/LunchPage.vue'),
         meta: { requiresAuth: false }, // ✅ Open to everyone
       },
       {
@@ -34,19 +33,19 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/delete-user',
         name: 'Delete User',
-        component: () => import('pages/DeleteUserMobile.vue'),
+        component: () => import('@/views/pages/DeleteUserMobile.vue'),
         meta: { requiresAuth: false, requiresGuest: true },
       },
       {
         path: '/privacy-policy',
         name: 'Privacy Policy',
-        component: () => import('pages/privarcy.vue'),
+        component: () => import('@/views/pages/privarcy.vue'),
         meta: { requiresAuth: false },
       },
       {
         path: '/terms-of-service',
         name: 'Terms of Service',
-        component: () => import('pages/terms.vue'),
+        component: () => import('@/views/pages/terms.vue'),
         meta: { requiresAuth: false },
       },
     ],
@@ -58,31 +57,31 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/employees',
         name: 'Employees',
-        component: () => import('pages/EmployeesView.vue'),
+        component: () => import('@/views/pages/EmployeesView.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/customer-support',
         name: 'Customer Support',
-        component: () => import('pages/ComplaintsView.vue'),
+        component: () => import('@/views/pages/ComplaintsView.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/transfers',
         name: 'Transfers',
-        component: () => import('pages/TransfersPage.vue'),
+        component: () => import('@/views/pages/TransfersPage.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/banners',
         name: 'Banners',
-        component: () => import('pages/BannersPage.vue'),
+        component: () => import('@/views/pages/BannersPage.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/notifications',
         name: 'Notifications',
-        component: () => import('pages/NotificationsPage.vue'),
+        component: () => import('@/views/pages/NotificationsPage.vue'),
         meta: { requiresAuth: true },
       },
     ],
