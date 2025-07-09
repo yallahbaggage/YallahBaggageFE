@@ -10,8 +10,8 @@
       <nav class="nav-links">
         <router-link :to="{ path: '/', hash: '#contact' }">Contact</router-link>
         <router-link :to="{ path: '/', hash: '#faqs' }">FAQs</router-link>
-        <router-link to="/privacy-policy">Privacy Policy</router-link>
-        <router-link to="/terms-of-service">Terms of Service</router-link>
+        <!-- <router-link to="/privacy-policy">Privacy Policy</router-link>
+             <router-link to="/terms-of-service">Terms of Service</router-link> -->
       </nav>
     </div>
   </header>
