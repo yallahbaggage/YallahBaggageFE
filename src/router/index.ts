@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import DefaultLayout from '@/views/layouts/DefaultLayout.vue'
-import AuthLayout from '@/views/layouts/AuthLayout.vue'
+import DefaultLayout from 'layouts/DefaultLayout.vue'
+import AuthLayout from 'layouts/AuthLayout.vue'
+// import RegisterView from 'pages/RegisterView.vue'
 import LoginView from 'pages/LoginView.vue'
 import { useAuthStore } from 'modules/authStore'
 import { roleGuard } from './guards/roleGuard'
@@ -9,13 +10,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     component: AuthLayout,
-    //redirect: '/home',
     children: [
       {
         path: '',
         name: 'Lunch Page',
-        component: () => import('@/views/pages/LunchPage.vue'),
-        meta: { requiresAuth: false }, // ✅ Open to everyone
+        component: () => import('pages/LunchPage.vue'),
+        meta: { requiresAuth: false, requiresGuest: true },
       },
       {
         path: '/login',
@@ -39,14 +39,14 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/privacy-policy',
         name: 'Privacy Policy',
-        component: () => import('@/views/pages/privarcy.vue'),
-        meta: { requiresAuth: false },
+        component: () => import('pages/privarcy.vue'),
+        meta: { requiresAuth: false, requiresGuest: true },
       },
       {
         path: '/terms-of-service',
         name: 'Terms of Service',
-        component: () => import('@/views/pages/terms.vue'),
-        meta: { requiresAuth: false },
+        component: () => import('pages/terms.vue'),
+        meta: { requiresAuth: false, requiresGuest: true },
       },
     ],
   },
@@ -57,31 +57,31 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/employees',
         name: 'Employees',
-        component: () => import('@/views/pages/EmployeesView.vue'),
+        component: () => import('pages/EmployeesView.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/customer-support',
         name: 'Customer Support',
-        component: () => import('@/views/pages/ComplaintsView.vue'),
+        component: () => import('pages/ComplaintsView.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/transfers',
         name: 'Transfers',
-        component: () => import('@/views/pages/TransfersPage.vue'),
+        component: () => import('pages/TransfersPage.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/banners',
         name: 'Banners',
-        component: () => import('@/views/pages/BannersPage.vue'),
+        component: () => import('pages/BannersPage.vue'),
         meta: { requiresAuth: true },
       },
       {
         path: '/notifications',
         name: 'Notifications',
-        component: () => import('@/views/pages/NotificationsPage.vue'),
+        component: () => import('pages/NotificationsPage.vue'),
         meta: { requiresAuth: true },
       },
     ],
@@ -111,25 +111,26 @@ const router = createRouter({
   },
 })
 
-// Navigation guard
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
   const isAuthenticated = authStore.isAuthenticated
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
 
-  // Always try to restore auth state from localStorage token
+  // Check if we need to restore auth state
   if (!isAuthenticated && localStorage.getItem('accessToken')) {
     try {
       await authStore.restoreAuthState()
     } catch (error) {
       console.error('Failed to restore auth state:', error)
-      localStorage.removeItem('accessToken') // optional cleanup
+      localStorage.removeItem('accessToken')
+      next('/login')
+      return
     }
   }
 
-  if (requiresAuth && !authStore.isAuthenticated && to.path !== '/login') {
+  if (requiresAuth && !authStore.isAuthenticated) {
     return next('/login')
-  } else if (to.meta.requiresGuest && authStore.isAuthenticated) {
+  } else if (to.meta.requiresGuest && isAuthenticated) {
     return next({ name: 'Employees' })
   } else {
     return next()
@@ -148,8 +149,7 @@ router.onError((error, to) => {
     }
   }
 })
-
-// Role-based access control
+// Add role guard to all routes
 router.beforeEach(roleGuard)
 
 export default router
