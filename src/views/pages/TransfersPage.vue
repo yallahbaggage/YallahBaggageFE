@@ -172,7 +172,7 @@
             }}</span>
             <v-btn
               class="text-capitalize btn-border"
-              v-else
+              v-if="!item?.worker?.name && !item.workerId?.name && item?.status !== 'cancelled' && item?.status !== 'rejected' && item?.status !== 'completed'"
               :style="{ color: '#5C5C5C' }"
               @click="() => assignEmployee(item as Transfer)"
             >
