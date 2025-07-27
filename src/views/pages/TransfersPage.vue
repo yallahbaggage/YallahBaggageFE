@@ -625,7 +625,7 @@
                             v-if="selectedTransfer?.acceptedAt"
                           >
                             <div class="timeline-item-content">
-                              <p>{{ t('orderConfirmed') }}</p>
+                              <h4>{{ t('orderConfirmed') }}</h4>
                               <span>{{ formatDate(selectedTransfer?.acceptedAt) }}</span>
                             </div>
                             <p class="status-desc">
@@ -634,14 +634,29 @@
                           </v-timeline-item>
 
                           <v-timeline-item
+                            dot-color="white"
+                            icon="mdi-cancel"
+                            icon-color="red"
+                            v-if="selectedTransfer?.status === 'cancelled' && selectedTransfer?.cancelledAt"
+                            >
+                            <div class="timeline-item-content">
+                              <h4>{{ t('transferCancelled') }}</h4>
+                              <span>{{ formatDate(selectedTransfer?.cancelledAt || '') }}</span>
+                            </div>
+                            <p class="status-desc">
+                              {{ t('transferHasBeenCancelled') }}
+                            </p>
+                          </v-timeline-item>
+
+                          <v-timeline-item
                             v-slot:opposite
                             dot-color="white"
                             icon="mdi-account-outline"
                             icon-color="gray"
-                            v-if="selectedTransfer?.assigneedAt"
+                            v-if="selectedTransfer?.assigneedAt && selectedTransfer?.worker"
                           >
                             <div class="timeline-item-content">
-                              <p>{{ t('staffAssigned') }}</p>
+                              <h4>{{ t('staffAssigned') }}</h4>
                               <span>{{ formatDate(selectedTransfer?.assigneedAt) }}</span>
                             </div>
                             <p class="status-desc">
@@ -659,7 +674,7 @@
                             icon-color="orange"
                           >
                             <div class="timeline-item-content">
-                              <p>{{ t('courierIsOnTheWay') }}</p>
+                              <h4>{{ t('courierIsOnTheWay') }}</h4>
                               <span>{{ formatDate(selectedTransfer?.onTheWayAt) }}</span>
                             </div>
                             <p class="status-desc">
@@ -674,7 +689,7 @@
                             icon-color="blue"
                           >
                             <div class="timeline-item-content">
-                              <p>{{ t('weReceivedYourLuggages') }}</p>
+                              <h4>{{ t('weReceivedYourLuggages') }}</h4>
                               <span>{{ formatDate(selectedTransfer?.inTransitAt) }}</span>
                             </div>
                             <p class="status-desc">
@@ -688,7 +703,7 @@
                             icon-color="success"
                           >
                             <div class="timeline-item-content">
-                              <p>{{ t('baggageDelivered') }}</p>
+                              <h4>{{ t('baggageDelivered') }}</h4>
                               <span>{{ formatDate(selectedTransfer?.completedAt) }}</span>
                             </div>
                             <p class="status-desc">

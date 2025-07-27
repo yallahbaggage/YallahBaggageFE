@@ -254,5 +254,7 @@
   "payment": "Ödeme",
   "technical": "Teknik",
   "other": "Diğer",
-  "chooseFileOrDragDrop": "Dosya Seçin veya Sürükleyip Bırakın"
+  "chooseFileOrDragDrop": "Dosya Seçin veya Sürükleyip Bırakın",
+  "transferHasBeenCancelled": "Transfer müşteri tarafından iptal edildi",
+  "transferCancelled": "Transfer İptal Edildi"
 }
