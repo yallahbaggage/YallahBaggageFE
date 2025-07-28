@@ -48,6 +48,15 @@ class WorkerService {
     }
   }
 
+  async updateWorker(workerId: string, worker: Partial<IWorker>): Promise<IWorker> {
+    try {
+      const response = await api.put(`/workers/${workerId}`, worker);
+      return response.data as IWorker;
+    } catch (error) {
+      throw this.handleError(error as AxiosError<IApiError>);
+    }
+  }
+
   private handleError(error: AxiosError<IApiError>): Error {
     const message = error.response?.data?.message ?? error.message ?? 'An error occurred';
     return new Error(message);

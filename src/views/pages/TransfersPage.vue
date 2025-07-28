@@ -231,7 +231,9 @@
                   <v-icon class="mr-2">mdi-eye-outline</v-icon>
                   {{ t('seeDetails') }}
                 </v-list-item>
-                <v-list-item class="menu-item" @click="assignEmployee(item as Transfer)">
+                <v-list-item 
+                  v-if="item?.status !== 'cancelled' && item?.status !== 'rejected' && item?.status !== 'completed'"
+                    class="menu-item" @click="assignEmployee(item as Transfer)">
                   <v-icon class="mr-2">mdi-account-outline</v-icon>
                   {{ t('assignChangeStaff') }}
                 </v-list-item>
@@ -1090,11 +1092,26 @@ function sendWhatsappToWorker(worker: IWorker, transfer: Transfer) {
     return
   }
 
-  // Only include real URLs, not base64 data
-  const imagesSection = transfer.items
-    .flatMap((item) => item.images || [])
-    .filter((img) => !!img && (img.startsWith('http://') || img.startsWith('https://')))
-    .join('\n\n')
+  if (!Array.isArray(transfer.items) || transfer.items.length === 0) {
+    console.error('No transfer items found')
+    return
+  }
+
+  // Build detailed items info (name, weight, images)
+  const itemsSection = transfer.items
+    .map((item, idx) => {
+      const validImages = (item.images || []).filter(
+        (img) => img && (img.startsWith('http://') || img.startsWith('https://'))
+      )
+
+      const imagesText = validImages.length > 0 ? validImages.join('\n') : 'No images'
+
+      return `Item #${idx + 1}: ${item.name}
+Weight: ${item.weight} kg
+Images:
+${imagesText}`
+    })
+    .join('\n\n') // double newline between items for better spacing
 
   const message = `
 New Transfer Assigned!
@@ -1106,8 +1123,8 @@ Delivery: ${formatDate(transfer.deliveryDate)} ${transfer.deliveryTime}
 Customer: ${transfer?.newContact?.name ?? transfer?.user?.name ?? ''}
 Phone: ${transfer?.newContact?.phone ?? transfer?.user?.phone ?? ''}
 
-Images:
-${imagesSection}
+Items:
+${itemsSection}
   `.trim()
 
   const encodedMessage = encodeURIComponent(message)

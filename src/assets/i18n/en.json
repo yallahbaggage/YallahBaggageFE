@@ -256,5 +256,6 @@
   "other": "Other",
   "chooseFileOrDragDrop": "Choose file or drag and drop here",
   "transferHasBeenCancelled": "Transfer has been cancelled by the customer",
-  "transferCancelled": "Transfer cancelled"
+  "transferCancelled": "Transfer cancelled",
+  "editEmployee": "Edit Employee"
 }

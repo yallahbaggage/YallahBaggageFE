@@ -35,11 +35,15 @@ export const useWorkersStore = defineStore('workers', {
     errorMessage: (state): string | null => state.error,
     paginationInfo: (state): Pagination | null => state.pagination,
     workersStats: (state): IWorkersStats | null => state.stats,
-    deleteWorker: (state): IWorker | null => state.currentWorker
+    deleteWorker: (state): IWorker | null => state.currentWorker,
+    updateWorker: (state): IWorker | null => state.currentWorker,
   },
 
   actions: {
-    async getWorkers(params?: { page?: number; limit?: number }): Promise<{ data: IWorker[]; pagination: Pagination }> {
+    async getWorkers(params?: {
+      page?: number
+      limit?: number
+    }): Promise<{ data: IWorker[]; pagination: Pagination }> {
       try {
         this.loading = true
         const response = await workerService.getWorkers(params)
@@ -104,7 +108,7 @@ export const useWorkersStore = defineStore('workers', {
       try {
         this.loading = true
         await workerService.deleteWorker(workerId)
-        this.workers = this.workers.filter(worker => worker._id !== workerId)
+        this.workers = this.workers.filter((worker) => worker._id !== workerId)
         this.currentWorker = null
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : 'Error deleting worker'
@@ -113,6 +117,26 @@ export const useWorkersStore = defineStore('workers', {
       } finally {
         this.loading = false
       }
-    }
-  }
+    },
+
+    async updateSelectedWorker(workerId: string, worker: Partial<IWorker>): Promise<IWorker> {
+      try {
+        this.loading = true
+        const response = await workerService.updateWorker(workerId, worker)
+        const updatedWorker = response as IWorker
+        // const index = this.workers.findIndex((w) => w._id === workerId)
+        // if (index !== -1) {
+        //   this.workers[index] = updatedWorker
+        // }
+        this.currentWorker = updatedWorker
+        return updatedWorker
+      } catch (err) {
+        const errorMsg = err instanceof Error ? err.message : 'Error updating worker'
+        this.error = errorMsg
+        throw err
+      } finally {
+        this.loading = false
+      }
+    },
+  },
 })

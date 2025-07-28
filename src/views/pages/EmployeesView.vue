@@ -44,8 +44,10 @@
               "
             >
               <div class="d-flex justify-space-between align-center mb-2">
-                <h4 class="text-subtitle-1 font-weight-medium">{{t('filters')}}</h4>
-                <v-btn variant="text" @click="clearFilters" class="text-primary">{{t('clear')}}</v-btn>
+                <h4 class="text-subtitle-1 font-weight-medium">{{ t('filters') }}</h4>
+                <v-btn variant="text" @click="clearFilters" class="text-primary">{{
+                  t('clear')
+                }}</v-btn>
               </div>
               <div class="drawer-form-group">
                 <label class="drawer-label-group">{{ t('fullName') }}</label>
@@ -99,8 +101,8 @@
                 />
               </div>
               <div class="d-flex justify-space-between mt-4">
-                <v-btn variant="outlined" @click="clearFilters">{{t('clear')}}</v-btn>
-                <v-btn color="primary" @click="applyFilters">{{t('apply')}}</v-btn>
+                <v-btn variant="outlined" @click="clearFilters">{{ t('clear') }}</v-btn>
+                <v-btn color="primary" @click="applyFilters">{{ t('apply') }}</v-btn>
               </div>
             </v-card-text>
           </v-card>
@@ -165,6 +167,10 @@
                 <v-list-item class="menu-item" @click="viewDetails(item)">
                   <v-icon class="mr-2">mdi-eye-outline</v-icon>
                   {{ t('seeDetails') }}
+                </v-list-item>
+                <v-list-item class="menu-item" @click="updateWorker(item)">
+                  <v-icon class="mr-2">mdi-pencil-outline</v-icon>
+                  {{ t('editEmployee') }}
                 </v-list-item>
                 <v-list-item class="menu-item" @click="deleteEmpeloyee(item)">
                   <v-icon class="mr-2">mdi-trash-can-outline</v-icon>
@@ -242,7 +248,7 @@
                   </div>
                   <input
                     id="phone"
-                    type="text"
+                    type="number"
                     class="form-input phone-input"
                     :placeholder="`(${selectedCountry.dialCode})`"
                     v-model="phoneNumber"
@@ -359,40 +365,100 @@
           @close="isUpdateEmployeeDrawerOpen = false"
         >
           <div style="max-height: 75vh">
-            <form @submit.prevent="onUpdateButtonPressed()" class="form">
+            <form @submit.prevent="onUpdateButtonPressed" class="form">
               <div>
                 <div class="drawer-banner">
                   <p>{{ t('information') }}</p>
                 </div>
                 <div>
-                  <div class="drawer-info">
-                    <p class="drawer-key">{{ t('fullName') }}</p>
-                    <p class="drawer-value">{{ selectedWorker?.name }}</p>
+                  <div class="drawer-form-group">
+                    <label class="drawer-label-group"
+                      >{{ t('fullName') }}<span class="required">*</span></label
+                    >
+                    <input type="text" class="form-input" v-model="selectedWorker!.name" required />
                   </div>
-                  <div class="drawer-info">
-                    <p class="drawer-key">{{ t('employeeID') }}</p>
-                    <p class="drawer-value">{{ selectedWorker?._id.substring(0, 10) }}</p>
+                  <div class="drawer-form-group">
+                    <label class="drawer-label-group"
+                      >{{ t('identityNumber') }}<span class="required">*</span></label
+                    >
+                    <input
+                      type="text"
+                      class="form-input"
+                      v-model="selectedWorker!.identityNumber"
+                      required
+                    />
                   </div>
-                  <div class="drawer-info">
-                    <p class="drawer-key">{{ t('phoneNumber') }}</p>
-                    <p class="drawer-value">{{ selectedWorker?.phone }}</p>
+                  <!-- <div class="drawer-form-group">
+                    <label class="drawer-label-group"
+                      >{{ t('phoneNumber') }}<span class="required">*</span></label
+                    >
+                    <input type="text" class="form-input" v-model="selectedWorker!.phone" required />
+                  </div> -->
+                  <div class="drawer-form-group">
+                    <label for="phone" class="drawer-label-group">
+                      {{ t('phoneNumber') }}<span class="required">*</span>
+                    </label>
+                    <div class="phone-input-wrapper">
+                      <div class="country-select" @click="toggleCountryDropdown">
+                        <img :src="selectedCountry.flag" :alt="selectedCountry.name" class="flag" />
+                        <span class="country-code">{{ selectedCountry.dialCode }}</span>
+                        <span class="dropdown-arrow" :class="{ rotated: showCountryDropdown }"
+                          >▼</span
+                        >
+                      </div>
+                      <input
+                        id="phone"
+                        type="text"
+                        class="form-input phone-input"
+                        v-model="phoneWithoutCode"
+                        required
+                      />
+                      <!-- Country Dropdown -->
+                      <div v-if="showCountryDropdown" class="country-dropdown">
+                        <div class="dropdown-search">
+                          <input
+                            type="text"
+                            v-model="countrySearch"
+                            placeholder="Search countries..."
+                            class="search-input"
+                          />
+                        </div>
+                        <div class="dropdown-list">
+                          <div
+                            v-for="country in filteredCountries"
+                            :key="country.iso2"
+                            class="dropdown-item"
+                            @click="selectCountry(country)"
+                          >
+                            <img :src="country.flag" :alt="country.name" class="flag" />
+                            <span class="country-name">{{ country.name }}</span>
+                            <span class="country-dial">{{ country.dialCode }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <hr class="infoHr" />
-
-                <div class="action-btns">
-                  <ActionButton
-                    :buttonText="t('cancel')"
-                    buttonColor="white"
-                    class="action-Btn"
-                    @button-pressed="() => (isUpdateEmployeeDrawerOpen = false)"
-                  />
-                  <!-- <ActionButton
-                    button-color="error"
-                    :buttonText="t('deleteEmployee')"
-                    buttonType="submit"
-                    class="action-Btn"
-                  /> -->
+                  <div class="drawer-form-group">
+                    <label class="drawer-label-group"
+                      >{{ t('email') }}<span class="required">*</span></label
+                    >
+                    <input
+                      type="email"
+                      class="form-input"
+                      v-model="selectedWorker!.email"
+                      required
+                    />
+                  </div>
+                  <hr class="infoHr" />
+                  <div class="action-btns">
+                    <ActionButton
+                      :buttonText="t('cancel')"
+                      buttonColor="white"
+                      class="action-Btn"
+                      @button-pressed="() => (isUpdateEmployeeDrawerOpen = false)"
+                    />
+                    <ActionButton :buttonText="t('save')" buttonType="submit" class="action-Btn" />
+                  </div>
                 </div>
               </div>
             </form>
@@ -422,11 +488,15 @@ import Drawer from '@/components/base/Drawer.vue'
 import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
 import InfoCard from '@/components/base/InfoCard.vue'
 import ServerTable from '@/components/base/ServerTable.vue'
-import { ref, onMounted, computed, watch, onUnmounted } from 'vue'
+import { ref, onMounted, computed, watch, onUnmounted, reactive } from 'vue'
 import { useI18n } from 'vue3-i18n'
 import { useWorkersStore } from '@/stores/modules/workers'
 import { IWorker } from '@/models/worker'
-import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
+import {
+  toastDeleteMessage,
+  toastErrorMessage,
+  toastSuccessMessage,
+} from '@/utils/helpers/notification'
 import { Country, countries } from '@/utils/constants/countries'
 import UserIcon from '@/assets/images/users.svg'
 
@@ -527,27 +597,26 @@ const fetchWorkers = async () => {
   }
 }
 
+const phoneWithoutCode = computed({
+  get() {
+    const phone = selectedWorker.value?.phone || ''
+    const dialCode = selectedCountry.value.dialCode || ''
+    return phone.startsWith(dialCode + ' ')
+      ? phone.replace(dialCode + ' ', '')
+      : phone
+  },
+  set(newValue) {
+    if (selectedWorker.value) {
+      const dialCode = selectedCountry.value.dialCode || ''
+      selectedWorker.value.phone = `${dialCode} ${newValue}`
+    }
+  }
+})
+
+
 const fetchStats = async () => {
   await workersStore.getWorkersStats()
 }
-
-onMounted(async () => {
-  try {
-    await Promise.all([fetchWorkers(), fetchStats()])
-  } catch (error) {
-    console.error('Error loading initial data:', error)
-  } finally {
-    initialLoading.value = false
-  }
-
-  // Add click outside handler
-  document.addEventListener('click', handleClickOutside)
-})
-
-onUnmounted(() => {
-  // Remove click outside handler
-  document.removeEventListener('click', handleClickOutside)
-})
 
 const handleClickOutside = (event: Event) => {
   const target = event.target as HTMLElement
@@ -626,16 +695,12 @@ const onAddButtonPressed = async () => {
   }
 }
 
-const onUpdateButtonPressed = () => {
-  isUpdateEmployeeDrawerOpen.value = false
-}
-
 function statusColor(status: string) {
   return (
     {
       New: 'green',
       Assigned: 'blue',
-      'OnTheWay': 'orange',
+      OnTheWay: 'orange',
       Delivered: 'grey',
       Cancelled: 'red',
       Available: 'green',
@@ -646,6 +711,16 @@ function statusColor(status: string) {
 
 function viewDetails(item: any) {
   selectedWorker.value = item as IWorker
+  isUpdateEmployeeDrawerOpen.value = true
+}
+
+function updateWorker(item: any) {
+  selectedWorker.value = item as IWorker
+  // editWorker.name = item.name || ''
+  // editWorker.identityNumber = item.identityNumber || ''
+  // editWorker.phone = item.phone || ''
+  // editWorker.email = item.email || ''
+  selectCountry(countries.find(country => country.dialCode === item.phone.split(' ')[0]) || countries[0])
   isUpdateEmployeeDrawerOpen.value = true
 }
 
@@ -667,6 +742,69 @@ const filteredCountries = computed(() => {
   return countries.filter((country) =>
     country.name.toLowerCase().includes(countrySearch.value.toLowerCase()),
   )
+})
+
+const editWorker = reactive({
+  name: '',
+  identityNumber: '',
+  phone: '',
+  email: '',
+})
+
+// // Sync selectedWorker data to editWorker when opening update drawer
+// function viewDetails(item: IWorker) {
+//   selectedWorker.value = item
+//   Object.assign(editWorker, {
+//     name: item.name || '',
+//     identityNumber: item.identityNumber || '',
+//     phone: item.phone || '',
+//     email: item.email || '',
+//   })
+//   isUpdateEmployeeDrawerOpen.value = true
+// }
+
+// Update API call or store action to save changes
+const onUpdateButtonPressed = async () => {
+  try {
+    if (!selectedWorker.value) return
+    const res = await workersStore.updateSelectedWorker(selectedWorker.value._id, {
+      name: selectedWorker.value.name,
+      phone: selectedWorker.value.phone,
+      identityNumber: selectedWorker.value.identityNumber,
+      email: selectedWorker.value.email,
+    })
+    isUpdateEmployeeDrawerOpen.value = false
+    await fetchWorkers()
+    toastSuccessMessage(t('toastUpdateEmployeeTitle'), t('toastUpdateEmployeeDescription'))
+  } catch (error) {
+    toastErrorMessage(
+      t('anErrorOccured'),
+      typeof error === 'string'
+        ? error
+        : error instanceof Error && error.message
+          ? error.message
+          : 'An unexpected error occurred.',
+    )
+    console.error('Error updating worker:', error)
+  }
+}
+
+onMounted(async () => {
+  try {
+    await Promise.all([fetchWorkers(), fetchStats()])
+  } catch (error) {
+    console.error('Error loading initial data:', error)
+  } finally {
+    initialLoading.value = false
+  }
+
+  // Add click outside handler
+  document.addEventListener('click', handleClickOutside)
+})
+
+onUnmounted(() => {
+  // Remove click outside handler
+  document.removeEventListener('click', handleClickOutside)
 })
 </script>
 <style lang="scss" scoped>

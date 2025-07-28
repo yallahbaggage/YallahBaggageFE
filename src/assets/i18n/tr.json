@@ -256,5 +256,6 @@
   "other": "Diğer",
   "chooseFileOrDragDrop": "Dosya Seçin veya Sürükleyip Bırakın",
   "transferHasBeenCancelled": "Transfer müşteri tarafından iptal edildi",
-  "transferCancelled": "Transfer İptal Edildi"
+  "transferCancelled": "Transfer İptal Edildi",
+  "editEmployee": "Çalışanı Düzenle"
 }
