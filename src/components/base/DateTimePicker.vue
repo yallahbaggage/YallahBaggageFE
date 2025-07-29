@@ -49,7 +49,7 @@
 import { Logging } from '@/utils/helpers';
 import { computed, onMounted, ref } from 'vue'
 //import { VTimePicker } from 'vuetify/labs/VTimePicker'
-import { VTimePicker } from 'vuetify/labs/components'
+//import { VTimePicker } from 'vuetify/labs/components'
 import { useLocale } from 'vuetify'
 import { useI18n } from 'vue3-i18n'
 
