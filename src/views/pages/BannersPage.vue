@@ -703,7 +703,9 @@ const onAddButtonPressed = async () => {
     toastErrorMessage('Please Check Again', t('startDateCannotBeAfterExpireDate'))
     return
   }
-  if (newBanner.value.startAt && new Date(newBanner.value.startAt) < new Date()) {
+  const startOfToday = new Date()
+  startOfToday.setHours(0, 0, 0, 0)
+  if (newBanner.value.startAt && new Date(newBanner.value.startAt) < startOfToday) {
     toastErrorMessage('Please Check Again', t('startDateCannotBeBeforeToday'))
     return
   }
@@ -791,6 +793,13 @@ const onUpdateButtonPressed = async () => {
     new Date(editingBanner.value.startAt) > new Date(editingBanner.value.expireDate)
   ) {
     toastErrorMessage('Please Check Again', t('startDateCannotBeAfterExpireDate'))
+    return
+  }
+
+  const startOfToday = new Date()
+  startOfToday.setHours(0, 0, 0, 0)
+  if (editingBanner?.value?.startAt && new Date(editingBanner?.value?.startAt) < startOfToday) {
+    toastErrorMessage('Please Check Again', t('startDateCannotBeBeforeToday'))
     return
   }
 

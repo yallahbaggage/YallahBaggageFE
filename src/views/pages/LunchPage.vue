@@ -1,7 +1,7 @@
 <template>
   <div class="landing-page">
     <!-- Header -->
-    <Header/>
+    <Header />
 
     <!-- Hero Section -->
     <section class="full-width-section hero-section">
