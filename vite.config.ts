@@ -41,6 +41,7 @@ export default defineConfig({
       'vuetify/components',
       'vuetify/directives',
       'vuetify/locale',
+      'vuetify/labs/components' ,
     ],
     exclude: ['object-inspect'],
   },
