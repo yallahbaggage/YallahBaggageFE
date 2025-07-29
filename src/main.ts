@@ -14,7 +14,7 @@ import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
 import 'styles/main.scss' //NOTE: Global stiller
 //import { VTimePicker } from 'vuetify/labs/VTimePicker'
-import { VTimePicker } from 'vuetify/labs/components'
+//import { VTimePicker } from 'vuetify/labs/components'
 
 import { lightTheme, darkTheme } from './plugins/vuetifyTheme'
 import i18n from './utils/i18n/i18n'
