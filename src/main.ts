@@ -13,6 +13,7 @@ import "element-plus/dist/index.css";
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
 import 'styles/main.scss' //NOTE: Global stiller
+import { VTimePicker } from 'vuetify/labs/VTimePicker'
 
 import { lightTheme, darkTheme } from './plugins/vuetifyTheme'
 import i18n from './utils/i18n/i18n'
@@ -26,7 +27,10 @@ document.title = kAppTitle
 const browserLang = navigator.language.split('-')[0]
 
 const vuetify = createVuetify({
-  components,
+  components: {
+    ...components
+    , VTimePicker //NOTE: VTimePicker bileşenini ekle
+  },
   directives,
   theme: {
     defaultTheme: 'light',
