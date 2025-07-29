@@ -28,10 +28,7 @@ document.title = kAppTitle
 const browserLang = navigator.language.split('-')[0]
 
 const vuetify = createVuetify({
-  components: {
-    ...components
-    , VTimePicker //NOTE: VTimePicker bileşenini ekle
-  },
+  components,  
   directives,
   theme: {
     defaultTheme: 'light',
