@@ -9,7 +9,32 @@
       v-on:button-pressed="() => (isEmployeeDrawerOpen = true)"
     />
     <div class="page-content">
-      <!-- Filter Section -->
+      <!-- Loading state for initial page load -->
+      <div v-if="initialLoading" class="loading-state">
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
+        <p>{{ t('loading') }}</p>
+      </div>
+
+      <!-- Content when loaded -->
+      <div v-else>
+        <div class="cards">
+          <InfoCard class="infoCard" :cardTitle="t('totalEmployees')">
+            {{ stats.totalWorkers }}
+          </InfoCard>
+          <InfoCard class="infoCard" :cardTitle="t('employeesOnTransfer')">
+            {{ stats.workersWithTransfers }}
+          </InfoCard>
+          <InfoCard class="infoCard" :cardTitle="t('availableEmployees')">
+            {{ stats.availableWorkers }}
+          </InfoCard>
+        </div>
+        <hr class="infoHr" />
+           <!-- Filter Section -->
       <div class="filter-section" style="margin-bottom: 16px; position: relative">
         <v-menu
           v-model="filterMenu"
@@ -109,31 +134,6 @@
         </v-menu>
       </div>
       <!-- End Filter Section -->
-      <!-- Loading state for initial page load -->
-      <div v-if="initialLoading" class="loading-state">
-        <v-progress-circular
-          :size="70"
-          :width="7"
-          color="primary"
-          indeterminate
-        ></v-progress-circular>
-        <p>{{ t('loading') }}</p>
-      </div>
-
-      <!-- Content when loaded -->
-      <div v-else>
-        <div class="cards">
-          <InfoCard class="infoCard" :cardTitle="t('totalEmployees')">
-            {{ stats.totalWorkers }}
-          </InfoCard>
-          <InfoCard class="infoCard" :cardTitle="t('employeesOnTransfer')">
-            {{ stats.workersWithTransfers }}
-          </InfoCard>
-          <InfoCard class="infoCard" :cardTitle="t('availableEmployees')">
-            {{ stats.availableWorkers }}
-          </InfoCard>
-        </div>
-        <hr class="infoHr" />
         <ServerTable
           :headers="headers"
           :items="workers"
