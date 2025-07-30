@@ -135,7 +135,7 @@
                     class="no-focus-border"
                   />
                 </div>
-                <div class="drawer-form-group">
+                <!-- <div class="drawer-form-group">
                   <label for="name" class="drawer-label-group">
                     {{ t('paymentStatus') }}
                   </label>
@@ -148,7 +148,7 @@
                     hide-details
                     class="no-focus-border"
                   />
-                </div>
+                </div> -->
                 <div class="d-flex justify-space-between mt-4">
                   <v-btn variant="outlined" @click="clearFilters">Clear</v-btn>
                   <v-btn color="primary" @click="applyFilters">Apply</v-btn>
