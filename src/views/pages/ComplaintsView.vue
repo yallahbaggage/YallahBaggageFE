@@ -928,7 +928,7 @@ watch(
 }
 
 .chat-complaint {
-  background-color: #ebf1ff;
+  background-color: #B431D31A;
   border-radius: 8px;
   width: 70%;
   display: flex;
@@ -1004,7 +1004,7 @@ watch(
 
 // Question (customer)
 .message-question {
-  background-color: #ebf1ff;
+  background-color: #B431D31A;
   color: #000;
   text-align: left;
   border-top-left-radius: 0;
