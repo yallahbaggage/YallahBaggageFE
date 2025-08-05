@@ -227,12 +227,12 @@ const handleSubmit = async () => {
   background:
     linear-gradient(
       180deg,
-      #2a4ff6 0%,
-      rgba(42, 79, 246, 0.8) 25%,
-      rgba(42, 79, 246, 0.6) 50%,
-      rgba(42, 79, 246, 0.4) 75%,
-      rgba(42, 79, 246, 0.1) 100%
-    ),
+      #B431D3 0%,
+      #B431D3CC 25%,  /* 80% opacity */
+      #B431D399 50%,  /* 60% opacity */
+      #B431D366 75%,  /* 40% opacity */
+      #B431D31A 100%  /* 10% opacity */
+    )
     var(--bg-white-0, #fff);
   position: relative;
   overflow: hidden;
