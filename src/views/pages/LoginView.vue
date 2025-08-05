@@ -4,7 +4,7 @@
       <!-- Left section: Login Form -->
       <v-col cols="12" md="7" class="white-bg">
         <img
-          src="@/assets/images/logo.svg"
+          src="@/assets/images/logo.png"
           type="image/svg+xml"
           alt="Yalla Baggage Logo"
           class="logo-image"

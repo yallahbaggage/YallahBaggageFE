@@ -2,7 +2,7 @@
   <div class="sidebar">
     <router-link role="button" to="/" class="menu-link" active-class="active">
       <div class="header-logo">
-        <img class="logo-img" src="@/assets/images/logo.svg" alt="" />
+        <img class="logo-img" src="@/assets/images/logo.png" alt="" />
         <div>
           <h1 class="logo-title">Yalla Baggage</h1>
           <h2 class="logo-subtitle">Superadmin Panel</h2>

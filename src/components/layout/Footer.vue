@@ -4,7 +4,7 @@
       <div class="footer-left">
         <router-link to="/">
           <div class="footer-logo">
-            <img src="@/assets/images/logo.svg" alt="Logo" />
+            <img src="@/assets/images/logo.png" alt="Logo" />
             Yallah Baggage
           </div>
         </router-link>
