@@ -38,7 +38,7 @@
           <div class="menu-item-name">
             <img
               src="@/assets/images/users.svg"
-              :class="{ 'svg-blue': isActiveLink('/employees') }"
+              :class="{ 'svg-purple': isActiveLink('/employees') }"
               style="width: 20px; height: 20px"
             />
             {{ t('employees') }}
@@ -54,7 +54,7 @@
         >
           <div class="settings-container">
             <img
-              :class="{ 'svg-blue': isManagementMenuOpen }"
+              :class="{ 'svg-purple': isManagementMenuOpen }"
               src="@/assets/images/app-management.svg"
             />
             {{ t('appManagement') }}
@@ -69,7 +69,7 @@
               <div class="menu-item-name">
                 <img
                   src="@/assets/images/banner.svg"
-                  :class="{ 'svg-blue': isActiveLink('/banners') }"
+                  :class="{ 'svg-purple': isActiveLink('/banners') }"
                   class="link-icon"
                 />
                 <span>{{ t('banners') }}</span>
@@ -472,8 +472,8 @@ li {
   height: 20px;
 }
 
-.svg-blue {
-  filter: brightness(0) saturate(100%) invert(36%) sepia(100%) saturate(2480%) hue-rotate(225deg)
-    brightness(101%) contrast(103%);
+.svg-purple {
+  filter: brightness(0) saturate(100%) invert(22%) sepia(97%) saturate(2547%) hue-rotate(276deg)
+    brightness(94%) contrast(97%);
 }
 </style>
