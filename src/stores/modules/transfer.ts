@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { socketService } from '@/services/socket'
+import { socketService } from '@/utils/services/socket'
 import { ITrnsfersStats, Transfer } from '@/models/transfer'
 import api from '@/utils/services/api'
 
