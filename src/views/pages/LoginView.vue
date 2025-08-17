@@ -197,21 +197,38 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped lang="scss">
-.login-page .v-container{
-  padding: 0 !important;
+
+.v-container {
+  padding: 0 !important; // Remove default padding
 }
 .login-page {
   background-color: #f5f7fa;
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
+  background:
+    linear-gradient(
+      180deg,
+      #2a4ff6 0%,
+      rgba(42, 79, 246, 0.8) 25%,
+      rgba(42, 79, 246, 0.6) 50%,
+      rgba(42, 79, 246, 0.4) 75%,
+      rgba(42, 79, 246, 0.1) 100%
+    ),
+    var(--bg-white-0, #fff);
+    overflow: hidden;
 }
 
 .white-bg {
   background-color: #ffffff;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(100vh - 20px);
+  border-radius: 10px;
+  margin: 10px;
+}
+
+.v-row{
+  flex-wrap: nowrap !important; // Prevent wrapping of columns
 }
 
 .login-content-wrapper {
