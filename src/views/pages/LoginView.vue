@@ -241,7 +241,7 @@ const handleSubmit = async () => {
 }
 
 .blue-gradient-bg {
-  background:
+  background-color:
     linear-gradient(
       180deg,
       #2a4ff6 0%,
