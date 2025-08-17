@@ -204,7 +204,15 @@ const handleSubmit = async () => {
 .login-page {
   position: relative;
   height: 100vh;
-  background: red,
+  background:
+    linear-gradient(
+      180deg,
+      #2a4ff6 0%,
+      rgba(42, 79, 246, 0.8) 25%,
+      rgba(42, 79, 246, 0.6) 50%,
+      rgba(42, 79, 246, 0.4) 75%,
+      rgba(42, 79, 246, 0.1) 100%
+    ),
     var(--bg-white-0, #fff);
     overflow: hidden;
 }
