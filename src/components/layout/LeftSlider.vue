@@ -2,7 +2,7 @@
   <div class="sidebar">
     <router-link role="button" to="/" class="menu-link" active-class="active">
       <div class="header-logo">
-        <img class="logo-img" src="@/assets/images/logo.png" alt="" />
+        <img class="logo-img" src="@/assets/images/logo.svg" alt="" />
         <div>
           <h1 class="logo-title">Yalla Baggage</h1>
           <h2 class="logo-subtitle">Superadmin Panel</h2>
@@ -38,7 +38,7 @@
           <div class="menu-item-name">
             <img
               src="@/assets/images/users.svg"
-              :class="{ 'svg-purple': isActiveLink('/employees') }"
+              :class="{ 'svg-blue': isActiveLink('/employees') }"
               style="width: 20px; height: 20px"
             />
             {{ t('employees') }}
@@ -54,7 +54,7 @@
         >
           <div class="settings-container">
             <img
-              :class="{ 'svg-purple': isManagementMenuOpen }"
+              :class="{ 'svg-blue': isManagementMenuOpen }"
               src="@/assets/images/app-management.svg"
             />
             {{ t('appManagement') }}
@@ -69,7 +69,7 @@
               <div class="menu-item-name">
                 <img
                   src="@/assets/images/banner.svg"
-                  :class="{ 'svg-purple': isActiveLink('/banners') }"
+                  :class="{ 'svg-blue': isActiveLink('/banners') }"
                   class="link-icon"
                 />
                 <span>{{ t('banners') }}</span>
@@ -472,8 +472,8 @@ li {
   height: 20px;
 }
 
-.svg-purple {
-  filter: brightness(0) saturate(100%) invert(22%) sepia(97%) saturate(2547%) hue-rotate(276deg)
-    brightness(94%) contrast(97%);
+.svg-blue {
+  filter: brightness(0) saturate(100%) invert(36%) sepia(100%) saturate(2480%) hue-rotate(225deg)
+    brightness(101%) contrast(103%);
 }
 </style>

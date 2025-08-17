@@ -3,8 +3,8 @@ import { ThemeDefinition } from 'vuetify'
 export const lightTheme: ThemeDefinition = {
   dark: false,
   colors: {
-    primary: '#B431D3',
-    primaryHover: '#9C27B0',
+    primary: '#335CFF',
+    primaryHover: '#90cdf4',
     secondary: '#bec8cf',
     smokeWhite: '#F4F6F9',
     smokeBlack:'#3d484e',
@@ -43,8 +43,8 @@ export const lightTheme: ThemeDefinition = {
 export const darkTheme: ThemeDefinition = {
   dark: true,
   colors: {
-    primary: '#B431D3',
-    primaryHover: '#9C27B0',
+    primary: '#086aac',
+    primaryHover: '#90cdf4',
     secondary: '#4b5563',
     smokeWhite: '#F4F6F9',
     smokeBlack:'#3d484e',
