@@ -1,11 +1,19 @@
 @use 'styles/base.css';
 @font-face {
-  font-family: 'Readex Pro';
+  font-family: 'inter display';
   src:
-    url('@/assets/styles/fonts/readex_pro/static/ReadexPro-Bold.ttf') format('Bold'),
-    url('@/assets/styles/fonts/readex_pro/static/ReadexPro-Medium.ttf') format('Medium'),
-    url('@/assets/styles/fonts/readex_pro/static/ReadexPro-Regular.ttf') format('Regular'),
-    url('@/assets/styles/fonts/readex_pro/static/ReadexPro-SemiBold.ttf') format('SemiBold');
+    url('@/assets/styles/fonts/inter/static/Inter-18pt-Bold.ttf') format('Bold'),
+    url('@/assets/styles/fonts/inter/static/Inter-24pt-Bold.ttf') format('Bold'),
+    url('@/assets/styles/fonts/inter/static/Inter-28pt-Bold.ttf') format('Bold'),
+    url('@/assets/styles/fonts/inter/static/Inter-18pt-Medium.ttf') format('Medium'),
+    url('@/assets/styles/fonts/inter/static/Inter-24pt-Medium.ttf') format('Medium'),
+    url('@/assets/styles/fonts/inter/static/Inter-28pt-Medium.ttf') format('Medium'),
+    url('@/assets/styles/fonts/inter/static/Inter-18pt-Regular.ttf') format('Regular'),
+    url('@/assets/styles/fonts/inter/static/Inter-24pt-Regular.ttf') format('Regular'),
+    url('@/assets/styles/fonts/inter/static/Inter-28pt-Regular.ttf') format('Regular'),
+    url('@/assets/styles/fonts/inter/static/Inter-18pt-SemiBold.ttf') format('SemiBold')
+    url('@/assets/styles/fonts/inter/static/Inter-24pt-SemiBold.ttf') format('SemiBold')
+    url('@/assets/styles/fonts/inter/static/Inter-28pt-SemiBold.ttf') format('SemiBold');
 }
 
 @font-face {
@@ -50,10 +58,11 @@ body {
   font-size: 15px;
   font-weight: 500;
   scroll-behavior: smooth;
+  font-family: 'inter display', 'roboto', sans-serif;
 }
 
 body {
-  font-family: 'Readex Pro', 'roboto', sans-serif !important;
+  font-family: 'inter display', 'roboto', sans-serif !important;
   line-height: 1.6;
   background-color: rgb(var(--v-theme-white));
 }
