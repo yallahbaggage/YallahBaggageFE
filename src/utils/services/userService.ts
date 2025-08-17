@@ -22,9 +22,9 @@ class UserService {
     }
   }
 
-  async getUsers(): Promise<IUser[]> {
+  async getUsers(): Promise<IUser[] | { count: number; users: IUser[] }> {
     try {
-      const response = await api.get<IApiResponse<IUser[]>>('/users');
+      const response = await api.get<IApiResponse<{ count: number; users: IUser[] }>>('/users');
       return response.data.data;
     } catch (error) {
       throw this.handleError(error as AxiosError<IApiError>);

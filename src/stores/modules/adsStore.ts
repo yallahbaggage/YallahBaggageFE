@@ -48,9 +48,11 @@ export const useAdsStore = defineStore('ads', {
       try {
         this.loading = true;
         const response = await adsService.getAds(params);
-        this.ads = response.data;
-        this.pagination = response.pagination;
-        return response as { data: IAd[]; pagination: Pagination };
+        // Handle the backend response structure: { data: { count, pagination, data: ads[] } }
+        const responseData = response.data || response;
+        this.ads = responseData.data || responseData.ads || [];
+        this.pagination = responseData.pagination || null;
+        return { data: this.ads, pagination: this.pagination || { total: 0, page: 1, limit: 10, pageCount: 1 } };
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : 'Error fetching ads';
         this.error = errorMsg;
@@ -64,7 +66,7 @@ export const useAdsStore = defineStore('ads', {
       try {
         this.loading = true;
         const response = await adsService.getAd(adId);
-        this.currentAd = response as IAd;
+        this.currentAd = response;
         return response;
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : 'Error fetching ad';
@@ -125,8 +127,10 @@ export const useAdsStore = defineStore('ads', {
       try {
         this.loading = true;
         const response = await adsService.getAdsStats();
-        this.stats = response.data as AdsStats;
-        return response.data as AdsStats;
+        // Handle the backend response structure
+        const responseData = response.data || response;
+        this.stats = responseData as AdsStats;
+        return responseData as AdsStats;
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : 'Error fetching ads stats';
         this.error = errorMsg;

@@ -51,8 +51,10 @@ export const useUserStore = defineStore('user', () => {
   async function fetchUsers() {
     error.value = null
     try {
-      const users = await userService.getUsers()
-      return users.filter(u => u.role !== 'admin') // Exclude admin users from the list
+      const response = await userService.getUsers()
+      // Handle both array response and object response with users property
+      const users = Array.isArray(response) ? response : response?.users || []
+      return users?.filter(u => u?.role !== 'admin') // Exclude admin users from the list
     } catch (err) {
       const userError = err as UserStoreError
       error.value = userError.message || 'Failed to fetch users'
