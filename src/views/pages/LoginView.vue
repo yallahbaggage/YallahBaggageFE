@@ -202,7 +202,6 @@ const handleSubmit = async () => {
   padding: 0 !important; // Remove default padding
 }
 .login-page {
-  background-color: #f5f7fa;
   position: relative;
   height: 100vh;
   background:
