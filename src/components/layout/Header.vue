@@ -3,7 +3,7 @@
     <div class="container header-content">
       <router-link to="/">
         <div class="logo">
-          <img src="@/assets/images/logo.png" alt="Logo" />
+          <img src="@/assets/images/logo.svg" alt="Logo" />
           Yallah Baggage
         </div>
       </router-link>

@@ -204,7 +204,7 @@
                       </div>
 
                       <div v-if="imageUploadProgress > 0" class="upload-progress-container">
-                        <img src="@/assets/images/logo.png" alt="file" class="file-icon" />
+                        <img src="@/assets/images/logo.svg" alt="file" class="file-icon" />
                         <div class="progress-details">
                           <div class="file-name">{{ uploadedFileName }}</div>
                           <div class="progress-text">
@@ -374,7 +374,7 @@
                       </div>
 
                       <div v-if="imageUploadProgress > 0" class="upload-progress-container">
-                        <img src="@/assets/images/logo.png" alt="file" class="file-icon" />
+                        <img src="@/assets/images/logo.svg" alt="file" class="file-icon" />
                         <div class="progress-details">
                           <div class="file-name">{{ uploadedFileName }}</div>
                           <div class="progress-text">
