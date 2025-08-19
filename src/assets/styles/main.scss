@@ -592,3 +592,8 @@ body {
   line-height: 20px; /* 142.857% */
   letter-spacing: -0.084px;
 }
+
+.v-chip.v-chip--size-default{
+  height: 24px !important;
+  border-radius: 6px !important;
+}
