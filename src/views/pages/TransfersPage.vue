@@ -171,7 +171,7 @@
               item.worker?.name ?? item.workerId?.name
             }}</span>
             <v-btn
-              class="text-capitalize btn-border"
+              class="text-capitalize assign-button btn-border"
               v-if="!item?.worker?.name && !item.workerId?.name && item?.status !== 'cancelled' && item?.status !== 'rejected' && item?.status !== 'completed'"
               :style="{ color: '#5C5C5C' }"
               @click="() => assignEmployee(item as Transfer)"
@@ -1403,6 +1403,11 @@ watch(
   border-radius: 12px;
   margin-bottom: 4px;
   padding: 8px 12px;
+}
+
+.v-btn.v-btn--density-default.assign-button{
+  height: 24px !important;
+  border-radius: 6px !important;
 }
 
 // // Filter section styles
