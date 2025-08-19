@@ -204,7 +204,7 @@ const handleSubmit = async () => {
 .login-page {
   position: relative;
   height: 100vh;
-  background:
+  background-color:
     linear-gradient(
       180deg,
       #2a4ff6 0%,
@@ -240,7 +240,7 @@ const handleSubmit = async () => {
 }
 
 .blue-gradient-bg {
-  background-color:
+  background:
     linear-gradient(
       180deg,
       #2a4ff6 0%,
@@ -382,9 +382,10 @@ const handleSubmit = async () => {
 .text-style {
   font-size: 14px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 20px; /* 142.857% */
   letter-spacing: -0.084px;
+  color: #171717;
 }
 
 .blue-section-layout {
