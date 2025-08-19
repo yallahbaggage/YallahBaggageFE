@@ -20,8 +20,11 @@
                   class="user-image"
                 />
               </div>
-              <h2 class="login-title">{{ t('loginToYourAccount') }}</h2>
-              <p class="login-subtitle">{{ t('enterYourDetailsToLogin') }}</p>
+              <div>
+
+                <h2 class="login-title">{{ t('loginToYourAccount') }}</h2>
+                <p class="login-subtitle">{{ t('enterYourDetailsToLogin') }}</p>
+              </div>
 
               <v-form @submit.prevent="handleSubmit" ref="form" class="form-full-width">
                 <div class="input-group-container input-group-margin-bottom-email">
@@ -239,7 +242,7 @@ const handleSubmit = async () => {
   flex-grow: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
+  // justify-content: center;
   width: 100%;
   flex-direction: column;
 }
@@ -297,17 +300,22 @@ const handleSubmit = async () => {
   align-items: center;
   justify-content: center;
   text-align: center;
+  width: 392px;
+  height: 424px;
+  gap: 24px;
 }
 
 .logo-image {
   margin-top: 44px; // mb-6
-  width: 50px;
+  margin-bottom: 130px; // mb-6
+  width: 40px;
+  height: 40px;
   align-self: center;
 }
 
 .login-avatar {
-  width: 80px;
-  height: 80px;
+  // width: 80px;
+  // height: 80px;
   border-radius: 50%;
   background: linear-gradient(180deg, rgba(42, 79, 246, 0.1) 0%, rgba(250, 115, 25, 0) 100%);
   display: flex;
@@ -322,15 +330,16 @@ const handleSubmit = async () => {
   object-fit: cover;
   background-color: #ffffff;
   padding: 10px;
-  border: 2px solid lightgray;
+  margin: 10px;
+  border: 1px solid lightgray;
 }
 
-.avatar-margin-bottom {
-  margin-bottom: 16px; // mb-4
-}
+// .avatar-margin-bottom {
+//   margin-bottom: 16px; // mb-4
+// }
 
 .login-title {
-  margin-bottom: 8px; // mb-2
+  // margin-bottom: 8px; // mb-2
   font-size: 24px;
   font-style: normal;
   font-weight: 500;
@@ -339,7 +348,7 @@ const handleSubmit = async () => {
 
 .login-subtitle {
   color: #757575; // text-grey-darken-1
-  margin-bottom: 32px; // mb-8
+  // margin-bottom: 32px; // mb-8
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -359,18 +368,18 @@ const handleSubmit = async () => {
 }
 
 .input-group-margin-bottom-email {
-  margin-bottom: 16px; // mb-4
+  margin-bottom: 10px; // mb-4
 }
 
-.input-group-margin-bottom-password {
-  margin-bottom: 24px; // mb-6
-}
+// .input-group-margin-bottom-password {
+//   margin-bottom: 24px; // mb-6
+// }
 
 .form-options-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin:12px 0px;
 }
 
 .forgot-password-link {
@@ -427,7 +436,7 @@ const handleSubmit = async () => {
 .bottom-btn {
   background-color: transparent !important;
   color: #7f8c8d !important;
-  box-shadow: none !important;
+  // box-shadow: none !important;
 }
 
 .selected-lang {
