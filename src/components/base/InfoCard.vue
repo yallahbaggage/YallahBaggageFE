@@ -21,10 +21,7 @@ const props = defineProps({
 // $text-color: rgb(var(--v-theme-midnightBlue));
 
 .cardTitle {
-  color: var(--text-sub-600, #5C5C5C);
-  font-feature-settings: 'ss11' on, 'liga' off, 'calt' off;
-  /* Label/X Small */
-  font-family: Inter;
+  color: #5C5C5C;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
