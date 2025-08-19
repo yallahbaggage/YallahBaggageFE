@@ -231,6 +231,7 @@ const todaysTransfers = computed(() => {
   display: flex;
   gap: 10px !important;
   text-transform: capitalize;
+  color: #5C5C5C;
 }
 
 .lightgray {
@@ -325,6 +326,7 @@ li {
   font-size: $normalSize !important;
   color: inherit;
   text-decoration: none;
+  color: #5C5C5C;
 }
 
 .menu-item {
@@ -350,6 +352,7 @@ li {
   font-weight: $font-weight-bold;
   background-color: #f6fafd !important;
   border-radius: 10px;
+  color: black;
 }
 
 .icon {
