@@ -205,7 +205,7 @@ const handleSubmit = async () => {
 }
 .login-page {
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
   background:
     linear-gradient(
       180deg,
@@ -223,75 +223,49 @@ const handleSubmit = async () => {
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 20px);
+  min-height: calc(100vh - 20px);
   border-radius: 10px;
   margin: 10px;
-}
+  max-width: 8356px;
 
-@media (max-width: 520px) {
-  .white-bg {
-    margin: 0px;
+  @media (max-width: 520px) {
+    margin: 0;
+    border-radius: 0;
+    min-height: 100vh;
   }
 }
 
 .v-row {
-  flex-wrap: nowrap !important; // Prevent wrapping of columns
+  flex-wrap: nowrap !important;
 }
 
 .login-content-wrapper {
   flex-grow: 1;
   display: flex;
   align-items: center;
-  // justify-content: center;
   width: 100%;
   flex-direction: column;
+  padding: 0 auto; // add padding for small screens
 }
 
-.blue-gradient-bg {
-  background:
-    linear-gradient(
-      180deg,
-      #2a4ff6 0%,
-      rgba(42, 79, 246, 0.8) 25%,
-      rgba(42, 79, 246, 0.6) 50%,
-      rgba(42, 79, 246, 0.4) 75%,
-      rgba(42, 79, 246, 0.1) 100%
-    ),
-    var(--bg-white-0, #fff);
-  position: relative;
-  overflow: hidden;
-  min-height: 100vh;
-  height: 100%;
+.logo-image {
+  margin-top: 24px;
+  margin-bottom: 130px;
+  width: 40px;
+  height: 40px;
+  align-self: center;
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    z-index: 0;
-  }
-
-  &::before {
-    width: 300px;
-    height: 300px;
-    top: 10%;
-    left: 20%;
-    transform: translate(-50%, -50%);
-  }
-
-  &::after {
-    width: 500px;
-    height: 500px;
-    bottom: 15%;
-    right: 10%;
-    transform: translate(50%, 50%);
+  @media (max-width: 520px) {
+    margin-top: 16px;
+    margin-bottom: 30px;
+    width: 32px;
+    height: 32px;
   }
 }
 
 .login-card {
   max-width: 400px;
   width: 100%;
-  // margin-bottom: 60px; /* Removed as flexbox handles spacing */
 }
 
 .login-card-content {
@@ -300,22 +274,18 @@ const handleSubmit = async () => {
   align-items: center;
   justify-content: center;
   text-align: center;
-  width: 392px;
-  height: 424px;
+  width: 100%;
+  max-width: 392px;
   gap: 24px;
-}
+  padding: 16px;
 
-.logo-image {
-  margin-top: 44px; // mb-6
-  margin-bottom: 130px; // mb-6
-  width: 40px;
-  height: 40px;
-  align-self: center;
+  @media (max-width: 520px) {
+    padding: 8px;
+    gap: 16px;
+  }
 }
 
 .login-avatar {
-  // width: 80px;
-  // height: 80px;
   border-radius: 50%;
   background: linear-gradient(180deg, rgba(42, 79, 246, 0.1) 0%, rgba(250, 115, 25, 0) 100%);
   display: flex;
@@ -334,26 +304,23 @@ const handleSubmit = async () => {
   border: 1px solid lightgray;
 }
 
-// .avatar-margin-bottom {
-//   margin-bottom: 16px; // mb-4
-// }
-
 .login-title {
-  // margin-bottom: 8px; // mb-2
   font-size: 24px;
-  font-style: normal;
   font-weight: 500;
-  line-height: 32px;
+
+  @media (max-width: 520px) {
+    font-size: 20px;
+  }
 }
 
 .login-subtitle {
-  color: #757575; // text-grey-darken-1
-  // margin-bottom: 32px; // mb-8
+  color: #757575;
   font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 24px; /* 150% */
-  letter-spacing: -0.176px;
+  line-height: 24px;
+
+  @media (max-width: 520px) {
+    font-size: 14px;
+  }
 }
 
 .form-full-width {
@@ -368,67 +335,60 @@ const handleSubmit = async () => {
 }
 
 .input-group-margin-bottom-email {
-  margin-bottom: 10px; // mb-4
+  margin-bottom: 10px;
 }
-
-// .input-group-margin-bottom-password {
-//   margin-bottom: 24px; // mb-6
-// }
 
 .form-options-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin:12px 0px;
-}
+  margin: 12px 0px;
 
-.forgot-password-link {
-  font-size: 0.75rem; // text-caption
-  font-weight: 500; // font-weight-medium
-  text-decoration: underline;
-  color: #757575; // text-grey-darken-1
-}
-
-.login-button {
-  text-transform: capitalize; // text-capitalize
-}
-
-.text-style {
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px; /* 142.857% */
-  letter-spacing: -0.084px;
-  color: #171717;
-}
-
-.blue-section-layout {
-  display: none;
-  @media (min-width: 960px) {
-    // md breakpoint
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  @media (max-width: 520px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
 }
 
+.forgot-password-link {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-decoration: underline;
+  color: #757575;
+}
+
+.login-button {
+  text-transform: capitalize;
+}
+
+
+
 .footer-section {
-  // Removed absolute positioning as it's now inside a flex column
   background-color: transparent;
   border-top: none;
   z-index: 100;
   width: 100%;
-  padding: 0 40px 10px 40px;
-  margin-top: auto; /* Push it to the bottom */
+  padding: 0 20px 10px 20px;
+  margin-top: auto;
+
+  @media (max-width: 520px) {
+    padding: 0 10px 8px 10px;
+  }
 }
 
 .footer-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px; // pa-4
-}
+  padding: 16px;
 
+  @media (max-width: 520px) {
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+  }
+}
 .copyright-text {
   color: #7f8c8d;
 }
@@ -436,6 +396,7 @@ const handleSubmit = async () => {
 .bottom-btn {
   background-color: transparent !important;
   color: #7f8c8d !important;
+  border: none !important;
   // box-shadow: none !important;
 }
 
