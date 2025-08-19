@@ -225,12 +225,6 @@ const handleSubmit = async () => {
   margin: 10px;
 }
 
-@media (max-width: 520px) {
-  .white-bg {
-    margin: 0px;
-  }
-}
-
 .v-row {
   flex-wrap: nowrap !important; // Prevent wrapping of columns
 }
