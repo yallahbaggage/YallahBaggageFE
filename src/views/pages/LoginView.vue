@@ -197,7 +197,6 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped lang="scss">
-
 .v-container {
   padding: 0 !important; // Remove default padding
 }
@@ -224,9 +223,13 @@ const handleSubmit = async () => {
   height: calc(100vh - 20px);
   border-radius: 10px;
   margin: 10px;
+
+  @media (max-width: 960px) {
+    margin: 0px;
+  }
 }
 
-.v-row{
+.v-row {
   flex-wrap: nowrap !important; // Prevent wrapping of columns
 }
 
