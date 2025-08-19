@@ -223,8 +223,10 @@ const handleSubmit = async () => {
   height: calc(100vh - 20px);
   border-radius: 10px;
   margin: 10px;
+}
 
-  @media (max-width: 520px) {
+@media (max-width: 520px) {
+  .white-bg {
     margin: 0px;
   }
 }
