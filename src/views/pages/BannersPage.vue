@@ -44,9 +44,9 @@
               style="max-width: 80px; width: 80px; max-height: 40px; object-fit: cover"
             />
           </template>
-          <!-- <template #cell-url="{ item }">
-            <span>{{ item.url }}</span>
-          </template> -->
+          <template #cell-title="{ item }">
+            <span class="name-bold">{{ item.title }}</span>
+          </template>
           <template #cell-status="{ item }">
             <v-chip :color="getColorAccordingToExpireDate(item?.expireDate)" text-color="white" small>
               <span

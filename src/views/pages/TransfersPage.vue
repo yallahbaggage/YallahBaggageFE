@@ -181,7 +181,7 @@
             </v-btn>
           </template>
           <template #cell-customer="{ item }">
-            <span>{{ item?.newContact?.name ?? item?.user?.name ?? item.userId?.name }}</span>
+            <span class="name-bold">{{ item?.newContact?.name ?? item?.user?.name ?? item.userId?.name }}</span>
           </template>
           <template #cell-status="{ item }">
             <v-chip
@@ -1133,6 +1133,7 @@ ${itemsSection}
   console.log('Opening WhatsApp:', whatsappUrl)
   window.open(whatsappUrl, '_blank')
 }
+
 
 const saveAssignment = async () => {
   if (!selectedEmployee.value || !selectedTransfer.value) {

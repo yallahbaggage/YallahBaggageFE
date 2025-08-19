@@ -142,6 +142,9 @@
           v-model:page="page"
           v-model:items-per-page="itemsPerPage"
         >
+          <template #cell-name="{ item }">
+            <span class="name-bold">{{ item.name }}</span>
+          </template>
           <template #cell-status="{ item }">
             <v-chip :color="statusColor(item.status)" text-color="white" medium>
               <span

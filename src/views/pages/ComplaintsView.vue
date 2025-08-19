@@ -176,6 +176,9 @@
           <template #cell-createdAt="{ item }">
             {{ formatDate(item.createdAt) }}
           </template>
+          <template #cell-title="{ item }">
+            <span class="name-bold"> {{ item.title }}</span>
+          </template>
           <template #actions="{ item }">
             <v-menu location="bottom end" offset="4">
               <template #activator="{ props }">

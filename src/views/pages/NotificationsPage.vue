@@ -49,6 +49,9 @@
               {{ item.isRead ? t('read') : t('unread') }}
             </v-chip>
           </template> -->
+          <template #cell-title="{ item }">
+            <span class="name-bold"> {{ item.title }}</span>
+          </template>
           <template #cell-createdAt="{ item }">
             {{ formatDate(item.createdAt) }}
           </template>

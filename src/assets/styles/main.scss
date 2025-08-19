@@ -26,7 +26,7 @@ $font-weight-bold: 700 !important;
 
 $primaryRadius: 15px;
 $normalSize: 14px;
-$primaryBorderColor: var(--stroke-soft-200, rgba(23, 23, 23, 0.1));
+$primaryBorderColor: var(--stroke-soft-200, #F7F7F7);
 $shadow:
   0 -3px 5px rgba(0, 0, 0, 0.1),
   0 3px 5px rgba(0, 0, 0, 0.1);
@@ -96,8 +96,8 @@ body {
 }
 
 .v-data-table__thead {
-  background-color: rgba(23, 23, 23, 0.1) !important;
-  color: rgb(var(--v-theme-black)) !important;
+  background-color: #F7F7F7 !important;
+  color: #5C5C5C !important;
   white-space: nowrap;
   font-weight: 400;
 }
@@ -124,14 +124,14 @@ body {
 
   // Add a right border except for the last one
   &:not(:last-child) {
-    border-right: 1px solid rgba(23, 23, 23, 0.1);
+    border-right: 1px solid #F7F7F7;
     margin-right: 20px;
     padding-right: 20px;
   }
 }
 
 .infoHr {
-  border-top: 1px solid rgba(23, 23, 23, 0.1);
+  border-top: 1px solid #F7F7F7;
   text-decoration: dotted;
   margin: 20px 0;
 }
@@ -156,7 +156,7 @@ body {
 
 .action-btns {
   padding-top: 15px;
-  border-top: 1px solid rgba(23, 23, 23, 0.1);
+  border-top: 1px solid #F7F7F7;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -577,4 +577,18 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal; /* important: allow line wrapping logic */
+  color: #171717;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.084px;
+}
+
+.name-bold {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.084px;
 }
