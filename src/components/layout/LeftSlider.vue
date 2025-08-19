@@ -110,7 +110,7 @@
       </router-link>
     </v-list>
 
-    <hr color="lightgray" />
+    <hr class="lightgray" />
     <!-- Bottom Section: Theme Toggle & Language Switch -->
     <!-- <div class="bottom-actions"> -->
     <!-- <v-btn class="bottom-btn" color="primary" centered accent @click="toggleTheme()">
@@ -233,6 +233,12 @@ const todaysTransfers = computed(() => {
   text-transform: capitalize;
 }
 
+.lightgray {
+  color: #ebebeb;
+  border-color: #ebebeb;
+  background-color: #ebebeb; height: 1px; border: 0;
+}
+
 .header-logo {
   display: flex;
   align-items: center;
@@ -278,9 +284,8 @@ const todaysTransfers = computed(() => {
   color: rgb(var(--v-theme-black));
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid #ebebeb;
   width: 272px;
-  
   // RTL Support
   [dir="rtl"] & {
     border-radius: 10px 0 0 10px;
@@ -301,6 +306,7 @@ li {
 .menu {
   display: flex;
   flex-direction: column;
+  // height: 100%;
   margin: 16px 0;
   flex-grow: 1;
   gap: 4px;
@@ -405,7 +411,6 @@ li {
     font-weight: 600;
     color: rgb(var(--v-theme-black));
     margin-left: 10px;
-    
     // RTL Support
     [dir="rtl"] & {
       margin-left: 0;
@@ -431,7 +436,6 @@ li {
     color: #9e9e9e;
     width: 100%; /* Take full width on a new line */
     margin-left: 10px; /* Align with username */
-    
     // RTL Support
     [dir="rtl"] & {
       margin-left: 0;
