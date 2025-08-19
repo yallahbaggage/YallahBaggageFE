@@ -203,7 +203,7 @@ const handleSubmit = async () => {
 .login-page {
   position: relative;
   height: 100vh;
-  background-color:
+  background:
     linear-gradient(
       180deg,
       #2a4ff6 0%,
@@ -213,7 +213,7 @@ const handleSubmit = async () => {
       rgba(42, 79, 246, 0.1) 100%
     ),
     var(--bg-white-0, #fff);
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .white-bg {
@@ -223,6 +223,12 @@ const handleSubmit = async () => {
   height: calc(100vh - 20px);
   border-radius: 10px;
   margin: 10px;
+}
+
+@media (max-width: 520px) {
+  .white-bg {
+    margin: 0px;
+  }
 }
 
 .v-row {
