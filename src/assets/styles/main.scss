@@ -1,29 +1,14 @@
 @use 'styles/base.css';
-@font-face {
-  font-family: 'inter display';
-  src:
-    url('@/assets/styles/fonts/inter/static/Inter-18pt-Bold.ttf') format('Bold'),
-    url('@/assets/styles/fonts/inter/static/Inter-24pt-Bold.ttf') format('Bold'),
-    url('@/assets/styles/fonts/inter/static/Inter-28pt-Bold.ttf') format('Bold'),
-    url('@/assets/styles/fonts/inter/static/Inter-18pt-Medium.ttf') format('Medium'),
-    url('@/assets/styles/fonts/inter/static/Inter-24pt-Medium.ttf') format('Medium'),
-    url('@/assets/styles/fonts/inter/static/Inter-28pt-Medium.ttf') format('Medium'),
-    url('@/assets/styles/fonts/inter/static/Inter-18pt-Regular.ttf') format('Regular'),
-    url('@/assets/styles/fonts/inter/static/Inter-24pt-Regular.ttf') format('Regular'),
-    url('@/assets/styles/fonts/inter/static/Inter-28pt-Regular.ttf') format('Regular'),
-    url('@/assets/styles/fonts/inter/static/Inter-18pt-SemiBold.ttf') format('SemiBold')
-    url('@/assets/styles/fonts/inter/static/Inter-24pt-SemiBold.ttf') format('SemiBold')
-    url('@/assets/styles/fonts/inter/static/Inter-28pt-SemiBold.ttf') format('SemiBold');
-}
 
-@font-face {
-  font-family: 'roboto';
-  src:
-    url('@/assets/styles/fonts/roboto/Roboto-Bold.ttf') format('Bold'),
-    url('@/assets/styles/fonts/roboto/Roboto-Medium.ttf') format('Medium'),
-    url('@/assets/styles/fonts/roboto/Roboto-Regular.ttf') format('Regular');
-}
+/* ========== Fonts (via @fontsource) ========== */
+/* Inter Variable (WOFF2) */
+@import "@fontsource-variable/inter/index.css";
+/* Roboto weights used in the app */
+@import "@fontsource/roboto/400.css";
+@import "@fontsource/roboto/500.css";
+@import "@fontsource/roboto/700.css";
 
+/* ========== Design Tokens ========== */
 $x-small: 0.5rem;
 $small: 0.75rem;
 $medium: 1rem;
@@ -49,6 +34,7 @@ $darkShadow: 0 4px 6px 6px rgba(0, 0, 0, 0.1);
 
 $sidebarWidth: 304px;
 
+/* ========== Base ========== */
 html,
 body {
   height: 100%;
@@ -58,16 +44,16 @@ body {
   font-size: 15px;
   font-weight: 500;
   scroll-behavior: smooth;
-  font-family: 'inter display', 'roboto', sans-serif;
+  font-family: "Inter Variable", Inter, "Roboto", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
 
 body {
-  font-family: 'inter display', 'roboto', sans-serif !important;
+  font-family: "Inter Variable", Inter, "Roboto", system-ui, -apple-system, Segoe UI, Roboto, sans-serif !important;
   line-height: 1.6;
   background-color: rgb(var(--v-theme-white));
 }
 
-// RTL Support for Arabic
+/* ========== RTL Support for Arabic ========== */
 [dir='rtl'] {
   direction: rtl;
   text-align: right;
@@ -157,7 +143,7 @@ body {
   p {
     font-weight: 600;
     padding: 10px;
-    font-family: Inter;
+    font-family: "Inter Variable", Inter, system-ui, sans-serif;
     font-size: 12px;
     font-style: normal;
     font-weight: 500;
@@ -235,7 +221,7 @@ body {
   border-left: 4px solid #e6a23c;
 }
 
-// show toast in the center of the screen and open it smoothly
+/* show toast in the center of the screen and open it smoothly */
 .custom-toast {
   position: fixed;
   bottom: 20px;
@@ -273,7 +259,7 @@ body {
 }
 
 .drawer-key {
-  font-family: Inter;
+  font-family: "Inter Variable", Inter, system-ui, sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -288,10 +274,9 @@ body {
     'liga' off,
     'calt' off;
   /* Label/Small */
-  font-family: Inter;
+  font-family: "Inter Variable", Inter, system-ui, sans-serif;
   font-size: 16px;
   font-style: normal;
-  font-weight: bold;
   font-weight: 500;
   line-height: 20px; /* 142.857% */
   letter-spacing: -0.084px;
@@ -329,8 +314,7 @@ body {
 
 .drawer-title {
   font-size: 18px;
-  font-style: bold;
-  font-weight: 500;
+  font-weight: 600; /* was font-style: bold; */
   line-height: 24px; /* 133.333% */
   letter-spacing: -0.27px;
   margin: 0 15px;
@@ -539,7 +523,7 @@ body {
   }
 }
 
-// Global filter section styles with high specificity
+/* Global filter section styles with high specificity */
 .filter-section .v-menu .v-card .v-card-text {
   padding: 10px !important;
   font-size: 14px !important;
