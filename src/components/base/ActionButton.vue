@@ -126,6 +126,7 @@ const onButtonPressed = () => {
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
+  text-transform: capitalize;
 }
 
 .action-icon-button {
@@ -146,6 +147,7 @@ const onButtonPressed = () => {
   font-style: normal;
   font-weight: 500;
   line-height: 20px;
+  text-transform: capitalize;
 
   .v-icon {
     margin-right: 5px;
