@@ -224,7 +224,7 @@ const handleSubmit = async () => {
   border-radius: 10px;
   margin: 10px;
 
-  @media (max-width: 960px) {
+  @media (max-width: 520px) {
     margin: 0px;
   }
 }
