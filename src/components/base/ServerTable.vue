@@ -167,6 +167,7 @@ function onPageSizeChange(val: number) {
 }
 .pagination-pages {
   margin: 0 8px;
+  color: #5C5C5C;
 }
 .pagination-size {
   width: fit-content;
