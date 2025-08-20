@@ -316,7 +316,7 @@ li {
 .menu-item,
 .logout-item {
   &:hover {
-    background-color: #f6fafd !important;
+    background-color: #F7F7F7 !important;
   }
   margin-bottom: 2px;
 }
@@ -350,7 +350,7 @@ li {
 
 .active {
   font-weight: $font-weight-bold;
-  background-color: #f6fafd !important;
+  background-color: #F7F7F7 !important;
   border-radius: 10px;
   color: black;
 }
