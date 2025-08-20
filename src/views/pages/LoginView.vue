@@ -70,9 +70,9 @@
                     hide-details
                     class="keep-logged-checkbox"
                   />
-                  <a href="#" class="forgot-password-link">{{
+                  <!-- <a href="#" class="forgot-password-link">{{
                     t('forgotPassword')
-                  }}?</a>
+                  }}?</a> -->
                 </div>
 
                 <v-btn
