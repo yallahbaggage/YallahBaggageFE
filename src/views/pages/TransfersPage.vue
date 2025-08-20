@@ -249,13 +249,13 @@
         <!-- assign empeloyee Drawer -->
         <Drawer
           :isOpen="isAssignEmployeeDrawerOpen"
-          :title="!selectedTransfer?.worker?.name ? t('assignEmployee') : t('changeEmployee')"
+          :title="!selectedTransfer?.worker?.name ? t('assignDriver') : t('changeDriver')"
           :desc="
             !selectedTransfer?.worker?.name
-              ? t('assignEmployeeToTransfer', {
+              ? t('assignDriverToTransfer', {
                   transferId: selectedTransfer?._id?.substring(0, 10),
                 })
-              : t('changeEmployeeForTransfer', {
+              : t('changeDriverForTransfer', {
                   transferId: selectedTransfer?._id?.substring(0, 10),
                 })
           "
@@ -265,7 +265,7 @@
             <form class="form">
               <div>
                 <div class="drawer-banner">
-                  <p>{{ t('selectAnEmployee') }}</p>
+                  <p>{{ t('selectADriver') }}</p>
                 </div>
                 <div v-if="workersLoading" class="loading-state">
                   <p>{{ t('loading') }}...</p>

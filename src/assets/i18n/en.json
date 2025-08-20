@@ -277,5 +277,10 @@
   "totalDrivers": "Total Drivers",
   "availableDrivers": "Available Drivers",
   "driversOnTransfer": "Drivers On Transfer",
-  "addDriver": "Add Driver"
+  "addDriver": "Add Driver",
+  "selectADriver": "Select a Driver",
+  "changeDriver": "Change Driver",
+  "assignDriver": "Assign Driver",
+  "assignDriverToTransfer": "Assign Driver to Transfer #{transferId}",
+  "changeDriverForTransfer": "Change Driver for Transfer #{transferId}"
 }

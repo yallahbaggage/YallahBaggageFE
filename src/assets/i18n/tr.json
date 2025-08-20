@@ -277,5 +277,10 @@
   "totalDrivers": "Toplam Sürücüler",
   "availableDrivers": "Müsait Sürücüler",
   "driversOnTransfer": "Transferdeki Sürücüler",
-  "addDriver": "Sürücü Ekle"
+  "addDriver": "Sürücü Ekle",
+  "selectADriver": "Bir Sürücü Seç",
+  "changeDriver": "Sürücüyü Değiştir",
+  "assignDriver": "Sürücü Ata",
+  "assignDriverToTransfer": "Transfer #{transferId} için Sürücü Ata",
+  "changeDriverForTransfer": "Transfer #{transferId} için Sürücüyü Değiştir"
 }
