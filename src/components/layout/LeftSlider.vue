@@ -32,16 +32,16 @@
           >
         </div>
       </router-link>
-      <!-- Employees -->
-      <router-link role="button" to="/employees" class="menu-link" active-class="active">
-        <div class="menu-item" :class="{ active: isActiveLink('/employees') }">
+      <!-- drivers -->
+      <router-link role="button" to="/drivers" class="menu-link" active-class="active">
+        <div class="menu-item" :class="{ active: isActiveLink('/drivers') }">
           <div class="menu-item-name">
             <img
               src="@/assets/images/users.svg"
-              :class="{ 'svg-blue': isActiveLink('/employees') }"
+              :class="{ 'svg-blue': isActiveLink('/drivers') }"
               style="width: 20px; height: 20px"
             />
-            {{ t('employees') }}
+            {{ t('drivers') }}
           </div>
         </div>
       </router-link>
@@ -191,8 +191,8 @@ const links = computed(() => [
     chipCount: todaysTransfers.value > 0 ? todaysTransfers.value : 0,
   },
   {
-    name: t('employees'),
-    path: '/employees',
+    name: t('drivers'),
+    path: '/drivers',
     icon: 'mdi-account-group',
   },
   {

@@ -192,7 +192,7 @@ const handleSubmit = async () => {
         localStorage.removeItem('keepLoggedIn')
       }
     })
-    return router.push('/employees')
+    return router.push('/transfers')
   } catch (error: any) {
     snackbar.value = {
       show: true,
