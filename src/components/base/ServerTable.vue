@@ -45,7 +45,12 @@
           <!-- <v-btn icon variant="text" :disabled="currentPage === totalPages || totalPages === 0" @click="goToPage(currentPage + 1)">
             <v-icon>mdi-chevron-right</v-icon>
           </v-btn> -->
-          <v-btn icon variant="text" :disabled="currentPage === totalPages || totalPages === 0" @click="goToPage(totalPages)">
+          <v-btn
+            icon
+            variant="text"
+            :disabled="currentPage === totalPages || totalPages === 0"
+            @click="goToPage(totalPages)"
+          >
             <v-icon>mdi-page-last</v-icon>
           </v-btn>
         </div>
@@ -68,7 +73,7 @@
 <script setup lang="ts">
 import type { DataTableHeader } from 'vuetify'
 import { computed, ref, watch } from 'vue'
-import { useI18n } from 'vue3-i18n';
+import { useI18n } from 'vue3-i18n'
 
 const props = defineProps<{
   headers: DataTableHeader[]
@@ -93,13 +98,10 @@ watch(
   },
 )
 
-
 function onPageChange(val: number) {
   currentPage.value = val
   emit('update:page', val)
 }
-
-
 
 function goToPage(val: number) {
   if (val >= 1 && val <= totalPages.value) {
@@ -110,7 +112,7 @@ function goToPage(val: number) {
 
 const pageSizes = [8, 16, 32, 64]
 
-const pageSizesFormatted = pageSizes.map(size => ({
+const pageSizesFormatted = pageSizes.map((size) => ({
   label: `${size} / ${t('page')}`,
   value: size,
 }))
@@ -167,14 +169,42 @@ function onPageSizeChange(val: number) {
 }
 .pagination-pages {
   margin: 0 8px;
-  color: #5C5C5C;
+  color: #5c5c5c;
 }
 .pagination-size {
   width: fit-content;
   max-width: fit-content;
+  height: 32px !important;
+  text-align: center !important;
+
+
+  :deep(.v-field) {
+    height: 32px !important;
+    text-align: center !important;
+  }
+
+  :deep(.v-select) {
+    height: 32px !important;
+    text-align: center !important;
+  }
+
+  :deep(.v-input) {
+    height: 32px !important;
+    text-align: center !important;
+  }
+
+  :deep(.v-field__input) {
+    height: 32px !important;
+    text-align: center !important;
+    padding-top: 0px !important;
+  }
+
+  :deep(.mdi:before, .mdi-set) {
+    padding-bottom: 10px !important;
+  }
 }
 
-.v-pagination .v-btn.v-btn--density-default{
+.v-pagination .v-btn.v-btn--density-default {
   min-width: 12px !important;
   min-height: 12px !important;
 }
