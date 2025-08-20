@@ -367,7 +367,7 @@ const handleSubmit = async () => {
   }
   
   :deep(.v-field__input) {
-    padding: 12px 16px;
+    // padding: 12px 16px;
     min-height: 48px;
     font-size: 14px;
   }
