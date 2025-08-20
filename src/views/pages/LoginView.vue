@@ -27,30 +27,36 @@
               </div>
 
               <v-form @submit.prevent="handleSubmit" ref="form" class="form-full-width">
-                <div class="input-group-container input-group-margin-bottom-email">
-                  <Label class="text-style" for="email">{{ t('emailAddress') }}</Label>
+                <div class="input-group-container">
+                  <label for="email-input" class="input-label">{{ t('emailAddress') }}<span class="required-asterisk">*</span></label>
                   <v-text-field
+                    id="email-input"
                     v-model="email"
                     :rules="[rules.required, rules.email]"
                     placeholder="hello@yalla.com"
-                    variant="solo"
+                    variant="outlined"
                     density="comfortable"
                     prepend-inner-icon="mdi-email-outline"
+                    class="custom-input"
+                    hide-details="auto"
                     required
                   />
                 </div>
-                <div class="input-group-container input-group-margin-bottom-password">
-                  <Label class="text-style" for="password">{{ t('password') }}</Label>
+                <div class="input-group-container">
+                  <label for="password-input" class="input-label">{{ t('password') }}<span class="required-asterisk">*</span></label>
                   <v-text-field
+                    id="password-input"
                     v-model="password"
                     :rules="[rules.required, rules.min]"
                     density="comfortable"
-                    variant="solo"
+                    variant="outlined"
                     placeholder="**********"
                     prepend-inner-icon="mdi-lock-outline"
                     :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                     :type="showPassword ? 'text' : 'password'"
                     @click:append-inner="showPassword = !showPassword"
+                    class="custom-input"
+                    hide-details="auto"
                     required
                   />
                 </div>
@@ -62,11 +68,11 @@
                     density="compact"
                     color="primary"
                     hide-details
-                    class="text-style"
+                    class="keep-logged-checkbox"
                   />
-                  <!-- <router-link to="/forgot-password" class="forgot-password-link text-style">{{
+                  <a href="#" class="forgot-password-link">{{
                     t('forgotPassword')
-                  }}</router-link> -->
+                  }}?</a>
                 </div>
 
                 <v-btn
@@ -331,31 +337,88 @@ const handleSubmit = async () => {
   display: flex;
   flex-direction: column;
   text-align: start;
-  font-weight: bold;
+  margin-bottom: 24px;
 }
 
-.input-group-margin-bottom-email {
-  margin-bottom: 10px;
+.input-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1a1a1a;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.required-asterisk {
+  color: #2a4ff6;
+  margin-left: 2px;
+}
+
+.custom-input {
+  :deep(.v-field) {
+    border-radius: 8px;
+    border: 1px solid #e1e5e9;
+    background-color: #ffffff;
+    box-shadow: none;
+  }
+  
+  :deep(.v-field--focused) {
+    border-color: #2a4ff6;
+    box-shadow: 0 0 0 3px rgba(42, 79, 246, 0.1);
+  }
+  
+  :deep(.v-field__input) {
+    padding: 12px 16px;
+    min-height: 48px;
+    font-size: 14px;
+  }
+  
+  :deep(.v-field__prepend-inner) {
+    // padding-left: 16px;
+    color: #9ca3af;
+  }
+  
+  :deep(.v-field__append-inner) {
+    padding-right: 16px;
+    color: #9ca3af;
+  }
 }
 
 .form-options-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 12px 0px;
+  margin: 24px 0;
 
   @media (max-width: 520px) {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 12px;
+  }
+}
+
+.keep-logged-checkbox {
+  :deep(.v-label) {
+    font-size: 14px;
+    color: #374151;
+    font-weight: 400;
+  }
+  
+  :deep(.v-selection-control__wrapper) {
+    margin-right: 8px;
   }
 }
 
 .forgot-password-link {
-  font-size: 0.75rem;
+  font-size: 14px;
   font-weight: 500;
   text-decoration: underline;
-  color: #757575;
+  color: #6b7280;
+  cursor: pointer;
+  
+  &:hover {
+    color: #2a4ff6;
+    text-decoration: none;
+  }
 }
 
 .login-button {
@@ -397,7 +460,6 @@ const handleSubmit = async () => {
   background-color: transparent !important;
   color: #7f8c8d !important;
   border: none !important;
-  // box-shadow: none !important;
 }
 
 .selected-lang {
