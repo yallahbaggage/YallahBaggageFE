@@ -375,11 +375,23 @@ const handleSubmit = async () => {
   :deep(.v-field__prepend-inner) {
     // padding-left: 16px;
     color: #9ca3af;
+    
+    .v-icon {
+      font-size: 20px !important;
+      width: 20px !important;
+      height: 20px !important;
+    }
   }
   
   :deep(.v-field__append-inner) {
     padding-right: 16px;
     color: #9ca3af;
+    
+    .v-icon {
+      font-size: 20px !important;
+      width: 20px !important;
+      height: 20px !important;
+    }
   }
 }
 
