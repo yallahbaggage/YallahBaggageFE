@@ -363,12 +363,12 @@ const handleSubmit = async () => {
   
   :deep(.v-field--focused) {
     border-color: #2a4ff6;
-    box-shadow: 0 0 0 3px rgba(42, 79, 246, 0.1);
+    // box-shadow: 0 0 0 3px rgba(42, 79, 246, 0.1);
   }
   
   :deep(.v-field__input) {
     // padding: 12px 16px;
-    min-height: 48px;
+    min-height: 40px;
     font-size: 14px;
   }
   
