@@ -18,7 +18,12 @@
           </template>
           <template v-else>
             <slot :name="`cell-${header.key}`" :item="item" :index="index">
-              {{ item[header.key as string] }}
+              <div 
+                class="cell-content" 
+                :style="{ maxWidth: props.cellMaxWidth ? `${props.cellMaxWidth}px` : '200px' }"
+              >
+                {{ item[header.key as string] }}
+              </div>
             </slot>
           </template>
         </td>
@@ -82,6 +87,7 @@ const props = defineProps<{
   loading: boolean
   page: number
   itemsPerPage: number
+  cellMaxWidth?: number // Optional prop to control cell max width
 }>()
 
 const { t } = useI18n()
@@ -145,8 +151,44 @@ function onPageSizeChange(val: number) {
       font-weight: 600;
     }
   }
+  
   :deep(.v-btn--icon.v-btn--density-comfortable) {
     border-radius: 6px !important;
+  }
+  
+  // Cell content truncation
+  .cell-content {
+    max-width: v-bind('props.cellMaxWidth || 200'); // Use prop or default to 200px
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  // Make table cells have consistent width
+  td {
+    max-width: v-bind('props.cellMaxWidth || 200'); // Use prop or default to 200px
+    overflow: hidden;
+  }
+  
+  // Responsive table behavior
+  @media (max-width: 768px) {
+    .cell-content {
+      max-width: v-bind('Math.min((props.cellMaxWidth || 200) * 0.75, 150)'); // 75% of prop value or max 150px
+    }
+    
+    td {
+      max-width: v-bind('Math.min((props.cellMaxWidth || 200) * 0.75, 150)');
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .cell-content {
+      max-width: v-bind('Math.min((props.cellMaxWidth || 200) * 0.5, 100)'); // 50% of prop value or max 100px
+    }
+    
+    td {
+      max-width: v-bind('Math.min((props.cellMaxWidth || 200) * 0.5, 100)');
+    }
   }
 
   // :deep(.v-btn--icon.v-btn--density-comfortable:focus),
