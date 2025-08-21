@@ -50,23 +50,34 @@ export const useAdsStore = defineStore('ads', {
         const response = await adsService.getAds(params);
         
         // Log the full response for debugging
-        console.log('Full response from adsService:', response);
+        // console.log('Full response from adsService:', response);
+        // console.log('Response type:', typeof response);
+        // console.log('Response keys:', Object.keys(response));
         
         // Handle the backend response structure: { success, count, pagination, data: ads[] }
-        const responseData = response.data || response;
-        console.log('Response data:', responseData);
+        // Since response is already the data object, we don't need to access .data again
+        const responseData = response;
+        // console.log('Response data:', responseData);
+        // console.log('Response data.data:', responseData.data);
+        // console.log('Response data.data type:', typeof responseData.data);
+        // console.log('Response data.data length:', responseData.data?.length);
+        // console.log('Response data.data isArray:', Array.isArray(responseData.data));
         
         // The response structure is: { success, count, pagination, data: ads[] }
         // So responseData.data contains the array of ads
         this.ads = responseData.data || [];
-        console.log('store Ads fetched:', this.ads);
-        console.log('Ads count:', this.ads.length);
+        // console.log('store Ads fetched:', this.ads);
+        // console.log('store Ads fetched (raw):', JSON.stringify(this.ads));
+        // console.log('store Ads fetched (stringified):', JSON.stringify(this.ads, null, 2));
+        // console.log('Ads count:', this.ads.length);
         
         // Extract pagination from the correct path
         this.pagination = responseData.pagination || null;
-        console.log('Pagination:', this.pagination);
+        // console.log('Pagination:', this.pagination);
         
-        return { data: this.ads, pagination: this.pagination || { total: 0, page: 1, limit: 10, pageCount: 1 } };
+        const result = { data: this.ads, pagination: this.pagination || { total: 0, page: 1, limit: 10, pageCount: 1 } };
+        // console.log('Returning result:', result);
+        return result;
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : 'Error fetching ads';
         this.error = errorMsg;
