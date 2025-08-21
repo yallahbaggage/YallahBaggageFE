@@ -682,7 +682,7 @@ const resetForm = () => {
     expireDate: '',
     url: '',
     image: '',
-    status: 'Active',
+    status: 'active',
   }
   imageUrl.value = ''
   uploadedFileName.value = ''
