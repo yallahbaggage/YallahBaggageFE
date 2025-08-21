@@ -255,7 +255,7 @@ const handleSubmit = async () => {
 }
 
 .logo-image {
-  margin-top: 24px;
+  margin-top: 44px;
   margin-bottom: 130px;
   width: 40px;
   height: 40px;
@@ -337,7 +337,7 @@ const handleSubmit = async () => {
   display: flex;
   flex-direction: column;
   text-align: start;
-  margin-bottom: 24px;
+  margin-bottom: 6px;
 }
 
 .input-label {
@@ -399,7 +399,7 @@ const handleSubmit = async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 24px 0;
+  margin: 5px 0;
 
   @media (max-width: 520px) {
     flex-direction: column;
