@@ -341,6 +341,7 @@ li {
   justify-content: space-between;
   transition: background 0.15s;
   margin-bottom: 2px;
+  transition: all 0.2s ease;
 
   img {
     width: 24px;
