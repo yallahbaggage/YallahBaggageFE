@@ -50,7 +50,9 @@ export const useAdsStore = defineStore('ads', {
         const response = await adsService.getAds(params);
         // Handle the backend response structure: { data: { count, pagination, data: ads[] } }
         const responseData = response.data || response;
-        this.ads = responseData.data || responseData.ads || [];
+        this.ads = responseData.data ?? [];
+        console.log('store Ads fetched:', this.ads);
+        
         this.pagination = responseData.pagination || null;
         return { data: this.ads, pagination: this.pagination || { total: 0, page: 1, limit: 10, pageCount: 1 } };
       } catch (err) {
