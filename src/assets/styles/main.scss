@@ -2,11 +2,11 @@
 
 /* ========== Fonts (via @fontsource) ========== */
 /* Inter Variable (WOFF2) */
-@import "@fontsource-variable/inter/index.css";
+@import '@fontsource-variable/inter/index.css';
 /* Roboto weights used in the app */
-@import "@fontsource/roboto/400.css";
-@import "@fontsource/roboto/500.css";
-@import "@fontsource/roboto/700.css";
+@import '@fontsource/roboto/400.css';
+@import '@fontsource/roboto/500.css';
+@import '@fontsource/roboto/700.css';
 
 /* ========== Design Tokens ========== */
 $x-small: 0.5rem;
@@ -26,7 +26,7 @@ $font-weight-bold: 700 !important;
 
 $primaryRadius: 15px;
 $normalSize: 14px;
-$primaryBorderColor: var(--stroke-soft-200, #F7F7F7);
+$primaryBorderColor: var(--stroke-soft-200, #f7f7f7);
 $shadow:
   0 -3px 5px rgba(0, 0, 0, 0.1),
   0 3px 5px rgba(0, 0, 0, 0.1);
@@ -44,11 +44,27 @@ body {
   font-size: 15px;
   font-weight: 500;
   scroll-behavior: smooth;
-  font-family: "Inter Variable", Inter, "Roboto", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-family:
+    'Inter Variable',
+    Inter,
+    'Roboto',
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    sans-serif;
 }
 
 body {
-  font-family: "Inter Variable", Inter, "Roboto", system-ui, -apple-system, Segoe UI, Roboto, sans-serif !important;
+  font-family:
+    'Inter Variable',
+    Inter,
+    'Roboto',
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    sans-serif !important;
   line-height: 1.6;
   background-color: rgb(var(--v-theme-white));
 }
@@ -96,8 +112,8 @@ body {
 }
 
 .v-data-table__thead {
-  background-color: #F7F7F7 !important;
-  color: #5C5C5C !important;
+  background-color: #f7f7f7 !important;
+  color: #5c5c5c !important;
   white-space: nowrap;
   font-weight: 400;
 }
@@ -124,7 +140,7 @@ body {
 
   // Add a right border except for the last one
   &:not(:last-child) {
-    border-right: 1px solid #F7F7F7;
+    border-right: 1px solid #f7f7f7;
     margin-right: 20px;
     padding-right: 20px;
   }
@@ -133,7 +149,9 @@ body {
 .infoHr {
   text-decoration: dotted;
   margin: 20px 0;
-  background-color: #ebebeb; height: 1px; border: 0;
+  background-color: #ebebeb;
+  height: 1px;
+  border: 0;
 }
 
 .drawer-banner {
@@ -143,7 +161,7 @@ body {
   p {
     font-weight: 600;
     padding: 10px;
-    font-family: "Inter Variable", Inter, system-ui, sans-serif;
+    font-family: 'Inter Variable', Inter, system-ui, sans-serif;
     font-size: 12px;
     font-style: normal;
     font-weight: 500;
@@ -156,7 +174,7 @@ body {
 
 .action-btns {
   padding-top: 15px;
-  border-top: 1px solid #F7F7F7;
+  border-top: 1px solid #f7f7f7;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -259,7 +277,7 @@ body {
 }
 
 .drawer-key {
-  font-family: "Inter Variable", Inter, system-ui, sans-serif;
+  font-family: 'Inter Variable', Inter, system-ui, sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -274,7 +292,7 @@ body {
     'liga' off,
     'calt' off;
   /* Label/Small */
-  font-family: "Inter Variable", Inter, system-ui, sans-serif;
+  font-family: 'Inter Variable', Inter, system-ui, sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
@@ -433,6 +451,12 @@ body {
   border-radius: 6px;
   padding: 5px;
   color: #5c5c5c;
+  height: 24px;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+  width: fit-content;
 }
 
 .v-table {
@@ -593,7 +617,7 @@ body {
   letter-spacing: -0.084px;
 }
 
-.v-chip.v-chip--size-default{
+.v-chip.v-chip--size-default {
   height: 24px !important;
   border-radius: 6px !important;
 }

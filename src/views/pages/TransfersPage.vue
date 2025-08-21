@@ -176,7 +176,7 @@
               :style="{ color: '#5C5C5C' }"
               @click="() => assignEmployee(item as Transfer)"
             >
-              <v-icon color="#5C5C5C">mdi-plus-circle-outline</v-icon>
+              <v-icon size="12px" color="#5C5C5C">mdi-plus-circle-outline</v-icon>
               {{ t('assign') }}
             </v-btn>
           </template>
@@ -201,10 +201,10 @@
               {{ t(item.status) ?? t('pending') }}
             </v-chip>
             <div class="flex button-border" outline v-else>
-              <v-icon v-if="item.status === 'cancelled'" color="error" size="20"
+              <v-icon v-if="item.status === 'cancelled'" color="error" size="12"
                 >mdi-alert-circle</v-icon
               >
-              <v-icon v-if="item.status === 'completed'" color="success" size="20"
+              <v-icon v-if="item.status === 'completed'" color="success" size="12"
                 >mdi-check-circle</v-icon
               >
               {{ t(item.status) ?? t('pending') }}
@@ -233,7 +233,7 @@
                 </v-list-item>
                 <v-list-item 
                   v-if="item?.status !== 'cancelled' && item?.status !== 'rejected' && item?.status !== 'completed'"
-                    class="menu-item" @click="assignEmployee(item as Transfer)">
+                class="menu-item" @click="assignEmployee(item as Transfer)">
                   <v-icon class="mr-2">mdi-account-outline</v-icon>
                   {{ t('assignChangeStaff') }}
                 </v-list-item>
@@ -847,14 +847,14 @@ const statusColor = (status: string): string => {
     case 'pending':
       return '#FF9800' // amber
     case 'in_progress':
-      return '#1976D2' // blue
+      return '#335CFF' // blue
     case 'in_transit':
       return '#FFC107' // amber
     case 'onTheWay':
       return '#00B894' // teal
     case 'resolved':
     case 'completed':
-      return '#2E7D32' // green
+      return '#1fc16b' // green
     case 'rejected':
       return '#D32F2F' // red
     case 'closed':
@@ -869,7 +869,7 @@ const statusBg = (status: string): string => {
     case 'pending':
       return '#FFF4E5' // soft orange
     case 'in_progress':
-      return '#E6F0FF' // light blue
+      return '#EBF1FF' // light blue
     case 'in_transit':
       return '#FFF8D9' // pale yellow
     case 'onTheWay':
@@ -1408,6 +1408,7 @@ watch(
 .v-btn.v-btn--density-default.assign-button{
   height: 24px !important;
   border-radius: 6px !important;
+  font-size: 12px !important;
 }
 
 // // Filter section styles
