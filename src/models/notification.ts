@@ -22,6 +22,7 @@ export interface INotification {
   data?: Record<string, any>
   createdAt: string
   updatedAt: string
+  sendNotificationOnDate?: string;
 }
 
 export interface ICreateNotification {
