@@ -669,3 +669,21 @@ body {
     }
   }
 }
+
+.v-menu.filter-menu > .v-overlay__content > .v-card,
+.v-menu > .v-overlay__content > .v-sheet,
+.v-menu > .v-overlay__content > .v-list {
+  border-radius: 12px !important;
+  // box-shadow: $darkShadow !important;
+  min-width: fit-content !important;
+  // max-width: 300px !important;
+  width: 100% !important;
+  border: 1px solid rgb(235, 235, 235);
+  margin-top: 10px !important;
+  background-color: #fff !important;
+
+
+  .v-card-text{
+    border: none !important;
+  }
+}

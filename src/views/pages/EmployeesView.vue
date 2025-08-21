@@ -41,8 +41,7 @@
           :close-on-content-click="false"
           offset-y
           transition="scale-transition"
-          max-width="360"
-          min-width="280"
+          class="filter-menu"
         >
           <template #activator="{ props }">
             <v-btn v-bind="props" outline class="text-capitalize" prepend-icon="mdi-filter-variant">

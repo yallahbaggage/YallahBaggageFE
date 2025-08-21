@@ -41,8 +41,7 @@
             :close-on-content-click="false"
             offset-y
             transition="scale-transition"
-            max-width="360"
-            min-width="280"
+            class="filter-menu"
           >
             <template #activator="{ props }">
               <v-btn
@@ -811,7 +810,6 @@ onUnmounted(() => {
 })
 </script>
 <style lang="scss" scoped>
-
 
 .phone-input-wrapper {
   display: flex;
