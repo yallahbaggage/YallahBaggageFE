@@ -26,9 +26,9 @@
           v-model:items-per-page="itemsPerPage"
         >
           <template #cell-_id="{ item }"> #{{ item?._id?.substring(0, 10) }} </template>
-          <template #cell-sendNotificationOnDate="{ item }">
+          <!-- <template #cell-sendNotificationOnDate="{ item }">
             {{ formatDate(item.sendNotificationOnDate) }}</template
-          >
+          > -->
           <template #cell-type="{ item }">
             <v-chip
               :color="statusColor(getStatusAccordingToSendDate(item as INotification))"
@@ -52,8 +52,8 @@
           <template #cell-title="{ item }">
             <span class="name-bold"> {{ item.title }}</span>
           </template>
-          <template #cell-createdAt="{ item }">
-            {{ formatDate(item.createdAt) }}
+          <template #cell-sendNotificationOnDate="{ item }">
+            {{ item.sendNotificationOnDate && !item.sendNow ? formatDate(item.sendNotificationOnDate) : formatDate(item.createdAt) }}
           </template>
           <template #actions="{ item }">
             <v-menu location="bottom end" offset="4">
@@ -982,6 +982,7 @@ watch([page, itemsPerPage], fetchNotifications)
   color: #5c5c5c;
   margin-bottom: 8px;
 }
+
 
 .action-btns {
   display: flex;
