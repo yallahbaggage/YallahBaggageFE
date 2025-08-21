@@ -48,12 +48,24 @@ export const useAdsStore = defineStore('ads', {
       try {
         this.loading = true;
         const response = await adsService.getAds(params);
-        // Handle the backend response structure: { data: { count, pagination, data: ads[] } }
-        const responseData = response.data || response;
-        this.ads = responseData.data ?? [];
-        console.log('store Ads fetched:', this.ads);
         
+        // Log the full response for debugging
+        console.log('Full response from adsService:', response);
+        
+        // Handle the backend response structure: { success, count, pagination, data: ads[] }
+        const responseData = response.data || response;
+        console.log('Response data:', responseData);
+        
+        // The response structure is: { success, count, pagination, data: ads[] }
+        // So responseData.data contains the array of ads
+        this.ads = responseData.data || [];
+        console.log('store Ads fetched:', this.ads);
+        console.log('Ads count:', this.ads.length);
+        
+        // Extract pagination from the correct path
         this.pagination = responseData.pagination || null;
+        console.log('Pagination:', this.pagination);
+        
         return { data: this.ads, pagination: this.pagination || { total: 0, page: 1, limit: 10, pageCount: 1 } };
       } catch (err) {
         const errorMsg = err instanceof Error ? err.message : 'Error fetching ads';
