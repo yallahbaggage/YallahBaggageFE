@@ -1411,6 +1411,27 @@ watch(
   font-size: 12px !important;
 }
 
+// :deep(.v-list-item-title) {
+//   border-radius: 18px !important;
+// }
+
+.v-menu > .v-overlay__content > .v-card, .v-menu > .v-overlay__content > .v-sheet, .v-menu > .v-overlay__content > .v-list {
+  width: 224px !important;
+  // gap: 4px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  padding: 8px !important;
+  background-color: #fff !important;
+  border-radius: 16px !important;
+  box-shadow: 0 16px 32px -12px rgba(14, 18, 27, 0.10);
+
+  .v-list-item--density-default.v-list-item--one-line{
+    height: 36px !important;
+    min-height: 36px !important;
+    border-radius: 10px !important;
+  }
+}
+
 // // Filter section styles
 // .filter-section {
 //   margin-bottom: 16px !important;
