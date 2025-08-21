@@ -356,7 +356,7 @@
                   </template>
                   <v-list-item-title>{{ t(status.label) }}</v-list-item-title>
                   <template #append>
-                    <v-icon v-if="status.label === editableStatus" color="green"
+                    <v-icon size="16px" v-if="status.label === editableStatus" color="green"
                       >mdi-check-circle</v-icon
                     >
                   </template>
