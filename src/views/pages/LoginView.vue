@@ -96,7 +96,7 @@
             <v-menu>
               <template v-slot:activator="{ props }">
                 <v-btn color="primary" class="bottom-btn" v-bind="props">
-                  <v-icon>mdi-translate</v-icon>
+                  <v-icon>mdi-web</v-icon>
                   {{ selectedLanguage ?? t('languages') }}
                   <v-icon>mdi-menu-down</v-icon>
                 </v-btn>
