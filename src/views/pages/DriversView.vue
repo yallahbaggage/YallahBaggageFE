@@ -34,106 +34,111 @@
           </InfoCard>
         </div>
         <hr class="infoHr" />
-           <!-- Filter Section -->
-      <div class="filter-section" style="margin-bottom: 16px; position: relative">
-        <v-menu
-          v-model="filterMenu"
-          :close-on-content-click="false"
-          offset-y
-          transition="scale-transition"
-          max-width="360"
-          min-width="280"
-        >
-          <template #activator="{ props }">
-            <v-btn v-bind="props" outline class="text-capitalize" prepend-icon="mdi-filter-variant">
-              {{ t('filters') }}
-            </v-btn>
-          </template>
-          <v-card
-            style="
-              border-radius: 8px;
-              overflow: hidden;
-              box-shadow: 0 4px 6px 6px rgba(0, 0, 0, 0.1);
-            "
+        <!-- Filter Section -->
+        <div class="filter-section" style="margin-bottom: 16px; position: relative">
+          <v-menu
+            v-model="filterMenu"
+            :close-on-content-click="false"
+            offset-y
+            transition="scale-transition"
+            max-width="360"
+            min-width="280"
           >
-            <v-card-text
+            <template #activator="{ props }">
+              <v-btn
+                v-bind="props"
+                outline
+                class="text-capitalize"
+                prepend-icon="mdi-filter-variant"
+              >
+                {{ t('filters') }}
+              </v-btn>
+            </template>
+            <v-card
               style="
-                padding: 10px;
-                font-size: 14px;
-                font-weight: 500;
-                width: 260px;
-                line-height: 20px;
-                background-color: #fff;
-                border: 1px solid #ebebeb;
-                margin-top: 15px;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 4px 6px 6px rgba(0, 0, 0, 0.1);
               "
             >
-              <div class="d-flex justify-space-between align-center mb-2">
-                <h4 class="text-subtitle-1 font-weight-medium">{{ t('filters') }}</h4>
-                <v-btn variant="text" @click="clearFilters" class="text-primary">{{
-                  t('clear')
-                }}</v-btn>
-              </div>
-              <div class="drawer-form-group">
-                <label class="drawer-label-group">{{ t('fullName') }}</label>
-                <input
-                  type="text"
-                  class="form-input no-focus-border"
-                  placeholder="Driver name"
-                  v-model="filters.name"
-                />
-              </div>
-              <div class="drawer-form-group">
-                <label class="drawer-label-group">{{ t('identityNumber') }}</label>
-                <input
-                  type="text"
-                  class="form-input no-focus-border"
-                  placeholder="Identity Number"
-                  v-model="filters.identityNumber"
-                />
-              </div>
-              <div class="drawer-form-group">
-                <label class="drawer-label-group">{{ t('phoneNumber') }}</label>
-                <input
-                  type="text"
-                  class="form-input no-focus-border"
-                  placeholder="Phone Number"
-                  v-model="filters.phone"
-                />
-              </div>
-              <div class="drawer-form-group">
-                <label class="drawer-label-group">{{ t('status') }}</label>
-                <v-select
-                  v-model="filters.status"
-                  :items="statusOptions"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  class="no-focus-border"
-                />
-              </div>
-              <div class="drawer-form-group">
-                <label class="drawer-label-group">{{ t('available') }}</label>
-                <v-select
-                  v-model="filters.isAvailable"
-                  :items="availabilityItems"
-                  item-title="text"
-                  item-value="value"
-                  :return-object="false"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                />
-              </div>
-              <div class="d-flex justify-space-between mt-4">
-                <v-btn variant="outlined" @click="clearFilters">{{ t('clear') }}</v-btn>
-                <v-btn color="primary" @click="applyFilters">{{ t('apply') }}</v-btn>
-              </div>
-            </v-card-text>
-          </v-card>
-        </v-menu>
-      </div>
-      <!-- End Filter Section -->
+              <v-card-text
+                style="
+                  padding: 10px;
+                  font-size: 14px;
+                  font-weight: 500;
+                  width: 260px;
+                  line-height: 20px;
+                  background-color: #fff;
+                  border: 1px solid #ebebeb;
+                  margin-top: 15px;
+                "
+              >
+                <div class="d-flex justify-space-between align-center mb-2">
+                  <h4 class="text-subtitle-1 font-weight-medium">{{ t('filters') }}</h4>
+                  <v-btn variant="text" @click="clearFilters" class="text-primary">{{
+                    t('clear')
+                  }}</v-btn>
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('fullName') }}</label>
+                  <input
+                    type="text"
+                    class="form-input no-focus-border"
+                    placeholder="Driver name"
+                    v-model="filters.name"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('identityNumber') }}</label>
+                  <input
+                    type="text"
+                    class="form-input no-focus-border"
+                    placeholder="Identity Number"
+                    v-model="filters.identityNumber"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('phoneNumber') }}</label>
+                  <input
+                    type="text"
+                    class="form-input no-focus-border"
+                    placeholder="Phone Number"
+                    v-model="filters.phone"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('status') }}</label>
+                  <v-select
+                    v-model="filters.status"
+                    :items="statusOptions"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    class="no-focus-border"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('available') }}</label>
+                  <v-select
+                    v-model="filters.isAvailable"
+                    :items="availabilityItems"
+                    item-title="text"
+                    item-value="value"
+                    :return-object="false"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                  />
+                </div>
+                <div class="d-flex justify-space-between mt-4">
+                  <v-btn variant="outlined" @click="clearFilters">{{ t('clear') }}</v-btn>
+                  <v-btn color="primary" @click="applyFilters">{{ t('apply') }}</v-btn>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-menu>
+        </div>
+        <!-- End Filter Section -->
         <ServerTable
           :headers="headers"
           :items="workers"
@@ -166,7 +171,7 @@
                   <v-icon>mdi-dots-vertical</v-icon>
                 </v-btn>
               </template>
-              <v-list class="menu-list pa-0 ma-0">
+              <v-list class="menu-list-style pa-0 ma-0">
                 <v-list-item class="menu-item" @click="viewDetails(item)">
                   <v-icon class="mr-2">mdi-eye-outline</v-icon>
                   {{ t('seeDetails') }}
@@ -295,11 +300,7 @@
                     }
                   "
                 />
-                <ActionButton
-                  class="action-Btn"
-                  :buttonText="t('addDriver')"
-                  buttonType="submit"
-                />
+                <ActionButton class="action-Btn" :buttonText="t('addDriver')" buttonType="submit" />
               </div>
             </form>
           </div>
@@ -604,18 +605,15 @@ const phoneWithoutCode = computed({
   get() {
     const phone = selectedWorker.value?.phone || ''
     const dialCode = selectedCountry.value.dialCode || ''
-    return phone.startsWith(dialCode + ' ')
-      ? phone.replace(dialCode + ' ', '')
-      : phone
+    return phone.startsWith(dialCode + ' ') ? phone.replace(dialCode + ' ', '') : phone
   },
   set(newValue) {
     if (selectedWorker.value) {
       const dialCode = selectedCountry.value.dialCode || ''
       selectedWorker.value.phone = `${dialCode} ${newValue}`
     }
-  }
+  },
 })
-
 
 const fetchStats = async () => {
   await workersStore.getWorkersStats()
@@ -723,7 +721,9 @@ function updateWorker(item: any) {
   // editWorker.identityNumber = item.identityNumber || ''
   // editWorker.phone = item.phone || ''
   // editWorker.email = item.email || ''
-  selectCountry(countries.find(country => country.dialCode === item.phone.split(' ')[0]) || countries[0])
+  selectCountry(
+    countries.find((country) => country.dialCode === item.phone.split(' ')[0]) || countries[0],
+  )
   isUpdateDriverDrawerOpen.value = true
 }
 
@@ -811,17 +811,7 @@ onUnmounted(() => {
 })
 </script>
 <style lang="scss" scoped>
-.menu-list {
-  min-width: 140px;
-  background-color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
 
-.menu-item {
-  font-size: 14px;
-  padding: 6px 12px;
-  min-height: unset !important;
-}
 
 .phone-input-wrapper {
   display: flex;

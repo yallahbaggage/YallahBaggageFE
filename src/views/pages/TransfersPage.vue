@@ -226,7 +226,7 @@
                   <v-icon>mdi-dots-vertical</v-icon>
                 </v-btn>
               </template>
-              <v-list class="menu-list pa-0 ma-0">
+              <v-list class="menu-list-style pa-0 ma-0">
                 <v-list-item class="menu-item" @click="viewDetails(item as Transfer)">
                   <v-icon class="mr-2">mdi-eye-outline</v-icon>
                   {{ t('seeDetails') }}

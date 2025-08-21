@@ -62,7 +62,7 @@
                   <v-icon>mdi-dots-vertical</v-icon>
                 </v-btn>
               </template>
-              <v-list class="menu-list pa-0 ma-0">
+              <v-list class="menu-list-style pa-0 ma-0">
                 <v-list class="menu-list pa-0 ma-0">
                   <v-list-item class="menu-item" @click="viewDetails(item)">
                     <v-icon class="mr-2">mdi-eye-outline</v-icon>
@@ -981,18 +981,6 @@ watch([page, itemsPerPage], fetchNotifications)
   letter-spacing: -0.084px;
   color: #5c5c5c;
   margin-bottom: 8px;
-}
-
-.menu-list {
-  min-width: 140px;
-  background-color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.menu-item {
-  font-size: 14px;
-  padding: 6px 12px;
-  min-height: unset !important;
 }
 
 .action-btns {
