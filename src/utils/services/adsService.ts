@@ -7,9 +7,6 @@ class AdsService {
   async getAds(params?: { page?: number; limit?: number }): Promise<any> {
     try {
       const response = await api.get('/ads/getAllAds', { params });
-      // Log the response for debugging
-      console.log('Raw response from API:', response);
-      console.log('Response data:', response.data);
       return response.data;
     } catch (error) {
       throw this.handleError(error as AxiosError<IApiError>);
