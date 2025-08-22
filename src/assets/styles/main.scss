@@ -137,8 +137,11 @@ body {
   flex: 1;
   height: 48px;
   // padding: 10px;
-      margin: 24px 0px;
-
+  margin: 24px 0px;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 28px;
 
   // Add a right border except for the last one
   &:not(:last-child) {
@@ -149,11 +152,28 @@ body {
   }
 }
 
+@media (max-width: 768px) {
+  .cards {
+    display: flex;
+    flex-direction: column; // stack cards vertically on small screens
+    align-items: center; // center align cards
+    justify-content: center; // center justify cards
+    gap: 5px; // adjust gap for better spacing
+  }
+
+  .infoCard {
+    width: 100%; // make cards full width on small screens
+    margin: 12px 0; // adjust margins for better spacing
+    border-right: none; // remove right border on small screens
+    padding-right: 0; // remove right padding on small screens
+  }
+}
+
 .infoHr {
   margin-bottom: 24px;
   // background-color: #ebebeb;
   height: 1px;
-  border: 1px dashed #EBEBEB !important;
+  border: 1px dashed #ebebeb !important;
 }
 
 .drawer-banner {
@@ -684,8 +704,14 @@ body {
   margin-top: 10px !important;
   background-color: #fff !important;
 
-
-  .v-card-text{
+  .v-card-text {
     border: none !important;
+  }
+}
+
+.filter-section,
+.drawer-close {
+  .v-btn.v-btn--density-default {
+    height: 36px !important;
   }
 }

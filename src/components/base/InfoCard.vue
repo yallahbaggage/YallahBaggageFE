@@ -29,8 +29,7 @@ const props = defineProps({
 }
 
 .cardValue{
-  color: var(--text-strong-950, #171717);
-  font-feature-settings: 'ss11' on, 'liga' off, 'calt' off;
+  color: #171717;
   font-family: "Inter Display";
   font-size: 20px;
   font-style: normal;

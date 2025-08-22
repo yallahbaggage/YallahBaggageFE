@@ -18,8 +18,8 @@
           </template>
           <template v-else>
             <slot :name="`cell-${header.key}`" :item="item" :index="index">
-              <div 
-                class="cell-content" 
+              <div
+                class="cell-content"
                 :style="{ maxWidth: props.cellMaxWidth ? `${props.cellMaxWidth}px` : '200px' }"
               >
                 {{ item[header.key as string] }}
@@ -155,17 +155,17 @@ function onPageSizeChange(val: number) {
     th {
       font-weight: 600;
     }
-    
+
     // Ensure table doesn't expand beyond container
     .v-data-table__wrapper {
       overflow-x: auto; // Allow horizontal scroll if needed
     }
   }
-  
+
   :deep(.v-btn--icon.v-btn--density-comfortable) {
     border-radius: 6px !important;
   }
-  
+
   // Cell content truncation - Force single line with ellipsis
   .cell-content {
     max-width: v-bind('props.cellMaxWidth || 200'); // Use prop or default to 200px
@@ -176,7 +176,7 @@ function onPageSizeChange(val: number) {
     line-height: 1.4; // Better line height
     padding: 2px 0; // Add some vertical padding
   }
-  
+
   // Make table cells have consistent width and force single line
   td {
     max-width: 200px; // Use prop or default to 200px
@@ -184,31 +184,36 @@ function onPageSizeChange(val: number) {
     white-space: nowrap !important; // Force no wrapping
     text-overflow: ellipsis !important; // Show ellipsis
   }
-  
+
   // Ensure all table content follows the same rules
   ::v-deep(.v-data-table) {
-    td, th {
+    td,
+    th {
       white-space: nowrap !important; // Force no wrapping on all cells
       overflow: hidden !important; // Hide overflow on all cells
     }
   }
-  
+
   // Responsive table behavior
   @media (max-width: 768px) {
     .cell-content {
-      max-width: v-bind('Math.min((props.cellMaxWidth || 200) * 0.75, 150)'); // 75% of prop value or max 150px
+      max-width: v-bind(
+        'Math.min((props.cellMaxWidth || 200) * 0.75, 150)'
+      ); // 75% of prop value or max 150px
     }
-    
+
     td {
       max-width: v-bind('Math.min((props.cellMaxWidth || 200) * 0.75, 150)');
     }
   }
-  
+
   @media (max-width: 480px) {
     .cell-content {
-      max-width: v-bind('Math.min((props.cellMaxWidth || 200) * 0.5, 100)'); // 50% of prop value or max 100px
+      max-width: v-bind(
+        'Math.min((props.cellMaxWidth || 200) * 0.5, 100)'
+      ); // 50% of prop value or max 100px
     }
-    
+
     td {
       max-width: v-bind('Math.min((props.cellMaxWidth || 200) * 0.5, 100)');
     }
@@ -242,13 +247,33 @@ function onPageSizeChange(val: number) {
 .pagination-row {
   margin-left: $sidebarWidth;
   position: absolute;
-  bottom: 15px;
+  bottom: 24px;
   left: 10px;
   right: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
+// small screens
+@media (max-width: 768px) {
+  .v-table {
+    max-height: calc(100vh - 200px) !important;
+  }
+  .pagination-row {
+    // flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+    margin: 25px;
+  }
+  .pagination-controls {
+    margin-top: 8px;
+  }
+}
+
 .pagination-info {
   color: #888;
   font-size: 15px;
