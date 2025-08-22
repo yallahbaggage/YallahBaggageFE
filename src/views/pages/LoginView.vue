@@ -52,7 +52,7 @@
                     variant="outlined"
                     placeholder="**********"
                     prepend-inner-icon="mdi-lock-outline"
-                    :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                    :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye-outline'"
                     :type="showPassword ? 'text' : 'password'"
                     @click:append-inner="showPassword = !showPassword"
                     class="custom-input"
