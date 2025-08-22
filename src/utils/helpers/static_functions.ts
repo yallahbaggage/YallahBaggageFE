@@ -85,13 +85,13 @@ export const StaticFunctions = {
       return { color: '#f59e0b', backgroundColor: '#eff6ff', textColor: '#ffffff' };
     }
     if (['In_progress','in_progress','Assigned','assigned', 'inprogress'].includes(statusLower)) {
-      return { color: '#3b82f6', backgroundColor: '#dbf4ff', textColor: '#ffffff' };
+      return { color: '#335CFF', backgroundColor: '#EBF1FF', textColor: '#ffffff' };
     }
     if (['Resolved', 'resolved'].includes(statusLower)) {
-      return { color: '#10b981', backgroundColor: '#ecfdf5', textColor: '#ffffff' };
+      return { color: '#1FC16B', backgroundColor: '#E0FAEC', textColor: '#ffffff' };
     }
     if (['Rejected', 'rejected'].includes(statusLower)) {
-      return { color: '#ef4444', backgroundColor: '#fee2e2', textColor: '#ffffff' };
+      return { color: '#FB3748', backgroundColor: '#FFEBEC', textColor: '#ffffff' };
     }
     if (['Closed', 'closed'].includes(statusLower)) {
       return { color: '#6b7280', backgroundColor: '#f3f4f6', textColor: '#ffffff' };
@@ -102,23 +102,23 @@ export const StaticFunctions = {
       return { color: '#FFC107', backgroundColor: '#FFF8D9', textColor: '#000000' };
     }
     if (['OnTheWay', 'ontheway'].includes(statusLower)) {
-      return { color: '#00B894', backgroundColor: '#E6FFF4', textColor: '#000000' };
+      return { color: '#FA7319', backgroundColor: '#FFF3EB', textColor: '#000000' };
     }
     if (['Completed', 'completed'].includes(statusLower)) {
       return { color: '#1fc16b', backgroundColor: '#E9F9EE', textColor: '#ffffff' };
     }
 
     // Notification statuses
-    if (['sent', 'sent'].includes(statusLower)) {
-      return { color: '#10b981', backgroundColor: '#ecfdf5', textColor: '#ffffff' };
+    if (['Sent', 'sent'].includes(statusLower)) {
+      return { color: '#1FC16B', backgroundColor: '#E0FAEC', textColor: '#ffffff' };
     }
     if (['Failed', 'failed'].includes(statusLower)) {
-      return { color: '#ef4444', backgroundColor: '#fee2e2', textColor: '#ffffff' };
+      return { color: '#FB3748', backgroundColor: '#FFEBEC', textColor: '#ffffff' };
     }
 
     // Employee/Driver statuses
     if (['active', 'available'].includes(statusLower)) {
-      return { color: '#10b981', backgroundColor: '#ecfdf5', textColor: '#ffffff' };
+      return { color: '#1FC16B', backgroundColor: '#E0FAEC', textColor: '#ffffff' };
     }
     if (['inactive', 'unavailable'].includes(statusLower)) {
       return { color: '#6b7280', backgroundColor: '#f3f4f6', textColor: '#ffffff' };
@@ -126,7 +126,7 @@ export const StaticFunctions = {
 
     // Banner/Ad statuses
     if (['Active', 'active'].includes(statusLower)) {
-      return { color: '#10b981', backgroundColor: '#ecfdf5', textColor: '#ffffff' };
+      return { color: '#1FC16B', backgroundColor: '#E0FAEC', textColor: '#ffffff' };
     }
     if (['deactive', 'inactive'].includes(statusLower)) {
       return { color: '#6b7280', backgroundColor: '#f3f4f6', textColor: '#ffffff' };
@@ -134,16 +134,16 @@ export const StaticFunctions = {
 
     // Generic statuses
     if (['success', 'success'].includes(statusLower)) {
-      return { color: '#10b981', backgroundColor: '#ecfdf5', textColor: '#ffffff' };
+      return { color: '#1FC16B', backgroundColor: '#E0FAEC', textColor: '#ffffff' };
     }
     if (['error', 'error'].includes(statusLower)) {
-      return { color: '#ef4444', backgroundColor: '#fee2e2', textColor: '#ffffff' };
+      return { color: '#FB3748', backgroundColor: '#FFEBEC', textColor: '#ffffff' };
     }
     if (['warning', 'warning'].includes(statusLower)) {
       return { color: '#f59e0b', backgroundColor: '#eff6ff', textColor: '#ffffff' };
     }
     if (['info', 'info'].includes(statusLower)) {
-      return { color: '#3b82f6', backgroundColor: '#dbf4ff', textColor: '#ffffff' };
+      return { color: '#335CFF', backgroundColor: '#EBF1FF', textColor: '#ffffff' };
     }
 
     // Special statuses
@@ -154,34 +154,34 @@ export const StaticFunctions = {
       return { color: '#335CFF', backgroundColor: '#EBF1FF', textColor: '#ffffff' };
     }
     if (['PROMISE', 'promise'].includes(statusLower)) {
-      return { color: '#10b981', backgroundColor: '#ecfdf5', textColor: '#ffffff' };
+      return { color: '#1FC16B', backgroundColor: '#E0FAEC', textColor: '#ffffff' };
     }
     if (['RESTRUCTURE', 'restructure'].includes(statusLower)) {
-      return { color: '#10b981', backgroundColor: '#ecfdf5', textColor: '#ffffff' };
+      return { color: '#1FC16B', backgroundColor: '#E0FAEC', textColor: '#ffffff' };
     }
     if (['SCHEDULE', 'schedule'].includes(statusLower)) {
-      return { color: '#3b82f6', backgroundColor: '#dbf4ff', textColor: '#ffffff' };
+      return { color: '#335CFF', backgroundColor: '#EBF1FF', textColor: '#ffffff' };
     }
     if (['EXCEPTIONAL', 'exceptional'].includes(statusLower)) {
       return { color: '#8B5CF6', backgroundColor: '#F3E8FF', textColor: '#ffffff' };
     }
     if (['CONTROL', 'control'].includes(statusLower)) {
-      return { color: '#10b981', backgroundColor: '#ecfdf5', textColor: '#ffffff' };
+      return { color: '#1FC16B', backgroundColor: '#E0FAEC', textColor: '#ffffff' };
     }
     if (['NO_INTERVIEW', 'no_interview'].includes(statusLower)) {
-      return { color: '#ef4444', backgroundColor: '#fee2e2', textColor: '#ffffff' };
+      return { color: '#FB3748', backgroundColor: '#FFEBEC', textColor: '#ffffff' };
     }
     if (['YES_INTERVIEW', 'yes_interview'].includes(statusLower)) {
-      return { color: '#10b981', backgroundColor: '#ecfdf5', textColor: '#ffffff' };
+      return { color: '#1FC16B', backgroundColor: '#E0FAEC', textColor: '#ffffff' };
     }
     if (['ESCALATION', 'escalation'].includes(statusLower)) {
       return { color: '#FF9800', backgroundColor: '#FFF4E5', textColor: '#000000' };
     }
     if (['CALL_SUCCESS', 'call_success'].includes(statusLower)) {
-      return { color: '#10b981', backgroundColor: '#ecfdf5', textColor: '#ffffff' };
+      return { color: '#1FC16B', backgroundColor: '#E0FAEC', textColor: '#ffffff' };
     }
     if (['CALL_FAILED', 'call_failed'].includes(statusLower)) {
-      return { color: '#ef4444', backgroundColor: '#fee2e2', textColor: '#ffffff' };
+      return { color: '#FB3748', backgroundColor: '#FFEBEC', textColor: '#ffffff' };
     }
 
     // Default fallback
@@ -216,12 +216,12 @@ export const StaticFunctions = {
     const expire = new Date(date);
 
     if (expire > now) {
-      return { color: '#10b981', backgroundColor: '#ecfdf5', textColor: '#ffffff' }; // green - valid
+      return { color: '#1FC16B', backgroundColor: '#E0FAEC', textColor: '#ffffff' }; // green - valid
     }
     if (expire.toDateString() === now.toDateString()) {
       return { color: '#6b7280', backgroundColor: '#f3f4f6', textColor: '#ffffff' }; // grey - expiring today
     }
-    return { color: '#ef4444', backgroundColor: '#fee2e2', textColor: '#ffffff' }; // red - expired
+    return { color: '#FB3748', backgroundColor: '#FFEBEC', textColor: '#ffffff' }; // red - expired
   },
 
   /**
