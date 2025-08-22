@@ -141,14 +141,24 @@ function onPageSizeChange(val: number) {
 .server-table {
   ::v-deep(.v-data-table) {
     font-size: 14px;
+    table-layout: fixed; // Force fixed table layout for consistent column widths
 
     td,
     th {
-      padding: 12px;
+      // padding: 12px;
+      white-space: nowrap !important; // Force no wrapping
+      overflow: hidden !important; // Hide overflow
+      text-overflow: ellipsis !important; // Show ellipsis
+      max-width: 200px !important; // Set a default width for all cells
     }
 
     th {
       font-weight: 600;
+    }
+    
+    // Ensure table doesn't expand beyond container
+    .v-data-table__wrapper {
+      overflow-x: auto; // Allow horizontal scroll if needed
     }
   }
   
@@ -156,18 +166,32 @@ function onPageSizeChange(val: number) {
     border-radius: 6px !important;
   }
   
-  // Cell content truncation
+  // Cell content truncation - Force single line with ellipsis
   .cell-content {
     max-width: v-bind('props.cellMaxWidth || 200'); // Use prop or default to 200px
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: nowrap !important; // Force no wrapping
+    overflow: hidden !important; // Hide overflow
+    text-overflow: ellipsis !important; // Show ellipsis
+    display: block !important; // Ensure block display
+    line-height: 1.4; // Better line height
+    padding: 2px 0; // Add some vertical padding
+    max-width: v-bind('props.cellMaxWidth || 200'); // Use prop or default to 200px
   }
   
-  // Make table cells have consistent width
+  // Make table cells have consistent width and force single line
   td {
-    max-width: v-bind('props.cellMaxWidth || 200'); // Use prop or default to 200px
-    overflow: hidden;
+    max-width: 200px; // Use prop or default to 200px
+    overflow: hidden !important; // Hide overflow
+    white-space: nowrap !important; // Force no wrapping
+    text-overflow: ellipsis !important; // Show ellipsis
+  }
+  
+  // Ensure all table content follows the same rules
+  ::v-deep(.v-data-table) {
+    td, th {
+      white-space: nowrap !important; // Force no wrapping on all cells
+      overflow: hidden !important; // Hide overflow on all cells
+    }
   }
   
   // Responsive table behavior
