@@ -8,10 +8,15 @@
     <div class="page-content">
       <!-- Loading state for initial page load -->
       <div v-if="initialLoading" class="loading-state">
-        <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
         <p>{{ t('loading') }}</p>
       </div>
-      
+
       <!-- Content when loaded -->
       <div v-else>
         <div class="cards">
@@ -26,7 +31,7 @@
           </InfoCard>
         </div>
         <hr class="infoHr" />
-        
+
         <!-- Filter Section -->
         <div class="filter-section" style="margin-bottom: 16px; position: relative">
           <v-menu
@@ -37,7 +42,12 @@
             class="filter-menu"
           >
             <template #activator="{ props }">
-              <v-btn v-bind="props" outline class="text-capitalize" prepend-icon="mdi-filter-variant">
+              <v-btn
+                v-bind="props"
+                outline
+                class="text-capitalize"
+                prepend-icon="mdi-filter-variant"
+              >
                 {{ t('filters') }}
               </v-btn>
             </template>
@@ -62,7 +72,9 @@
               >
                 <div class="d-flex justify-space-between align-center mb-2">
                   <h4 class="text-subtitle-1 font-weight-medium">{{ t('filters') }}</h4>
-                  <v-btn variant="text" @click="clearFilters" class="text-primary">{{ t('clear') }}</v-btn>
+                  <v-btn variant="text" @click="clearFilters" class="text-primary">{{
+                    t('clear')
+                  }}</v-btn>
                 </div>
                 <div class="drawer-form-group">
                   <label class="drawer-label-group">{{ t('searchComplaintsTitle') }}</label>
@@ -136,7 +148,7 @@
             </v-card>
           </v-menu>
         </div>
-        
+
         <ServerSideTable
           v-model:page="page"
           v-model:items-per-page="itemsPerPage"
@@ -394,7 +406,7 @@
                             </template>
                             <v-list-item-title>{{ t(status.label) }}</v-list-item-title>
                             <template #append>
-                              <v-icon v-if="status.label === editableStatus" color="green"
+                              <v-icon size="16" v-if="status.label === editableStatus" color="green"
                                 >mdi-check-circle</v-icon
                               >
                             </template>
@@ -440,14 +452,21 @@
                       </v-timeline-item>
 
                       <v-timeline-item
-                        v-if="selectedComplaint?.status === 'closed' || selectedComplaint?.status === 'resolved'"
+                        v-if="
+                          selectedComplaint?.status === 'closed' ||
+                          selectedComplaint?.status === 'resolved'
+                        "
                         dot-color="white"
                         icon="mdi-check"
                         icon-color="success"
                       >
                         <div class="timeline-item-content">
                           <p>{{ t('statusHasChanged') }}</p>
-                          <span>{{ selectedComplaint?.closedAt ? formatDate(selectedComplaint.closedAt) : 'N/A' }}</span>
+                          <span>{{
+                            selectedComplaint?.closedAt
+                              ? formatDate(selectedComplaint.closedAt)
+                              : 'N/A'
+                          }}</span>
                         </div>
                         <p class="status-desc">
                           {{
@@ -510,7 +529,12 @@
               @button-pressed="() => (isDetailsComplaintDrawerOpen = false)"
               class="action-Btn"
             />
-            <ActionButton v-on:button-pressed="()=>saveStatus()" class="action-Btn" :buttonText="t('saveStatus')" buttonType="submit" />
+            <ActionButton
+              v-on:button-pressed="() => saveStatus()"
+              class="action-Btn"
+              :buttonText="t('saveStatus')"
+              buttonType="submit"
+            />
           </div>
           <div v-if="tab === 'chat'" class="chat-action-btns">
             <input
@@ -637,10 +661,10 @@ const clearFilters = async () => {
     status: null,
     // category: null,
     // priority: null,
-   createdAt: {
+    createdAt: {
       from: '',
       to: '',
-    }, 
+    },
   }
   page.value = 1
   await fetchComplaints({
@@ -712,9 +736,11 @@ const saveStatus = async () => {
   if (!selectedComplaint.value) return
 
   try {
-    await complaintsStore.updateComplaint(selectedComplaint.value._id, {status: editableStatus.value})
+    await complaintsStore.updateComplaint(selectedComplaint.value._id, {
+      status: editableStatus.value,
+    })
     selectedComplaint.value.status = editableStatus.value // Update local state
-    isDetailsComplaintDrawerOpen.value = false 
+    isDetailsComplaintDrawerOpen.value = false
     toastSuccessMessage(t('toastUpdateStatusTitle'), t('toastUpdateStatusDescription'))
   } catch (error) {
     console.error('Error updating status:', error)
@@ -722,11 +748,11 @@ const saveStatus = async () => {
 }
 
 function statusColor(status: string): string {
-  return StaticFunctions.getStatusColorOnly(status);
+  return StaticFunctions.getStatusColorOnly(status)
 }
 
 const statusBg = (status: string) => {
-  return StaticFunctions.getStatusBackgroundColor(status);
+  return StaticFunctions.getStatusBackgroundColor(status)
 }
 
 function scrollToBottom() {
@@ -807,7 +833,7 @@ watch([page, itemsPerPage], () => {
     page: String(page.value),
     limit: String(itemsPerPage.value),
   }
-  
+
   // Preserve current filters when pagination changes
   if (filters.value.search) params.search = filters.value.search
   if (filters.value.status) params.status = filters.value.status
@@ -819,7 +845,7 @@ watch([page, itemsPerPage], () => {
       to: filters.value.createdAt.to,
     }
   }
-  
+
   fetchComplaints(params)
 })
 
@@ -1061,7 +1087,7 @@ watch(
   .filter-content .v-col {
     margin-bottom: 8px;
   }
-  
+
   .filter-content .v-row:last-child {
     margin-top: 16px;
   }
@@ -1072,13 +1098,15 @@ watch(
     font-size: 14px;
     padding: 12px 16px;
   }
-  
+
   .filter-content {
     padding: 16px;
   }
 }
 
-.v-menu > .v-overlay__content > .v-card, .v-menu > .v-overlay__content > .v-sheet, .v-menu > .v-overlay__content > .v-list {
+.v-menu > .v-overlay__content > .v-card,
+.v-menu > .v-overlay__content > .v-sheet,
+.v-menu > .v-overlay__content > .v-list {
   width: 224px !important;
   // gap: 4px !important;
   display: flex !important;
@@ -1086,9 +1114,9 @@ watch(
   padding: 8px !important;
   background-color: #fff !important;
   border-radius: 16px !important;
-  box-shadow: 0 16px 32px -12px rgba(14, 18, 27, 0.10);
+  box-shadow: 0 16px 32px -12px rgba(14, 18, 27, 0.1);
 
-  .v-list-item--density-default.v-list-item--one-line{
+  .v-list-item--density-default.v-list-item--one-line {
     height: 36px !important;
     min-height: 36px !important;
     border-radius: 10px !important;
