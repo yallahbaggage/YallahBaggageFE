@@ -121,7 +121,7 @@ const onButtonPressed = () => {
 
 .action-text-button {
   border: 1px solid var(--alternate);
-  box-shadow: $shadow;
+  // box-shadow: $shadow;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -131,7 +131,7 @@ const onButtonPressed = () => {
 
 .action-icon-button {
   padding: 15px;
-  box-shadow: $shadow;
+  // box-shadow: $shadow;
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
@@ -142,7 +142,7 @@ const onButtonPressed = () => {
   display: flex;
   align-items: center;
   // border: 1px solid var(--alternate);
-  box-shadow: $shadow;
+  // box-shadow: $shadow;
   font-size: 14px !important;
   font-style: normal;
   font-weight: 500;
