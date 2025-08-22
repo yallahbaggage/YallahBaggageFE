@@ -563,6 +563,7 @@ import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
 import DateTimePicker from '@/components/base/DateTimePicker.vue'
 import { useUserStore } from '@/stores/modules/userStore'
 import { IUser } from '@/models/user'
+import { StaticFunctions } from '@/utils/helpers/static_functions'
 
 const { t } = useI18n()
 const store = useNotificationsStore()
@@ -908,16 +909,7 @@ function deleteNotification(item: any) {
 }
 
 function statusColor(status: string): string {
-  switch (status) {
-    case 'sent':
-      return '#10b981' // green
-    case 'failed':
-      return '#ef4444' // red
-    case 'pending':
-      return '#f59e0b' // yellow
-    default:
-      return '#9ca3af' // fallback gray
-  }
+  return StaticFunctions.getStatusColorOnly(status)
 }
 
 const fetchNotifications = async () => {

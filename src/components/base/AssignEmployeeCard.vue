@@ -26,6 +26,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue3-i18n'
+import { StaticFunctions } from '@/utils/helpers/static_functions'
 
 const { t } = useI18n()
 const props = defineProps<{
@@ -44,18 +45,7 @@ const initials = props.fullName
 const onAssign = () => emit('assign')
 
 function statusColor(status: string): string {
-  switch (status) {
-    case 'OnTheWay':
-      return '#f59e0b' // amber
-    case 'Assigned':
-      return '#3b82f6' // blue
-    case 'Available':
-      return '#10b981' // green
-    case 'OnLeave':
-      return '#ef4444' // red
-    default:
-      return '#9ca3af' // fallback gray
-  }
+  return StaticFunctions.getStatusColorOnly(status)
 }
 </script>
 

@@ -502,6 +502,7 @@ import {
 } from '@/utils/helpers/notification'
 import { Country, countries } from '@/utils/constants/countries'
 import UserIcon from '@/assets/images/users.svg'
+import { StaticFunctions } from '@/utils/helpers/static_functions'
 
 const { t } = useI18n()
 const isDriverDrawerOpen = ref(false)
@@ -696,17 +697,7 @@ const onAddButtonPressed = async () => {
 }
 
 function statusColor(status: string) {
-  return (
-    {
-      New: 'green',
-      Assigned: 'blue',
-      OnTheWay: 'orange',
-      Delivered: 'grey',
-      Cancelled: 'red',
-      Available: 'green',
-      default: 'primary',
-    }[status] ?? 'primary'
-  )
+  return StaticFunctions.getStatusColorOnly(status);
 }
 
 function viewDetails(item: any) {

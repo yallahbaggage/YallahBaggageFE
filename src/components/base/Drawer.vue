@@ -48,6 +48,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, Ref, ref, watch } from 'vue'
 import { useI18n } from 'vue3-i18n'
+import { StaticFunctions } from '@/utils/helpers/static_functions'
 
 const { t } = useI18n()
 
@@ -95,47 +96,11 @@ const closeDrawer = () => {
 }
 
 function statusColor(status: string): string {
-  switch (status) {
-    case 'pending':
-    case 'onTheWay':
-    case 'OnTheWay':
-      return '#f59e0b'
-    case 'in_progress':
-    case 'Assigned':
-      return '#3b82f6'
-    case 'resolved':
-    case 'success':
-    case 'completed':
-    case 'available':
-    case 'Available':
-    case 'sent':
-      return '#10b981'
-    case 'rejected':
-    case 'failed':
-    case 'OnLeave':
-      return '#ef4444'
-    case 'closed':
-      return '#6b7280'
-    default:
-      return '#9ca3af'
-  }
+  return StaticFunctions.getStatusColorOnly(status)
 }
 
 function statusBg(status: string): string {
-  switch (status) {
-    case 'pending':
-      return '#eff6ff'
-    case 'in_progress':
-      return '#dbf4ff'
-    case 'resolved':
-      return '#ecfdf5'
-    case 'rejected':
-      return '#fee2e2'
-    case 'closed':
-      return '#f3f4f6'
-    default:
-      return '#f3f4f6'
-  }
+  return StaticFunctions.getStatusBackgroundColor(status)
 }
 
 onMounted(() => {

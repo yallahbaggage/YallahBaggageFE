@@ -755,6 +755,7 @@ import AssignEmployeeCard from '@/components/base/AssignEmployeeCard.vue'
 import { useWorkersStore } from '@/stores/modules/workers'
 import { IWorker } from '@/models/worker'
 import { toastErrorMessage, toastSuccessMessage } from '@/utils/helpers/notification'
+import { StaticFunctions } from '@/utils/helpers/static_functions'
 
 const { t } = useI18n()
 
@@ -842,47 +843,11 @@ const selectStatus = (status: string) => {
 }
 
 const statusColor = (status: string): string => {
-  switch (status) {
-    case 'pending':
-      return '#FF9800' // amber
-    case 'in_progress':
-      return '#335CFF' // blue
-    case 'in_transit':
-      return '#FFC107' // amber
-    case 'onTheWay':
-      return '#00B894' // teal
-    case 'resolved':
-    case 'completed':
-      return '#1fc16b' // green
-    case 'rejected':
-      return '#D32F2F' // red
-    case 'closed':
-      return '#616161' // gray
-    default:
-      return '#757575' // fallback gray
-  }
+  return StaticFunctions.getStatusColorOnly(status)
 }
 
 const statusBg = (status: string): string => {
-  switch (status) {
-    case 'pending':
-      return '#FFF4E5' // soft orange
-    case 'in_progress':
-      return '#EBF1FF' // light blue
-    case 'in_transit':
-      return '#FFF8D9' // pale yellow
-    case 'onTheWay':
-      return '#E6FFF4' // soft teal green
-    case 'resolved':
-    case 'completed':
-      return '#E9F9EE' // soft green
-    case 'rejected':
-      return '#FFE5E5' // light red
-    case 'closed':
-      return '#F0F0F0' // neutral gray
-    default:
-      return '#F5F5F5' // fallback gray
-  }
+  return StaticFunctions.getStatusBackgroundColor(status)
 }
 
 const saveStatus = async () => {

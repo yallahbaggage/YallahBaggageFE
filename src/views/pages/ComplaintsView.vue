@@ -556,6 +556,7 @@ import ActionButton from '@/components/base/ActionButton.vue'
 import { toastDeleteMessage, toastSuccessMessage } from '@/utils/helpers/notification'
 import ConfirmPopupDialog from '@/components/base/ConfirmPopupDialog.vue'
 import { formatDate } from '@/utils/helpers/date-helper'
+import { StaticFunctions } from '@/utils/helpers/static_functions'
 
 const { t } = useI18n()
 const complaintsStore = useComplaintsStore()
@@ -721,37 +722,11 @@ const saveStatus = async () => {
 }
 
 function statusColor(status: string): string {
-  switch (status) {
-    case 'pending':
-      return '#f59e0b' // amber
-    case 'in_progress':
-      return '#3b82f6' // blue
-    case 'resolved':
-      return '#10b981' // green
-    case 'rejected':
-      return '#ef4444' // red
-    case 'closed':
-      return '#6b7280' // gray
-    default:
-      return '#9ca3af' // fallback gray
-  }
+  return StaticFunctions.getStatusColorOnly(status);
 }
 
 const statusBg = (status: string) => {
-  switch (status) {
-    case 'pending':
-      return '#eff6ff'
-    case 'in_progress':
-      return '#dbf4ff' // light blue
-    case 'resolved':
-      return '#ecfdf5'
-    case 'rejected':
-      return '#fee2e2' // red
-    case 'closed':
-      return '#f3f4f6' // gray
-    default:
-      return '#f3f4f6'
-  }
+  return StaticFunctions.getStatusBackgroundColor(status);
 }
 
 function scrollToBottom() {

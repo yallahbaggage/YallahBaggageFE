@@ -535,6 +535,7 @@ import {
 } from '@/utils/helpers/notification'
 import { formatDateWithoutTime } from '@/utils/helpers/date-helper'
 import BannerIcon from '@/assets/images/banner.svg'
+import { StaticFunctions } from '@/utils/helpers/static_functions'
 
 const { t } = useI18n()
 const isDetailsDrawerOpen = ref(false)
@@ -811,13 +812,8 @@ const onUpdateButtonPressed = async () => {
   fetchStats()
 }
 
-const statusColorAccordingToExpireDate = (date: string | Date): 'green' | 'red' | 'grey' => {
-  const now = new Date()
-  const expire = new Date(date)
-
-  if (expire > now) return 'green'
-  if (expire.toDateString() === now.toDateString()) return 'grey'
-  return 'red'
+const statusColorAccordingToExpireDate = (date: string | Date): string => {
+  return StaticFunctions.getStatusColorByExpireDateOnly(date)
 }
 
 function getStatusAccordingToExpireDate(expireDate: string | Date) {
