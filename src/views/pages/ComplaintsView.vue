@@ -857,15 +857,6 @@ watch(
 )
 </script>
 <style scoped lang="scss">
-.status-select {
-  min-width: 120px;
-  max-width: 180px;
-  margin-left: 8px;
-}
-.status-select-menu {
-  border-radius: 8px;
-  overflow: hidden;
-}
 .chat-action-btns {
   padding-top: 15px;
   border-top: 1px solid rgb(var(--v-theme-lightGray));
