@@ -41,7 +41,7 @@
           <template #cell-image="{ item }">
             <img
               :src="item.image"
-              style="max-width: 78px;align-self: center;margin-top:5px; width: 78px; max-height: 40px; object-fit: cover"
+              style="max-width: 78px;align-self: center;margin-top:5px;border-radius: 2px; width: 78px; max-height: 40px; object-fit: cover"
             />
           </template>
           <template #cell-title="{ item }">
