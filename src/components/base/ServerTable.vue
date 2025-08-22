@@ -175,7 +175,6 @@ function onPageSizeChange(val: number) {
     display: block !important; // Ensure block display
     line-height: 1.4; // Better line height
     padding: 2px 0; // Add some vertical padding
-    max-width: v-bind('props.cellMaxWidth || 200'); // Use prop or default to 200px
   }
   
   // Make table cells have consistent width and force single line
