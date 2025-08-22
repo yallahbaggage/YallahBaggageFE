@@ -1032,18 +1032,20 @@ watch(
 
 .status-btn {
   text-transform: none;
-  padding: 6px 12px;
+  padding: 4px 8px 4px 4px;
   font-weight: 500;
   font-size: 14px;
   display: flex;
   align-items: center;
+  height: 24px !important;
+  border-radius: 6px !important;
 }
 .status-dot {
   height: 8px;
   width: 8px;
   border-radius: 50%;
   display: inline-block;
-  margin-right: 8px;
+  margin: 8px;
 }
 .status-list {
   min-width: 200px;
