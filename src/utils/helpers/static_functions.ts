@@ -82,7 +82,7 @@ export const StaticFunctions = {
 
     // Complaint statuses
     if (['Pending', 'pending'].includes(statusLower)) {
-      return { color: '#f59e0b', backgroundColor: '#eff6ff', textColor: '#ffffff' };
+      return { color: '#f59e0b', backgroundColor: '#FFF3EB', textColor: '#ffffff' };
     }
     if (['In_progress','in_progress','Assigned','assigned', 'inprogress'].includes(statusLower)) {
       return { color: '#335CFF', backgroundColor: '#EBF1FF', textColor: '#ffffff' };
@@ -140,7 +140,7 @@ export const StaticFunctions = {
       return { color: '#FB3748', backgroundColor: '#FFEBEC', textColor: '#ffffff' };
     }
     if (['warning', 'warning'].includes(statusLower)) {
-      return { color: '#f59e0b', backgroundColor: '#eff6ff', textColor: '#ffffff' };
+      return { color: '#f59e0b', backgroundColor: '#FFF3EB', textColor: '#ffffff' };
     }
     if (['info', 'info'].includes(statusLower)) {
       return { color: '#335CFF', backgroundColor: '#EBF1FF', textColor: '#ffffff' };
