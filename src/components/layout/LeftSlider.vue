@@ -231,13 +231,15 @@ const todaysTransfers = computed(() => {
   display: flex;
   gap: 10px !important;
   text-transform: capitalize;
-  color: #5C5C5C;
+  color: #5c5c5c;
 }
 
 .lightgray {
   color: #ebebeb;
   border-color: #ebebeb;
-  background-color: #ebebeb; height: 1px; border: 0;
+  background-color: #ebebeb;
+  height: 1px;
+  border: 0;
 }
 
 .header-logo {
@@ -288,7 +290,7 @@ const todaysTransfers = computed(() => {
   border-right: 1px solid #ebebeb;
   width: 272px;
   // RTL Support
-  [dir="rtl"] & {
+  [dir='rtl'] & {
     border-radius: 10px 0 0 10px;
     border-right: none;
     border-left: 1px solid #e0e0e0;
@@ -316,7 +318,7 @@ li {
 .menu-item,
 .logout-item {
   &:hover {
-    background-color: #F7F7F7 !important;
+    background-color: #f7f7f7 !important;
   }
   margin-bottom: 2px;
 }
@@ -326,7 +328,7 @@ li {
   font-size: $normalSize !important;
   color: inherit;
   text-decoration: none;
-  color: #5C5C5C;
+  color: #5c5c5c;
 }
 
 .menu-item {
@@ -350,10 +352,15 @@ li {
 }
 
 .active {
-  font-weight: $font-weight-bold;
-  background-color: #F7F7F7 !important;
+  font-weight: $font-weight-regular;
+  background-color: #f7f7f7 !important;
   border-radius: 10px;
   color: black;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.084px;
 }
 
 .icon {
@@ -382,9 +389,9 @@ li {
   margin-top: 4px;
   padding: 0 0 0 8px;
   box-shadow: none;
-  
+
   // RTL Support
-  [dir="rtl"] & {
+  [dir='rtl'] & {
     margin-left: 0;
     margin-right: 8px;
     padding: 0 8px 0 0;
@@ -416,7 +423,7 @@ li {
     color: rgb(var(--v-theme-black));
     margin-left: 10px;
     // RTL Support
-    [dir="rtl"] & {
+    [dir='rtl'] & {
       margin-left: 0;
       margin-right: 10px;
     }
@@ -427,9 +434,9 @@ li {
     margin-left: 5px;
     vertical-align: middle; /* Align with text */
     color: rgb(var(--v-theme-primary)); /* Green color for verified icon */
-    
+
     // RTL Support
-    [dir="rtl"] & {
+    [dir='rtl'] & {
       margin-left: 0;
       margin-right: 5px;
     }
@@ -441,7 +448,7 @@ li {
     width: 100%; /* Take full width on a new line */
     margin-left: 10px; /* Align with username */
     // RTL Support
-    [dir="rtl"] & {
+    [dir='rtl'] & {
       margin-left: 0;
       margin-right: 10px;
     }
@@ -452,9 +459,9 @@ li {
     right: -50px;
     color: #9e9e9e;
     margin-top: 15px;
-    
+
     // RTL Support
-    [dir="rtl"] & {
+    [dir='rtl'] & {
       right: auto;
       left: -50px;
     }
