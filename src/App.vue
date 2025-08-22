@@ -96,7 +96,7 @@ onMounted(async () => {
     flex-grow: 1;
     overflow: auto;
     margin-left: $sidebarWidth;
-    padding: 20px;
+    padding: 0px 32px;
   }
 
   &:not(.logged-in) {

@@ -2,10 +2,10 @@
   <div class="base-header">
     <div class="header-left-content">
       <div class="page-icon-wrapper" v-if="pageIcon">
-        <v-icon>{{ pageIcon }}</v-icon>
+        <v-icon size="24">{{ pageIcon }}</v-icon>
       </div>
       <div class="page-icon-wrapper" v-if="pageImage">
-        <img class="logo-img" :src="pageImage"/>
+        <img width="24" height="24" class="logo-img" :src="pageImage"/>
       </div>
 
       <div class="page-text-content">
@@ -22,7 +22,7 @@
         class="menu-link"
         active-class="active"
       >
-        <v-icon class="action-icon">mdi-bell-outline</v-icon>
+        <v-icon size="20" class="action-icon">mdi-bell-outline</v-icon>
       </router-link>
       <template v-if="props.showButton">
         <ActionButton
@@ -86,12 +86,13 @@ const hideIconIfPageRouteNotification = computed(() => route.path === '/notifica
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 10px;
+  // padding: 12px 10px;
   background-color: #ffffff;
-  border-radius: $x-small;
-  margin-bottom: 12px;
+  // border-radius: $x-small;
+  // margin-bottom: 12px;
   width: 100%;
-  border-bottom: 1px solid $primaryBorderColor;
+  height: 88px; /* Adjusted height to match the image */
+  border-bottom: 1px solid #EBEBEB;
 }
 
 .header-left-content {
@@ -111,6 +112,7 @@ const hideIconIfPageRouteNotification = computed(() => route.path === '/notifica
   .v-icon {
     color: #4a4a4a; // Adjust icon color as needed
     font-size: 24px; // Adjust icon size
+    
   }
 }
 

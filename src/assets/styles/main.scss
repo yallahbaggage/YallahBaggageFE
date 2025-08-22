@@ -128,30 +128,32 @@ body {
 
 .cards {
   display: flex;
-  flex-wrap: nowrap; // no wrapping to keep separators aligned
+  flex-wrap: wrap; // wrapping to keep separators aligned
   justify-content: center;
-  gap: 50px;
+  gap: 56px;
 }
 
 .infoCard {
   flex: 1;
-  height: 50px;
-  padding: 10px;
+  height: 48px;
+  // padding: 10px;
+      margin: 24px 0px;
+
 
   // Add a right border except for the last one
   &:not(:last-child) {
     border-right: 1px solid #f7f7f7;
     margin-right: 20px;
     padding-right: 20px;
+    margin: 24px 0px;
   }
 }
 
 .infoHr {
-  text-decoration: dotted;
-  margin: 20px 0;
-  background-color: #ebebeb;
+  margin-bottom: 24px;
+  // background-color: #ebebeb;
   height: 1px;
-  border: 0;
+  border: 1px dashed #EBEBEB !important;
 }
 
 .drawer-banner {
