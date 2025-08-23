@@ -23,9 +23,9 @@
     >
       {{ t('assign') }}
     </button>
-    <v-chip v-else :color="statusColor(status)" text-color="white" medium>
-      <v-icon size="12.728px" :style="{ color: statusColor(status), 'margin-right':'6px' }"> mdi-check </v-icon>
-      {{ t(status) ?? 'available' }}
+    <v-chip v-else :color="statusColor('assigned')" text-color="white" medium>
+      <v-icon size="12.728px" :style="{ color: statusColor('assigned'), 'margin-right':'6px' }"> mdi-check </v-icon>
+      {{ t('assigned') ?? 'available' }}
     </v-chip>
   </div>
 </template>
