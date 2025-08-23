@@ -246,8 +246,8 @@ const todaysTransfers = computed(() => {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 16px 0;
-  margin-bottom: 20px;
+  padding: 8px 0;
+  // margin-bottom: 20px;
   .logo-img {
     width: 40px;
     height: 40px;
@@ -267,14 +267,15 @@ const todaysTransfers = computed(() => {
   display: flex;
   align-items: center;
   gap: 8px;
+  height: 36px !important;
 }
 
 .main-section-title {
   font-size: 12px;
-  color: #bdbdbd;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  padding-left: 16px;
+  color: #A3A3A3;
+  margin-top: 48px;
+  // margin-bottom: 10px;
+  // padding-left: 16px;
   letter-spacing: 1px;
   font-weight: 600;
 }
@@ -294,6 +295,10 @@ const todaysTransfers = computed(() => {
     border-radius: 10px 0 0 10px;
     border-right: none;
     border-left: 1px solid #e0e0e0;
+  }
+
+  .v-list-item--density-default.v-list-item--one-line{
+    min-height: 36px !important;
   }
 }
 
@@ -321,6 +326,8 @@ li {
     background-color: #f7f7f7 !important;
   }
   margin-bottom: 2px;
+  transition: all 0.2s ease;
+  height: 36px !important;
 }
 
 .menu-link,
@@ -329,21 +336,23 @@ li {
   color: inherit;
   text-decoration: none;
   color: #5c5c5c;
+  
 }
 
 .menu-item {
   display: flex;
   align-items: center;
   // justify-content: center;
-  padding: 12px 16px;
+  padding: 8px 12px;
   border-radius: 8px;
   font-size: $normalSize !important;
-  gap: 24px;
+  gap: 8px;
   cursor: pointer;
   justify-content: space-between;
   transition: background 0.15s;
   margin-bottom: 2px;
   transition: all 0.2s ease;
+  height: 36px;
 
   img {
     width: 24px;
@@ -480,6 +489,7 @@ li {
   border: none;
   color: inherit;
   padding: 16px;
+  height: 36px;
 }
 
 .link-logo {
