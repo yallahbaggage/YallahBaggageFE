@@ -161,7 +161,7 @@ watch(
 .drawer-title-text {
   color: var(--text-strong-950, #171717);
   font-feature-settings: 'ss11' on, 'liga' off, 'calt' off;
-  font-family: Inter;
+    font-family: 'Inter Variable', Inter, system-ui, sans-serif;
   font-size: 18px;
   font-weight: 500;
   line-height: 24px;
@@ -174,7 +174,8 @@ watch(
   font-feature-settings: 'ss11' on, 'liga' off, 'calt' off;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-family: Inter;
+    font-family: 'Inter Variable', Inter, system-ui, sans-serif;
+
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;

@@ -965,7 +965,7 @@ watch([page, itemsPerPage], fetchNotifications)
 }
 
 .notification-key {
-  font-family: Inter;
+  font-family: 'Inter Variable', Inter, system-ui, sans-serif;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

@@ -171,7 +171,13 @@
             }}</span>
             <v-btn
               class="text-capitalize assign-button btn-border"
-              v-if="!item?.worker?.name && !item.workerId?.name && item?.status !== 'cancelled' && item?.status !== 'rejected' && item?.status !== 'completed'"
+              v-if="
+                !item?.worker?.name &&
+                !item.workerId?.name &&
+                item?.status !== 'cancelled' &&
+                item?.status !== 'rejected' &&
+                item?.status !== 'completed'
+              "
               :style="{ color: '#5C5C5C' }"
               @click="() => assignEmployee(item as Transfer)"
             >
@@ -180,7 +186,9 @@
             </v-btn>
           </template>
           <template #cell-customer="{ item }">
-            <span class="name-bold">{{ item?.newContact?.name ?? item?.user?.name ?? item.userId?.name }}</span>
+            <span class="name-bold">{{
+              item?.newContact?.name ?? item?.user?.name ?? item.userId?.name
+            }}</span>
           </template>
           <template #cell-status="{ item }">
             <v-chip
@@ -230,9 +238,15 @@
                   <v-icon class="mr-2">mdi-eye-outline</v-icon>
                   {{ t('seeDetails') }}
                 </v-list-item>
-                <v-list-item 
-                  v-if="item?.status !== 'cancelled' && item?.status !== 'rejected' && item?.status !== 'completed'"
-                class="menu-item" @click="assignEmployee(item as Transfer)">
+                <v-list-item
+                  v-if="
+                    item?.status !== 'cancelled' &&
+                    item?.status !== 'rejected' &&
+                    item?.status !== 'completed'
+                  "
+                  class="menu-item"
+                  @click="assignEmployee(item as Transfer)"
+                >
                   <v-icon class="mr-2">mdi-account-outline</v-icon>
                   {{ t('assignChangeStaff') }}
                 </v-list-item>
@@ -306,7 +320,7 @@
         <!-- Details Drawer -->
         <Drawer
           :isOpen="isDetailsTransfersDrawerOpen"
-          :title="'Transfer' + ' ' + '#' + selectedTransfer?._id.substring(0, 10)"
+          :title="'Transfer' + ' ' + '#' + selectedTransfer?._id.substring(0, 5)"
           :desc="`${selectedTransfer?.createdAt ? formatDateWithoutTime(selectedTransfer.createdAt) : ''} - ${
             selectedTransfer?.totalAmount
               ? (selectedTransfer.totalAmount * 1.02).toFixed(2)
@@ -442,15 +456,15 @@
                                 <p class="drawer-key">{{ t('contactPreference') }}</p>
                                 <p class="drawer-value">
                                   <template v-if="preferredInfo === 'whatsapp'">
-                                    <v-icon color="success">mdi-whatsapp</v-icon>
+                                    <v-icon size="20" color="success">mdi-whatsapp</v-icon>
                                     {{ preferredInfo }}
                                   </template>
                                   <template v-else-if="preferredInfo === 'email'">
-                                    <v-icon color="primary">mdi-email</v-icon>
+                                    <v-icon size="20" color="primary">mdi-email</v-icon>
                                     {{ preferredInfo }}
                                   </template>
                                   <template v-else-if="preferredInfo === 'call'">
-                                    <v-icon color="error">mdi-phone</v-icon>
+                                    <v-icon size="20" color="error">mdi-phone</v-icon>
                                     {{ preferredInfo }}
                                   </template>
                                   <template v-else-if="preferredInfo === 'sms'">
@@ -638,8 +652,11 @@
                             dot-color="white"
                             icon="mdi-cancel"
                             icon-color="red"
-                            v-if="selectedTransfer?.status === 'cancelled' && selectedTransfer?.cancelledAt"
-                            >
+                            v-if="
+                              selectedTransfer?.status === 'cancelled' &&
+                              selectedTransfer?.cancelledAt
+                            "
+                          >
                             <div class="timeline-item-content">
                               <h4>{{ t('transferCancelled') }}</h4>
                               <span>{{ formatDate(selectedTransfer?.cancelledAt || '') }}</span>
@@ -1065,7 +1082,7 @@ function sendWhatsappToWorker(worker: IWorker, transfer: Transfer) {
   const itemsSection = transfer.items
     .map((item, idx) => {
       const validImages = (item.images || []).filter(
-        (img) => img && (img.startsWith('http://') || img.startsWith('https://'))
+        (img) => img && (img.startsWith('http://') || img.startsWith('https://')),
       )
 
       const imagesText = validImages.length > 0 ? validImages.join('\n') : 'No images'
@@ -1097,7 +1114,6 @@ ${itemsSection}
   console.log('Opening WhatsApp:', whatsappUrl)
   window.open(whatsappUrl, '_blank')
 }
-
 
 const saveAssignment = async () => {
   if (!selectedEmployee.value || !selectedTransfer.value) {
@@ -1227,9 +1243,9 @@ watch(
   overflow: hidden;
 }
 
-.drawer-banner {
-  margin-bottom: 16px;
-}
+// .drawer-banner {
+//   margin-bottom: 16px;
+// }
 
 .drawer-banner p {
   font-weight: 500;
@@ -1247,8 +1263,8 @@ watch(
 .workers-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin: 10px;
+  gap: 16px;
+  padding: 20px;
 }
 .stepper-worker-name {
   // underline
@@ -1291,9 +1307,19 @@ watch(
 }
 
 .name {
+  color: #171717;
+  font-feature-settings:
+    'ss11' on,
+    'liga' off,
+    'calt' off;
+  /* Label/Small */
+    font-family: 'Inter Variable', Inter, system-ui, sans-serif;
+
+  font-size: 14px;
+  font-style: normal;
   font-weight: 500;
-  font-size: 16px;
-  color: #222;
+  line-height: 20px; /* 142.857% */
+  letter-spacing: -0.084px;
 }
 
 .phone {
@@ -1371,7 +1397,7 @@ watch(
   padding: 8px 12px;
 }
 
-.v-btn.v-btn--density-default.assign-button{
+.v-btn.v-btn--density-default.assign-button {
   height: 24px !important;
   border-radius: 6px !important;
   font-size: 12px !important;
@@ -1381,7 +1407,9 @@ watch(
 //   border-radius: 18px !important;
 // }
 
-.v-menu > .v-overlay__content > .v-card, .v-menu > .v-overlay__content > .v-sheet, .v-menu > .v-overlay__content > .v-list {
+.v-menu > .v-overlay__content > .v-card,
+.v-menu > .v-overlay__content > .v-sheet,
+.v-menu > .v-overlay__content > .v-list {
   width: 224px !important;
   // gap: 4px !important;
   display: flex !important;
@@ -1389,9 +1417,9 @@ watch(
   padding: 8px !important;
   background-color: #fff !important;
   border-radius: 16px !important;
-  box-shadow: 0 16px 32px -12px rgba(14, 18, 27, 0.10);
+  box-shadow: 0 16px 32px -12px rgba(14, 18, 27, 0.1);
 
-  .v-list-item--density-default.v-list-item--one-line{
+  .v-list-item--density-default.v-list-item--one-line {
     height: 36px !important;
     min-height: 36px !important;
     border-radius: 10px !important;

@@ -117,7 +117,8 @@ const hideIconIfPageRouteNotification = computed(() => route.path === '/notifica
 }
 
 .page-title {
-  font-family: Inter;
+    font-family: 'Inter Variable', Inter, system-ui, sans-serif;
+
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
@@ -126,7 +127,8 @@ const hideIconIfPageRouteNotification = computed(() => route.path === '/notifica
 }
 
 .page-description {
-  font-family: Inter;
+    font-family: 'Inter Variable', Inter, system-ui, sans-serif;
+
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

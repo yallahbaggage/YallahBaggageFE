@@ -4,7 +4,13 @@
       <div class="avatar">{{ initials }}</div>
       <div class="details">
         <div class="name">{{ fullName }}</div>
-        <v-chip class="assign-status" v-if="status" :color="statusColor(status)" text-color="white" medium>
+        <v-chip
+          class="assign-status"
+          v-if="status"
+          :color="statusColor(status)"
+          text-color="white"
+          medium
+        >
           <span :style="{ backgroundColor: statusColor(status) }" class="status-circle"></span>
           {{ t(status) ?? 'available' }}
         </v-chip>
@@ -18,7 +24,7 @@
       {{ t('assign') }}
     </button>
     <v-chip v-else :color="statusColor(status)" text-color="white" medium>
-      <span :style="{ backgroundColor: statusColor(status) }" class="status-circle"></span>
+      <v-icon size="12.728px" :style="{ color: statusColor(status), 'margin-right':'6px' }"> mdi-check </v-icon>
       {{ t(status) ?? 'available' }}
     </v-chip>
   </div>
@@ -38,9 +44,7 @@ const emit = defineEmits<{
   (e: 'assign'): void
 }>()
 
-const initials = props.fullName
-  .substring(0, 2)
-  .toUpperCase()
+const initials = props.fullName.substring(0, 2).toUpperCase()
 
 const onAssign = () => emit('assign')
 
@@ -58,18 +62,23 @@ function statusColor(status: string): string {
   border-radius: 12px;
   padding: 12px 16px;
   background: #fff;
-  max-width: 400px;
+  max-width: 360px;
+  gap: 16px;
+  height: 72px;
+
+  .v-chip.v-chip--size-default {
+    height: 28px !important;
+  }
 }
 
 .employee-info {
   display: flex;
   align-items: center;
-  gap: 12px;
 }
 
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   background: #ffeecc;
   border-radius: 50%;
   display: flex;
@@ -92,7 +101,7 @@ function statusColor(status: string): string {
 }
 
 .assign-button {
-  background: #2563eb;
+  background: #335CFF;
   color: #fff;
   border: none;
   padding: 6px 16px;
@@ -106,7 +115,7 @@ function statusColor(status: string): string {
   }
 }
 
-.assign-status{
+.assign-status {
   width: fit-content;
 }
 </style>

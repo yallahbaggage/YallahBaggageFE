@@ -178,7 +178,7 @@ body {
 
 .drawer-banner {
   background-color: #f7f7f7;
-  margin: 15px 0px;
+  // margin: 15px 0px;
 
   p {
     font-weight: 600;
@@ -309,13 +309,8 @@ body {
 }
 .drawer-value {
   color: #171717;
-  font-feature-settings:
-    'ss11' on,
-    'liga' off,
-    'calt' off;
-  /* Label/Small */
   font-family: 'Inter Variable', Inter, system-ui, sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 500;
   line-height: 20px; /* 142.857% */
@@ -731,5 +726,3 @@ body {
   border-top-right-radius: 10px !important;
   border-bottom-right-radius: 10px !important;
 }
-
-
