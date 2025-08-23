@@ -1057,10 +1057,10 @@ watch(
   padding: 8px 12px;
 }
 
-/* Filter Section Styles */
-.filter-section {
-  margin-bottom: 24px;
-}
+// /* Filter Section Styles */
+// .filter-section {
+//   margin-bottom: 24px;
+// }
 
 .filter-card {
   border-radius: 12px;

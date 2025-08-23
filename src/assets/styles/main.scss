@@ -170,7 +170,7 @@ body {
 }
 
 .infoHr {
-  margin-bottom: 24px;
+  // margin-bottom: 24px;
   // background-color: #ebebeb;
   height: 1px;
   border: 1px dashed #ebebeb !important;
@@ -537,7 +537,7 @@ body {
 }
 
 .filter-section {
-  margin-bottom: 16px;
+  margin-top: 24px;
   position: relative;
 
   :deep(.v-menu .v-card .v-card-text) {
