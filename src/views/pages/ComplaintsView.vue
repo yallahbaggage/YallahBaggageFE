@@ -1169,11 +1169,11 @@ watch(
   padding: 0px 12px !important;
 }
 
-.v-tabs--density-default{
+.v-tabs--density-default {
   border: 1px solid #ebebeb !important;
 }
 
-.v-tab.v-btn.v-btn.v-btn--density-default{
+.v-tab.v-btn.v-btn.v-btn--density-default {
   min-width: fit-content !important;
   font-size: 14px !important;
   font-weight: 500 !important;
@@ -1181,12 +1181,14 @@ watch(
   border-radius: 0 !important;
   text-align: left !important;
   justify-content: flex-start !important;
+  transition: all 0.3s ease-in-out !important;
 
-  &.v-tab--selected{
+  &.v-tab--selected {
     color: rgb(var(--v-theme-primary)) !important;
     border-bottom: 2px solid rgb(var(--v-theme-primary)) !important;
     // border-bottom-width: fit-content !important;
     width: fit-content !important;
+    transition: all 0.3s ease-in-out !important;
   }
 }
 </style>
