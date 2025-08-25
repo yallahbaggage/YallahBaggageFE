@@ -930,6 +930,7 @@ watch(
   flex-direction: column;
   padding: 8px;
   gap: 12px;
+  margin-bottom: 16px;
 
   .drawer-title {
     font-size: 12px;
