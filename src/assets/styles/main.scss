@@ -731,12 +731,13 @@ body {
     font-weight: 500;
     line-height: 16px;
     border-radius: 10px !important;
-    border-color: #EBEBEB !important;
-    color: #5C5C5C !important;
+    border-color: #ebebeb !important;
+    color: #5c5c5c !important;
   }
 }
 
-.drawer-close {
+.drawer-close,
+.drawer-info {
   .v-btn.v-btn--density-default {
     font-size: 12px !important;
     height: 24px !important;
