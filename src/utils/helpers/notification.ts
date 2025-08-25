@@ -94,7 +94,7 @@ export const toastErrorMessage = (title: string, description: string) =>
     title,
     description,
     icon: `<svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-      <path d="M15 5L5 15M5 5L15 15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M15 5L5 15M5 5L15 15" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`,
     type: 'error',
   })
