@@ -726,11 +726,13 @@ body {
 .filter-section {
   .v-btn.v-btn--density-default {
     height: 36px !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
     font-style: normal;
     font-weight: 500;
     line-height: 16px;
-    border-radius: 6px !important;
+    border-radius: 10px !important;
+    border-color: #EBEBEB !important;
+    color: #5C5C5C !important;
   }
 }
 
