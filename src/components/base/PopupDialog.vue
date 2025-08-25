@@ -75,6 +75,11 @@ const onCancel = () => {
   border-radius: $x-small !important;
   width: 100%;
   background-color: rgb(var(--v-theme-white));
+
+  .v-card-title{
+    font-size: 16px !important;
+    font-weight: 500 !important;
+  }
 }
 
 .popup-title {
@@ -85,7 +90,7 @@ const onCancel = () => {
 }
 
 .popup-message {
-  margin-bottom: $xl !important;
+  // margin-bottom: $xl !important;
   font-weight: normal;
 }
 .message-item {

@@ -2,7 +2,7 @@
   <v-dialog v-model="props.isVisible" class="overlay" max-width="400" persistent>
     <v-card class="popup">
       <div class="popup-header">
-        <v-icon v-if="icon" :color="iconColor" class="popup-icon">{{ icon }}</v-icon>
+        <v-icon size="22" v-if="icon" :color="iconColor" class="popup-icon">{{ icon }}</v-icon>
         <div class="title-wrapper">
           <v-card-title class="popup-title">{{ title }}</v-card-title>
           <v-card-text>
@@ -83,6 +83,7 @@ const onApply = () => emit('apply')
 .v-dialog > .v-overlay__content > .v-card,
 .v-dialog > .v-overlay__content > form > .v-card {
   background-color: rgb(var(--v-theme-white)) !important;
+  // border-radius: 20px !important;
 }
 
 .popup {
@@ -90,7 +91,12 @@ const onApply = () => emit('apply')
   width: 100%;
   background-color: rgb(var(--v-theme-white));
   padding: $large !important;
-  border-radius: $x-small !important;
+  // border-radius: $x-small !important;
+
+  .infoHr {
+    border: 1px solid #ebebeb !important;
+    margin: 16px 0;
+  }
 }
 .popup-header {
   display: flex;
@@ -105,10 +111,10 @@ const onApply = () => emit('apply')
 }
 
 .popup-icon {
-  font-size: 24px;
+  font-size: 18px;
   color: var(--v-theme-primary);
   padding: 20px;
-  border-radius: 50%;
+  border-radius: 10px;
   background-color: rgba(var(--v-theme-error), 0.1);
 }
 
@@ -118,7 +124,7 @@ const onApply = () => emit('apply')
   font-weight: 400;
   line-height: 20px;
   color: #5c5c5c;
-  margin-bottom: $large;
+  // margin-bottom: $large;
 }
 
 .message-item {
