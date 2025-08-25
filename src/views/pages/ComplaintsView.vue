@@ -337,7 +337,7 @@
               </v-tabs>
 
               <v-tabs-window v-model="tab">
-                <v-tabs-window-item value="details">
+                <v-tabs-window-item class="details-tab" value="details">
                   <div>
                     <div class="drawer-info">
                       <p class="drawer-key">{{ t('reportedBy') }}</p>
@@ -919,6 +919,32 @@ watch(
   z-index: 1;
   overflow: scroll;
   overflow-x: hidden;
+}
+
+@media (max-width: 600px) {
+  .details-tab{
+    padding: 10px;
+    height: 60dvh !important;
+    overflow: scroll;
+  }
+  .chat {
+    height: 60dvh !important;
+    padding: 10px;
+        margin: 5px;
+
+  }
+  .chat-action-btns {
+    width: 100%;
+    margin: 10px 0px;
+    padding: 10px 0px 0px 0px;
+    gap: 5px;
+  }
+  #messageInput {
+    width: 650%;
+    padding: 6px;
+    font-size: 12px;
+    margin-left: 5px;
+  }
 }
 
 .chat-complaint {

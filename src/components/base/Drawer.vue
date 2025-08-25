@@ -150,6 +150,18 @@ watch(
   border-radius: 20px;
 }
 
+//small screens
+@media (max-width: 600px) {
+  .drawer {
+    width: 100%;
+    height: 100%;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 0;
+  }
+}
+
 .drawer-header {
   display: flex;
   justify-content: space-between;
