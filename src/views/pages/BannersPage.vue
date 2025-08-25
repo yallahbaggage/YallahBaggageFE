@@ -381,12 +381,34 @@
                       </div>
                       <div v-if="imageUrl && !imageUploadProgress" class="uploaded-preview">
                         <img :src="imageUrl" class="preview-img" />
-                        <div class="file-info">
+                        <!-- <div class="file-info">
                           <span class="file-name">{{ uploadedFileName }}</span>
                           <span class="file-size">{{ uploadedFileSize }}</span>
-                        </div>
-                        <v-btn icon @click.stop="removeImage" variant="text" size="small">
-                          <v-icon color="red">mdi-trash-can-outline</v-icon>
+                        </div> -->
+                        <v-btn
+                          icon
+                          @click.stop="removeImage"
+                          class="trash-icon"
+                          variant="text"
+                          size="small"
+                        >
+                          <v-icon size="18" color="red">mdi-trash-can-outline</v-icon>
+                        </v-btn>
+                        <v-btn
+                          icon
+                          @click.stop="triggerFileInput"
+                          class="upload-icon"
+                          variant="text"
+                          size="small"
+                        >
+                          <v-icon size="18" color="grey">mdi-arrow-expand-up</v-icon>
+                          <v-file-input
+                            ref="fileInput"
+                            id="file-upload-update"
+                            @change="uploadImage"
+                            accept="image/*"
+                            style="display: none"
+                          />
                         </v-btn>
                       </div>
 
@@ -866,17 +888,18 @@ function deleteAd(item: any) {
 
 .image-upload-container {
   width: 100%;
+  max-width: 360px;
+  max-height: 202px;
 }
 
 .image-upload-area {
   border: 2px dashed #ccc;
   border-radius: 8px;
-  padding: 20px;
+  padding: 5px;
   background-color: #fafafa;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-height: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -915,15 +938,41 @@ function deleteAd(item: any) {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 8px 12px;
+    // padding: 8px 12px;
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 6px;
     gap: 12px;
+    position: relative;
 
+    .trash-icon {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 8px;
+      border-radius: 6px;
+      background-color: white;
+      border: 1px solid #ebebeb;
+      width: 32px;
+      height: 32px;
+    }
+
+    .upload-icon {
+      position: absolute;
+      top: 8px;
+      right: 50px;
+      // padding: 8px;
+      border-radius: 6px;
+      background-color: white;
+      border: 1px solid #ebebeb;
+      width: 32px;
+      height: 32px;
+    }
     .preview-img {
-      width: 50px;
-      height: 50px;
+      width: 100%;
+      height: 100%;
+      max-height: 202px;
+
       object-fit: cover;
       border-radius: 4px;
       flex-shrink: 0;
