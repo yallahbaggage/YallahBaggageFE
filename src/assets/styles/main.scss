@@ -178,7 +178,7 @@ body {
 }
 
 .drawer-banner {
-  background-color: #F7F7F7;
+  background-color: #f7f7f7;
   padding: 6px 20px;
   // margin: 15px 0px;
 
@@ -706,10 +706,25 @@ body {
   }
 }
 
-.filter-section,
-.drawer-close {
+.filter-section {
   .v-btn.v-btn--density-default {
     height: 36px !important;
+    font-size: 12px !important;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
+    border-radius: 6px !important;
+  }
+}
+
+.drawer-close {
+  .v-btn.v-btn--density-default {
+    font-size: 12px !important;
+    height: 24px !important;
+    border-radius: 6px !important;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 16px;
   }
 }
 
@@ -728,10 +743,11 @@ body {
   border-bottom-right-radius: 10px !important;
 }
 
-.v-table .v-table__wrapper > table > tbody > tr:not(:last-child) > td, .v-table .v-table__wrapper > table > tbody > tr:not(:last-child) > th {
-    border-bottom: thin solid #EBEBEB !important;
+.v-table .v-table__wrapper > table > tbody > tr:not(:last-child) > td,
+.v-table .v-table__wrapper > table > tbody > tr:not(:last-child) > th {
+  border-bottom: thin solid #ebebeb !important;
 }
 
-.v-table > .v-table__wrapper > table > thead > tr > th{
+.v-table > .v-table__wrapper > table > thead > tr > th {
   border-bottom: none !important;
 }
