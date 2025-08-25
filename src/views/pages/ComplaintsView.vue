@@ -1177,12 +1177,11 @@ watch(
   font-size: 14px !important;
   font-weight: 500 !important;
   text-transform: none !important;
-  border-radius: none !important;
+  border-radius: 0 !important;
 
   &.v-tab--selected{
     color: rgb(var(--v-theme-primary)) !important;
     border-bottom: 2px solid rgb(var(--v-theme-primary)) !important;
-    border-radius: none !important;
   }
 }
 </style>
