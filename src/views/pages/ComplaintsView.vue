@@ -426,7 +426,7 @@
                         icon="mdi-ticket-confirmation-outline"
                       >
                         <div class="timeline-item-content">
-                          <p>{{ t('ticketCreatedAt') }}</p>
+                          <h4>{{ t('ticketCreatedAt') }}</h4>
                           <span>{{ formatDate(selectedComplaint?.createdAt) }}</span>
                         </div>
                       </v-timeline-item>
@@ -439,7 +439,7 @@
                         v-if="selectedComplaint?.updatedAt"
                       >
                         <div class="timeline-item-content">
-                          <p>{{ t('statusHasChanged') }}</p>
+                          <h4>{{ t('statusHasChanged') }}</h4>
                           <span>{{ formatDate(selectedComplaint?.updatedAt) }}</span>
                         </div>
                         <p class="status-desc">
@@ -461,7 +461,7 @@
                         icon-color="success"
                       >
                         <div class="timeline-item-content">
-                          <p>{{ t('statusHasChanged') }}</p>
+                          <h4>{{ t('statusHasChanged') }}</h4>
                           <span>{{
                             selectedComplaint?.closedAt
                               ? formatDate(selectedComplaint.closedAt)

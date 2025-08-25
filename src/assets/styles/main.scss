@@ -391,6 +391,23 @@ body {
     flex: 1;
   }
 
+  h4 {
+    overflow: hidden;
+    color: #171717;
+    font-feature-settings:
+      'ss11' on,
+      'liga' off,
+      'calt' off;
+    text-overflow: ellipsis;
+    /* Label/Small */
+    font-family: 'Inter Variable', Inter, system-ui, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
+    letter-spacing: -0.084px;
+  }
+
   .status-desc {
     color: #5c5c5c;
     font-size: 12px;
