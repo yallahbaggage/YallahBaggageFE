@@ -1162,4 +1162,10 @@ watch(
     border-radius: 10px !important;
   }
 }
+
+.v-tabs--density-default,
+.v-tab.v-tab.v-btn {
+  min-height: 48px !important;
+  padding: 0px 12px !important;
+}
 </style>
