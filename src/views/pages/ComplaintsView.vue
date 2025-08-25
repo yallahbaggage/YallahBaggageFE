@@ -1168,4 +1168,21 @@ watch(
   min-height: 48px !important;
   padding: 0px 12px !important;
 }
+
+.v-tabs--density-default{
+  border: 1px solid #ebebeb !important;
+}
+
+.v-tab.v-btn.v-btn.v-btn--density-default{
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  border-radius: none !important;
+
+  &.v-tab--selected{
+    color: rgb(var(--v-theme-primary)) !important;
+    border-bottom: 2px solid rgb(var(--v-theme-primary)) !important;
+    border-radius: none !important;
+  }
+}
 </style>
