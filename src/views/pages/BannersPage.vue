@@ -11,10 +11,15 @@
     <div class="page-content">
       <!-- Loading state for initial page load -->
       <div v-if="initialLoading" class="loading-state">
-        <v-progress-circular :size="70" :width="7" color="primary" indeterminate></v-progress-circular>
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
         <p>{{ t('loading') }}</p>
       </div>
-      
+
       <!-- Content when loaded -->
       <div v-else>
         <div class="cards">
@@ -41,14 +46,26 @@
           <template #cell-image="{ item }">
             <img
               :src="item.image"
-              style="max-width: 78px;align-self: center;margin-top:5px;border-radius: 2px; width: 78px; max-height: 40px; object-fit: cover"
+              style="
+                max-width: 78px;
+                align-self: center;
+                margin-top: 5px;
+                border-radius: 2px;
+                width: 78px;
+                max-height: 40px;
+                object-fit: cover;
+              "
             />
           </template>
           <template #cell-title="{ item }">
             <span class="name-bold">{{ item.title }}</span>
           </template>
           <template #cell-status="{ item }">
-            <v-chip :color="getColorAccordingToExpireDate(item?.expireDate)" text-color="white" small>
+            <v-chip
+              :color="getColorAccordingToExpireDate(item?.expireDate)"
+              text-color="white"
+              small
+            >
               <span
                 :style="{ backgroundColor: statusColorAccordingToExpireDate(item.expireDate) }"
                 class="status-circle"
@@ -481,7 +498,12 @@
                     :buttonText="t('cancel')"
                     buttonColor="white"
                     class="action-Btn"
-                    @button-pressed="() => (isDetailsDrawerOpen = false)"
+                    @button-pressed="
+                      () => {
+                        isDetailsDrawerOpen = false
+                        isDeleteDrawerOpen = false
+                      }
+                    "
                   />
                   <ActionButton
                     button-color="error"
@@ -836,7 +858,6 @@ function deleteAd(item: any) {
 }
 </script>
 <style scoped lang="scss">
-
 .action-btns {
   display: flex;
   gap: 12px;
