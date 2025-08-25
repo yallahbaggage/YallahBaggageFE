@@ -782,6 +782,10 @@ body {
   padding: 6px !important;
 }
 
+.v-timeline .v-timeline-divider__dot {
+  background-color: #fff !important;
+}
+
 .v-timeline--vertical .v-timeline-divider__before,
 .v-timeline--vertical .v-timeline-divider__after {
   width: 1px !important;
