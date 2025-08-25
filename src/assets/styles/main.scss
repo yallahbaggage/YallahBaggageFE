@@ -268,8 +268,8 @@ body {
   bottom: 20px;
   right: 0px;
   z-index: 1000;
-  width: 400px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 320px;
   padding: 20px;
   background-color: #fff;
   border-radius: 10px;
@@ -795,4 +795,34 @@ body {
   .mdi{
     font-size: 16px !important;
   }
+}
+
+
+// .v-dialog > .v-overlay__content > .v-card, .v-dialog > .v-overlay__content > form > .v-card{
+//   width: 100% !important;
+//   border-radius: 20px !important;
+//   max-width: 200px !important;
+// }
+
+
+.popup {
+  width: fit-content !important;
+    border-radius: 20px !important;
+
+  .v-card-title{
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    font-family: 'inter Variable', Inter, system-ui, sans-serif !important;
+  }
+}
+
+.v-dialog > .v-overlay__content > .v-card, .v-dialog > .v-overlay__content > form > .v-card{
+  border-radius: 20px !important;
+  max-width: fit-content !important;
+
+}
+
+.v-overlay__content{
+  max-width: 400px !important;
+  border-radius: 20px !important;
 }
