@@ -913,7 +913,7 @@ watch(
 }
 
 .chat {
-  padding: 10px;
+  padding: 20px;
   background-color: #f7f7f7;
   height: 70dvh !important;
   z-index: 1;
