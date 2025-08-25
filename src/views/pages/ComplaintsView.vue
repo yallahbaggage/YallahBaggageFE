@@ -944,7 +944,7 @@ watch(
   .drawer-description {
     color: #5c5c5c;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    // white-space: nowrap;
     /* Paragraph/X Small */
     font-family: Inter;
     font-size: 12px;
