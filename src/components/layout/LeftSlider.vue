@@ -289,7 +289,8 @@ const todaysTransfers = computed(() => {
   display: flex;
   flex-direction: column;
   border-right: 1px solid #ebebeb;
-  width: 272px;
+  max-width: 272px;
+  width: 100%;
   // RTL Support
   [dir='rtl'] & {
     border-radius: 10px 0 0 10px;
