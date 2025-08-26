@@ -377,7 +377,7 @@
               </v-list>
             </v-menu>
           </template>
-          <div style="max-height: 75vh">
+          <div style="max-height: 75vh;padding: 20px;">
             <form v-on:submit.prevent="saveStatus" class="drawer-form">
               <div>
                 <v-card>
@@ -1235,11 +1235,11 @@ watch(
 
 .form {
   overflow-y: auto;
-  max-height: 75vh;
+  max-height: 75vh;padding: 20px;;
 }
 
 .drawer-content {
-  max-height: 75vh;
+  max-height: 75vh;padding: 20px;;
   overflow: hidden;
 }
 

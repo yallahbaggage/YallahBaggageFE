@@ -227,7 +227,7 @@
       :drawerStatus="selectedComplaint?.status ? selectedComplaint?.status : 'pending'"
       @close="isDeleteComplaintDrawerOpen = false"
     >
-      <div style="max-height: 75vh">
+      <div style="max-height: 75vh;padding: 20px;">
         <form class="form">
           <div>
             <p class="drawer-title">{{ selectedComplaint?.title }}</p>
@@ -324,7 +324,7 @@
       <div v-if="isLoading" class="d-flex justify-center my-5">
         <v-progress-circular indeterminate color="primary" />
       </div>
-      <div style="max-height: 75vh" v-if="!isLoading">
+      <div style="max-height: 75vh;padding: 20px;" v-if="!isLoading">
         <div class="drawer-form">
           <div>
             <p class="drawer-title">{{ selectedComplaint?.title }}</p>

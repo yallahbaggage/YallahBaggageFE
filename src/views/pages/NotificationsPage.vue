@@ -94,7 +94,7 @@
             }
           "
         >
-          <div style="max-height: 75vh">
+          <div style="max-height: 75vh;padding: 20px;">
             <form @submit.prevent="onAddButtonPressed()" class="form">
               <div>
                 <div class="drawer-banner">
@@ -238,7 +238,7 @@
           :desc="t('fillOutAllTheInformationsToUpdate')"
           @close="closeEditDrawer"
         >
-          <div style="max-height: 75vh">
+          <div style="max-height: 75vh;padding: 20px;">
             <form @submit.prevent="handleUpdate()" class="form">
               <div>
                 <div class="drawer-banner">
@@ -374,7 +374,7 @@
           :desc="t('seeYourNotificationDetail')"
           @close="isDetailsNotificationDrawerOpen = false"
         >
-          <div style="max-height: 75vh">
+          <div style="max-height: 75vh;padding: 20px;">
             <form class="form">
               <div>
                 <div class="drawer-banner">
@@ -444,7 +444,7 @@
           :desc="t('seeYourNotificationDetail')"
           @close="isDeleteNotificationDrawerOpen = false"
         >
-          <div style="max-height: 75vh">
+          <div style="max-height: 75vh;padding: 20px;">
             <form class="form">
               <div>
                 <div>
