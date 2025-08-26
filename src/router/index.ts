@@ -137,7 +137,7 @@ router.beforeEach(async (to, from, next) => {
   if (requiresAuth && !authStore.isAuthenticated) {
     return next('/login')
   } else if (to.meta.requiresGuest && isAuthenticated) {
-    return next({ name: 'Employees' })
+    return next({ name: 'Drivers' })
   } else {
     return next()
   }
