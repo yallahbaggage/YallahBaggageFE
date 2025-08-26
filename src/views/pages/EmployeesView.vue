@@ -281,7 +281,7 @@
                   </div>
                 </div>
               </div>
-              <hr class="infoHr" />
+              <!-- <hr class="infoHr" /> -->
               <div class="action-btns">
                 <ActionButton
                   :buttonText="t('cancel')"
@@ -332,7 +332,7 @@
                     <p class="drawer-value">{{ selectedWorker?.phone }}</p>
                   </div>
                 </div>
-                <hr class="infoHr" />
+                <!-- <hr class="infoHr" /> -->
 
                 <div class="action-btns">
                   <ActionButton
@@ -451,7 +451,7 @@
                       required
                     />
                   </div>
-                  <hr class="infoHr" />
+                  <!-- <hr class="infoHr" /> -->
                   <div class="action-btns">
                     <ActionButton
                       :buttonText="t('cancel')"
