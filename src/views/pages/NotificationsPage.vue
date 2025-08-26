@@ -976,11 +976,11 @@ watch([page, itemsPerPage], fetchNotifications)
 }
 
 
-.action-btns {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
-}
+// .action-btns {
+//   display: flex;
+//   gap: 12px;
+//   margin-top: 24px;
+// }
 
 .v-text-field .v-input__details {
   padding-inline: 0 !important;

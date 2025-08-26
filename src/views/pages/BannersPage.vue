@@ -880,11 +880,11 @@ function deleteAd(item: any) {
 }
 </script>
 <style scoped lang="scss">
-.action-btns {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
-}
+// .action-btns {
+//   display: flex;
+//   gap: 12px;
+//   margin-top: 24px;
+// }
 
 .image-upload-container {
   width: 100%;
