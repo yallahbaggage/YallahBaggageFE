@@ -142,7 +142,8 @@ watch(
   top: 10px;
   bottom: 10px;
   min-width: 25%;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   background-color: rgb(var(--v-theme-white));
   box-shadow: $shadow;
   z-index: 50;
