@@ -1235,11 +1235,11 @@ watch(
 
 .form {
   overflow-y: auto;
-  max-height: 75vh;padding: 20px;;
+  max-height: 75vh;
 }
 
 .drawer-content {
-  max-height: 75vh;padding: 20px;;
+  max-height: 75vh;
   overflow: hidden;
 }
 
