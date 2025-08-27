@@ -418,8 +418,8 @@ li {
   color: white !important;
   font-size: 10px;
   border-radius: 50%;
-  min-width: 18px;
-  height: 18px;
+  max-width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
