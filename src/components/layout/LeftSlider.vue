@@ -23,12 +23,12 @@
             {{ t('transfers') }}
           </div>
           <v-chip
-            v-if="todaysTransfers && todaysTransfers > 0"
+            v-if="todaysTransfers !== null && todaysTransfers > 0"
             class="menu-chip"
             size="small"
             color="#FF5B5B"
             text-color="white"
-            >{{ todaysTransfers }}</v-chip
+            >{{ todaysTransfers > 9 ? '+9' : todaysTransfers }}</v-chip
           >
         </div>
       </router-link>
@@ -99,12 +99,12 @@
             {{ t('customerSupport') }}
           </div>
           <v-chip
-            v-if="todaysOpenComplaints && todaysOpenComplaints > 0"
+            v-if="todaysOpenComplaints !== null && todaysOpenComplaints > 0"
             class="menu-chip"
             size="small"
             color="#FF5B5B"
             text-color="white"
-            >{{ todaysOpenComplaints }}</v-chip
+            >{{ todaysOpenComplaints > 9 ? '+9' : todaysOpenComplaints }}</v-chip
           >
         </div>
       </router-link>
@@ -215,19 +215,28 @@ const links = computed(() => [
 const isActiveLink = (path: string) => route.path === path
 
 const todaysOpenComplaints = computed(() => {
-  const value = complaintsStore.stats?.todaysOpenComplaints
+  // Try multiple possible paths for robustness
+  let value = complaintsStore.stats?.todaysOpenComplaints
+  if (typeof value !== 'number') {
+    value = complaintsStore.stats?.data?.todaysOpenComplaints
+  }
+  
   return typeof value === 'number' ? value : null
 })
 
 const todaysTransfers = computed(() => {
-  const value = transfersStore.stats?.todaysTransfers
+  // Try multiple possible paths for robustness
+  let value = transfersStore.stats?.todaysTransfers
+  if (typeof value !== 'number') {
+    value = transfersStore.stats?.data?.todaysTransfers
+  }
+  
   return typeof value === 'number' ? value : null
 })
 
 // Fetch stats on component mount
 const fetchStats = async () => {
   try {
-    console.log('Fetching stats...')
     await Promise.all([
       complaintsStore.getComplaintsStatsPage(),
       transfersStore.getTransfersStats(),
