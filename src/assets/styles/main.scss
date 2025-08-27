@@ -924,7 +924,7 @@ body {
 // }
 
 .popup {
-  width: fit-content !important;
+  // width: 100%;
   border-radius: 20px !important;
 
   .v-card-title {
@@ -937,7 +937,7 @@ body {
 .v-dialog > .v-overlay__content > .v-card,
 .v-dialog > .v-overlay__content > form > .v-card {
   border-radius: 20px !important;
-  max-width: fit-content !important;
+  // max-width: fit-content !important;
 }
 
 .v-overlay__content {
