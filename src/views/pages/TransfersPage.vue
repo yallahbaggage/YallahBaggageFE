@@ -1253,12 +1253,12 @@ watch(
   margin: 0;
 }
 
-.action-btns {
-  margin-top: 20px;
-  display: flex;
-  gap: 12px;
-  justify-content: flex-end;
-}
+// .action-btns {
+//   margin-top: 20px;
+//   display: flex;
+//   gap: 12px;
+//   justify-content: flex-end;
+// }
 
 .workers-list {
   display: flex;
@@ -1272,15 +1272,15 @@ watch(
   color: rgb(var(--v-theme-primary));
 }
 
-.employee-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 12px;
-  padding: 12px 16px;
-  background: #fff;
-  max-width: 400px;
-}
+// .employee-card {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   border-radius: 12px;
+//   padding: 12px 16px;
+//   background: #fff;
+//   max-width: 400px;
+// }
 
 .employee-info {
   display: flex;
