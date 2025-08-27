@@ -216,7 +216,7 @@ const isActiveLink = (path: string) => route.path === path
 
 const todaysOpenComplaints = computed(() => {
   // Try multiple possible paths for robustness
-  let value = complaintsStore.stats?.todaysOpenComplaints
+  let value : number | null | undefined = complaintsStore.stats?.todaysOpenComplaints
   if (typeof value !== 'number') {
     value = complaintsStore.stats?.data?.todaysOpenComplaints
   }
@@ -226,7 +226,7 @@ const todaysOpenComplaints = computed(() => {
 
 const todaysTransfers = computed(() => {
   // Try multiple possible paths for robustness
-  let value = transfersStore.stats?.todaysTransfers
+  let value: number | null | undefined = transfersStore.stats?.todaysTransfers;
   if (typeof value !== 'number') {
     value = transfersStore.stats?.data?.todaysTransfers
   }
@@ -425,10 +425,10 @@ li {
 .menu-chip {
   background-color: #ff5b5b !important;
   color: white !important;
-  font-size: 10px;
-  border-radius: 50%;
-  max-width: 16px;
-  height: 16px;
+  font-size: 10px !important;
+  border-radius: 50% !important;
+  width: 19px !important;
+  height: 19px !important;
   display: flex;
   align-items: center;
   justify-content: center;
