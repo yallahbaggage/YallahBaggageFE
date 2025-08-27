@@ -1264,7 +1264,7 @@ watch(
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 20px;
+  padding: 0px 20px;
 }
 .stepper-worker-name {
   // underline
