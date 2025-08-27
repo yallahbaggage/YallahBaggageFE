@@ -207,16 +207,51 @@ body {
   width: 100%;
   padding: 20px !important;
   bottom: 0;
-  // left: 5px;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
   
   .action-Btn {
     flex: 1;
+    max-width: 150px; // Prevent buttons from becoming too wide on large screens
     // margin: 10px;
   }
 
   // RTL Support for action buttons
   [dir='rtl'] & {
     flex-direction: row-reverse;
+  }
+
+  // Responsive adjustments for better centering
+  @media (max-width: 600px) {
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 15px !important;
+    gap: 8px;
+    
+    .action-Btn {
+      flex: 1;
+      max-width: none; // Allow full width on mobile
+    }
+  }
+
+  @media (min-width: 601px) and (max-width: 1024px) {
+    padding: 18px !important;
+    gap: 12px;
+    
+    .action-Btn {
+      max-width: 180px;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    padding: 20px !important;
+    gap: 15px;
+    
+    .action-Btn {
+      max-width: 200px;
+    }
   }
 }
 
