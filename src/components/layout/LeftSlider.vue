@@ -120,7 +120,7 @@
 
     <!-- User Profile Section -->
     <div class="user-profile">
-      <v-icon class="user-icon">mdi-account-circle</v-icon>
+      <v-icon size="40" class="user-icon">mdi-account-circle</v-icon>
       <div>
         <span class="username">{{ user?.name || 'Loading...' }}</span>
         <svg
@@ -253,13 +253,20 @@ const todaysTransfers = computed(() => {
     height: 40px;
   }
   .logo-title {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
+    letter-spacing: -0.084px;
+    font-family: 'Inter Variable', Inter, system-ui, sans-serif;
     color: rgb(var(--v-theme-black));
   }
   .logo-subtitle {
     font-size: 12px;
-    color: #9e9e9e;
+    color: #5c5c5c;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
   }
 }
 
@@ -272,7 +279,7 @@ const todaysTransfers = computed(() => {
 
 .main-section-title {
   font-size: 12px;
-  color: #A3A3A3;
+  color: #a3a3a3;
   margin-top: 48px;
   // margin-bottom: 10px;
   // padding-left: 16px;
@@ -298,7 +305,7 @@ const todaysTransfers = computed(() => {
     border-left: 1px solid #e0e0e0;
   }
 
-  .v-list-item--density-default.v-list-item--one-line{
+  .v-list-item--density-default.v-list-item--one-line {
     min-height: 36px !important;
   }
 }
@@ -337,7 +344,6 @@ li {
   color: inherit;
   text-decoration: none;
   color: #5c5c5c;
-  
 }
 
 .menu-item {
@@ -418,20 +424,26 @@ li {
   flex-direction: row;
   color: rgb(var(--v-theme-white));
   margin-top: 15px;
+  height: 50px;
 
   .user-icon {
-    font-size: 48px;
+    height: 40px;
+    width: 40px;
     color: #bbdefb; /* Light blue color for the icon */
     background-color: #e3f2fd; /* Lighter blue background for the icon */
     border-radius: 50%;
     padding: 5px;
+    margin-top: auto;
   }
 
   .username {
-    font-size: 16px;
-    font-weight: 600;
     color: rgb(var(--v-theme-black));
     margin-left: 10px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 142.857% */
+    letter-spacing: -0.084px;
     // RTL Support
     [dir='rtl'] & {
       margin-left: 0;
@@ -440,7 +452,7 @@ li {
   }
 
   .username-verified-icon {
-    font-size: 16px;
+    font-size: 12px;
     margin-left: 5px;
     vertical-align: middle; /* Align with text */
     color: rgb(var(--v-theme-primary)); /* Green color for verified icon */
@@ -453,10 +465,13 @@ li {
   }
 
   .user-email {
-    font-size: 12px;
-    color: #9e9e9e;
+    color: #5c5c5c;
     width: 100%; /* Take full width on a new line */
     margin-left: 10px; /* Align with username */
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
     // RTL Support
     [dir='rtl'] & {
       margin-left: 0;
@@ -466,14 +481,14 @@ li {
 
   .user-profile-arrow {
     position: absolute;
-    right: -50px;
+    right: -36px;
     color: #9e9e9e;
-    margin-top: 15px;
+    margin-top: 25px;
 
     // RTL Support
     [dir='rtl'] & {
       right: auto;
-      left: -50px;
+      left: -36px;
     }
   }
 }
