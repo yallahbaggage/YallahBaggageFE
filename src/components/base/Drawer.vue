@@ -141,7 +141,7 @@ watch(
   right: 10px;
   top: 10px;
   bottom: 10px;
-  min-width: 25%;
+  // min-width: 25%;
   width: 100%;
   max-width: 400px;
   background-color: rgb(var(--v-theme-white));
@@ -167,7 +167,7 @@ watch(
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 20px 0px 20px !important;
+  padding: 20px !important;
   border-bottom: 1px solid rgb(var(--v-theme-lightGrey));
 }
 
@@ -202,6 +202,7 @@ watch(
 .drawer-body {
   overflow-y: auto;
   height: calc(100% - $size-5xl);
+  // width: 400px !important;
 }
 
 .status-circle {

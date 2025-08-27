@@ -227,7 +227,7 @@
       :drawerStatus="selectedComplaint?.status ? selectedComplaint?.status : 'pending'"
       @close="isDeleteComplaintDrawerOpen = false"
     >
-      <div style="max-height: 75vh;padding: 20px;">
+      <div style="max-height: 75vh;">
         <form class="form">
           <div>
             <p class="drawer-title">{{ selectedComplaint?.title }}</p>
@@ -324,7 +324,7 @@
       <div v-if="isLoading" class="d-flex justify-center my-5">
         <v-progress-circular indeterminate color="primary" />
       </div>
-      <div style="max-height: 75vh;padding: 20px;" v-if="!isLoading">
+      <div style="max-height: 75vh;" v-if="!isLoading">
         <div class="drawer-form">
           <div>
             <p class="drawer-title">{{ selectedComplaint?.title }}</p>
@@ -1186,35 +1186,6 @@ watch(
     height: 36px !important;
     min-height: 36px !important;
     border-radius: 10px !important;
-  }
-}
-
-.v-tabs--density-default,
-.v-tab.v-tab.v-btn {
-  min-height: 48px !important;
-  padding: 0px 12px !important;
-}
-
-.v-tabs--density-default {
-  border: 1px solid #ebebeb !important;
-}
-
-.v-tab.v-btn.v-btn.v-btn--density-default {
-  min-width: fit-content !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  text-transform: none !important;
-  border-radius: 0 !important;
-  text-align: left !important;
-  justify-content: flex-start !important;
-  transition: all 0.3s ease-in-out !important;
-
-  &.v-tab--selected {
-    color: rgb(var(--v-theme-primary)) !important;
-    border-bottom: 2px solid rgb(var(--v-theme-primary)) !important;
-    // border-bottom-width: fit-content !important;
-    width: fit-content !important;
-    transition: all 0.3s ease-in-out !important;
   }
 }
 </style>

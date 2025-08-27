@@ -199,7 +199,7 @@
             }
           "
         >
-          <div style="max-height: 75vh;padding: 20px;">
+          <div style="max-height: 75vh;">
             <form @submit.prevent="onAddButtonPressed()" class="drawer-form">
               <div class="drawer-banner">
                 <p>{{ t('information') }}</p>
@@ -313,7 +313,7 @@
           :drawerStatus="selectedWorker?.status ? selectedWorker?.status : 'available'"
           @close="isDeleteDriverDrawerOpen = false"
         >
-          <div style="max-height: 75vh;padding: 20px;">
+          <div style="max-height: 75vh;">
             <form class="form">
               <div>
                 <div class="drawer-banner">
@@ -367,7 +367,7 @@
           :drawerStatus="selectedWorker?.status ? selectedWorker?.status : 'available'"
           @close="isUpdateDriverDrawerOpen = false"
         >
-          <div style="max-height: 75vh;padding: 20px;">
+          <div style="max-height: 75vh;">
             <form @submit.prevent="onUpdateButtonPressed" class="form">
               <div>
                 <div class="drawer-banner">

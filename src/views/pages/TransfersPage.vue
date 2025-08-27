@@ -377,7 +377,7 @@
               </v-list>
             </v-menu>
           </template>
-          <div style="max-height: 75vh;padding: 20px;">
+          <div style="max-height: 75vh">
             <form v-on:submit.prevent="saveStatus" class="drawer-form">
               <div>
                 <v-card>
@@ -1281,11 +1281,11 @@ watch(
 //   background: #fff;
 //   max-width: 400px;
 // }
-
 .employee-info {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin: 20px;
 }
 
 .avatar {
@@ -1313,7 +1313,7 @@ watch(
     'liga' off,
     'calt' off;
   /* Label/Small */
-    font-family: 'Inter Variable', Inter, system-ui, sans-serif;
+  font-family: 'Inter Variable', Inter, system-ui, sans-serif;
 
   font-size: 14px;
   font-style: normal;
@@ -1338,12 +1338,12 @@ watch(
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 16px;
+  margin: 16px;
 }
 
 .baggage-img {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 8px;
   object-fit: cover;
 }

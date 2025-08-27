@@ -115,7 +115,7 @@
             }
           "
         >
-          <div style="max-height: 75vh;padding: 20px;">
+          <div style="max-height: 75vh;">
             <form @submit.prevent="onAddButtonPressed()" class="form">
               <div>
                 <div class="drawer-banner">
@@ -286,7 +286,7 @@
             }
           "
         >
-          <div style="max-height: 75vh;padding: 20px;">
+          <div style="max-height: 75vh;">
             <form @submit.prevent="onUpdateButtonPressed()" class="form" v-if="editingBanner">
               <div>
                 <div class="drawer-banner">
@@ -478,7 +478,7 @@
             }
           "
         >
-          <div style="max-height: 75vh;padding: 20px;">
+          <div style="max-height: 75vh;">
             <form class="form">
               <div>
                 <div class="drawer-banner">

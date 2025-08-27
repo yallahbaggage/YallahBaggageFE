@@ -1,6 +1,6 @@
 <template>
-  <div class="employee-card">
-    <div class="employee-info">
+  <div class="assign-employee-card">
+    <div class="assign-employee-info">
       <div class="avatar">{{ initials }}</div>
       <div class="details">
         <div class="name">{{ fullName }}</div>
@@ -56,7 +56,7 @@ function statusColor(status: string): string {
 </script>
 
 <style scoped lang="scss">
-.employee-card {
+.assign-employee-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -73,8 +73,7 @@ function statusColor(status: string): string {
     height: 28px !important;
   }
 }
-
-.employee-info {
+.assign-employee-info {
   display: flex;
   align-items: center;
 }
@@ -90,6 +89,7 @@ function statusColor(status: string): string {
   font-weight: bold;
   color: #5a4217;
   font-size: 14px;
+  margin-right: 12px;
 }
 
 .details {
