@@ -158,7 +158,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watchEffect } from 'vue'
+import { computed, ref, watchEffect, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue3-i18n'
 
@@ -172,9 +172,12 @@ import { useTransfersStore } from '@/stores/modules/transfer'
 // const themeStore = useThemeStore()
 const route = useRoute()
 const authStore = useAuthStore()
+const complaintsStore = useComplaintsStore()
+const transfersStore = useTransfersStore()
 
 const user = computed(() => authStore.user)
 const isManagementMenuOpen = ref(false)
+let statsInterval: NodeJS.Timeout | null = null
 
 watchEffect(async () => {
   if (!user.value) {
@@ -187,8 +190,6 @@ const links = computed(() => [
     name: t('transfers'),
     path: '/transfers',
     icon: 'mdi-swap-horizontal',
-    hasChip: true,
-    chipCount: todaysTransfers.value > 0 ? todaysTransfers.value : 0,
   },
   {
     name: t('drivers'),
@@ -204,8 +205,6 @@ const links = computed(() => [
     name: t('customerSupport'),
     path: '/customer-support',
     icon: 'mdi-headphones',
-    hasChip: true,
-    chipCount: todaysOpenComplaints.value > 0 ? todaysOpenComplaints.value : 0,
   },
 ])
 
@@ -216,11 +215,41 @@ const links = computed(() => [
 const isActiveLink = (path: string) => route.path === path
 
 const todaysOpenComplaints = computed(() => {
-  return useComplaintsStore().stats?.data?.todaysOpenComplaints ?? 0
+  const value = complaintsStore.stats?.todaysOpenComplaints
+  return typeof value === 'number' ? value : null
 })
 
 const todaysTransfers = computed(() => {
-  return useTransfersStore().stats?.data?.todaysTransfers ?? 0
+  const value = transfersStore.stats?.todaysTransfers
+  return typeof value === 'number' ? value : null
+})
+
+// Fetch stats on component mount
+const fetchStats = async () => {
+  try {
+    console.log('Fetching stats...')
+    await Promise.all([
+      complaintsStore.getComplaintsStatsPage(),
+      transfersStore.getTransfersStats(),
+    ])
+  } catch (error) {
+    console.error('Error fetching stats:', error)
+  }
+}
+
+onMounted(async () => {
+  // Initial fetch
+  await fetchStats()
+
+  // Set up periodic refresh every 5 minutes
+  statsInterval = setInterval(fetchStats, 5 * 60 * 1000)
+})
+
+onUnmounted(() => {
+  if (statsInterval) {
+    clearInterval(statsInterval)
+    statsInterval = null
+  }
 })
 </script>
 
@@ -387,7 +416,6 @@ li {
 .menu-chip {
   background-color: #ff5b5b !important;
   color: white !important;
-  font-weight: bold;
   font-size: 10px;
   border-radius: 50%;
   min-width: 18px;
@@ -396,7 +424,11 @@ li {
   align-items: center;
   justify-content: center;
   padding: 0;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 12px; /* 109.091% */
+  letter-spacing: 0.22px;
+  text-transform: uppercase;
 }
 
 .submenu {
