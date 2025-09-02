@@ -1,5 +1,10 @@
 <template>
-  <div class="sidebar" :class="{ collapsed: isCollapsed }">
+  <div 
+    class="sidebar" 
+    :class="{ collapsed: isCollapsed }"
+    >
+    <!-- @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave" -->
     <!-- Toggle Button -->
     <div class="sidebar-header">
       <router-link
@@ -255,6 +260,22 @@ const toggleSidebar = () => {
   // Emit the toggle event to parent
   emit('toggle-sidebar', isCollapsed.value)
 }
+
+// const handleMouseEnter = () => {
+//   console.log('Mouse enter - isCollapsed:', isCollapsed.value)
+//   if (isCollapsed.value) {
+//     // Expand sidebar on hover (same as clicking toggle)
+//     toggleSidebar()
+//   }
+// }
+
+// const handleMouseLeave = () => {
+//   console.log('Mouse leave - isCollapsed:', isCollapsed.value)
+//   if (!isCollapsed.value) {
+//     // Collapse sidebar when mouse leaves (same as clicking toggle)
+//     toggleSidebar()
+//   }
+// }
 
 watchEffect(async () => {
   if (!user.value) {
