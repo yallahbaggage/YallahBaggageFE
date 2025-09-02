@@ -49,7 +49,7 @@
           :class="{ active: isActiveLink('/transfers'), 'collapsed-item': isCollapsed }"
         >
           <div class="menu-item-name">
-            <v-icon :color="isActiveLink('/transfers') ? 'primary' : ''" class="icon"
+            <v-icon :title="isCollapsed ? t('transfers') : ''" :color="isActiveLink('/transfers') ? 'primary' : ''" class="icon"
               >mdi-swap-horizontal</v-icon
             >
             <span v-if="!isCollapsed">{{ t('transfers') }}</span>
@@ -75,6 +75,7 @@
               src="@/assets/images/users.svg"
               :class="{ 'svg-blue': isActiveLink('/drivers') }"
               style="width: 20px; height: 20px"
+              :title="isCollapsed ? t('drivers') : ''"
             />
             <span v-if="!isCollapsed">{{ t('drivers') }}</span>
           </div>
@@ -137,6 +138,7 @@
                 src="@/assets/images/banner.svg"
                 :class="{ 'svg-blue': isActiveLink('/banners') }"
                 style="width: 20px; height: 20px"
+                :title="isCollapsed ? t('banners') : ''"
               />
               <span v-if="!isCollapsed">{{ t('banners') }}</span>
             </div>
@@ -150,6 +152,7 @@
           >
             <div class="menu-item-name">
               <v-icon :color="isActiveLink('/notifications') ? 'primary' : ''" class="icon"
+              :title="isCollapsed ? t('notifications') : ''"
                 >mdi-bell-outline</v-icon
               >
               <span v-if="!isCollapsed">{{ t('notifications') }}</span>
@@ -166,6 +169,7 @@
         >
           <div class="menu-item-name">
             <v-icon :color="isActiveLink('/customer-support') ? 'primary' : ''" class="icon"
+            :title="isCollapsed ? t('customerSupport') : ''"
               >mdi-headphones</v-icon
             >
             <span v-if="!isCollapsed">{{ t('customerSupport') }}</span>
