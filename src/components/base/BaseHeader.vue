@@ -93,6 +93,7 @@ const hideIconIfPageRouteNotification = computed(() => route.path === '/notifica
   width: 100%;
   height: 88px; /* Adjusted height to match the image */
   border-bottom: 1px solid #EBEBEB;
+  padding: 0 32px;
 }
 
 .header-left-content {

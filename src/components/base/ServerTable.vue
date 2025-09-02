@@ -140,6 +140,8 @@ function onPageSizeChange(val: number) {
 
 .server-table {
   margin-top: 24px;
+  padding: 0px 32px;
+  
   ::v-deep(.v-data-table) {
     font-size: 14px;
     table-layout: fixed; // Force fixed table layout for consistent column widths

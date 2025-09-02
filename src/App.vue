@@ -108,7 +108,7 @@ onMounted(async () => {
     flex-grow: 1;
     overflow: auto;
     margin-left: $sidebarWidth;
-    padding: 0px 32px;
+    // padding: 0px 32px;
   }
 
   &.sidebar-collapsed {
