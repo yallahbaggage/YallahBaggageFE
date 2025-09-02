@@ -1,29 +1,50 @@
 <template>
-  <div class="sidebar">
-    <router-link role="button" to="/" class="menu-link" active-class="active">
-      <div class="header-logo">
-        <img class="logo-img" src="@/assets/images/logo.svg" alt="" />
-        <div>
-          <h1 class="logo-title">Yalla Baggage</h1>
-          <h2 class="logo-subtitle">Superadmin Panel</h2>
+  <div class="sidebar" :class="{ collapsed: isCollapsed }">
+    <!-- Toggle Button -->
+    <div class="sidebar-header">
+      <router-link
+        v-if="!isCollapsed"
+        role="button"
+        to="/"
+        class="menu-link header-link"
+        active-class="active"
+      >
+        <div class="header-logo">
+          <img class="logo-img" src="@/assets/images/logo.svg" alt="" />
+          <div>
+            <h1 class="logo-title">Yalla Baggage</h1>
+            <h2 class="logo-subtitle">Superadmin Panel</h2>
+          </div>
         </div>
-      </div>
-    </router-link>
+      </router-link>
+             <button class="toggle-btn" @click="toggleSidebar" :class="{ 'no-border': isCollapsed }">
+         <img
+           v-if="isCollapsed"
+           class="logo-img-collapsed"
+           src="@/assets/images/logo.svg"
+           alt="Yalla Baggage"
+         />
+         <v-icon size="20" v-else>mdi-swap-vertical</v-icon>
+       </button>
+    </div>
 
-    <div class="main-section-title">MAIN</div>
+    <div v-if="!isCollapsed" class="main-section-title">MAIN</div>
 
     <v-list dense nav bg-color="white" class="menu">
       <!-- Transfers -->
       <router-link role="button" to="/transfers" class="menu-link" active-class="active">
-        <div class="menu-item" :class="{ active: isActiveLink('/transfers') }">
+        <div
+          class="menu-item"
+          :class="{ active: isActiveLink('/transfers'), 'collapsed-item': isCollapsed }"
+        >
           <div class="menu-item-name">
             <v-icon :color="isActiveLink('/transfers') ? 'primary' : ''" class="icon"
               >mdi-swap-horizontal</v-icon
             >
-            {{ t('transfers') }}
+            <span v-if="!isCollapsed">{{ t('transfers') }}</span>
           </div>
           <v-chip
-            v-if="todaysTransfers !== null && todaysTransfers > 0"
+            v-if="!isCollapsed && todaysTransfers !== null && todaysTransfers > 0"
             class="menu-chip"
             size="small"
             color="#FF5B5B"
@@ -34,19 +55,22 @@
       </router-link>
       <!-- drivers -->
       <router-link role="button" to="/drivers" class="menu-link" active-class="active">
-        <div class="menu-item" :class="{ active: isActiveLink('/drivers') }">
+        <div
+          class="menu-item"
+          :class="{ active: isActiveLink('/drivers'), 'collapsed-item': isCollapsed }"
+        >
           <div class="menu-item-name">
             <img
               src="@/assets/images/users.svg"
               :class="{ 'svg-blue': isActiveLink('/drivers') }"
               style="width: 20px; height: 20px"
             />
-            {{ t('drivers') }}
+            <span v-if="!isCollapsed">{{ t('drivers') }}</span>
           </div>
         </div>
       </router-link>
-      <!-- App Management (Accordion) -->
-      <v-list-item>
+      <!-- App Management (Accordion when expanded, individual items when collapsed) -->
+      <v-list-item v-if="!isCollapsed">
         <button
           role="button"
           class="accordion-header"
@@ -89,17 +113,54 @@
         </v-list>
       </v-list-item>
 
+      <!-- App Management items when collapsed (individual menu items) -->
+      <template v-if="isCollapsed">
+        <!-- Banners -->
+        <router-link role="button" to="/banners" class="menu-link" active-class="active">
+          <div
+            class="menu-item"
+            :class="{ active: isActiveLink('/banners'), 'collapsed-item': isCollapsed }"
+          >
+            <div class="menu-item-name">
+              <img
+                src="@/assets/images/banner.svg"
+                :class="{ 'svg-blue': isActiveLink('/banners') }"
+                style="width: 20px; height: 20px"
+              />
+              <span v-if="!isCollapsed">{{ t('banners') }}</span>
+            </div>
+          </div>
+        </router-link>
+        <!-- Notifications -->
+        <router-link role="button" to="/notifications" class="menu-link" active-class="active">
+          <div
+            class="menu-item"
+            :class="{ active: isActiveLink('/notifications'), 'collapsed-item': isCollapsed }"
+          >
+            <div class="menu-item-name">
+              <v-icon :color="isActiveLink('/notifications') ? 'primary' : ''" class="icon"
+                >mdi-bell-outline</v-icon
+              >
+              <span v-if="!isCollapsed">{{ t('notifications') }}</span>
+            </div>
+          </div>
+        </router-link>
+      </template>
+
       <!-- Customer Support -->
       <router-link role="button" to="/customer-support" class="menu-link" active-class="active">
-        <div class="menu-item" :class="{ active: isActiveLink('/customer-support') }">
+        <div
+          class="menu-item"
+          :class="{ active: isActiveLink('/customer-support'), 'collapsed-item': isCollapsed }"
+        >
           <div class="menu-item-name">
             <v-icon :color="isActiveLink('/customer-support') ? 'primary' : ''" class="icon"
               >mdi-headphones</v-icon
             >
-            {{ t('customerSupport') }}
+            <span v-if="!isCollapsed">{{ t('customerSupport') }}</span>
           </div>
           <v-chip
-            v-if="todaysOpenComplaints !== null && todaysOpenComplaints > 0"
+            v-if="!isCollapsed && todaysOpenComplaints !== null && todaysOpenComplaints > 0"
             class="menu-chip"
             size="small"
             color="#FF5B5B"
@@ -119,9 +180,9 @@
     <!-- </div> -->
 
     <!-- User Profile Section -->
-    <div class="user-profile">
+    <div class="user-profile" :class="{ collapsed: isCollapsed }">
       <v-icon size="40" class="user-icon">mdi-account-circle</v-icon>
-      <div>
+      <div v-if="!isCollapsed">
         <span class="username">{{ user?.name || 'Loading...' }}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -177,7 +238,23 @@ const transfersStore = useTransfersStore()
 
 const user = computed(() => authStore.user)
 const isManagementMenuOpen = ref(false)
+const isCollapsed = ref(false)
 let statsInterval: NodeJS.Timeout | null = null
+
+// Define emit
+const emit = defineEmits<{
+  'toggle-sidebar': [collapsed: boolean]
+}>()
+
+const toggleSidebar = () => {
+  isCollapsed.value = !isCollapsed.value
+  // Close management menu when collapsing
+  if (isCollapsed.value) {
+    isManagementMenuOpen.value = false
+  }
+  // Emit the toggle event to parent
+  emit('toggle-sidebar', isCollapsed.value)
+}
 
 watchEffect(async () => {
   if (!user.value) {
@@ -208,29 +285,25 @@ const links = computed(() => [
   },
 ])
 
-// const toggleTheme = () => {
-//   themeStore.toggleTheme()
-// }
-
 const isActiveLink = (path: string) => route.path === path
 
 const todaysOpenComplaints = computed(() => {
   // Try multiple possible paths for robustness
-  let value : number | null | undefined = complaintsStore.stats?.todaysOpenComplaints
+  let value: number | null | undefined = complaintsStore.stats?.todaysOpenComplaints
   if (typeof value !== 'number') {
     value = complaintsStore.stats?.data?.todaysOpenComplaints
   }
-  
+
   return typeof value === 'number' ? value : null
 })
 
 const todaysTransfers = computed(() => {
   // Try multiple possible paths for robustness
-  let value: number | null | undefined = transfersStore.stats?.todaysTransfers;
+  let value: number | null | undefined = transfersStore.stats?.todaysTransfers
   if (typeof value !== 'number') {
     value = transfersStore.stats?.data?.todaysTransfers
   }
-  
+
   return typeof value === 'number' ? value : null
 })
 
@@ -238,8 +311,8 @@ const todaysTransfers = computed(() => {
 const fetchStats = async () => {
   try {
     await Promise.all([
-      complaintsStore.getComplaintsStatsPage(),
-      transfersStore.getTransfersStats(),
+      //  complaintsStore.getComplaintsStatsPage(),
+      //  transfersStore.getTransfersStats(),
     ])
   } catch (error) {
     console.error('Error fetching stats:', error)
@@ -280,12 +353,56 @@ onUnmounted(() => {
   border: 0;
 }
 
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  .toggle-btn {
+    background: none;
+    border: 1px solid #ebebeb;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 8px;
+    color: #5c5c5c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: #f7f7f7;
+      color: rgb(var(--v-theme-primary));
+    }
+
+    .v-icon {
+      font-size: 24px;
+    }
+
+    .logo-img-collapsed {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    /* Conditional border styling */
+    &.no-border {
+      border: none;
+    }
+  }
+
+  .header-link {
+    flex: 1;
+  }
+}
+
 .header-logo {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 8px 0;
-  // margin-bottom: 20px;
+
   .logo-img {
     width: 40px;
     height: 40px;
@@ -319,8 +436,7 @@ onUnmounted(() => {
   font-size: 12px;
   color: #a3a3a3;
   margin-top: 48px;
-  // margin-bottom: 10px;
-  // padding-left: 16px;
+
   letter-spacing: 1px;
   font-weight: 600;
 }
@@ -336,11 +452,34 @@ onUnmounted(() => {
   border-right: 1px solid #ebebeb;
   max-width: 272px;
   width: 100%;
+  transition: all 0.3s ease;
+  overflow: hidden;
+
   // RTL Support
   [dir='rtl'] & {
     border-radius: 10px 0 0 10px;
     border-right: none;
     border-left: 1px solid #e0e0e0;
+  }
+
+  &.collapsed {
+    max-width: 80px;
+    width: 80px;
+    padding: 20px 10px;
+
+    .main-section-title {
+      display: none;
+    }
+
+    .menu {
+      align-items: center;
+
+      .menu-link {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+    }
   }
 
   .v-list-item--density-default.v-list-item--one-line {
@@ -360,7 +499,7 @@ li {
 .menu {
   display: flex;
   flex-direction: column;
-  // height: 100%;
+
   margin: 16px 0;
   flex-grow: 1;
   gap: 4px;
@@ -379,7 +518,6 @@ li {
 .menu-link,
 .logout-link {
   font-size: $normalSize !important;
-  color: inherit;
   text-decoration: none;
   color: #5c5c5c;
 }
@@ -387,7 +525,7 @@ li {
 .menu-item {
   display: flex;
   align-items: center;
-  // justify-content: center;
+
   padding: 8px 12px;
   border-radius: 8px;
   font-size: $normalSize !important;
@@ -396,7 +534,6 @@ li {
   justify-content: space-between;
   transition: background 0.15s;
   margin-bottom: 2px;
-  transition: all 0.2s ease;
   height: 36px;
 
   img {
@@ -406,7 +543,6 @@ li {
 }
 
 .active {
-  font-weight: $font-weight-regular;
   background-color: #f7f7f7 !important;
   border-radius: 10px;
   color: black;
@@ -557,5 +693,42 @@ li {
 .svg-blue {
   filter: brightness(0) saturate(100%) invert(36%) sepia(100%) saturate(2480%) hue-rotate(225deg)
     brightness(101%) contrast(103%);
+}
+
+/* Collapsed menu item styles */
+.menu-item.collapsed-item {
+  justify-content: center;
+  padding: 8px;
+
+  .menu-item-name {
+    justify-content: center;
+    width: 100%;
+    gap: 0;
+
+    span {
+      display: none;
+    }
+
+    .icon,
+    img {
+      margin: 0;
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+/* Collapsed user profile styles */
+.user-profile.collapsed {
+  justify-content: center;
+  padding: 0;
+
+  .user-icon {
+    margin: 0;
+  }
+
+  div {
+    display: none;
+  }
 }
 </style>

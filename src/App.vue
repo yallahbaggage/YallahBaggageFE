@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useAuthStore } from './stores/modules/authStore'
 import { useRouter } from 'vue-router'
 import LeftSlider from '@/components/layout/LeftSlider.vue'
@@ -8,6 +8,11 @@ import WaitingView from '@/components/base/WaitingView.vue'
 const router = useRouter()
 const authStore = useAuthStore()
 const isLogged = computed(() => authStore.isAuthenticated)
+const isCollapsed = ref(false)
+
+const handleSidebarToggle = (collapsed: boolean) => {
+  isCollapsed.value = collapsed
+}
 
 onMounted(async () => {
   try {
@@ -31,15 +36,17 @@ onMounted(async () => {
           <div
             class="sidebar"
             :class="{
-              hidden: !isLogged || router.currentRoute.value.path == '/login'
+              hidden: !isLogged || router.currentRoute.value.path == '/login',
+              collapsed: isCollapsed
             }"
           >
-            <LeftSlider />
+            <LeftSlider @toggle-sidebar="handleSidebarToggle" />
           </div>
           <div
             class="content-area"
             :class="{
-              'logged-in': isLogged
+              'logged-in': isLogged,
+              'sidebar-collapsed': isCollapsed && isLogged
             }"
           >
             <router-view />
@@ -73,6 +80,10 @@ onMounted(async () => {
     &.hidden {
       display: none;
     }
+
+    &.collapsed {
+      width: 80px;
+    }
   }
 }
 
@@ -91,12 +102,17 @@ onMounted(async () => {
 
 .content-area {
   border-radius: 8px;
+  transition: margin-left 0.3s ease;
 
   &.logged-in {
     flex-grow: 1;
     overflow: auto;
     margin-left: $sidebarWidth;
     padding: 0px 32px;
+  }
+
+  &.sidebar-collapsed {
+    margin-left: 80px;
   }
 
   &:not(.logged-in) {
