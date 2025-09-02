@@ -29,7 +29,13 @@
            src="@/assets/images/logo.svg"
            alt="Yalla Baggage"
          />
-         <v-icon size="20" v-else>mdi-swap-vertical</v-icon>
+         <img
+            v-else
+            src="@/assets/images/arrows.svg"
+            alt="Yalla Baggage"
+            width="10px"
+            height="16px"
+          />
        </button>
     </div>
 
@@ -385,7 +391,7 @@ onUnmounted(() => {
     border: 1px solid #ebebeb;
     cursor: pointer;
     padding: 4px;
-    border-radius: 8px;
+    border-radius: 6px;
     color: #5c5c5c;
     display: flex;
     align-items: center;
