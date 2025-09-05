@@ -359,7 +359,7 @@ const handleSubmit = async () => {
     border: 1px solid #e1e5e9;
     background-color: #ffffff;
     box-shadow: none;
-    height: 40px !important;
+    // height: 40px !important;
   }
   
   :deep(.v-field--focused) {
