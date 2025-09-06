@@ -22,13 +22,25 @@
           </div>
         </div>
       </router-link>
-             <button class="toggle-btn" @click="toggleSidebar" :class="{ 'no-border': isCollapsed }">
+        <button 
+          class="toggle-btn" 
+          @click="toggleSidebar" 
+          :class="{ 'no-border': isCollapsed, 'collapsed-toggle': isCollapsed }"
+          :title="isCollapsed ? t('expandSidebar') : ''"
+        >
          <img
            v-if="isCollapsed"
            class="logo-img-collapsed"
            src="@/assets/images/logo.svg"
            alt="Yalla Baggage"
          />
+         <v-icon 
+           v-if="isCollapsed" 
+           class="expand-icon"
+           size="20"
+         >
+           mdi-arrow-expand-right
+         </v-icon>
          <img
             v-else
             src="@/assets/images/arrows.svg"
@@ -401,6 +413,7 @@ onUnmounted(() => {
     align-items: center;
     justify-content: space-between;
     transition: all 0.2s ease;
+    position: relative;
 
     &:hover {
       background-color: #f7f7f7;
@@ -415,11 +428,38 @@ onUnmounted(() => {
       width: 28px;
       height: 28px;
       object-fit: contain;
+      transition: opacity 0.2s ease;
+    }
+
+    .expand-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      color: rgb(var(--v-theme-primary));
+      cursor: e-resize;
     }
 
     /* Conditional border styling */
     &.no-border {
       border: none;
+    }
+
+    /* Collapsed state with hover effects */
+    &.collapsed-toggle {
+      cursor: pointer;
+      
+      &:hover {
+        .logo-img-collapsed {
+          opacity: 0;
+        }
+        
+        .expand-icon {
+          opacity: 1;
+        }
+      }
     }
   }
 
