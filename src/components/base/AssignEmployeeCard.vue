@@ -70,7 +70,7 @@ function statusColor(status: string): string {
   height: 72px;
 
   .v-chip.v-chip--size-default {
-    height: 28px !important;
+    height: 24px !important;
   }
 }
 .assign-employee-info {
@@ -112,6 +112,7 @@ function statusColor(status: string): string {
   font-weight: 500;
   cursor: pointer;
   transition: background 0.3s ease;
+  height: 20px !important;
 
   &:hover {
     background: #1e4ed8;
