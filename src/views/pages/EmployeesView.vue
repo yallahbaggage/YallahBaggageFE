@@ -34,105 +34,110 @@
           </InfoCard>
         </div>
         <hr class="infoHr" />
-           <!-- Filter Section -->
-      <div class="filter-section" style="margin-bottom: 16px; position: relative">
-        <v-menu
-          v-model="filterMenu"
-          :close-on-content-click="false"
-          offset-y
-          transition="scale-transition"
-          class="filter-menu"
-        >
-          <template #activator="{ props }">
-            <v-btn v-bind="props" outline class="text-capitalize" prepend-icon="mdi-filter-variant">
-              {{ t('filters') }}
-            </v-btn>
-          </template>
-          <v-card
-            style="
-              border-radius: 8px;
-              overflow: hidden;
-              box-shadow: 0 4px 6px 6px rgba(0, 0, 0, 0.1);
-            "
+        <!-- Filter Section -->
+        <div class="filter-section" style="margin-bottom: 16px; position: relative">
+          <v-menu
+            v-model="filterMenu"
+            :close-on-content-click="false"
+            offset-y
+            transition="scale-transition"
+            class="filter-menu"
           >
-            <v-card-text
+            <template #activator="{ props }">
+              <v-btn
+                v-bind="props"
+                outline
+                class="text-capitalize"
+                prepend-icon="mdi-filter-variant"
+              >
+                {{ t('filters') }}
+              </v-btn>
+            </template>
+            <v-card
               style="
-                padding: 10px;
-                font-size: 14px;
-                font-weight: 500;
-                width: 260px;
-                line-height: 20px;
-                background-color: #fff;
-                border: 1px solid #ebebeb;
-                margin-top: 15px;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 4px 6px 6px rgba(0, 0, 0, 0.1);
               "
             >
-              <div class="d-flex justify-space-between align-center mb-2">
-                <h4 class="text-subtitle-1 font-weight-medium">{{ t('filters') }}</h4>
-                <v-btn variant="text" @click="clearFilters" class="text-primary">{{
-                  t('clear')
-                }}</v-btn>
-              </div>
-              <div class="drawer-form-group">
-                <label class="drawer-label-group">{{ t('fullName') }}</label>
-                <input
-                  type="text"
-                  class="form-input no-focus-border"
-                  placeholder="Employee name"
-                  v-model="filters.name"
-                />
-              </div>
-              <div class="drawer-form-group">
-                <label class="drawer-label-group">{{ t('identityNumber') }}</label>
-                <input
-                  type="text"
-                  class="form-input no-focus-border"
-                  placeholder="Identity Number"
-                  v-model="filters.identityNumber"
-                />
-              </div>
-              <div class="drawer-form-group">
-                <label class="drawer-label-group">{{ t('phoneNumber') }}</label>
-                <input
-                  type="text"
-                  class="form-input no-focus-border"
-                  placeholder="Phone Number"
-                  v-model="filters.phone"
-                />
-              </div>
-              <div class="drawer-form-group">
-                <label class="drawer-label-group">{{ t('status') }}</label>
-                <v-select
-                  v-model="filters.status"
-                  :items="statusOptions"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                  class="no-focus-border"
-                />
-              </div>
-              <div class="drawer-form-group">
-                <label class="drawer-label-group">{{ t('available') }}</label>
-                <v-select
-                  v-model="filters.isAvailable"
-                  :items="availabilityItems"
-                  item-title="text"
-                  item-value="value"
-                  :return-object="false"
-                  variant="outlined"
-                  density="compact"
-                  hide-details
-                />
-              </div>
-              <div class="d-flex justify-space-between mt-4">
-                <v-btn variant="outlined" @click="clearFilters">{{ t('clear') }}</v-btn>
-                <v-btn color="primary" @click="applyFilters">{{ t('apply') }}</v-btn>
-              </div>
-            </v-card-text>
-          </v-card>
-        </v-menu>
-      </div>
-      <!-- End Filter Section -->
+              <v-card-text
+                style="
+                  padding: 10px;
+                  font-size: 14px;
+                  font-weight: 500;
+                  width: 260px;
+                  line-height: 20px;
+                  background-color: #fff;
+                  border: 1px solid #ebebeb;
+                  margin-top: 15px;
+                "
+              >
+                <div class="d-flex justify-space-between align-center mb-2">
+                  <h4 class="text-subtitle-1 font-weight-medium">{{ t('filters') }}</h4>
+                  <v-btn variant="text" @click="clearFilters" class="text-primary">{{
+                    t('clear')
+                  }}</v-btn>
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('fullName') }}</label>
+                  <input
+                    type="text"
+                    class="form-input no-focus-border"
+                    placeholder="Employee name"
+                    v-model="filters.name"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('identityNumber') }}</label>
+                  <input
+                    type="text"
+                    class="form-input no-focus-border"
+                    placeholder="Identity Number"
+                    v-model="filters.identityNumber"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('phoneNumber') }}</label>
+                  <input
+                    type="text"
+                    class="form-input no-focus-border"
+                    placeholder="Phone Number"
+                    v-model="filters.phone"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('status') }}</label>
+                  <v-select
+                    v-model="filters.status"
+                    :items="statusOptions"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    class="no-focus-border"
+                  />
+                </div>
+                <div class="drawer-form-group">
+                  <label class="drawer-label-group">{{ t('available') }}</label>
+                  <v-select
+                    v-model="filters.isAvailable"
+                    :items="availabilityItems"
+                    item-title="text"
+                    item-value="value"
+                    :return-object="false"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                  />
+                </div>
+                <div class="d-flex justify-space-between mt-4">
+                  <v-btn variant="outlined" @click="clearFilters">{{ t('clear') }}</v-btn>
+                  <v-btn color="primary" @click="applyFilters">{{ t('apply') }}</v-btn>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-menu>
+        </div>
+        <!-- End Filter Section -->
         <ServerTable
           :headers="headers"
           :items="workers"
@@ -194,7 +199,7 @@
             }
           "
         >
-          <div style="max-height: 75vh;">
+          <div style="max-height: 75vh">
             <form @submit.prevent="onAddButtonPressed()" class="drawer-form">
               <div class="drawer-banner">
                 <p>{{ t('information') }}</p>
@@ -312,7 +317,7 @@
           :drawerStatus="selectedWorker?.status ? selectedWorker?.status : 'available'"
           @close="isDeleteEmployeeDrawerOpen = false"
         >
-          <div style="max-height: 75vh;">
+          <div style="max-height: 75vh">
             <form class="form">
               <div>
                 <div class="drawer-banner">
@@ -366,7 +371,7 @@
           :drawerStatus="selectedWorker?.status ? selectedWorker?.status : 'available'"
           @close="isUpdateEmployeeDrawerOpen = false"
         >
-          <div style="max-height: 75vh;">
+          <div style="max-height: 75vh">
             <form @submit.prevent="onUpdateButtonPressed" class="form">
               <div>
                 <div class="drawer-banner">
@@ -604,18 +609,15 @@ const phoneWithoutCode = computed({
   get() {
     const phone = selectedWorker.value?.phone || ''
     const dialCode = selectedCountry.value.dialCode || ''
-    return phone.startsWith(dialCode + ' ')
-      ? phone.replace(dialCode + ' ', '')
-      : phone
+    return phone.startsWith(dialCode + ' ') ? phone.replace(dialCode + ' ', '') : phone
   },
   set(newValue) {
     if (selectedWorker.value) {
       const dialCode = selectedCountry.value.dialCode || ''
       selectedWorker.value.phone = `${dialCode} ${newValue}`
     }
-  }
+  },
 })
-
 
 const fetchStats = async () => {
   await workersStore.getWorkersStats()
@@ -699,7 +701,7 @@ const onAddButtonPressed = async () => {
 }
 
 function statusColor(status: string) {
-  return StaticFunctions.getStatusColorOnly(status);
+  return StaticFunctions.getStatusColorOnly(status)
 }
 
 function viewDetails(item: any) {
@@ -713,7 +715,9 @@ function updateWorker(item: any) {
   // editWorker.identityNumber = item.identityNumber || ''
   // editWorker.phone = item.phone || ''
   // editWorker.email = item.email || ''
-  selectCountry(countries.find(country => country.dialCode === item.phone.split(' ')[0]) || countries[0])
+  selectCountry(
+    countries.find((country) => country.dialCode === item.phone.split(' ')[0]) || countries[0],
+  )
   isUpdateEmployeeDrawerOpen.value = true
 }
 
@@ -801,7 +805,6 @@ onUnmounted(() => {
 })
 </script>
 <style lang="scss" scoped>
-
 .phone-input-wrapper {
   display: flex;
   align-items: center;
@@ -818,6 +821,7 @@ onUnmounted(() => {
   background: #f9fafb;
   cursor: pointer;
   min-width: 120px;
+  height: 40px !important;
 }
 
 .country-select:hover {

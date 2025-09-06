@@ -818,6 +818,7 @@ onUnmounted(() => {
   background: #f9fafb;
   cursor: pointer;
   min-width: 120px;
+  height: 40px !important;
 }
 
 .country-select:hover {
