@@ -211,13 +211,14 @@
 
                       <div v-if="imageUrl" class="uploaded-preview">
                         <img :src="imageUrl" class="preview-img" />
-                        <div class="file-info">
+                        <!--TODO fix style-->
+                        <!-- <div class="file-info">
                           <span class="file-name">{{ uploadedFileName }}</span>
                           <span class="file-size">{{ uploadedFileSize }}</span>
                         </div>
                         <v-btn icon @click.stop="removeImage" variant="text" size="small">
                           <v-icon color="red">mdi-close</v-icon>
-                        </v-btn>
+                        </v-btn> -->
                       </div>
 
                       <div v-if="imageUploadProgress > 0" class="upload-progress-container">
