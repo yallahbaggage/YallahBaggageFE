@@ -283,5 +283,6 @@
   "assignDriver": "Sürücü Ata",
   "assignDriverToTransfer": "Transfer #{transferId} için Sürücü Ata",
   "changeDriverForTransfer": "Transfer #{transferId} için Sürücüyü Değiştir",
-  "expandSidebar": "Kenar Çubuğunu Aç"
+  "expandSidebar": "Kenar Çubuğunu Aç",
+  "collapseSidebar": "Kenar Çubuğunu Kapat"
 }

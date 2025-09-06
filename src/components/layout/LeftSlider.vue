@@ -47,6 +47,7 @@
             alt="Yalla Baggage"
             width="10px"
             height="16px"
+            :title="t('collapseSidebar')"
           />
        </button>
     </div>

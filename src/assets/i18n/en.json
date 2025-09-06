@@ -283,5 +283,6 @@
   "assignDriver": "Assign Driver",
   "assignDriverToTransfer": "Assign Driver to Transfer #{transferId}",
   "changeDriverForTransfer": "Change Driver for Transfer #{transferId}",
-  "expandSidebar": "Expand Sidebar"
+  "expandSidebar": "Expand Sidebar",
+  "collapseSidebar": "Collapse Sidebar"
 }
