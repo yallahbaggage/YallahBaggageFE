@@ -117,7 +117,7 @@ function statusColor(status: string): string {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 20px !important;
+  height: 28px !important;
 
   &:hover {
     background: #1e4ed8;
