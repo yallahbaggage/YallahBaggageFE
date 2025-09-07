@@ -366,9 +366,11 @@
                         class="upload-placeholder"
                         @click="triggerFileInput"
                       >
-                        <v-icon size="36" color="grey">mdi-cloud-upload-outline</v-icon>
-                        <p>{{ t('chooseFileOrDragDrop') }}</p>
-                        <p class="subtext">JPEG, PNG, and WebP formats, up to 3 MB.</p>
+                        <v-icon size="25" color="grey">mdi-cloud-upload-outline</v-icon>
+                        <div class="">
+                          <p>{{ t('chooseFileOrDragDrop') }}</p>
+                          <p class="subtext">JPEG, PNG, and WebP formats, up to 3 MB.</p>
+                        </div>
                         <v-btn variant="outlined" color="primary" class="browse-btn"
                           >Browse File</v-btn
                         >
@@ -894,7 +896,7 @@ function deleteAd(item: any) {
 }
 
 .image-upload-area {
-  border: 2px dashed #D1D1D1;
+  border: 2px dashed #d1d1d1;
   border-radius: 8px;
   // padding: 32px;
   background-color: #fff;
