@@ -115,7 +115,7 @@
             }
           "
         >
-          <div style="max-height: 75vh;">
+          <div style="max-height: 75vh">
             <form @submit.prevent="onAddButtonPressed()" class="form">
               <div>
                 <div class="drawer-banner">
@@ -194,12 +194,12 @@
                         class="upload-placeholder"
                         @click="triggerFileInput"
                       >
-                        <v-icon size="36" color="grey">mdi-cloud-upload-outline</v-icon>
-                        <p>{{ t('chooseFileOrDragDrop') }}</p>
-                        <p class="subtext">JPEG, PNG, and WebP formats, up to 3 MB.</p>
-                        <v-btn variant="outlined" color="primary" class="browse-btn"
-                          >Browse File</v-btn
-                        >
+                        <v-icon size="25" color="#5C5C5C">mdi-cloud-upload-outline</v-icon>
+                        <div class="">
+                          <p>{{ t('chooseFileOrDragDrop') }}</p>
+                          <p class="subtext">JPEG, PNG, and WebP formats, up to 3 MB.</p>
+                        </div>
+                        <div class="browse-btn">Browse File</div>
                         <v-file-input
                           ref="fileInput"
                           id="file-upload-add"
@@ -287,7 +287,7 @@
             }
           "
         >
-          <div style="max-height: 75vh;">
+          <div style="max-height: 75vh">
             <form @submit.prevent="onUpdateButtonPressed()" class="form" v-if="editingBanner">
               <div>
                 <div class="drawer-banner">
@@ -479,7 +479,7 @@
             }
           "
         >
-          <div style="max-height: 75vh;">
+          <div style="max-height: 75vh">
             <form class="form">
               <div>
                 <div class="drawer-banner">
@@ -894,20 +894,22 @@ function deleteAd(item: any) {
 }
 
 .image-upload-area {
-  border: 2px dashed #ccc;
+  border: 2px dashed #D1D1D1;
   border-radius: 8px;
-  padding: 5px;
-  background-color: #fafafa;
+  // padding: 32px;
+  background-color: #fff;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 202px;
+  width: 360px;
 
   &:hover {
     border-color: #1976d2;
-    background-color: #f5f5f5;
+    // background-color: #f5f5f5;
   }
 
   &.drag-over {
@@ -920,7 +922,7 @@ function deleteAd(item: any) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 20px;
 
     p {
       margin: 0;
@@ -1010,5 +1012,17 @@ function deleteAd(item: any) {
 
 .banner-key {
   flex: 1;
+}
+
+.browse-btn {
+  display: flex;
+  padding: 6px 8px;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  border-radius: 8px;
+  border: 1px solid #ebebeb;
+  background: var(--bg-white-0, #fff);
+  box-shadow: 0 1px 2px 0 rgba(10, 13, 20, 0.03);
 }
 </style>
