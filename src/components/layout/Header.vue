@@ -36,6 +36,7 @@
     font-weight: bold;
     font-size: 1.5rem;
     text-decoration: none;
+    color: #335cff;
 
     img {
       height: 40px;
