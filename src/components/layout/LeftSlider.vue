@@ -1,8 +1,5 @@
 <template>
-  <div 
-    class="sidebar" 
-    :class="{ collapsed: isCollapsed }"
-    >
+  <div class="sidebar" :class="{ collapsed: isCollapsed }">
     <!-- @mouseenter="handleMouseEnter"
     @mouseleave="handleMouseLeave" -->
     <!-- Toggle Button -->
@@ -22,34 +19,28 @@
           </div>
         </div>
       </router-link>
-        <button 
-          class="toggle-btn" 
-          @click="toggleSidebar" 
-          :class="{ 'no-border': isCollapsed, 'collapsed-toggle': isCollapsed }"
-          :title="isCollapsed ? t('expandSidebar') : ''"
-        >
-         <img
-           v-if="isCollapsed"
-           class="logo-img-collapsed"
-           src="@/assets/images/logo.svg"
-           alt="Yalla Baggage"
-         />
-         <v-icon 
-           v-if="isCollapsed" 
-           class="expand-icon"
-           size="20"
-         >
-           mdi-arrow-expand-right
-         </v-icon>
-         <img
-            v-else
-            src="@/assets/images/arrows.svg"
-            alt="Yalla Baggage"
-            width="10px"
-            height="16px"
-            :title="t('collapseSidebar')"
-          />
-       </button>
+      <button
+        class="toggle-btn"
+        @click="toggleSidebar"
+        :class="{ 'no-border': isCollapsed, 'collapsed-toggle': isCollapsed }"
+        :title="isCollapsed ? t('expandSidebar') : ''"
+      >
+        <img
+          v-if="isCollapsed"
+          class="logo-img-collapsed"
+          src="@/assets/images/logo.svg"
+          alt="Yalla Baggage"
+        />
+        <v-icon v-if="isCollapsed" class="expand-icon" size="20"> mdi-arrow-expand-right </v-icon>
+        <img
+          v-else
+          src="@/assets/images/arrows.svg"
+          alt="Yalla Baggage"
+          width="10px"
+          height="16px"
+          :title="t('collapseSidebar')"
+        />
+      </button>
     </div>
 
     <div v-if="!isCollapsed" class="main-section-title">MAIN</div>
@@ -62,7 +53,10 @@
           :class="{ active: isActiveLink('/transfers'), 'collapsed-item': isCollapsed }"
         >
           <div class="menu-item-name">
-            <v-icon :title="isCollapsed ? t('transfers') : ''" :color="isActiveLink('/transfers') ? 'primary' : ''" class="icon"
+            <v-icon
+              :title="isCollapsed ? t('transfers') : ''"
+              :color="isActiveLink('/transfers') ? 'primary' : ''"
+              class="icon"
               >mdi-swap-horizontal</v-icon
             >
             <span v-if="!isCollapsed">{{ t('transfers') }}</span>
@@ -120,6 +114,7 @@
                   src="@/assets/images/banner.svg"
                   :class="{ 'svg-blue': isActiveLink('/banners') }"
                   class="link-icon"
+                  style="width: 24px; height: 24px"
                 />
                 <span>{{ t('banners') }}</span>
               </div>
@@ -150,7 +145,7 @@
               <img
                 src="@/assets/images/banner.svg"
                 :class="{ 'svg-blue': isActiveLink('/banners') }"
-                style="width: 20px; height: 20px"
+                style="width: 24px; height: 24px"
                 :title="isCollapsed ? t('banners') : ''"
               />
               <span v-if="!isCollapsed">{{ t('banners') }}</span>
@@ -164,8 +159,10 @@
             :class="{ active: isActiveLink('/notifications'), 'collapsed-item': isCollapsed }"
           >
             <div class="menu-item-name">
-              <v-icon :color="isActiveLink('/notifications') ? 'primary' : ''" class="icon"
-              :title="isCollapsed ? t('notifications') : ''"
+              <v-icon
+                :color="isActiveLink('/notifications') ? 'primary' : ''"
+                class="icon"
+                :title="isCollapsed ? t('notifications') : ''"
                 >mdi-bell-outline</v-icon
               >
               <span v-if="!isCollapsed">{{ t('notifications') }}</span>
@@ -181,8 +178,10 @@
           :class="{ active: isActiveLink('/customer-support'), 'collapsed-item': isCollapsed }"
         >
           <div class="menu-item-name">
-            <v-icon :color="isActiveLink('/customer-support') ? 'primary' : ''" class="icon"
-            :title="isCollapsed ? t('customerSupport') : ''"
+            <v-icon
+              :color="isActiveLink('/customer-support') ? 'primary' : ''"
+              class="icon"
+              :title="isCollapsed ? t('customerSupport') : ''"
               >mdi-headphones</v-icon
             >
             <span v-if="!isCollapsed">{{ t('customerSupport') }}</span>
@@ -451,12 +450,12 @@ onUnmounted(() => {
     /* Collapsed state with hover effects */
     &.collapsed-toggle {
       cursor: pointer;
-      
+
       &:hover {
         .logo-img-collapsed {
           opacity: 0;
         }
-        
+
         .expand-icon {
           opacity: 1;
         }
