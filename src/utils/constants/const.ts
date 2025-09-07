@@ -1,9 +1,8 @@
 
-export const kAppVersion = "1.0.0.0";
-export const kAppTitle = `Yalla - ${kAppVersion}`;
+export const kAppVersion = "1.0.0.1";
+export const kAppTitle = `Yallah Baggage - ${kAppVersion}`;
 export const kImageAssetBackground = "bg.jpg";
 
-// export const kRestApiUrl = 'http://pddapi.sadeyazilim.com:7020/api/v3';
 export const kRestApiUrl = import.meta.env.VITE_RESTAPI_URL;
 
 //NOTE: User

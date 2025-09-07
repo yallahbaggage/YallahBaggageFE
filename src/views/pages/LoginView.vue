@@ -6,7 +6,7 @@
         <img
           src="@/assets/images/logo.svg"
           type="image/svg+xml"
-          alt="Yalla Baggage Logo"
+          alt="Yallah Baggage Logo"
           class="logo-image"
         />
         <div class="login-content-wrapper">
@@ -16,7 +16,7 @@
                 <img
                   src="@/assets/images/user.svg"
                   type="image/svg+xml"
-                  alt="Yalla Baggage Logo"
+                  alt="Yallah Baggage Logo"
                   class="user-image"
                 />
               </div>
@@ -92,7 +92,7 @@
         <!-- Footer section moved inside this col -->
         <div class="footer-section">
           <div class="footer-content">
-            <span class="copyright-text">© 2025 Yalla Baggage</span>
+            <span class="copyright-text">© 2025 Yallah Baggage</span>
             <v-menu>
               <template v-slot:activator="{ props }">
                 <v-btn color="primary" class="bottom-btn" v-bind="props">

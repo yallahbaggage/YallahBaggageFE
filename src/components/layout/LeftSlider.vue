@@ -14,7 +14,7 @@
         <div class="header-logo">
           <img class="logo-img" src="@/assets/images/logo.svg" alt="" />
           <div>
-            <h1 class="logo-title">Yalla Baggage</h1>
+            <h1 class="logo-title">Yallah Baggage</h1>
             <h2 class="logo-subtitle">Superadmin Panel</h2>
           </div>
         </div>
@@ -29,13 +29,13 @@
           v-if="isCollapsed"
           class="logo-img-collapsed"
           src="@/assets/images/logo.svg"
-          alt="Yalla Baggage"
+          alt="Yallah Baggage"
         />
         <v-icon v-if="isCollapsed" class="expand-icon" size="20"> mdi-arrow-expand-right </v-icon>
         <img
           v-else
           src="@/assets/images/arrows.svg"
-          alt="Yalla Baggage"
+          alt="Yallah Baggage"
           width="10px"
           height="16px"
           :title="t('collapseSidebar')"
