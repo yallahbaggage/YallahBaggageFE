@@ -753,7 +753,7 @@ li {
   background: none;
   border: none;
   color: inherit;
-  padding: 16px;
+  padding: 10px;
   height: 36px;
 }
 
