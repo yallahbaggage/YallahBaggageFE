@@ -778,13 +778,14 @@ body {
   padding: 0 !important;
 }
 
-.v-table > .v-table__wrapper > table > tbody > tr > td {
+.v-table > .v-table__wrapper > table > tbody > tr > td ,
+.v-table > .v-table__wrapper > table > tbody > tr > td > span{
   height: 48px !important;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal; /* important: allow line wrapping logic */
   color: #171717;
-  font-size: 14px;
+  font-size: 14px !important;
   font-style: normal;
   font-weight: 400;
   line-height: 20px; /* 142.857% */
