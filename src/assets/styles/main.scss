@@ -778,8 +778,7 @@ body {
   padding: 0 !important;
 }
 
-.v-table > .v-table__wrapper > table > tbody > tr > td ,
-.v-table > .v-table__wrapper > table > tbody > tr > td > span{
+.v-table > .v-table__wrapper > table > tbody > tr > td {
   height: 48px !important;
   overflow: hidden;
   text-overflow: ellipsis;
