@@ -75,7 +75,7 @@ onMounted(async () => {
     flex-direction: column;
     transition: width 0.3s ease;
     top: 0;
-    z-index: 100;
+    // z-index: 100;
 
     &.hidden {
       display: none;
