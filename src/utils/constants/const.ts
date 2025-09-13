@@ -1,5 +1,5 @@
 
-export const kAppVersion = "1.0.0.1";
+export const kAppVersion = "1.0.0.2";
 export const kAppTitle = `Yallah Baggage - ${kAppVersion}`;
 export const kImageAssetBackground = "bg.jpg";
 
