@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useAuthStore } from './stores/modules/authStore'
 import { useRouter } from 'vue-router'
 import LeftSlider from '@/components/layout/LeftSlider.vue'
 import WaitingView from '@/components/base/WaitingView.vue'
+import { useSidebar } from './composables/useSidebar'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const isLogged = computed(() => authStore.isAuthenticated)
-const isCollapsed = ref(false)
+const { isCollapsed, setSidebarCollapsed } = useSidebar()
 
 const handleSidebarToggle = (collapsed: boolean) => {
-  isCollapsed.value = collapsed
+  setSidebarCollapsed(collapsed)
 }
 
 onMounted(async () => {

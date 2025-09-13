@@ -79,6 +79,7 @@
 import type { DataTableHeader } from 'vuetify'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue3-i18n'
+import { useSidebar } from '@/composables/useSidebar'
 
 const props = defineProps<{
   headers: DataTableHeader[]
@@ -91,8 +92,17 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
+const { isCollapsed } = useSidebar()
 
 const emit = defineEmits(['update:page', 'update:items-per-page'])
+
+// Compute pagination margin based on sidebar state
+const paginationMargin = computed(() => {
+  if (isCollapsed.value) {
+    return '80px'
+  }
+  return '272px' // $sidebarWidth value
+})
 
 const totalPages = computed(() => Math.ceil(props.totalItems / props.itemsPerPage))
 
@@ -248,7 +258,7 @@ function onPageSizeChange(val: number) {
 }
 
 .pagination-row {
-  margin-left: $sidebarWidth;
+  margin-left: v-bind(paginationMargin);
   position: absolute;
   bottom: 24px;
   left: 10px;
@@ -256,6 +266,16 @@ function onPageSizeChange(val: number) {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: margin-left 0.3s ease;
+}
+
+// Responsive pagination based on sidebar state - targeting when parent has sidebar-collapsed class
+
+// When no sidebar (mobile or logged out)
+@media (max-width: 1200px) {
+  .pagination-row {
+    margin-left: 0 !important;
+  }
 }
 
 // small screens
