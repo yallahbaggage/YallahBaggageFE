@@ -27,7 +27,7 @@ npm install
 
 2. Create `.env` file with required environment variables:
 ```
-VITE_API_URL=https://baggs10.onrender.com/
+VITE_API_URL=https://yallahbaggagebe.onrender.com/
 ```
 
 3. Start development server:

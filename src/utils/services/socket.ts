@@ -18,7 +18,7 @@ class SocketService {
   connect(token: string) {
     if (this.socket?.connected) return;
 
-    this.socket = io(import.meta.env.VITE_API_URL || 'https://baggs10.onrender.com', {
+    this.socket = io(import.meta.env.VITE_API_URL || 'https://yallahbaggagebe.onrender.com', {
       auth: {
         token
       },
