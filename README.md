@@ -1,5 +1,8 @@
 # Frontend Application
-
+```
+https://www.yallahbaggage.com/
+https://www.yallahbaggage.com/login
+```
 This directory contains the Vue frontend application for the Service Management Platform.
 
 ## Directory Structure
