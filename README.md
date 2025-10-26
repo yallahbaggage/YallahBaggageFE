@@ -5,6 +5,10 @@ https://www.yallahbaggage.com/login
 ```
 This directory contains the Vue frontend application for the Service Management Platform.
 
+for docs about the app
+```
+https://drive.google.com/file/d/1Cd55h5lLj2119Hf1w6InbyHOQBFmnSlH/view?usp=sharing
+```
 ## Directory Structure
 
 ```
